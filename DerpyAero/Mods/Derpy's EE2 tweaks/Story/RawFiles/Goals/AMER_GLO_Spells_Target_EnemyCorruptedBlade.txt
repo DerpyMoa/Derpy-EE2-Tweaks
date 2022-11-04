@@ -1,0 +1,55 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_EnemyCorruptedBlade", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "ACCURACYBOOST", "Ability", "RogueLore", 5.0, 1.0, 2000, "SkillCast");
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "RogueLore", 10.0, 2.0);
+
+PROC PROC_AMER_Source_Infusion_ExpectedTargetHit((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, "Target_EnemyCorruptedBlade", (INTEGER)_InfusCount, (STRING)_Element)
+AND
+_InfusCount > 0
+THEN
+ApplyStatus(_Target, "AMER_HEMORRHAGE", 18.0, 0, _Char);
+ApplyStatus(_Target, "ACID", 18.0, 0, _Char);
+
+
+//================================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_EnemyCorruptedBlade", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "RogueLore", 40.0, 8.0);
+
+
+PROC PROC_AMER_Source_Infusion_ExpectedTargetHit((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, "Target_EnemyCorruptedBlade", (INTEGER)_InfusCount, (STRING)_Element)
+AND
+_InfusCount > 1
+THEN
+ApplyStatus(_Target, "AMER_CORRODING", 6.0, 0, _Char);
+
+
+//================================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Target_EnemyCorruptedBlade", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+ApplyStatus(_Char, "AMER_CORRUPTEDBLADE_INFUS_3", 18.0, 0, _Char);
+PROC_AMER_StatusMod_ExtendedStat_TryApplyModForStatus(_Char, _Char, "AMER_CORRUPTEDBLADE_INFUS_3", "BasicAttackHitStatus", "CorruptedBlade_Infus3", "", "", 1500.0, "");
+PROC_AMER_GEN_Goal_Activate("AMER_GLO_Spells_REMOTE_CorruptedBlade");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Scoundrel"

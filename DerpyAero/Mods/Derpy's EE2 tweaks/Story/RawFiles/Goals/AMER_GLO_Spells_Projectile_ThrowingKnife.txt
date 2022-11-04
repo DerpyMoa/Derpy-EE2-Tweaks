@@ -1,0 +1,47 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Projectile_ThrowingKnife", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "ACCURACYBOOST", "Ability", "RogueLore", 5.0, 1.0, 2000, "SkillCast");
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "RogueLore", 15.0, 3.0);
+PROC_AMER_Source_Infusion_AddRefund(_Char, 2, 0);
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Projectile_ThrowingKnife", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+AND
+DB_AMER_Spells_CastWhileSneaking(_Char, "Projectile_ThrowingKnife", 1)
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "RogueLore", 40.0, 8.0);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Projectile_ThrowingKnife", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 2)
+THEN
+PROC_AMER_GEN_Shoot_Delayed("Projectile", _Char, _X, _Y, _Z, "Projectile_ThrowingKnife", 200);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Projectile_ThrowingKnife", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_GEN_Shoot_Delayed("Projectile", _Char, _X, _Y, _Z, "Projectile_ThrowingKnife", 3, 100);
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Projectile_ThrowingKnife", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+AND
+DB_AMER_Spells_CastWhileSneaking(_Char, "Projectile_ThrowingKnife", 1)
+THEN
+ApplyStatus(_Char, "AMER_THROWINGKNIFE_INFUS_3", 18.0, 0, _Char);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Scoundrel"

@@ -1,0 +1,16 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_FTJ_SwampBuildup_B_Undead_Ranger_01_1195a59b-ba51-4662-afa7-7602b224cfc8);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_FTJ_SwampBuildup_B_Undead_Sword_9ee2fb19-5483-42a5-9037-c8147e9695fd);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_FTJ_SwampBuildup_B_Undead_Melee_01_e45ec44b-4033-4994-b6a4-f236dea40561);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_FTJ_SwampBuildup_B_Undead_Ranger_02_5468e7d7-8f83-4245-94fc-7303c11612b5);
+
+KBSECTION
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "FortJoy"

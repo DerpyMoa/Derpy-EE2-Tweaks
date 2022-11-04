@@ -1,0 +1,28 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_VenomCoating", 1)
+THEN
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "Status_AddDuration", "VENOM_COATING", "", "", 1.0, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_VenomCoating", 2)
+THEN
+ApplyStatus(_Char, "VENOM_AURA", 18.0, 0, _Char);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_VenomCoating", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+ApplyStatus(_Char, "VENOM_AURA", 30.0, 0, _Char);
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Geomancer"

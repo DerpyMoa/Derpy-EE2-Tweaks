@@ -1,0 +1,30 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_ARX_Prison_TheMistake_5136657b-5d75-409f-814c-0eee4ff3913d);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_ARX_Prison_Mistake_BlackRing1_6144fe66-7ac8-4034-9f0d-8335efa4ac91);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_ARX_Prison_Mistake_BlackRing2_fb59309d-5167-4ad7-97fd-f43122040124);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_ARX_Prison_Mistake_BlackRing3_0419d25a-af6e-4ad2-9394-710803f4af0f);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_ARX_Prison_Mistake_BlackRing4_026049be-0529-4c39-82dd-245cb2c6b4cc);
+
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_ARX_Prison_TheMistake_5136657b-5d75-409f-814c-0eee4ff3913d, "Rain_EnemyBlood");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_ARX_Prison_TheMistake_5136657b-5d75-409f-814c-0eee4ff3913d, "Shout_EnemyIgnition");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_ARX_Prison_TheMistake_5136657b-5d75-409f-814c-0eee4ff3913d, "Shout_Ignition_Empowered");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_ARX_Prison_TheMistake_5136657b-5d75-409f-814c-0eee4ff3913d, "Target_EnemyCorrosiveTouch");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_ARX_Prison_TheMistake_5136657b-5d75-409f-814c-0eee4ff3913d, "Target_EnemyVacuumTouch");
+
+KBSECTION
+
+PROC ProcBlockUseOfItem((CHARACTERGUID)_Char, ITEMGUID_S_ARX_DivineTomb_EmptyCatacombs_Stairs_463da347-38f5-8852-4871-2f76c6ef38b3)
+AND
+CharacterIsInCombat(CHARACTERGUID_S_ARX_Prison_TheMistake_5136657b-5d75-409f-814c-0eee4ff3913d, 1)
+THEN
+DB_CustomUseItemResponse(_Char,ITEMGUID_S_ARX_DivineTomb_EmptyCatacombs_Stairs_463da347-38f5-8852-4871-2f76c6ef38b3, 0);
+OpenMessageBox(_Char, "Closed until Karon leaves combat.");
+
+EXITSECTION
+
+
+ENDEXITSECTION
+ParentTargetEdge "ARX"

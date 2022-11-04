@@ -1,0 +1,31 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+PROC_AMER_Deltamods_ReinitModifierData();
+
+KBSECTION
+
+PROC PROC_AMER_Deltamods_InitDeclarations()
+THEN
+PROC_AMER_Deltamods_RemovePrefix("Normal", "Incarnate_Infus");
+PROC_AMER_Deltamods_RemovePrefix_Child("InfusEffect_Parent", "InfusEffect_BloodRain");
+PROC_AMER_Deltamods_RemovePrefix_Child("InfusEffect_Parent", "InfusEffect_ConjureIncarnate");
+PROC_AMER_Deltamods_RemovePrefix_Child("CivilAbility_Amulet_Parent", "Ability_Luck");
+PROC_AMER_Deltamods_RemovePrefix_Child("CivilAbility_Amulet_Parent", "Ability_Loremaster");
+PROC_AMER_Deltamods_RemovePrefix_Child("CivilAbility_Amulet_Parent", "Ability_Telekinesis");
+PROC_AMER_Deltamods_RemovePrefix_Child("CivilAbility_Belt_Parent", "Ability_Luck");
+PROC_AMER_Deltamods_RemovePrefix_Child("CivilAbility_Belt_Parent", "Ability_Telekinesis");
+PROC_AMER_Deltamods_RemovePrefix_Child("CivilAbility_Gloves_Parent", "Ability_Telekinesis");
+PROC_AMER_Deltamods_RemovePrefix_Child("CivilAbility_Belt_Parent", "Ability_Thievery");
+PROC_AMER_Deltamods_RemovePrefix_Child("CivilAbility_Knife_Parent", "Ability_Thievery");
+PROC_AMER_Deltamods_RemovePrefix_Child("CivilAbility_Gloves_Parent", "Ability_Thievery");
+
+PROC_AMER_Deltamods_RemovePrefix("Normal", "DodgeFatigue");
+
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

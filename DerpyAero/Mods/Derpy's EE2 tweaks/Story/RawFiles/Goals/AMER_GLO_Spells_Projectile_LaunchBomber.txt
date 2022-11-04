@@ -1,0 +1,34 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Projectile_LaunchBomber", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 1)
+THEN
+PROC_AMER_Summoning_AddExtendedStatToNext(_Char, "Summons_WindUpToy_6f8db517-f1af-4b47-b095-f239fd2293d0", "WindUpToy_MakeMinis", "", "", "", 1.0, 1);
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Projectile_LaunchBomber", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_GEN_DoFreeSneak(_Char);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Projectile_LaunchBomber", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 2)
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+PROC_AMER_Summoning_AddExtendedStatToNext(_Char, "Summons_WindUpToy_6f8db517-f1af-4b47-b095-f239fd2293d0", "WindUpToy_MakeMinis", "", "", "", 2.0, 1);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Projectile_LaunchBomber", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 3, 1);
+PROC_AMER_Summoning_AddExtendedStatToNext(_Char, "Summons_WindUpToy_6f8db517-f1af-4b47-b095-f239fd2293d0", "WindUpToy_MakeMinis", "", "", "", 6.0, 1);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Summoning"

@@ -1,0 +1,46 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_EnemyHaste", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "Status_AddDuration", "HASTED", "", "", 1.0, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddFlexStat(_Char, "HASTED", "Stat", "MOVEMENT", 100.0, "Haste_Infus", 0);	//100 = 1.0 movement.
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_EnemyHaste", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+AND
+QRY_AMER_GEN_GetNearestInCombat(_Char, _Target, _Char, 13.0, 76)	//Living non-summon ally of _Char that is nearest to _Target, within 13.0 of _Char.
+AND
+DB_AMER_GEN_OUTPUT_NearestInCombat(_NearestTarget, _)
+THEN
+PlayEffect(_NearestTarget, "RS3_FX_Skills_Fire_Haste_Impact_Root_01", "root");
+ApplyStatus(_NearestTarget, "HASTED", 12.0, 0, _Char);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_EnemyHaste", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+DB_AMER_IterateCharsAroundObject_Exclusion(_Target);	//Don't double-cast on target.
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 13.0, _Char, 12, "AMER_SourceInfusion_Haste");	//Allies, not dead.
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "Status_AddDuration", "HASTED", "", "", 1.0);
+PROC_AMER_TempStat_StatusMod_AddFlexStat(_Char, "HASTED", "Stat", "APRECOVERY", 2.0, "Haste_Infus", 0);
+PROC_AMER_TempStat_StatusMod_AddFlexStat(_Char, "HASTED", "Stat", "APMAXIMUM", 2.0, "Haste_Infus", 0);
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "AMER_SourceInfusion_Haste", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Fire_Haste_Impact_Root_01", "root");
+ApplyStatus(_Char, "HASTED", 12.0, 0, _SourceChar);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Pyrokinetic"

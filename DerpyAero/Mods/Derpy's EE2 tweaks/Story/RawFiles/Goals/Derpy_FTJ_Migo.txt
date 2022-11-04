@@ -1,0 +1,19 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_FTJ_BeachGheist_47263b13-ace6-4950-99b6-4f2b6ae8cc6c);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_FTJ_GheistDaughter_7511c722-d6fa-4236-ab56-e68018362861);
+
+KBSECTION
+
+IF
+RegionStarted(_)
+THEN
+SetIsBoss(CHARACTERGUID_S_FTJ_BeachGheist_47263b13-ace6-4950-99b6-4f2b6ae8cc6c, 1);
+GoalCompleted;
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "FortJoy"

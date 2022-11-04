@@ -1,0 +1,13 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_ModSettings_ToggledLogic("Toggle", "Global", "FastEnemies", "Derpy_GLO_ModSettings_FastEnemies");
+PROC_AMER_UI_ModSettings_AddOption_Toggle("Global", "FastEnemies", 0.0);
+
+KBSECTION
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

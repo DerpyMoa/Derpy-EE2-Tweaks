@@ -1,0 +1,46 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, "Shout_RacialRefresh", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_GEN_CountCharsAroundObject(_Char, 8.0, _Char, 10, "Derpy_LiftTheVeil_EnemyCountBuff");	//Count only living enemies.
+
+
+PROC PROC_AMER_GEN_CountCharsAroundObject_Returned((INTEGER)_RequestIndex, "Derpy_LiftTheVeil_EnemyCountBuff", (CHARACTERGUID)_Char, (INTEGER)_Enemies)
+AND
+_Enemies >= 1
+AND
+Real(_Enemies, _EnemiesReal)
+AND
+RealProduct(_EnemiesReal, 10.0, _DamageGain)
+THEN
+PROC_AMER_TempStat_StatusMod_AddFlexStat(_Char, "Derpy_LiftTheVeil", "Stat", "DAMAGEBOOST", _DamageGain, "LifeTheVeil_DamageBoost", 0, 2000, "SkillCast");
+
+
+//===================================================================
+
+
+PROC PROC_AMER_Spells_SkillCast((CHARACTERGUID)_Char, "Shout_RacialRefresh", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_GEN_CountCharsAroundObject(_Char, 8.0, _Char, 10, "Derpy_LiftTheVeil_EnemyCount");	//Count only living enemies.
+
+
+PROC PROC_AMER_GEN_CountCharsAroundObject_Returned((INTEGER)_RequestIndex, "Derpy_LiftTheVeil_EnemyCount", (CHARACTERGUID)_Char, (INTEGER)_Enemies)
+AND
+_Enemies >= 1
+AND
+Real(_Enemies, _EnemiesReal)
+AND
+RealProduct(_EnemiesReal, 20.0, _ArmorGain)
+THEN
+ApplyStatus(_Char, "Derpy_LiftTheVeil", 12.0, 0, _Char);
+PROC_AMER_GEN_Heal_Percentage(_Char, _ArmorGain,  "BothArmors", _Char, 0, 1, 1);	//Not Triage heal. Counts as Necromantic. Ability scaling enabled
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Special"

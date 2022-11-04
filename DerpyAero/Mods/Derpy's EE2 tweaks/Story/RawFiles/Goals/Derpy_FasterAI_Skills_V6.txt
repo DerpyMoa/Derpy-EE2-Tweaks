@@ -1,0 +1,24 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_FasterAISpells_BannedSpell("Projectile_EnemyArrowSpray");
+DB_AMER_FasterAISpells_BannedSpell("Projectile_EnemyArrowSpray_Empowered_2");
+DB_AMER_FasterAISpells_BannedSpell("Target_EnemyDaggersDrawn");
+DB_AMER_FasterAISpells_BannedSpell("Target_EnemyFlurry");
+DB_AMER_FasterAISpells_BannedSpell("Teleportation_Netherswap");
+DB_AMER_FasterAISpells_BannedSpell("Teleportation_Netherswap_Empowered");
+DB_AMER_FasterAISpells_BannedSpell("Teleportation_EnemyNetherswap");
+DB_AMER_FasterAISpells_BannedSpell("Teleportation_IncarnateNetherswap");
+DB_AMER_FasterAISpells_BannedSpell("Teleportation_EnemyNetherswap_Heart");
+DB_AMER_FasterAISpells_BannedSpell("Teleportation_FreeFall");
+DB_AMER_FasterAISpells_BannedSpell("Teleportation_EnemyFreeFall");
+DB_AMER_FasterAISpells_BannedSpell("Teleportation_EnemyFreeFall_Werewolf");
+DB_AMER_FasterAISpells_BannedSpell("Teleportation_EnemyFeatherFall");
+
+KBSECTION
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

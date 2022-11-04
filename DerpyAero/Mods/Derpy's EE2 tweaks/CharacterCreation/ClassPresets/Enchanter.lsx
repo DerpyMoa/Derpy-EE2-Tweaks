@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<save>
+    <header version="2" time="1387205254" />
+    <version major="1" minor="3" revision="0" build="0" />
+    <region id="CharacterCreationClass">
+        <node id="root">
+            <attribute id="ClassDescription" value="Prefers to turn the tide of battle from afar, manipulating foes with powerful magic" handle="he22fd687gca97g44f2g85c7g0653361df5e2" type="28" />
+			<attribute id="ClassLongDescription" value="Orcs? Puppets. Creatures of the Void? Dolls. For the Enchanter, enemies are more toys than threats, and battle is equal parts play and experimentation.  Raised by dedicated natural philosophers, the Enchanter grew up believing the less-desireable races were profoundly important. A living orc could be experimented upon in ways one would never dream of applying to a human, after all. Trained to assist in capturing and controlling these test subjects, the Enchanter's expertise is unparalleled. What those natural philosophers didn't expect, however, was for their well-trained Enchanter to realise the horror of their experiments and to turn that expertise against them.  The Source Hunters who pulled them down from the spikes upon which they'd been compelled to impale themselves offered the Enchanter a choice: Rot in jail, or turn those powers of manipulation toward the greater good." handle="h873e4421gef72g4383gb716gdb73981f2977" type="28" />
+            <attribute id="ClassName" value="Enchanter" handle="hc90a89f0g940bg4e5bgb26cg0558461f7209" type="28" />
+            <attribute id="ClassType" value="Enchanter" type="22" />
+            <attribute id="SkillSet" value="Class_Enchanter" type="22" />
+            <attribute id="Voice" value="1" type="5" />
+			<attribute id="Icon" value="3" type="5" />
+
+            <attribute id="NumStartingCombatAbilityPoints" value="2" type="4" />
+            <attribute id="NumStartingCivilAbilityPoints" value="1" type="4" />
+            <attribute id="NumStartingAttributePoints" value="3" type="4" />
+            <attribute id="NumStartingTalentPoints" value="1" type="4" />
+			<attribute id="AreStatsWeighted" value="1" type="19" />
+            <children>
+            <node id="EquipmentProperties">
+                    <children>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Human" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Enchanter_Humans" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Enchanter_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Dwarf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Enchanter_Dwarves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Enchanter_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Elf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Enchanter_Elves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Enchanter_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Lizard" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Enchanter_Lizards" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Enchanter_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Human" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Enchanter_Humans" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Enchanter_Start_Undead" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Dwarf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Enchanter_Dwarves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Enchanter_Start_Undead" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Elf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Enchanter_Elves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Enchanter_Start_Undead" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Lizard" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Enchanter_Lizards" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Enchanter_Start_Undead" type="22" />
+                        </node>
+                    </children>
+                </node>
+                <node id="AbilityChanges">
+                    <children>
+                        <node id="AbilityChange">
+                            <attribute id="Ability" value="AirSpecialist" type="23" />
+                            <attribute id="AmountIncreased" value="1" type="4" />
+                        </node>
+						<node id="AbilityChange">
+                            <attribute id="Ability" value="WaterSpecialist" type="23" />
+                            <attribute id="AmountIncreased" value="1" type="4" />
+                        </node>
+                        <node id="AbilityChange">
+                            <attribute id="Ability" value="Loremaster" type="23" />
+                            <attribute id="AmountIncreased" value="1" type="4" />
+                        </node>
+                    </children>
+                </node>
+                <node id="AttributeChanges">
+                    <children>
+                        <node id="AttributeChange">
+                            <attribute id="AmountIncreased" value="3" type="4" />
+                            <attribute id="Attribute" value="CON" type="23" />
+                        </node>
+                    </children>
+                </node>
+                <node id="TalentsAdded">
+                    <children>
+                        <node id="TalentAdded">
+                            <attribute id="Talent" value="WarriorLoreGrenadeRange" type="23" />
+                        </node>
+                    </children>
+                </node>
+            </children>
+        </node>
+    </region>
+</save>

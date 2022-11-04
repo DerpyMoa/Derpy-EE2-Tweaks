@@ -1,0 +1,59 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_HitStatus_Event((CHARACTERGUID)_Defender, (CHARACTERGUID)_Attacker, "ThickOfTheFight_Infus2")
+THEN
+ApplyStatus(_Defender, "AMER_WEAKENED_APPLY", 12.0, 0, _Attacker);
+
+
+
+PROC PROC_AMER_HitStatus_Event((CHARACTERGUID)_Defender, (CHARACTERGUID)_Attacker, "ThickOfTheFight_Infus3")
+AND
+QRY_AMER_GEN_OncePerRound_PerChar(_Attacker, "ThickOfTheFight_Infus3", _Defender)
+AND
+NOT DB_AMER_Source_Infusion_ThickOfTheFight_OncePerAttack(_Attacker)
+THEN
+DB_AMER_GEN_OncePerRound_PerChar(_Attacker, "ThickOfTheFight_Infus3", _Defender);
+DB_AMER_Source_Infusion_ThickOfTheFight_OncePerAttack(_Attacker);
+PROC_AMER_GEN_ShootConeAt(_Attacker, _Defender, "Cone_GroundSmash", "RS3_FX_Skills_Warrior_GroundSmash_Cast_01");
+PROC_AMER_ActionPoints_Add(_Attacker, 2);
+
+PROC PROC_AMER_TempStat_HitStatus_Cleanup((CHARACTERGUID)_Attacker, "ThickOfTheFight_Infus3")
+AND
+DB_AMER_Source_Infusion_ThickOfTheFight_OncePerAttack(_Attacker)
+THEN
+NOT DB_AMER_Source_Infusion_ThickOfTheFight_OncePerAttack(_Attacker);
+
+PROC PROC_AMER_GEN_BasicAttackObjectStarted((CHARACTERGUID)_Defender, (REAL)_X, (REAL)_Y, (REAL)_Z, (CHARACTERGUID)_Owner, (CHARACTERGUID)_Attacker, (STRING)_AttackID)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Attacker, "BasicAttackHitStatus", "ThickOfTheFight_Infus3", _Extraprop2, _Extraprop3, _TimerReal)
+AND
+QRY_AMER_GEN_OncePerRound_PerChar(_Attacker, "ThickOfTheFight_Infus3", _Defender)
+THEN
+PlaySound(_Attacker, "Skill_Warrior_GroundSmash_Impact_01");	//Ground Smash soundfx needs to begin as the attack animation begins, not as the cone sfx is played, because it has very significant build-up time.
+
+
+
+PROC PROC_AMER_ExtendedStat_RemoveStat((CHARACTERGUID)_Char, "BasicAttackHitStatus", "ThickOfTheFight_Infus2", (STRING)_Extraprop2, (STRING)_Extraprop3)
+THEN
+PROC_AMER_Spells_ThickOfTheFight_Internal_CompleteLogic(_Char);
+
+PROC PROC_AMER_ExtendedStat_RemoveStat((CHARACTERGUID)_Char, "BasicAttackHitStatus", "ThickOfTheFight_Infus3", (STRING)_Extraprop2, (STRING)_Extraprop3)
+THEN
+PROC_AMER_Spells_ThickOfTheFight_Internal_CompleteLogic(_Char);
+
+PROC PROC_AMER_Spells_ThickOfTheFight_Internal_CompleteLogic((CHARACTERGUID)_Char)
+AND
+NOT DB_AMER_ExtendedStat_AddedStat(_, "BasicAttackHitStatus", "ThickOfTheFight_Infus2", _, _, _)
+AND
+NOT DB_AMER_ExtendedStat_AddedStat(_, "BasicAttackHitStatus", "ThickOfTheFight_Infus3", _, _, _)     //Logic is no longer needed, complete goal.
+THEN
+PROC_AMER_GEN_Goal_Complete("AMER_GLO_Spells_REMOTE_ThickOfTheFight");
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Warfare"

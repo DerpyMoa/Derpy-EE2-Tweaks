@@ -1,0 +1,51 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Once per turn, when you perform an Occultist reaction, your totems attempt to attack your target.
+
+PROC PROC_AMER_Reaction_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, "AMER_Occultist", (STRING)_RequestID, (INTEGER)_RitualBool)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Occultist_MUTA_TotemsAttack", _)
+AND
+_Target != NULL_00000000-0000-0000-0000-000000000000
+AND
+CharacterIsEnemy(_Char, _Target, 1)
+AND
+QRY_AMER_GEN_OncePerTurn(_Char, "Ascension_Occultist_MUTA_TotemsAttack")
+THEN
+PROC_AMER_GEN_OncePerTurn_Store(_Char, "Ascension_Occultist_MUTA_TotemsAttack");
+PROC_AMER_Ascension_Occultist_MUTA_TotemsAttack(_Char, _Target);
+
+
+PROC PROC_AMER_Ascension_Occultist_MUTA_TotemsAttack((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+AND
+DB_AMER_Summoning_ActiveSummon_Autonomous(_Char, _Summon)
+AND
+IsTagged(_Summon, "TOTEM", 1)
+AND
+CharacterCanSee(_Summon, _Target, 1)
+THEN
+PROC_Derpy_TotemShootGoPewPew(_Summon, _Target);
+
+
+PROC PROC_Derpy_TotemShootGoPewPew((CHARACTERGUID)_Summon, (CHARACTERGUID)_Target)
+THEN
+PROC_AMER_GEN_AttackWithoutMove(_Summon, _Target);
+
+
+PROC PROC_AMER_Ascension_Occultist_MUTA_TotemsAttack((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+AND
+QRY_AMER_GEN_CharacterGetDisplayName(_Target)
+AND
+DB_AMER_GEN_OUTPUT_String(_TargetName)
+THEN
+PROC_AMER_GEN_CharacterCombatLogText_Param_Str(_Char, "commanded its totems to attack [1].", _TargetName);
+PROC_AMER_GEN_TSK_Add("EN", "AMER_Ascension_Occultist_MUTA_TotemsAttack", "commanded its totems to attack [1].");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

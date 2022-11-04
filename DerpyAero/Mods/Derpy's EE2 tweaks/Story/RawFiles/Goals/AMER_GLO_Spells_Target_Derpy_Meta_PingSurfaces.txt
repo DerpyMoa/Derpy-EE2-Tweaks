@@ -1,0 +1,48 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_Derpy_Meta_PingSurfaces", _, _X, _Y, _Z, (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_GEN_IterateCharsAroundPoint_2D(_X, _Y, _Z, 30.0, _Char, 8, "Derpy_Meta_PingSurfaces");	//Only living characters.
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Derpy_Meta_PingSurfaces", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+AND
+GetSurfaceGroundAt(_Char, _Surface)
+AND
+QRY_Derpy_BadSurface(_Char, _Surface)
+AND
+QRY_Derpy_CanPing(_SourceChar, _Char)
+THEN
+CharacterStatusText(_Char, _Surface);
+
+
+QRY QRY_Derpy_BadSurface((CHARACTERGUID)_Char, (STRING)_Surface)
+AND
+GetSurfaceGroundAt(_Char, _Surface)
+AND
+_Surface != "SurfaceNone"
+THEN
+DB_NOOP(1);
+
+
+QRY QRY_Derpy_CanPing((CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+AND
+CharacterIsAlly(_Char, _SourceChar, 1)
+THEN
+DB_NOOP();
+
+QRY QRY_Derpy_CanPing((CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+AND
+HasActiveStatus(_Char, "INVISIBLE", 0)
+THEN
+DB_NOOP();
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Special"

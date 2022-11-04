@@ -1,0 +1,47 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Projectile_PyroclasticRock", 1)
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "EarthSpecialist", 25.0, 4.0, 2000, "SkillCast");
+//PROC_AMER_TempStat_ExtendedStat_Add_StatScaling(_Char, "AttributeIntelligenceEffect_Multiplier", "", "", "", "Ability", "EarthSpecialist", 0.18, 0.03, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Projectile_PyroclasticRock", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "EarthSpecialist", 65.0, 12.0, 2000, "SkillCast");
+//PROC_AMER_TempStat_ExtendedStat_Add_StatScaling(_Char, "AttributeIntelligenceEffect_Multiplier", "", "", "", "Ability", "EarthSpecialist", 0.48, 0.09, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Projectile_PyroclasticRock", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 13.0, _Char, 42, "AMER_SourceInfusion_FossilStrike");	//Living enemies _Char can see within 13m of _Char.
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Projectile_PyroclasticRock", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_Source_Infusion_RitualRequest(_Char, _Char, _Char, 13.0, "InfusionRitual_FossilStrike_3", "", "EarthSpecialist", 1, "skill_cast_target_earth_01_cast", 0, 0);
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "AMER_SourceInfusion_FossilStrike", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+PROC_AMER_GEN_ShootProjectileAt(_SourceChar, _Char, "Projectile_PyroclasticRock");
+
+
+PROC PROC_AMER_Reaction_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, "InfusionRitual_FossilStrike_3", (STRING)_RequestID, (INTEGER)_RitualBool)
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Earth_Cast_Target_Earth_Root_01", "");
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 13.0, _Char, 42, "AMER_SourceInfusion_FossilStrike");	//Living enemies _Char can see within 13m of _Char.
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Geomancer"

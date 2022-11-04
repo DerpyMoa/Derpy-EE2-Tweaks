@@ -1,0 +1,33 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Celestial reactions performed on enemies now emulate the effects of Pressure Bolt and Winter Blast.
+
+PROC PROC_AMER_KeywordStat_Celestial_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (STRING)_RequestID)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Celestial_MUTA_EnemyEmulateSpells", _)
+AND
+CharacterIsEnemy(_Char, _Target, 1)
+AND
+QRY_AMER_GEN_NPerRound(_Char, "Ascension_Celestial_MUTA_EnemyEmulateSpells", 2)
+THEN
+PROC_AMER_GEN_NPerRound_Add(_Char, "Ascension_Celestial_MUTA_EnemyEmulateSpells", 1);
+PROC_AMER_GEN_IterateCharsAroundObject(_Target, 13.0, _Char, 42, "Ascension_Celestial_MUTA_EnemyEmulateSpells_Iterator");	//Visible living enemies.
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Ascension_Celestial_MUTA_EnemyEmulateSpells_Iterator", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+AND
+GetPosition(_Char, _X, _Y, _Z)
+THEN
+PlayEffectAtPosition("RS3_FX_Skills_Water_WinterBlast_Impact_01", _X, _Y, _Z);
+PlayEffectAtPosition("RS3_FX_Skills_Air_Impact_PressureSpike_01", _X, _Y, _Z);
+PROC_AMER_GEN_CharacterCauseExplosion(_SourceChar, _Char, "Projectile_AMER_SCRIPT_PressureSpike");
+PROC_AMER_GEN_CharacterCauseExplosion(_SourceChar, _Char, "Projectile_AMER_SCRIPT_Winterblast");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

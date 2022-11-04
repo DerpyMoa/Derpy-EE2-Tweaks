@@ -1,0 +1,96 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+//Basic logic for Oily Carapace.
+PROC PROC_AMER_GEN_FilteredStatus_Applied((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, "AMER_OIL_CARAPACE", (INTEGER)_Turns)
+AND
+CharacterIsEnemy(_Char, _Source, _EnemyBool)
+THEN
+PROC_AMER_Spells_OilyCarapace(_Char, _Source, _EnemyBool);
+
+
+//Neutral/allied targets.
+PROC PROC_AMER_Spells_OilyCarapace((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, 0)
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Earth_Cast_Self_Water_Earth_Root_01", "Dummy_Root");
+DB_AMER_Spells_OilyCarapace_AllyBuffer(_Source, _Char);
+
+
+//Enemy targets.
+PROC PROC_AMER_Spells_OilyCarapace((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, 1)
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Earth_Condense_Target_01", "");
+ApplyStatus(_Char, "AMER_SLOWED_APPLY", 12.0, 0, _Source);
+CreateSurface(_Char, "SurfaceOil", 2.0, 12.0);
+
+
+//Clear old buffered data if it's still there for some reason.
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, "Target_AMER_OilyCarapace", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+AND
+DB_AMER_Spells_OilyCarapace_AllyBuffer(_Char, _OldAlly)
+THEN
+NOT DB_AMER_Spells_OilyCarapace_AllyBuffer(_Char, _OldAlly);
+
+
+//======================================================================================================================
+
+
+//Base battered/harried removal scripted into OIL_CARAPACE status so that it's easier to disseminate it.
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, "Target_AMER_OilyCarapace", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "OIL_CARAPACE", "InstantEffect", "ApplyBattered", "", "", -2.0, "OilyCarapace_Base", 0, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "OIL_CARAPACE", "InstantEffect", "RemoveStatus", "SWARMED", "", 1.0, "OilyCarapace_Base", 0, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "OIL_CARAPACE", "InstantEffect", "RemoveStatusFamily", "Slowed", "", 1.0, "OilyCarapace_Base", 0, 2000, "SkillCast");
+
+
+//Apply OIL_CARAPACE status to buffered allies after a short delay. This ensures that the oil surfaces
+//are resolved before the status attempts to absorb them.
+PROC PROC_AMER_Spells_SkillCast((CHARACTERGUID)_Char, "Target_AMER_OilyCarapace", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+ProcObjectTimer(_Char, "AMER_Spells_OilyCarapace_AllyBufferDelay", 350);
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Source, "AMER_Spells_OilyCarapace_AllyBufferDelay")
+AND
+DB_AMER_Spells_OilyCarapace_AllyBuffer(_Source, _Ally)
+THEN
+NOT DB_AMER_Spells_OilyCarapace_AllyBuffer(_Source, _Ally);
+ApplyStatus(_Ally, "OIL_CARAPACE", 0.0, 0, _Source);
+
+
+//======================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_AMER_OilyCarapace", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_StatusMod_AddFlexStat_Scaling(_Char, "OIL_CARAPACE_INFUS_2", "Stat", "PHYSICALRESISTANCE", "OilyCarapace_Infus", 0, "Ability", "EarthSpecialist", 5.0, 1.0);
+PROC_AMER_TempStat_StatusMod_AddStatus(_Char, "OIL_CARAPACE", "OIL_CARAPACE_INFUS_2", 12.0, 0, 0, 1);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Target_AMER_OilyCarapace", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 13.0, _Char, 13, "AMER_SourceInfusion_OilyCarapace_2");	//Nonself living allies.
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "AMER_SourceInfusion_OilyCarapace_2", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+DB_AMER_Spells_OilyCarapace_AllyBuffer(_SourceChar, _Char);
+PlayEffect(_Char, "RS3_FX_Skills_Earth_Cast_Self_Water_Earth_Root_01", "Dummy_Root");
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_AMER_OilyCarapace", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+DB_AMER_Source_Infusion_RefundPoints(_Char, 0, 1);
+PROC_AMER_TempStat_StatusMod_AddFlexStat_Scaling(_Char, "OIL_CARAPACE_INFUS_2", "Stat", "PHYSICALRESISTANCE", "OilyCarapace_Infus", 0, "Ability", "EarthSpecialist", 0.0, 2.0);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Geomancer"

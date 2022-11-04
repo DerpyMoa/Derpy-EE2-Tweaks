@@ -1,0 +1,21 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Occultist reaction SI1 emulates effects of Petrifying Visage.
+
+PROC PROC_AMER_Reaction_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, "AMER_Occultist", (STRING)_RequestID, (INTEGER)_RitualBool)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Occultist_MUTA_EmulatePetrifyingVisage", _)
+AND
+QRY_AMER_GEN_OncePerRound(_Char, "Ascension_Occultist_MUTA_EmulatePetrifyingVisage")
+THEN
+DB_AMER_GEN_OncePerRound(_Char, "Ascension_Occultist_MUTA_EmulatePetrifyingVisage");
+PROC_AMER_GEN_CharacterCombatLogText(_Char, "AMER_Ascension_Occultist_MUTA_EmulatePetrifyingVisage");
+PROC_AMER_GEN_SimulatedExplosion(_Char, 13.0, _Char, 266, "Projectile_Derpy_SCRIPT_PetrifyingVisage_SingleHit_Basilisk", "RS3_FX_Skills_Totem_Cast_Shout_Root_01", ""); //Living enemies LoS.
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

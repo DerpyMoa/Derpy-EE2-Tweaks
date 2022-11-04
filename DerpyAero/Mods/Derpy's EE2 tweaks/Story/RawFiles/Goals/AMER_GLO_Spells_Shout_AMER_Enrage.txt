@@ -1,0 +1,38 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, "Shout_AMER_Enrage", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "Derpy_Berserk", "Berserk_SI0", "", "", "", 1.0, "Derpy_Berserk_SI0", 0, 2000, "SkillCast");
+
+
+//==============================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_AMER_Enrage", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_StatusMod_AddFlexStat(_Char, "Derpy_Berserk", "Stat", "APRECOVERY", 2.0, "Enrage_Infus", 0, 2000, "SkillCast");
+
+
+//==============================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_AMER_Enrage", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+PROC_AMER_TempStat_StatusMod_AddFlexStat_Scaling(_Char, "Derpy_Berserk", "Stat", "LIFESTEAL", "Enrage_Infus", 0, "Ability", "WarriorLore", 40.0, 4.0, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddFlexStat(_Char, "Derpy_Berserk", "Stat_Binary", "IMMUNITY_CHARM", 1.0, "Enrage_Infus", 0, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddFlexStat(_Char, "Derpy_Berserk", "Stat_Binary", "IMMUNITY_DISARMED", 1.0, "Enrage_Infus", 0, 2000, "SkillCast");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Warfare"

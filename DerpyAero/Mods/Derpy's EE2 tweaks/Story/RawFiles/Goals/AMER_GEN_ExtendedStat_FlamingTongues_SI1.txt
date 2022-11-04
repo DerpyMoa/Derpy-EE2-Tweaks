@@ -1,0 +1,21 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Combat_TurnStarted((CHARACTERGUID)_Char, 0)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Char, "FlamingTongues_SI1", _, _, _, _)
+THEN
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 5.0, _Char, 42, "Derpy_ExtendedStat_FlamingTongues_SI1");	//Visible living enemies.
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Derpy_ExtendedStat_FlamingTongues_SI1", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+PROC_AMER_GEN_ShootProjectileAt(_SourceChar, _Char, "Projectile_Status_FlamingTongue_Infus1");
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GEN_Stats_ExtendedStats"

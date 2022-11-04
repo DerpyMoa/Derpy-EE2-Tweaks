@@ -1,0 +1,36 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+//Kill status precasts on NPCs during dialogues.
+
+PROC PROC_AMER_GEN_FilteredStatus_Applied(_Char, _Source, _Status, _Turns)
+AND
+DB_Derpy_Dialogue_BlacklistedStatus(_Status)
+AND
+DB_DialogNPCs(_Dialog, _Char, _)
+AND
+NOT DB_AutomatedDialog(_Dialog) //Don't do this effect for automated dialogues.
+THEN
+RemoveStatus(_Char, _Status);
+
+//END_REGION
+
+
+
+//REGION End Logic.
+
+PROC ProcClearDialogCounts((INTEGER)_Inst)
+AND
+NOT DB_DialogNPCs(_, _, _)
+THEN
+PROC_AMER_GEN_Goal_Complete("Derpy_DialogueStatusBlock");
+
+//END_REGION
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Derpy_DialogueStatusBlock"

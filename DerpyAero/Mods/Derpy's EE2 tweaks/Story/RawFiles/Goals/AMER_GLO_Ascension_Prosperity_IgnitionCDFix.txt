@@ -1,0 +1,39 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+CharacterUsedSkill(_Char, "Shout_Ignition_Splendor", _, _)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Prosperity_IgnitionCDFix", _)
+AND
+CharacterIsInCombat(_Char, 1)
+THEN
+DB_Derpy_SplendorIgnitionWasUsed(_Char);
+
+
+PROC PROC_AMER_Combat_TurnEnded(_Combat, _Char, 0)
+AND
+DB_Derpy_SplendorIgnitionWasUsed(_Char)
+THEN
+NOT DB_Derpy_SplendorIgnitionWasUsed(_Char);
+
+
+IF
+SkillAdded(_Char, "Shout_Ignition_Splendor", _)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Prosperity_IgnitionCDFix", _)
+AND
+CharacterIsInCombat(_Char, 1)
+AND
+DB_Derpy_SplendorIgnitionWasUsed(_Char)
+THEN
+NRD_SkillSetCooldown(_Char, "Shout_Ignition_Splendor", 6.0);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

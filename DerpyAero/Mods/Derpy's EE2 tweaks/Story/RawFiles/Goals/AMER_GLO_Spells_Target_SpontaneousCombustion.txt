@@ -1,0 +1,51 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Target_SpontaneousCombustion", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+THEN
+DB_AMER_Source_Infusion_SpontComb_Target(_Char, _Target);
+ProcObjectTimer(_Char, "AMER_Source_Infusion_SpontComb_PrecastDelay", 150);
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "AMER_Source_Infusion_SpontComb_PrecastDelay")
+AND
+DB_AMER_Source_Infusion_SpontComb_Target(_Char, _Target)
+THEN
+NOT DB_AMER_Source_Infusion_SpontComb_Target(_Char, _Target);
+PROC_AMER_Source_Infusion_SpontaneousCombustion_1(_Char, _Target);
+
+PROC PROC_AMER_Source_Infusion_SpontaneousCombustion_1((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+AND
+GetStatusTurns(_Target, "AMER_SCORCHED", _Turns)
+THEN
+PROC_AMER_BatteredHarried_DirectManip(_Target, 2, _Turns, _Char);
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Target_SpontaneousCombustion", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+ApplyStatus(_Target, "AMER_SCORCHED", 24.0, 0, _Char);
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Target_SpontaneousCombustion", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 2)
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat_Scaling(_Char, "AMER_DISINTEGRATING_FIRE", "Disintegrating", "Fire", "", "", "SpontaneousCombustion_Infus", 0, "Ability", "FireSpecialist", 0.25, 0.025, 2000, "SkillCast");
+PROC_AMER_StatusMod_ExtendedStat_TryApplyModForStatus(_Target, _Char, "AMER_DISINTEGRATING_FIRE", "StatusRealtimeRemoval", "", "", "", 1.0, "Disintegrating");
+ApplyStatus(_Target, "AMER_DISINTEGRATING_FIRE", 6.0, 0, _Char);
+ProcObjectTimer(_Char, "AMER_StatusRealtimeRemoval", 2000);
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Target_SpontaneousCombustion", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_StatusMod_ExtendedStat_TryApplyModForStatus(_Target, _Char, "AMER_DISINTEGRATING_FIRE", "Status_OnStatusApplied", "AMER_SCORCHED", "AMER_COMBUSTION", "", 1.0, "SpontaneousCombustion_Infus3");
+PROC_AMER_TempStat_StatusMod_AddExtendedStat_Scaling(_Char, "AMER_DISINTEGRATING_FIRE", "Disintegrating", "Fire", "", "", "SpontaneousCombustion_Infus", 0, "Ability", "FireSpecialist", 0.50, 0.05, 2000, "SkillCast");
+ApplyStatus(_Target, "AMER_DISINTEGRATING_FIRE", 6.0, 0, _Char);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Pyrokinetic"

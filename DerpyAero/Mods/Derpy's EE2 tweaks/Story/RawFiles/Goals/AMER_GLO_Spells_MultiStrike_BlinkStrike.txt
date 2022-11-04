@@ -1,0 +1,38 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "MultiStrike_BlinkStrike", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "ACCURACYBOOST", "Ability", "WarriorLore", 5.0, 1.0, 2000, "SkillCast");
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "WarriorLore", 15.0, 3.0);
+PROC_AMER_Source_Infusion_AddRefund(_Char, 2, 0);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "MultiStrike_BlinkStrike", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_GEN_ApplyStatusUntilEndOfTurn(_Char, "AMER_BLITZATTACK_INFUS_2");
+ApplyStatus(_Char, "STEEL_SKIN", 18.0, 0, _Char);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "MultiStrike_BlinkStrike", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+ApplyStatus(_Char, "SPARKING_SWINGS", 18.0, 0, _Char);
+ApplyStatus(_Char, "FIRE_BRAND_AURA", 18.0, 0, _Char);
+ApplyStatus(_Char, "AMER_BLITZATTACK_INFUS_2", 18.0, 0, _Char);
+
+
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Warfare"

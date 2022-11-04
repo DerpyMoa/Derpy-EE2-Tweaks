@@ -1,0 +1,27 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+PROC_DerpyLanguages();
+
+KBSECTION
+
+PROC PROC_DerpyLanguages()
+AND
+DB_AMER_GEN_ModLanguage(_Lang)
+THEN
+PROC_DerpyLanguages(_Lang);
+
+PROC PROC_DerpyLanguages("EN")
+THEN
+PROC_AMER_GEN_TSK_Add("EN", "AMER_Ascension_Wither_MUTA_BasicAttackSIGotS", "emulated the effects of Grasp of the Starved, while performing a basic attack.");
+PROC_AMER_GEN_TSK_Add("EN", "AMER_KeywordStat_Elementalist_Feedback_LogText", "performed an Elementalist reaction with [2] stacks.");
+PROC_AMER_GEN_TSK_Add("EN", "AMER_ExtendedStat_BasicAttackRecoverAP", "recovered [1] AP.");
+PROC_AMER_GEN_TSK_Add("EN", "AMER_Ascension_Adaptation_MUTA_FortifyOpenEyes", "paid 2 Adaptation stacks to extend [1]'s Source Generation by 1 turn.");
+GoalCompleted;
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

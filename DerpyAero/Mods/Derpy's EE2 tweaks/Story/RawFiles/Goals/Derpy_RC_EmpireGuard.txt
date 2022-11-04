@@ -1,0 +1,13 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_RC_FL_StrandedMerchants_Royalguard_79590e59-06ec-41b7-8231-505004ed5e82);
+
+KBSECTION
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "ReapersCoast"

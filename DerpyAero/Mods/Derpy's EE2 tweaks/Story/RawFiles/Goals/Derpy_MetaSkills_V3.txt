@@ -1,0 +1,14 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_ModSettings_MetaSkills("Target_Derpy_Meta_PingSurfaces");
+DB_AMER_GEN_SkillIsMetaSkill("Target_Derpy_Meta_PingSurfaces");
+
+KBSECTION
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

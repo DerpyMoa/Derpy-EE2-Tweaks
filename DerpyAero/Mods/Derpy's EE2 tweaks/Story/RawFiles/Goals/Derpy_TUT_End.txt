@@ -1,0 +1,24 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_TUT_LowerDeck_LaunchVoidLings()
+AND
+GetPosition(TRIGGERGUID_Derpy_TUT_VoidwokenAmbush1_6de17ab0-d74e-4d3c-94e1-40874d645e7f,_X1,_Y1,_Z1)
+AND
+GetPosition(TRIGGERGUID_Derpy_TUT_VoidwokenAmbush2_785133ae-c098-40f6-a512-c2c1889531cc,_X2,_Y2,_Z2)
+AND
+CharacterCreateAtPosition(_X1,_Y1,_Z1,"Derpy_TUT_VoidwokenGrunt_4108f1b1-586d-4398-b056-3e8af8a5dee9",0,_DerpyVoidwokenAmbush)
+AND
+CharacterCreateAtPosition(_X2,_Y2,_Z2,"Derpy_TUT_VoidwokenGrunt_4108f1b1-586d-4398-b056-3e8af8a5dee9",0,_DerpyVoidwokenAmbush)
+THEN
+GoalCompleted;
+
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Tutorial_PrisonShip"

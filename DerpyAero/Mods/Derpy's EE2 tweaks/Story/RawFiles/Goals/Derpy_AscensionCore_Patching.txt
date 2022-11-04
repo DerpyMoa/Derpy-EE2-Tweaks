@@ -1,0 +1,54 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+PROC_Derpy_AscensionCoreCCcheck();
+
+KBSECTION
+
+PROC PROC_Derpy_AscensionCoreCCcheck()
+AND
+DB_CurrentLevel(_Level)
+AND
+IsCharacterCreationLevel(_level, 1)
+THEN
+GoalCompleted;
+
+
+IF
+SavegameLoaded(_, _, _, _)
+THEN
+PROC_AMER_GEN_Goal_Activate("AMER_GLO_UI_Ascension_Internal");
+
+IF
+SavegameLoaded(_, _, _, _)
+AND
+DB_IsPlayer(_Char)
+AND
+QRY_AMER_UI_Ascension_GetAllocatedNodeCount(_Char, "Crossroads", 2)
+AND
+DB_AMER_GEN_OUTPUT_Integer(_Count)
+AND
+DB_AMER_UI_Ascension_NodeCluster_Count("Crossroads", _Total)
+AND
+_Count == _Total
+THEN
+PROC_AMER_ExtendedStat_CharacterAddStat(_Char, "AscensionCore", "", "", "", 1.0);
+PROC_AMER_FlexStat_CharacterAddStat(_Char, "Attribute", "STRENGTH", 1.0);
+PROC_AMER_FlexStat_CharacterAddStat(_Char, "Attribute", "FINESSE", 1.0);
+PROC_AMER_FlexStat_CharacterAddStat(_Char, "Attribute", "INTELLIGENCE", 1.0);
+PROC_AMER_FlexStat_CharacterAddStat(_Char, "Attribute", "CONSTITUTION", 1.0);
+PROC_AMER_FlexStat_CharacterAddStat(_Char, "Attribute", "MEMORY", 1.0);
+PROC_AMER_FlexStat_CharacterAddStat(_Char, "Attribute", "WITS", 1.0);
+
+
+IF
+SavegameLoaded(_, _, _, _)
+THEN
+PROC_AMER_GEN_Goal_Complete("AMER_GLO_UI_Ascension_Internal");
+GoalCompleted;
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

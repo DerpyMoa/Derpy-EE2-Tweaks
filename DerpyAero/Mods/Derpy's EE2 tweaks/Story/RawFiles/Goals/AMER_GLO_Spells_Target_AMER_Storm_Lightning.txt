@@ -1,0 +1,69 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+//Storms last 1 turn longer than the status because they strike at the end of the turn they are casted on, which reduced their duration by 1 turn.
+PROC PROC_AMER_Spells_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_AMER_Storm_Lightning", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 0, (STRING)_Type, (STRING)_Element)
+AND
+QRY_AMER_Spells_Storm_CreateAtPos(_Char, "Storm_Air", 18.0, "ProjectileStrike_Stormbolt_Lightning", "AMER_RS3_FX_Storm_Lightning_Atmos", "DefaultStorm", 10, 5, 225, 5.0, _X, _Y, _Z, 1)	//3 turn duration, hits any living enemies, strikes 5 times, 225ms strike interval, 5.0m radius.
+THEN
+ApplyStatus(_Char, "AMER_STORMCONTROL_AIR", 12.0, 1, _Char);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_AMER_Storm_Lightning", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 1)
+AND
+QRY_AMER_Spells_Storm_CreateAtPos(_Char, "Storm_Air", 24.0, "ProjectileStrike_Stormbolt_Lightning", "AMER_RS3_FX_Storm_Lightning_Atmos", "DefaultStorm", 10, 5, 225, 5.0, _X, _Y, _Z, 1)	//4 turn duration, hits any living enemies, strikes 5 times, 225ms strike interval, 5.0m radius.
+THEN
+ApplyStatus(_Char, "AMER_STORMCONTROL_AIR", 18.0, 1, _Char);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_AMER_Storm_Lightning", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 2)
+AND
+QRY_AMER_Spells_Storm_CreateAtPos(_Char, "Storm_Air", 24.0, "ProjectileStrike_Stormbolt_Lightning_Infus2", "AMER_RS3_FX_Storm_Lightning_Atmos", "DefaultStorm", 10, 8, 225, 5.0, _X, _Y, _Z, 1)	//4 turn duration, hits any living enemies, strikes 8 times, 225ms strike interval, 5.0m radius.
+THEN
+ApplyStatus(_Char, "AMER_STORMCONTROL_AIR", 18.0, 1, _Char);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_AMER_Storm_Lightning", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+AND
+QRY_AMER_Spells_Storm_CreateAtPos(_Char, "Storm_Air", 24.0, "ProjectileStrike_Stormbolt_Lightning_Infus2", "AMER_RS3_FX_Storm_Lightning_Atmos", "DefaultStorm", 10, 11, 225, 5.0, _X, _Y, _Z, 1)	//4 turn duration, hits any living enemies, strikes 11 times, 225ms strike interval, 5.0m radius.
+THEN
+ApplyStatus(_Char, "AMER_STORMCONTROL_AIR", 18.0, 1, _Char);
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Target_AMER_Storm_Lightning", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+AND
+QRY_AMER_GEN_IterateCharsAroundObject_GetRequestIndex()
+AND
+DB_AMER_GEN_OUTPUT_Integer(_RequestID)
+THEN
+DB_AMER_Source_Infusion_Storm_Data(_RequestID, _X, _Y, _Z);
+PROC_AMER_GEN_IterateCharsAroundPoint(_X, _Y, _Z, 5.0, _Char, 10, "AMER_SourceInfusion_Thunderstorm_3");	//Living enemies.
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "AMER_SourceInfusion_Thunderstorm_3", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+AND
+IsBoss(_Char, 0)
+AND
+DB_AMER_Source_Infusion_Storm_Data(_RequestID, _X, _Y, _Z)
+AND
+FindValidPosition(_X, _Y, _Z, 5.0, _Char, _XValid, _YValid, _ZValid)
+THEN
+PROC_AMER_GEN_TeleportWithFX_ToPos(_Char, _XValid, _YValid, _ZValid);
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Finished((INTEGER)_RequestID, "AMER_SourceInfusion_Thunderstorm_3", (CHARACTERGUID)_SourceChar)
+AND
+DB_AMER_Source_Infusion_Storm_Data(_RequestID, _X, _Y, _Z)
+THEN
+NOT DB_AMER_Source_Infusion_Storm_Data(_RequestID, _X, _Y, _Z);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Aerotheurge"

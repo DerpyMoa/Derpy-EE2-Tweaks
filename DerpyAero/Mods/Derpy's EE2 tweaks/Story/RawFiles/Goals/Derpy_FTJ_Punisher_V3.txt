@@ -1,0 +1,367 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b);
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_Derpy_Punisher_Pain_000_ae1d6292-a799-4e2b-9238-841fb67f0b34);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_Derpy_Punisher_Anger_000_91d8719c-0311-45e3-91fe-347f9690c07a);
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_Derpy_Punisher_Ad_010_e480ead9-0b0c-48d7-8030-af52fb372564);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_Derpy_Punisher_Ad_011_c2c83837-da2f-4927-857b-e6921b25059e);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_Derpy_Punisher_Ad_008_30e4f2fb-64b2-4028-aada-968423cc9e4a);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_Derpy_Punisher_Ad_007_8ecd7888-6e1e-4b91-9e36-5f374384d055);
+
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b, "Target_EnemyTargetedFireSurface_Lucian");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b, "Target_EnemyImmolate");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b, "Rain_EnemyBlood");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b, "Target_EnemyCripplingBlow");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b, "Target_EnemyFireWhip");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b, "Cone_EnemyGroundSmash");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b, "Projectile_EnemyFlare");
+
+DB_Derpy_FTJ_HideItems(ITEMGUID_FUR_Rich_Chest_A_025_db3f8893-45f5-4db3-8a80-c8fd06b13a64);
+DB_Derpy_FTJ_HideItems(ITEMGUID_FUR_Rich_Chest_B_003_38032aa8-a9cf-4151-94fe-e6a5eca6defa);
+DB_Derpy_FTJ_HideItems(ITEMGUID_CONT_Humans_Tomb_D_000_03b5f5c9-cbbc-42ed-908e-6ef2d5c85613);
+DB_Derpy_FTJ_HideItems(ITEMGUID_S_FTJ_SW_BraccusArmor_Arms_Tomb_8e728999-36be-49b9-a52d-719c5ca4af28);
+DB_Derpy_FTJ_HideItems(ITEMGUID_CONT_Barrel_A_055_06e5c6be-c255-4d03-a947-34dee8b259f6);
+DB_Derpy_FTJ_HideItems(ITEMGUID_CONT_Barrel_A_056_8aabcce2-8895-475c-a646-9c38f7ac5738);
+DB_Derpy_FTJ_HideItems(ITEMGUID_LTS_Humans_Dungeon_Coalbasket_A_028_87c14736-b165-4ce4-a43a-0ba2e85428a6);
+DB_Derpy_FTJ_HideItems(ITEMGUID_LTS_Humans_Dungeon_Coalbasket_A_027_24238555-77b1-4660-971d-5ba6a1a343c0);
+DB_Derpy_FTJ_HideItems(ITEMGUID_LTS_Humans_Dungeon_Coalbasket_A_030_40d376aa-15f2-4777-ae66-5920553bc8bf);
+DB_Derpy_FTJ_HideItems(ITEMGUID_LTS_Humans_Dungeon_Coalbasket_A_029_904feaa0-e4e8-49df-a8c6-ed4a0ccaf637);
+DB_Derpy_FTJ_HideItems(ITEMGUID_CONT_Vase_Greek_D_010_6565e3f5-1392-4b36-b098-f76694de7704);
+DB_Derpy_FTJ_HideItems(ITEMGUID_LTS_Humans_Dungeon_Coalbasket_D_004_0a6aa4b2-6480-4cbf-98ab-958ad57d8a19);
+DB_Derpy_FTJ_HideItems(ITEMGUID_LTS_Humans_Dungeon_Coalbasket_D_000_99bf802a-4f63-4a90-bcbd-794d53a21368);
+DB_Derpy_FTJ_HideItems(ITEMGUID_LTS_Humans_Dungeon_Coalbasket_D_013_080df327-c94a-4751-9655-61b0c885c821);
+DB_Derpy_FTJ_HideItems(ITEMGUID_LTS_Humans_Dungeon_Coalbasket_D_014_1025361a-6de1-4a0d-bdff-948526af15cd);
+DB_Derpy_FTJ_HideItems(ITEMGUID_LTS_Humans_Dungeon_Coalbasket_D_005_5523d9a7-7e3f-4132-a3a0-e6aba304a867);
+
+DB_Derpy_Punisher_SpawnExplosions(TRIGGERGUID_Derpy_Punisher_Explosion_1_5b59937b-3c00-4a23-acaf-61235ef22db3);
+DB_Derpy_Punisher_SpawnExplosions(TRIGGERGUID_Derpy_Punisher_Explosion_2_53b141f2-a64a-4906-9e21-d60fcfaa40d3);
+DB_Derpy_Punisher_SpawnExplosions(TRIGGERGUID_Derpy_Punisher_Explosion_3_95ca6aea-3e78-4746-b256-bbe772012961);
+DB_Derpy_Punisher_SpawnExplosions(TRIGGERGUID_Derpy_Punisher_Explosion_4_ffbecc65-1396-49cf-bbaa-b4ef8da63530);
+DB_Derpy_Punisher_SpawnExplosions(TRIGGERGUID_Derpy_Punisher_Explosion_5_e0d939f5-9a9b-4c6c-9dad-6fc1b1c6bdfd);
+DB_Derpy_Punisher_SpawnExplosions(TRIGGERGUID_Derpy_Punisher_Explosion_6_0e1a39a5-c636-4ad6-b871-46b57497fc8c);
+
+DB_Derpy_PunisherAdds(CHARACTERGUID_Derpy_Punisher_Pain_000_ae1d6292-a799-4e2b-9238-841fb67f0b34);
+DB_Derpy_PunisherAdds(CHARACTERGUID_Derpy_Punisher_Anger_000_91d8719c-0311-45e3-91fe-347f9690c07a);
+
+
+KBSECTION
+
+IF
+RegionStarted(_)
+AND
+QueryOnlyOnce("Derpy_PunisherFTJSetup_V3")
+THEN
+SetOnStage(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b, 0);
+
+SetOnStage(CHARACTERGUID_Derpy_Punisher_Pain_000_ae1d6292-a799-4e2b-9238-841fb67f0b34, 0);
+SetOnStage(CHARACTERGUID_Derpy_Punisher_Anger_000_91d8719c-0311-45e3-91fe-347f9690c07a, 0);
+
+SetOnStage(CHARACTERGUID_Derpy_Punisher_Ad_010_e480ead9-0b0c-48d7-8030-af52fb372564, 0);
+SetOnStage(CHARACTERGUID_Derpy_Punisher_Ad_011_c2c83837-da2f-4927-857b-e6921b25059e, 0);
+SetOnStage(CHARACTERGUID_Derpy_Punisher_Ad_008_30e4f2fb-64b2-4028-aada-968423cc9e4a, 0);
+SetOnStage(CHARACTERGUID_Derpy_Punisher_Ad_007_8ecd7888-6e1e-4b91-9e36-5f374384d055, 0);
+
+SetOnStage(ITEMGUID_Derpy_Punisher_SourceWall_005_ba7165e2-250a-4cd6-b4f8-893f5a0b006a, 0);
+
+
+IF
+CharacterEnteredTrigger((CHARACTERGUID)_Char, TRIGGERGUID_Derpy_PunisherSpawn_c8555ea1-8140-4234-a89c-625003d62fca)
+AND
+DB_IsPlayer(_Char)
+AND
+QueryOnlyOnce("Derpy_PunisherFTJSpawn")
+THEN
+PROC_DerpyFTJPunisherIntro();
+
+
+PROC PROC_DerpyFTJPunisherIntro()
+AND
+DB_Derpy_Punisher_SpawnExplosions(_Explosions)
+THEN
+PlayEffect(_Explosions, "RS3_FX_Skills_Fire_Cast_Ground_Fire_Root_01");
+
+
+PROC PROC_DerpyFTJPunisherIntro()
+THEN
+PROC_AMER_GEN_DoFade_ForPlayers(0.5, "DerpyFTJPunisherIntroFadeOut", 0);
+
+
+PROC PROC_AMER_GEN_FadeForPlayers_Finished("DerpyFTJPunisherIntroFadeOut")
+AND
+DB_Derpy_FTJ_HideItems(_Items)
+THEN
+SetOnStage(_Items, 0);
+
+
+PROC PROC_AMER_GEN_FadeForPlayers_Finished("DerpyFTJPunisherIntroFadeOut")
+THEN
+ProcObjectTimer(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b, "DerpyFTJPunisherSpawn", 1000);
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "DerpyFTJPunisherSpawn")
+THEN
+PROC_AMER_GEN_DoFade_ForPlayers(0.5, "DerpyFTJPunisherIntroFadeIn", 2);
+CharacterAppearCustom(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b,"Teleport_In_01","");
+ProcObjectTimer(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b, "DerpyFTJPunisherFirstLine", 500);
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "DerpyFTJPunisherFirstLine")
+THEN
+CharacterStatusText(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b, "We meet again!");
+
+
+IF
+ObjectEnteredCombat(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b, _)
+THEN
+PROC_Derpy_ScorpionPull(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b);
+SetOnStage(ITEMGUID_Derpy_Punisher_SourceWall_005_ba7165e2-250a-4cd6-b4f8-893f5a0b006a, 1);
+
+
+PROC PROC_Derpy_ScorpionPull((CHARACTERGUID)_Char)
+AND
+QRY_Derpy_PunisherPull(_Char)
+AND
+GetPosition(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b, _X, _Y, _Z)
+AND
+GetPosition(TRIGGERGUID_Derpy_Punisher_Explosion_5_e0d939f5-9a9b-4c6c-9dad-6fc1b1c6bdfd, _X1, _Y1, _Z1)
+THEN
+CharacterStatusText(_Char, "Get over here!");
+PROC_AMER_CharacterAddSourcePoints(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b, 3);
+CharacterUseSkillAtPosition(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b, "Jump_PhoenixDive", _X1, _Y1, _Z1, 1, 1);
+CharacterUseSkillAtPosition(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b, "ProjectileStrike_EnemyPunisherMeteorShower", _X, _Y, _Z, 1, 1);
+ProcObjectTimer(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b, "DerpyFTJPunisherFatality", 11000);
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "DerpyFTJPunisherFatality")
+THEN
+CharacterStatusText(_Char, "Fatality!");
+
+
+QRY QRY_Derpy_PunisherPull((CHARACTERGUID)_Char)
+AND
+DB_IsPlayer(_Player)
+AND
+GetDistanceTo(_Char, _Player, _Distance)
+AND
+_Distance >= 27.0
+THEN
+PROC_AMER_TeleportTo(_Player, _Char);
+PlayEffect(_Player, "RS3_FX_Skills_Air_FreeFall_Reappear_01", "");
+
+
+IF
+CombatRoundStarted(_Combat, _Round)
+AND
+CombatGetIDForCharacter(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b, _Combat)
+THEN
+PROC_Derpy_PunisherMech(_Round);
+
+
+PROC PROC_Derpy_PunisherMech(2)
+THEN
+Foop(CHARACTERGUID_Derpy_Punisher_Ad_010_e480ead9-0b0c-48d7-8030-af52fb372564);
+EnterCombat(CHARACTERGUID_Derpy_Punisher_Ad_010_e480ead9-0b0c-48d7-8030-af52fb372564,CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b);
+PlayEffect(CHARACTERGUID_Derpy_Punisher_Ad_010_e480ead9-0b0c-48d7-8030-af52fb372564, "RS3_FX_GP_ScriptedEvent_Lightning_Vertical_01");
+
+PROC PROC_Derpy_PunisherMech(3)
+THEN
+Foop(CHARACTERGUID_Derpy_Punisher_Ad_007_8ecd7888-6e1e-4b91-9e36-5f374384d055);
+EnterCombat(CHARACTERGUID_Derpy_Punisher_Ad_007_8ecd7888-6e1e-4b91-9e36-5f374384d055,CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b);
+PlayEffect(CHARACTERGUID_Derpy_Punisher_Ad_007_8ecd7888-6e1e-4b91-9e36-5f374384d055, "RS3_FX_GP_ScriptedEvent_Lightning_Vertical_01");
+
+PROC PROC_Derpy_PunisherMech(4)
+THEN
+Foop(CHARACTERGUID_Derpy_Punisher_Ad_008_30e4f2fb-64b2-4028-aada-968423cc9e4a);
+EnterCombat(CHARACTERGUID_Derpy_Punisher_Ad_008_30e4f2fb-64b2-4028-aada-968423cc9e4a,CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b);
+PlayEffect(CHARACTERGUID_Derpy_Punisher_Ad_008_30e4f2fb-64b2-4028-aada-968423cc9e4a, "RS3_FX_GP_ScriptedEvent_Lightning_Vertical_01");
+
+PROC PROC_Derpy_PunisherMech(5)
+THEN
+Foop(CHARACTERGUID_Derpy_Punisher_Ad_011_c2c83837-da2f-4927-857b-e6921b25059e);
+EnterCombat(CHARACTERGUID_Derpy_Punisher_Ad_011_c2c83837-da2f-4927-857b-e6921b25059e,CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b);
+PlayEffect(CHARACTERGUID_Derpy_Punisher_Ad_011_c2c83837-da2f-4927-857b-e6921b25059e, "RS3_FX_GP_ScriptedEvent_Lightning_Vertical_01");
+
+
+
+
+
+
+IF
+CharacterReceivedDamage(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b, _, _)
+AND
+CharacterGetHitpointsPercentage(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b,_Per)
+THEN
+PROC_Derpy_PunisherHPPercent(_Per);
+
+
+PROC PROC_Derpy_PunisherHPPercent((REAL)_Per)
+AND
+_Per < 90.0
+AND
+QueryOnlyOnce("DerpyFTJPunisherAngerDialogue")
+THEN
+CharacterStatusText(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b, "Anger...");
+
+
+PROC PROC_Derpy_PunisherHPPercent((REAL)_Per)
+AND
+_Per < 70.0
+AND
+QueryOnlyOnce("DerpyFTJPunisherPainDialogue")
+THEN
+CharacterStatusText(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b, "Pain...");
+
+
+
+PROC PROC_Derpy_PunisherHPPercent((REAL)_Per)
+AND
+_Per < 50.0
+AND
+QueryOnlyOnce("DerpyFTJPunisher50Split")
+AND
+GetPosition(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b,_X,_Y,_Z)
+AND
+QRY_AMER_GEN_GetRandomPointInRadius_2D(_X, _Y, _Z, 4.0)
+AND
+DB_AMER_GEN_OUTPUT_Point(_X1, _Y1, _Z1)
+AND
+RealSum(_Y1, 100.0, _Y1Valid)
+AND
+QRY_AMER_GEN_GetRandomPointInRadius_2D(_X, _Y, _Z, 4.0)
+AND
+DB_AMER_GEN_OUTPUT_Point(_X2, _Y2, _Z2)
+AND
+RealSum(_Y2, 100.0, _Y2Valid)
+THEN
+PROC_AMER_GEN_Goal_Activate("Derpy_FTJ_Punisher_Internal");
+CharacterAppearAtPositionCustom(CHARACTERGUID_Derpy_Punisher_Pain_000_ae1d6292-a799-4e2b-9238-841fb67f0b34, _X1, _Y1Valid, _Z1, "Teleport_In_01", "");
+CharacterAppearAtPositionCustom(CHARACTERGUID_Derpy_Punisher_Anger_000_91d8719c-0311-45e3-91fe-347f9690c07a, _X2, _Y2Valid, _Z2, "Teleport_In_01", "");
+ApplyStatus(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b, "Punisher_CoolingDown", -1.0, 1, CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b);
+
+PROC_LoopEffect("RS3_FX_GP_Status_Shackles_of_Pain_01",CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b,"PunisherShackleEfx","FJ_FortJoy_Main","Dummy_BodyFX");
+
+PROC_LoopBeamEffect("RS3_FX_GP_ScriptedEvent_ChainedDragon_Beam_01",CHARACTERGUID_Derpy_Punisher_Pain_000_ae1d6292-a799-4e2b-9238-841fb67f0b34,CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b,"Dummy_BodyFX","Dummy_BodyFX","PunisherPainBind","FJ_FortJoy_Main");
+PROC_LoopBeamEffect("RS3_FX_GP_ScriptedEvent_ChainedDragon_Beam_01",CHARACTERGUID_Derpy_Punisher_Anger_000_91d8719c-0311-45e3-91fe-347f9690c07a,CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b,"Dummy_BodyFX","Dummy_BodyFX","PunisherAngerBind","FJ_FortJoy_Main");
+
+ProcObjectTimer(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b, "DerpyFTJPunisherSplitDialogue", 4000);
+CharacterStatusText(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b, "AGHHHH!!!");
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "DerpyFTJPunisherSplitDialogue")
+THEN
+CharacterStatusText(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b, "Must calm down...");
+
+
+IF
+CharacterPrecogDying(_Char)
+AND
+DB_Derpy_PunisherAdds(_Char)
+AND
+DB_Derpy_PunisherSummons_Deaths(_OldCount)
+AND
+IntegerSum(_OldCount, 1, _NewCount)
+THEN
+NOT DB_Derpy_PunisherSummons_Deaths(_OldCount);
+DB_Derpy_PunisherSummons_Deaths(_NewCount);
+
+
+IF
+CharacterPrecogDying(_Char)
+AND
+DB_Derpy_PunisherAdds(_Char)
+AND
+QueryOnlyOnce("Derpy_FTJ_PunisherSummonDeathCount")
+THEN
+DB_Derpy_PunisherSummons_Deaths(1);
+
+
+IF
+CharacterPrecogDying(CHARACTERGUID_Derpy_Punisher_Pain_000_ae1d6292-a799-4e2b-9238-841fb67f0b34)
+AND
+GetPosition(CHARACTERGUID_Derpy_Punisher_Pain_000_ae1d6292-a799-4e2b-9238-841fb67f0b34,_X,_Y,_Z)
+THEN
+PlayEffectAtPosition("RS3_FX_GP_ScriptedEvents_ARX_HorrorSleep_Arena_MirrorDestroyed_VerticalBeam_01",_X,_Y,_Z);
+PROC_StopLoopBeamEffect(CHARACTERGUID_Derpy_Punisher_Pain_000_ae1d6292-a799-4e2b-9238-841fb67f0b34,"PunisherPainBind");
+ProcObjectTimer(CHARACTERGUID_Derpy_Punisher_Pain_000_ae1d6292-a799-4e2b-9238-841fb67f0b34, "DerpyFTJPunisherPainDeath", 1000);
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "DerpyFTJPunisherPainDeath")
+THEN
+SetOnStage(CHARACTERGUID_Derpy_Punisher_Pain_000_ae1d6292-a799-4e2b-9238-841fb67f0b34, 0);
+
+
+IF
+CharacterPrecogDying(CHARACTERGUID_Derpy_Punisher_Anger_000_91d8719c-0311-45e3-91fe-347f9690c07a)
+AND
+GetPosition(CHARACTERGUID_Derpy_Punisher_Anger_000_91d8719c-0311-45e3-91fe-347f9690c07a,_X,_Y,_Z)
+THEN
+PlayEffectAtPosition("RS3_FX_GP_ScriptedEvents_ARX_HorrorSleep_Arena_MirrorDestroyed_VerticalBeam_01",_X,_Y,_Z);
+PROC_StopLoopBeamEffect(CHARACTERGUID_Derpy_Punisher_Anger_000_91d8719c-0311-45e3-91fe-347f9690c07a,"PunisherAngerBind");
+ProcObjectTimer(CHARACTERGUID_Derpy_Punisher_Anger_000_91d8719c-0311-45e3-91fe-347f9690c07a, "DerpyFTJPunisherAngerDeath", 1000);
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "DerpyFTJPunisherAngerDeath")
+THEN
+SetOnStage(CHARACTERGUID_Derpy_Punisher_Anger_000_91d8719c-0311-45e3-91fe-347f9690c07a, 0);
+
+
+IF
+DB_Derpy_PunisherSummons_Deaths(2)
+THEN
+RemoveStatus(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b, "Punisher_CoolingDown");
+PlayEffect(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b,"RS3_FX_GP_ScriptedEvent_BreakingShackles_01");
+PROC_StopLoopEffect(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b,"PunisherShackleEfx");
+CharacterStatusText(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b, "Much better now!");
+
+
+IF
+CharacterPrecogDying(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b)
+THEN
+PROC_Derpy_PunisherDeath();
+PROC_AMER_GEN_DoFade_ForPlayers(0.5, "DerpyFTJPunisherDeathFadeOut", 0);
+
+
+PROC PROC_Derpy_PunisherDeath()
+AND
+DB_Derpy_Punisher_SpawnExplosions(_Explosions)
+THEN
+PlayEffect(_Explosions, "RS3_FX_Skills_Divine_MassBless_Impact_01");
+
+
+PROC PROC_AMER_GEN_FadeForPlayers_Finished("DerpyFTJPunisherDeathFadeOut")
+AND
+DB_Derpy_FTJ_HideItems(_Items)
+THEN
+SetOnStage(_Items, 1);
+
+
+PROC PROC_AMER_GEN_FadeForPlayers_Finished("DerpyFTJPunisherDeathFadeOut")
+THEN
+ProcObjectTimer(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b, "DerpyFTJPunisherDeath", 1000);
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "DerpyFTJPunisherDeath")
+THEN
+PROC_AMER_GEN_DoFade_ForPlayers(0.5, "DerpyFTJPunisherDeathFadeIn", 2);
+
+
+IF
+ObjectLeftCombat(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b, _)
+AND
+GetPosition(ITEMGUID_Derpy_Punisher_SourceWall_005_ba7165e2-250a-4cd6-b4f8-893f5a0b006a, _X, _Y, _Z)
+THEN
+PlayEffectAtPosition("RS3_FX_GP_ScriptedEvent_MagicWall_03_B_End", _X, _Y, _Z);
+SetOnStage(ITEMGUID_Derpy_Punisher_SourceWall_005_ba7165e2-250a-4cd6-b4f8-893f5a0b006a, 0);
+
+
+PROC
+ProcRegionEnded("FJ_FortJoy_Main")
+THEN
+GoalCompleted;
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "FortJoy"

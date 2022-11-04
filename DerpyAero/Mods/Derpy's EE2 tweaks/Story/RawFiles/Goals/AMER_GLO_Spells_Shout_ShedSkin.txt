@@ -1,0 +1,50 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillCast((CHARACTERGUID)_Char, "Shout_ShedSkin", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, -3.0, -0.4, 0.0, "Ability", "Polymorph")
+AND
+DB_AMER_GEN_OUTPUT_Real(_Scaling)
+AND
+Integer(_Scaling, _ScalingInt)
+THEN
+PROC_AMER_BatteredHarried_DirectManip(_Char, 2, _ScalingInt, _Char);
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_ShedSkin", 1)
+AND
+DB_AMER_CharVitals(_Char, _Vit, _Phys, _Magic)
+AND
+Integer(_Phys, _PhysInt)
+AND
+Integer(_Magic, _MagicInt)
+AND
+RealProduct(_Phys, -1.0, _PhysNegation)
+AND
+RealProduct(_Magic, -1.0, _MagicNegation)
+THEN
+ApplyDamage(_Char, _PhysInt, "Corrosive", _Char);
+ApplyDamage(_Char, _MagicInt, "Magic", _Char);
+PROC_AMER_CharVitals_Add_Direct(_Char, 0.0, _PhysNegation, _MagicNegation);
+//CharacterSetArmorPercentage(_Char, 0.0);
+//CharacterSetMagicArmorPercentage(_Char, 0.0);
+
+PROC_AMER_StatusMod_ExtendedStat_TryApplyModForStatus(_Char, _Char, "AMER_SHEDSKIN_INFUS_1", "ShedSkin_Infus", "", "", "", 1.0, "ShedSkin_Infus");
+ApplyStatus(_Char, "AMER_SHEDSKIN_INFUS_1", 12.0, 0, _Char);
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_ShedSkin", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+AND
+QRY_AMER_Source_Infusion_KickerCost(_Char, 2)
+THEN
+CharacterResetCooldowns(_Char);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Polymorph"

@@ -1,0 +1,98 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Talents_Toggle((CHARACTERGUID)_Char, "Torturer", (REAL)_Toggle)
+AND
+RealProduct(_Toggle, -1.0, _NegToggle)
+THEN
+PROC_AMER_ExtendedStat_CharacterAddStat(_Char, "CustomDoTTick_Override", "CustomDoTTick_Bleeding", "RemoteImpact", "Projectile_AMER_SCRIPT_StatusDamage_Bleeding_Tort", _Toggle);
+PROC_AMER_ExtendedStat_CharacterAddStat(_Char, "CustomDoTTick_Override", "CustomDoTTick_Poisoned", "RemoteImpact", "Projectile_AMER_SCRIPT_StatusDamage_Poisoned_Tort", _Toggle);
+PROC_AMER_ExtendedStat_CharacterAddStat(_Char, "Shoot_OnStatus", "AMER_CALCIFYING", "Projectile_AMER_SCRIPT_StatusDamage_Calcifying", "RemoteImpact", _Toggle);
+PROC_AMER_ExtendedStat_CharacterAddStat(_Char, "CustomDoTTick_Override", "CustomDoTTick_Suffocating", "RemoteImpact", "Projectile_AMER_SCRIPT_StatusDamage_Suffocating_Tort", _Toggle);
+PROC_AMER_ExtendedStat_CharacterAddStat(_Char, "CustomDoTTick_Override", "CustomDoTTick_Acid", "RemoteImpact", "Projectile_AMER_SCRIPT_StatusDamage_Acid_Tort", _Toggle);
+PROC_AMER_ExtendedStat_CharacterAddStat(_Char, "CustomDoTTick_Override", "CustomDoTTick_Corroding", "RemoteImpact", "Projectile_AMER_SCRIPT_StatusDamage_Acid_Tort", _Toggle);
+PROC_AMER_ExtendedStat_CharacterAddStat(_Char, "CustomDoTTick_Override", "CustomDoTTick_Corroding_OnRemoval", "RemoteImpact", "Projectile_AMER_SCRIPT_StatusDamage_Corroding_Removed_Tort", _Toggle);
+
+
+//===========================================================================================================================
+
+
+IF
+NRD_OnHit((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, _Damage, _Handle)
+AND
+CharacterHasTalent(_Target, "Torturer", 1)
+AND
+CharacterHasTalent(_Target, "Zombie", 0)
+AND
+NRD_StatusGetString(_Target, _Handle, "SkillId", _Skill)
+AND
+QRY_Derpy_IsPoisonedStatus(_Skill)
+AND
+DB_AMER_GEN_DamageTypeEnum(_TypeIndex, _DamageType)
+AND
+NRD_HitStatusGetDamage(_Target, _Handle, _DamageType, _Amount)
+AND
+_Amount != 0
+AND
+Real(_Amount, _AmountReal)
+THEN
+NRD_HitStatusClearAllDamage(_Target, _Handle);
+NRD_StatusSetInt(_Target, _Handle, "Hit", 0);
+PROC_AMER_GEN_Heal(_Target, _AmountReal, "All", _Target, 2, 1);
+
+
+
+QRY QRY_Derpy_IsPoisonedStatus("Projectile_AMER_SCRIPT_StatusDamage_Poisoned")
+THEN
+DB_NOOP();
+
+
+QRY QRY_Derpy_IsPoisonedStatus("Projectile_AMER_SCRIPT_StatusDamage_Poisoned_Tort")
+THEN
+DB_NOOP();
+
+
+//===========================================================================================================================
+
+
+IF
+NRD_OnPrepareHit((CHARACTERGUID)_Defender, (CHARACTERGUID)_Attacker, _Damage, _HitHandle)
+AND
+CharacterHasTalent(_Defender, "Torturer", 1)
+AND
+CharacterHasTalent(_Defender, "Zombie", 0)
+AND
+NRD_HitGetInt(_HitHandle, "HitType", 4)
+AND
+NRD_HitGetDamage(_HitHandle, "Poison", _Amount)
+AND
+_Amount != 0
+THEN
+NRD_HitClearDamage(_HitHandle, "Poison");
+
+
+
+//===========================================================================================================================
+
+
+IF
+CharacterStatusApplied(_Char, _Status, (CHARACTERGUID)_Source)
+AND
+CharacterHasTalent(_Char, "Torturer", 1)
+AND
+CharacterHasTalent(_Char, "Zombie", 0)
+AND
+HasActiveStatus(_Char, "POISONED", 0)
+AND
+DB_AMER_Artifacts_SanguineHarvest_HealStatus(_Status)
+THEN
+ApplyStatus(_Char, "POISONED", 12.0, 1, _Char);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Talents"

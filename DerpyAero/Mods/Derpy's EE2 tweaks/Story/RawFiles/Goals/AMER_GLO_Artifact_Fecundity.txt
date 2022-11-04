@@ -1,0 +1,28 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Combat_CharacterDiedInCombat((CHARACTERGUID)_Char, (INTEGER)_Combat, 0)
+AND
+DB_AMER_Artifacts_EquippedEffects(_ArtifactWielder, "Artifact_Fecundity", _)
+AND
+CombatGetIDForCharacter(_ArtifactWielder, _Combat)	//Artifcatwielder and dying char are in the same combat.
+AND
+CharacterCanSee(_ArtifactWielder, _Char, 1)
+THEN
+PROC_AMER_Reaction_Request(_ArtifactWielder, _Char, "Artifact_Fecundity", "", "skill_cast_summon_totem_01_cast", 0);
+
+
+PROC PROC_AMER_Reaction_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, "Artifact_Fecundity", (STRING)_RequestID, (INTEGER)_RitualBool)
+AND
+GetPosition(_Target, _X, _Y, _Z)
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Totem_Cast_Summon_Totem_Root_01", "Dummy_Root");
+PROC_AMER_Summoning_CreateTotemAtPos_FromSurface(_Char, _X, _Y, _Z);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"

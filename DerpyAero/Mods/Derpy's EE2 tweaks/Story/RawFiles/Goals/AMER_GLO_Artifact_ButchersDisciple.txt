@@ -1,0 +1,45 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+SkillAdded(_Char, "Target_SingleHandedAttack", 0)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Char, "Artifact_ButchersDisciple", _)
+AND
+NOT DB_AMER_Artifacts_ButchersDisciple_Active(_Char)
+THEN
+DB_AMER_Artifacts_ButchersDisciple_Active(_Char);
+PROC_AMER_ScalingStat_FlexStat_Add(_Char, "Attribute", "Strength", "Stat", "CRITICALCHANCE", 2.0);
+
+IF
+SkillDeactivated(_Char, "Target_SingleHandedAttack")
+AND
+DB_AMER_Artifacts_ButchersDisciple_Active(_Char)
+THEN
+NOT DB_AMER_Artifacts_ButchersDisciple_Active(_Char);
+PROC_AMER_ScalingStat_FlexStat_Add(_Char, "Attribute", "Strength", "Stat", "CRITICALCHANCE", -2.0);
+
+
+PROC PROC_AMER_Artifacts_InitEffects((CHARACTERGUID)_Char, "Artifact_ButchersDisciple", (STRING)_SourceType)
+AND
+CharacterHasSkill(_Char, "Target_SingleHandedAttack", 1)
+AND
+NOT DB_AMER_Artifacts_ButchersDisciple_Active(_Char)
+THEN
+DB_AMER_Artifacts_ButchersDisciple_Active(_Char);
+PROC_AMER_ScalingStat_FlexStat_Add(_Char, "Attribute", "Strength", "Stat", "CRITICALCHANCE", 2.0);
+
+PROC PROC_AMER_Artifacts_RemoveEffects((CHARACTERGUID)_Char, "Artifact_ButchersDisciple", (STRING)_SourceType)
+AND
+DB_AMER_Artifacts_ButchersDisciple_Active(_Char)
+THEN
+NOT DB_AMER_Artifacts_ButchersDisciple_Active(_Char);
+PROC_AMER_ScalingStat_FlexStat_Add(_Char, "Attribute", "Strength", "Stat", "CRITICALCHANCE", -2.0);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"

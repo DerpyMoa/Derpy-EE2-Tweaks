@@ -1,0 +1,51 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_MalleusMaleficarum_DazingBolt", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+AND
+CharacterGetAbility(_Target, "Necromancy", _Necro)
+THEN
+DB_Derpy_MalleusMaleficarum(_Char, _Necro);
+PROC_AMER_GEN_CharacterCauseExplosion(_Char, _Target, "Projectile_Derpy_SCRIPT_MalleusMaleficarum_DazingBolt");
+
+
+IF
+NRD_OnHit((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, _Damage, _Handle)
+AND
+NRD_StatusGetString(_Target, _Handle, "SkillId", "Projectile_Derpy_SCRIPT_MalleusMaleficarum_DazingBolt")
+AND
+DB_Derpy_MalleusMaleficarum(_Char, _Necro)
+AND
+DB_AMER_GEN_DamageTypeEnum(_TypeIndex, "Air")
+AND
+NRD_HitStatusGetDamage(_Target, _Handle, "Air", _Amount)
+AND
+_Amount != 0
+AND
+Real(_Necro, _NecroReal)
+AND
+RealProduct(_NecroReal, 0.45, _Bonus)
+AND
+Real(_Amount, _AmountReal)
+AND
+RealProduct(_AmountReal, _Bonus, _AdditionalDamage)
+AND
+Integer(_AdditionalDamage, _AdditionalDamageInt)
+THEN
+NRD_HitStatusAddDamage(_Target, _Handle, "Air", _AdditionalDamageInt);
+
+
+PROC PROC_AMER_TempStat_Cleanup((CHARACTERGUID)_Char)
+AND
+DB_Derpy_MalleusMaleficarum(_Char, _Necro)
+THEN
+NOT DB_Derpy_MalleusMaleficarum(_Char, _Necro);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Aerotheurge"

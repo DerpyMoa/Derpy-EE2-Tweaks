@@ -1,0 +1,203 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC ProcBlockUseOfItem((CHARACTERGUID)_Char,(ITEMGUID)_Item)
+AND
+GetTemplate(_Item, _Template)
+AND
+_Template == "Derpy_KnowledgePotion_1e63fb07-4f1b-4007-88cc-05e3aabee079"
+AND
+CharacterIsInCombat(_Char, _CombatCheck)
+THEN
+PROC_Derpy_KnowledgePotion_Use(_Char, _Item, _CombatCheck);
+
+
+PROC PROC_Derpy_KnowledgePotion_Use((CHARACTERGUID)_Char, (ITEMGUID)_Item, 1)
+THEN
+DB_CustomUseItemResponse(_Char, _Item, 0);
+CharacterStatusText(_Char, "Must find a safe place before using this.");
+
+
+PROC PROC_Derpy_KnowledgePotion_Use((CHARACTERGUID)_Char, (ITEMGUID)_Item, 0)
+THEN
+Proc_StartDialog(0,"KnowledgePotion",_Char);
+
+
+
+
+
+IF
+ObjectFlagSet("KnowledgePotion_Warfare", (CHARACTERGUID)_Char, _)
+AND
+DB_Derpy_KnowledgePotion_Warfare(_Skill)
+THEN
+ObjectClearFlag(_Char, "KnowledgePotion_Warfare");
+CharacterAddSkill(_Char, _Skill, 0);
+
+
+IF
+ObjectFlagSet("KnowledgePotion_Huntsman", (CHARACTERGUID)_Char, _)
+AND
+DB_Derpy_KnowledgePotion_Huntsman(_Skill)
+THEN
+ObjectClearFlag(_Char, "KnowledgePotion_Huntsman");
+CharacterAddSkill(_Char, _Skill, 0);
+
+
+IF
+ObjectFlagSet("KnowledgePotion_Scoundrel", (CHARACTERGUID)_Char, _)
+AND
+DB_Derpy_KnowledgePotion_Scoundrel(_Skill)
+THEN
+ObjectClearFlag(_Char, "KnowledgePotion_Scoundrel");
+CharacterAddSkill(_Char, _Skill, 0);
+
+
+IF
+ObjectFlagSet("KnowledgePotion_Pyro", (CHARACTERGUID)_Char, _)
+AND
+DB_Derpy_KnowledgePotion_Pyrokinetic(_Skill)
+THEN
+ObjectClearFlag(_Char, "KnowledgePotion_Pyro");
+CharacterAddSkill(_Char, _Skill, 0);
+
+
+IF
+ObjectFlagSet("KnowledgePotion_Hydro", (CHARACTERGUID)_Char, _)
+AND
+DB_Derpy_KnowledgePotion_Hydrosophist(_Skill)
+THEN
+ObjectClearFlag(_Char, "KnowledgePotion_Hydro");
+CharacterAddSkill(_Char, _Skill, 0);
+
+
+IF
+ObjectFlagSet("KnowledgePotion_Aero", (CHARACTERGUID)_Char, _)
+AND
+DB_Derpy_KnowledgePotion_Aerotheurge(_Skill)
+THEN
+ObjectClearFlag(_Char, "KnowledgePotion_Aero");
+CharacterAddSkill(_Char, _Skill, 0);
+
+
+IF
+ObjectFlagSet("KnowledgePotion_Geo", (CHARACTERGUID)_Char, _)
+AND
+DB_Derpy_KnowledgePotion_Geomancer(_Skill)
+THEN
+ObjectClearFlag(_Char, "KnowledgePotion_Geo");
+CharacterAddSkill(_Char, _Skill, 0);
+
+
+IF
+ObjectFlagSet("KnowledgePotion_Necro", (CHARACTERGUID)_Char, _)
+AND
+DB_Derpy_KnowledgePotion_Necromancer(_Skill)
+THEN
+ObjectClearFlag(_Char, "KnowledgePotion_Necro");
+CharacterAddSkill(_Char, _Skill, 0);
+
+
+IF
+ObjectFlagSet("KnowledgePotion_Summoning", (CHARACTERGUID)_Char, _)
+AND
+DB_Derpy_KnowledgePotion_Summoning(_Skill)
+THEN
+ObjectClearFlag(_Char, "KnowledgePotion_Summoning");
+CharacterAddSkill(_Char, _Skill, 0);
+
+
+IF
+ObjectFlagSet("KnowledgePotion_Poly", (CHARACTERGUID)_Char, _)
+AND
+DB_Derpy_KnowledgePotion_Polymorph(_Skill)
+THEN
+ObjectClearFlag(_Char, "KnowledgePotion_Poly");
+CharacterAddSkill(_Char, _Skill, 0);
+
+
+
+IF
+ObjectFlagSet("KnowledgePotion_All", (CHARACTERGUID)_Char, _)
+THEN
+ObjectClearFlag(_Char, "KnowledgePotion_All");
+PROC_Derpy_KnowledgePotion_Warfare(_Char);
+PROC_Derpy_KnowledgePotion_Huntsman(_Char);
+PROC_Derpy_KnowledgePotion_Scoundrel(_Char);
+PROC_Derpy_KnowledgePotion_Pyrokinetic(_Char);
+PROC_Derpy_KnowledgePotion_Hydrosophist(_Char);
+PROC_Derpy_KnowledgePotion_Aerotheurge(_Char);
+PROC_Derpy_KnowledgePotion_Geomancer(_Char);
+PROC_Derpy_KnowledgePotion_Necromancer(_Char);
+PROC_Derpy_KnowledgePotion_Summoning(_Char);
+PROC_Derpy_KnowledgePotion_Polymorph(_Char);
+
+
+PROC PROC_Derpy_KnowledgePotion_Warfare((CHARACTERGUID)_Char)
+AND
+DB_Derpy_KnowledgePotion_Warfare(_Skill)
+THEN
+CharacterAddSkill(_Char, _Skill, 0);
+
+PROC PROC_Derpy_KnowledgePotion_Huntsman((CHARACTERGUID)_Char)
+AND
+DB_Derpy_KnowledgePotion_Huntsman(_Skill)
+THEN
+CharacterAddSkill(_Char, _Skill, 0);
+
+PROC PROC_Derpy_KnowledgePotion_Scoundrel((CHARACTERGUID)_Char)
+AND
+DB_Derpy_KnowledgePotion_Scoundrel(_Skill)
+THEN
+CharacterAddSkill(_Char, _Skill, 0);
+
+PROC PROC_Derpy_KnowledgePotion_Pyrokinetic((CHARACTERGUID)_Char)
+AND
+DB_Derpy_KnowledgePotion_Pyrokinetic(_Skill)
+THEN
+CharacterAddSkill(_Char, _Skill, 0);
+
+PROC PROC_Derpy_KnowledgePotion_Hydrosophist((CHARACTERGUID)_Char)
+AND
+DB_Derpy_KnowledgePotion_Hydrosophist(_Skill)
+THEN
+CharacterAddSkill(_Char, _Skill, 0);
+
+PROC PROC_Derpy_KnowledgePotion_Aerotheurge((CHARACTERGUID)_Char)
+AND
+DB_Derpy_KnowledgePotion_Aerotheurge(_Skill)
+THEN
+CharacterAddSkill(_Char, _Skill, 0);
+
+PROC PROC_Derpy_KnowledgePotion_Geomancer((CHARACTERGUID)_Char)
+AND
+DB_Derpy_KnowledgePotion_Geomancer(_Skill)
+THEN
+CharacterAddSkill(_Char, _Skill, 0);
+
+PROC PROC_Derpy_KnowledgePotion_Necromancer((CHARACTERGUID)_Char)
+AND
+DB_Derpy_KnowledgePotion_Necromancer(_Skill)
+THEN
+CharacterAddSkill(_Char, _Skill, 0);
+
+PROC PROC_Derpy_KnowledgePotion_Summoning((CHARACTERGUID)_Char)
+AND
+DB_Derpy_KnowledgePotion_Summoning(_Skill)
+THEN
+CharacterAddSkill(_Char, _Skill, 0);
+
+PROC PROC_Derpy_KnowledgePotion_Polymorph((CHARACTERGUID)_Char)
+AND
+DB_Derpy_KnowledgePotion_Polymorph(_Skill)
+THEN
+CharacterAddSkill(_Char, _Skill, 0);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

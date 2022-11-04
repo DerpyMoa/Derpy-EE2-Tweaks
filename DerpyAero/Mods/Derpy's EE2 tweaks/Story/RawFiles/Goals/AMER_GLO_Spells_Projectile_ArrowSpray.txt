@@ -1,0 +1,32 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+//Uninfused skill reduces the effect of Power while casting.
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, "Projectile_ArrowSpray", 0, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "AttributeIntelligenceEffect_Multiplier", "", "", "", -0.35, 4000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Projectile_ArrowSpray", 1)
+THEN
+DB_NOOP(1);	//Don't need to do anything, just make the query return true when SI1 is used. This is the case because SI1 just disables the base penalty of using no infusion.
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Projectile_ArrowSpray", 2)
+THEN
+ApplyStatus(_Char, "AMER_ARROWSPRAY_INFUS_2", 6.0, 0, _Char);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Projectile_ArrowSpray", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+ApplyStatus(_Char, "AMER_ARROWSPRAY_INFUS_2", 18.0, 0, _Char);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Huntsman"

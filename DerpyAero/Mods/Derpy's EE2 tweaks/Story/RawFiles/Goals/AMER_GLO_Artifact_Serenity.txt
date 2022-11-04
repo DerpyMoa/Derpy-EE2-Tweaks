@@ -1,0 +1,32 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Removes all tiered statuses when purity activates.
+
+PROC PROC_AMER_KeywordStat_Purity_Activate((CHARACTERGUID)_Char, (CHARACTERGUID)_DataSource, (GUIDSTRING)_Source)
+AND
+DB_AMER_Artifacts_EquippedEffects(_DataSource, "Artifact_Serenity", _)
+THEN
+PROC_AMER_GEN_Heal_Percentage(_Char, 15.0, "All", _Char, 1, 1);
+ProcObjectTimer(_Char, "AMER_Artifact_Serenity_CleanseDelay", 250); //We want to do this after a delay so that it also catches tiered statuses applied by the damage that caused this purity activation.
+
+
+PROC ProcObjectTimerFinished(_Char, "AMER_Artifact_Serenity_CleanseDelay")
+AND
+DB_AMER_Status_StatusFamily(_StatusFamily, _Status, _Tier)
+AND
+_Tier < 3
+AND
+_Tier > 0
+AND
+HasActiveStatus(_Char, _Status, 1)
+THEN
+RemoveStatus(_Char, _Status);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"

@@ -1,0 +1,39 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_CoS_AotO_SourceTitan_d230a9d9-e44d-493e-8c69-9570f2fa065f);
+
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_CoS_AotO_SourceTitan_d230a9d9-e44d-493e-8c69-9570f2fa065f, "Target_EnemyMosquitoSwarm");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_CoS_AotO_SourceTitan_d230a9d9-e44d-493e-8c69-9570f2fa065f, "Shout_EnemySupernova");
+
+
+KBSECTION
+
+IF
+TimerFinished("CoS_AotO_SourceTitan_Spawned_Visiblity")
+AND
+QueryOnlyOnce("Derpy_CoS_Ending_SourceTitanSetup")
+THEN
+CharacterSetHitpointsPercentage(CHARACTERGUID_S_CoS_AotO_SourceTitan_d230a9d9-e44d-493e-8c69-9570f2fa065f,100.0);
+
+
+PROC PROC_AMER_Combat_TurnStarted(CHARACTERGUID_S_CoS_AotO_SourceTitan_d230a9d9-e44d-493e-8c69-9570f2fa065f, _)
+AND
+CombatGetIDForCharacter(CHARACTERGUID_S_CoS_AotO_SourceTitan_d230a9d9-e44d-493e-8c69-9570f2fa065f, _Combat)
+AND
+DB_AMER_Combat_Round(_Combat, 3)
+THEN
+PROC_AMER_CharacterAddSourcePoints(CHARACTERGUID_S_CoS_AotO_SourceTitan_d230a9d9-e44d-493e-8c69-9570f2fa065f, 3);
+
+
+PROC
+ProcRegionEnded("CoS_Main_Ending")
+THEN
+GoalCompleted;
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "CoS_ArenaOfTheOne"

@@ -1,0 +1,26 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Take no damage.
+
+IF
+NRD_OnHit((CHARACTERGUID)_Defender, (CHARACTERGUID)_Attacker, _Damage, _Handle)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Defender, "StasisDamageImmune", _, _, _, _)
+THEN
+NRD_HitStatusClearAllDamage(_Defender, _Handle);
+
+
+PROC PROC_AMER_Combat_TurnStarted((CHARACTERGUID)_Char, 0)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Char, "StasisDamageImmune", _, _, _, _)
+THEN
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "StasisDamageImmune_TurnStart", "", "", "StasisTurnStartProtection", 1.0, 1000, "");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GEN_Stats_ExtendedStats"

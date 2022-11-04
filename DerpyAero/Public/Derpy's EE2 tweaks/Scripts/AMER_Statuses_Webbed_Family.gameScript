@@ -1,0 +1,75 @@
+INIT
+
+EVENTS
+
+EVENT CharacterSetSlowFromWeb_2
+VARS
+	CHARACTER:_Char
+	LIST<STATUS>:_RemoveList
+	STATUS:_Result
+ON 
+	FetchCharacterApplyStatusData(_Char, AMER_WEBSLOW_2_APPLY)
+ACTIONS
+	Set(_Result,AMER_SLOWED_2)
+	ListClear(_RemoveList)
+	IF "c1|c2|c3|c4"
+		CharacterHasStatus(_Char, SPIDER_LEGS)
+		CharacterHasStatus(_Char, SPIDER_LEGS_INFUS_1)
+		CharacterHasStatus(_Char, SPIDER_LEGS_INFUS_2)
+		CharacterHasStatus(_Char, SPIDER_LEGS_INFUS_3)
+	THEN
+		IF "c1|c2"
+			IsInSurface(_Char, SurfaceWeb, 1.0.)
+			IsInSurface(_Char, SurfaceWebCursed, 1.0)
+		THEN
+			IF "c1"
+				CharacterHasStatus(_Char, HASTED)
+			THEN
+				CharacterRefreshStatus(_Char, HASTED, null)
+				Set(_Result, null)
+			ELSE
+				Set(_Result,HASTED)
+			ENDIF
+		ENDIF
+	ELIF "c1|c2"
+		CharacterHasStatus(_Char, AMER_SLOWED_2)
+		CharacterHasStatus(_Char, AMER_SLOWED_3)
+	THEN
+		Set(_Result,null)
+	ENDIF
+	RETURN(_RemoveList,_Result,null)
+	
+
+/*
+//Redirect unreplaced sources of old status.
+EVENT CharacterSetWeb
+VARS
+	CHARACTER:_Char
+	LIST<STATUS>:_RemoveList
+	STATUS:_Result
+ON 
+	FetchCharacterApplyStatusData(_Char, WEB)
+ACTIONS
+	Set(_Result,AMER_ENWEBBED_2)
+	ListClear(_RemoveList)
+	IF "c1|c2|c3"
+		CharacterHasStatus(_Char, SPIDER_LEGS)
+		CharacterHasStatus(_Char, SPIDER_LEGS_INFUS_1)
+		CharacterHasStatus(_Char, SPIDER_LEGS_INFUS_2)
+	THEN
+		IF "c1"
+			CharacterHasStatus(_Char, HASTED)
+		THEN
+			Set(_Result, null)
+		ELSE
+			Set(_Result,HASTED)
+		ENDIF
+	ELIF "c1|c2"
+		CharacterHasStatus(_Char, AMER_ENWEBBED_2)
+		CharacterHasStatus(_Char, AMER_ENWEBBED_4)
+	THEN
+		Set(_Result, null)
+	ENDIF
+	RETURN(_RemoveList,_Result,null)
+	*/
+	

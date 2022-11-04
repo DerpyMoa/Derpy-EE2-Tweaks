@@ -1,0 +1,26 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillPreCast_PerTarget(_Char, (STRING)_Skill, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount, (STRING)_Type, "Rogue")
+AND
+DB_AMER_ExtendedStat_AddedStat(_Char, "AssassinInstinct_SI0", _, _, _, _)
+AND
+DB_AMER_Combat_ActiveChar(_, _, _, _Char)
+THEN
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "AssassinInstinct_SI0_Internal", "", "", "Derpy_AssassinInstinct_SI0_Internal", 1.0, 2000, "SkillCast");
+
+
+PROC PROC_AMER_ExtendedStat_RemoveStat((CHARACTERGUID)_Char, "AssassinInstinct_SI0", (STRING)_Extraprop1, (STRING)_Extraprop2, (STRING)_Extraprop3)
+AND
+DB_Derpy_AssassinInstinct_ThrowCount(_Char, _Count)
+THEN
+NOT DB_Derpy_AssassinInstinct_ThrowCount(_Char, _Count);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GEN_Stats_ExtendedStats"

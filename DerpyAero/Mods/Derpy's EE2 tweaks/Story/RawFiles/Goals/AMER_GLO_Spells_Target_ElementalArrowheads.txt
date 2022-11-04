@@ -1,0 +1,99 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Target_ElementalArrowheads", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+AND
+QRY_AMER_GEN_GetSurfaceAtPos(_X, _Y, _Z)
+AND
+DB_AMER_GEN_OUTPUT_String(_Surface)
+AND
+QRY_AMER_GEN_GetSurfaceKeyword(_Surface, "", "ARROWHEAD_BLOOD", "ARROWHEAD_FIRE", "ARROWHEAD_WATER", "ARROWHEAD_OIL", "ARROWHEAD_POISON", "ARROWHEAD_ELECTRIC", "ARROWHEAD_WATER", "", "", "ARROWHEAD_FIRE")
+AND
+DB_AMER_GEN_OUTPUT_String(_Status)
+AND
+_Status != ""
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, _Status, "ArrowheadsRemoval", "", "", "", 1.0, "ArrowheadsFix", 0, 2000, "SkillCast");
+
+
+//==========================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_ElementalArrowheads", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+AND
+QRY_AMER_GEN_GetSurfaceAtPos(_X, _Y, _Z)
+AND
+DB_AMER_GEN_OUTPUT_String(_Surface)
+AND
+QRY_AMER_GEN_GetSurfaceKeyword(_Surface, "", "ARROWHEAD_BLOOD", "ARROWHEAD_FIRE", "ARROWHEAD_WATER", "ARROWHEAD_OIL", "ARROWHEAD_POISON", "ARROWHEAD_ELECTRIC", "ARROWHEAD_WATER", "", "", "ARROWHEAD_FIRE")
+AND
+DB_AMER_GEN_OUTPUT_String(_Status)
+AND
+_Status != ""
+THEN
+PROC_AMER_Spells_ElementalArrowheads_PreCast(_Char, _Surface, _Status, _InfusCount);
+
+
+PROC PROC_AMER_Spells_ElementalArrowheads_PreCast((CHARACTERGUID)_Char, (STRING)_Surface, (STRING)_Status, 1)
+THEN
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "Status_AddDuration", _Status, "", "", 1.0, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Target_ElementalArrowheads", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 2, 0);
+
+
+//==========================================================================================================
+
+
+PROC PROC_AMER_Spells_ElementalArrowheads_PreCast((CHARACTERGUID)_Char, (STRING)_Surface, (STRING)_Status, (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_GEN_Goal_Activate("AMER_GLO_Spells_REMOTE_ElementalArrowheads");
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "Status_AddDuration", _Status, "", "", 2.0, 2000, "SkillCast");
+
+PROC PROC_AMER_Spells_ElementalArrowheads_PreCast((CHARACTERGUID)_Char, (STRING)_Surface, (STRING)_Status, (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+AND
+QRY_AMER_GEN_GetSurfaceKeyword(_Surface, "", "BLEEDING", "AMER_SCORCHED_APPLY", "AMER_CHARGED", "AMER_CALCIFYING_APPLY", "POISONED", "AMER_CHARGED", "AMER_BRITTLE_APPLY", "", "", "AMER_SCORCHED_APPLY")
+AND
+DB_AMER_GEN_OUTPUT_String(_AfflictStatus)
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, _Status, "Spells_ElementalArrowheads_Infus2", _AfflictStatus, "", "", 12.0, "ElementalArrowheads_Infus", 0);
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+
+
+//==========================================================================================================
+
+
+PROC PROC_AMER_Spells_SkillCast_Finished((CHARACTERGUID)_Char, "Target_ElementalArrowheads", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+ProcObjectTimer(_Char, "Derpy_ElementalArrowheads_DelayedCleanup", 100);
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "Derpy_ElementalArrowheads_DelayedCleanup")
+AND
+QRY_Derpy_ArrowheadsRemoval(_Char)
+THEN
+PROC_AMER_GEN_CheckRemoveStatus(_Char, "ARROWHEAD_BLOOD");
+PROC_AMER_GEN_CheckRemoveStatus(_Char, "ARROWHEAD_FIRE");
+PROC_AMER_GEN_CheckRemoveStatus(_Char, "ARROWHEAD_WATER");
+PROC_AMER_GEN_CheckRemoveStatus(_Char, "ARROWHEAD_OIL");
+PROC_AMER_GEN_CheckRemoveStatus(_Char, "ARROWHEAD_POISON");
+PROC_AMER_GEN_CheckRemoveStatus(_Char, "ARROWHEAD_ELECTRIC");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Huntsman"

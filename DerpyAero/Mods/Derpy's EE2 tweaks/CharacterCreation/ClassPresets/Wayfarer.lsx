@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<save>
+    <header version="2" time="1387205254" />
+    <version major="1" minor="3" revision="0" build="0" />
+    <region id="CharacterCreationClass">
+        <node id="root">
+            <attribute id="ClassDescription" value="A survivalist and a practitioner of magic, the Wayfarer is hard to hit and even harder to evade" handle="h812696cagafc8g42d7g9032g60ff21ded6b4" type="28" />
+			<attribute id="ClassLongDescription" value="The Wayfarer was not born of woman, but of beast... or so the rumours go. Raised by the creatures and trees of the Phantom Forest, the Wayfarer learned the art of survival before that of speech.  Beasts that would have destroyed another human in single swipe were the Wayfarer's caretakers and playmates; dodging lightning storms, a matter of survival for most, was the Wayfarer's favourite sport.  When the Grandmaster of the Order of the Source Hunters learned of this remarkable person, he ordered an expedition to make contact. Though wary of leaving the wilds, the Wayfarer was eager to learn more about these strange but powerful Source Hunters..." handle="he98578f2g56a8g44fcgbca8ge46c186140bf" type="28" />
+            <attribute id="ClassName" value="Wayfarer" handle="h48e40999gf31eg4d48g9036ge6d51df1c669" type="28" />
+            <attribute id="ClassType" value="Wayfarer" type="22" />
+            <attribute id="SkillSet" value="Class_Wayfarer" type="22" />
+            <attribute id="Voice" value="0" type="5" />
+			<attribute id="Icon" value="9" type="5" />
+
+            <attribute id="NumStartingCombatAbilityPoints" value="2" type="4" />
+            <attribute id="NumStartingCivilAbilityPoints" value="1" type="4" />
+            <attribute id="NumStartingAttributePoints" value="3" type="4" />
+            <attribute id="NumStartingTalentPoints" value="1" type="4" />
+            
+			<attribute id="AreStatsWeighted" value="1" type="19" />
+            <children>
+            <node id="EquipmentProperties">
+                    <children>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Human" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Wayfarer_Humans" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Wayfarer_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Dwarf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Wayfarer_Dwarves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Wayfarer_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Elf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Wayfarer_Elves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Wayfarer_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Lizard" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Wayfarer_Lizards" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Wayfarer_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Human" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Wayfarer_Humans" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Wayfarer_Start_Undead" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Dwarf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Wayfarer_Dwarves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Wayfarer_Start_Undead" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Elf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Wayfarer_Elves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Wayfarer_Start_Undead" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Lizard" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Wayfarer_Lizards" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Wayfarer_Start_Undead" type="22" />
+                        </node>
+                    </children>
+                </node>
+                <node id="AbilityChanges">
+                    <children>
+                        <node id="AbilityChange">
+                            <attribute id="Ability" value="Ranged" type="23" />
+                            <attribute id="AmountIncreased" value="1" type="4" />
+                        </node>
+                        <node id="AbilityChange">
+                            <attribute id="Ability" value="EarthSpecialist" type="23" />
+                            <attribute id="AmountIncreased" value="1" type="4" />
+                        </node>
+                        <node id="AbilityChange">
+                            <attribute id="Ability" value="Loremaster" type="23" />
+                            <attribute id="AmountIncreased" value="1" type="4" />
+                        </node>
+                    </children>
+                </node>
+                <node id="AttributeChanges">
+                    <children>
+                        <node id="AttributeChange">
+                            <attribute id="AmountIncreased" value="3" type="4" />
+                            <attribute id="Attribute" value="CON" type="23" />
+                        </node>
+                    </children>
+                </node>
+                <node id="TalentsAdded">
+                    <children>
+                        <node id="TalentAdded">
+                            <attribute id="Talent" value="WarriorLoreGrenadeRange" type="23" />
+                        </node>
+                    </children>
+                </node>
+            </children>
+        </node>
+    </region>
+</save>

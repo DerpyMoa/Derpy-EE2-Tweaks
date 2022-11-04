@@ -1,0 +1,39 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+PROC_Derpy_GlassCannonCCcheck();
+
+KBSECTION
+
+PROC PROC_Derpy_GlassCannonCCcheck()
+AND
+DB_CurrentLevel(_Level)
+AND
+IsCharacterCreationLevel(_level, 1)
+THEN
+GoalCompleted;
+
+
+IF
+SavegameLoaded(_, _, _, _)
+AND
+DB_IsPlayer(_Char)
+AND
+DB_AMER_Talents_PermaStatus(_Char, "AMER_GLASSCANNON")
+AND
+HasActiveStatus(_Char, "AMER_GLASSCANNON", 1)
+THEN
+NOT DB_AMER_Talents_PermaStatus(_Char, "AMER_GLASSCANNON");
+RemoveStatus(_Char, "AMER_GLASSCANNON");
+
+
+IF
+SavegameLoaded(_, _, _, _)
+THEN
+GoalCompleted;
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

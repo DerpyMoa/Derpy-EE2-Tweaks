@@ -1,0 +1,23 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+NRD_OnHit(CHARACTERGUID_S_RC_GY_LoyalDog_Necromancer_e11b3dc2-0297-4d53-9846-2df9ef665ebb, (CHARACTERGUID)_Attacker, _Damage, _Handle)
+AND
+HasActiveStatus(CHARACTERGUID_S_RC_GY_LoyalDog_Necromancer_e11b3dc2-0297-4d53-9846-2df9ef665ebb, "PETRIFIED", 1)
+THEN
+NRD_HitStatusClearAllDamage(CHARACTERGUID_S_RC_GY_LoyalDog_Necromancer_e11b3dc2-0297-4d53-9846-2df9ef665ebb, _Handle);
+
+IF
+CharacterPrecogDying(CHARACTERGUID_S_RC_GY_LoyalDog_Necromancer_e11b3dc2-0297-4d53-9846-2df9ef665ebb)
+THEN
+GoalCompleted;
+
+EXITSECTION
+
+
+ENDEXITSECTION
+ParentTargetEdge "Derpy_RC_Qanna"

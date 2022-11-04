@@ -1,0 +1,101 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+
+PROC_AMER_Artifacts_Patch_Begin("Artifact_DrogsLuck");
+NOT DB_AMER_Artifacts_EquippedScalingStat_StatusMod_ExtendedStat("Artifact_DrogsLuck", "Both", "Ability", "Luck", "AMER_SCORCHED", "PercAttributeIncrease", "Intelligence", "", "", "DrogsLuck", 1, 4.0);
+NOT DB_AMER_Artifacts_EquippedScalingStat_StatusMod_ExtendedStat("Artifact_DrogsLuck", "Both", "Ability", "FireSpecialist", "AMER_SCORCHED", "PercAttributeIncrease", "Intelligence", "", "", "DrogsLuck", 1, 2.0);
+NOT DB_AMER_Artifacts_EquippedScalingStat_StatusMod_ExtendedStat("Artifact_DrogsLuck", "Both", "Ability", "Luck", "AMER_SCORCHED", "PercAttributeIncrease", "Wits", "", "", "DrogsLuck", 1, 4.0);
+NOT DB_AMER_Artifacts_EquippedScalingStat_StatusMod_ExtendedStat("Artifact_DrogsLuck", "Both", "Ability", "FireSpecialist", "AMER_SCORCHED", "PercAttributeIncrease", "Wits", "", "", "DrogsLuck", 1, 2.0);
+NOT DB_AMER_Artifacts_EquippedScalingStat_StatusMod_ExtendedStat("Artifact_DrogsLuck", "Both", "Ability", "FireSpecialist", "AMER_SCORCHED", "PercAttributeIncrease", "Intelligence", "", "", "DrogsLuck", 1, 6.0);
+NOT DB_AMER_Artifacts_EquippedScalingStat_StatusMod_ExtendedStat("Artifact_DrogsLuck", "Both", "Ability", "FireSpecialist", "AMER_SCORCHED", "PercAttributeIncrease", "Wits", "", "", "DrogsLuck", 1, 6.0);
+NOT DB_AMER_Artifacts_EquippedScalingStat_StatusMod_ExtendedStat("Artifact_DrogsLuck", "Both", "Ability", "FireSpecialist", "AMER_SCORCHED", "PercAttributeIncrease", "Intelligence", "", "", "DrogsLuck", 1, 3.0);
+NOT DB_AMER_Artifacts_EquippedScalingStat_StatusMod_ExtendedStat("Artifact_DrogsLuck", "Both", "Ability", "FireSpecialist", "AMER_SCORCHED", "PercAttributeIncrease", "Wits", "", "", "DrogsLuck", 1, 3.0);
+DB_AMER_Artifacts_EquippedScalingStat_StatusMod_ExtendedStat("Artifact_DrogsLuck", "Both", "Ability", "FireSpecialist", "AMER_SCORCHED", "PercAttributeIncrease", "Intelligence", "", "", "DrogsLuck", 1, 1.5);
+DB_AMER_Artifacts_EquippedScalingStat_StatusMod_ExtendedStat("Artifact_DrogsLuck", "Both", "Ability", "FireSpecialist", "AMER_SCORCHED", "PercAttributeIncrease", "Wits", "", "", "DrogsLuck", 1, 1.5);
+PROC_AMER_Artifacts_Patch_End("Artifact_DrogsLuck");
+
+PROC_AMER_Artifacts_Patch_Begin("Artifact_Goldforge");
+NOT DB_AMER_Artifacts_EquippedStatusMod_ExtendedStat("Artifact_Goldforge", "Both", "AMER_PROSPERITY", "VolatileArmor_Physical", "300", "Earth", "AMER_RS3_FX_VolatileArmor", 30.0, 1);
+NOT DB_AMER_Artifacts_EquippedStatusMod_ExtendedStat("Artifact_Goldforge", "Both", "AMER_PROSPERITY", "VolatileArmor_Magic", "300", "Fire", "", 30.0, 1);
+NOT DB_AMER_Artifacts_EquippedStatusMod_ExtendedStat("Artifact_Goldforge", "Both", "AMER_PROSPERITY", "VolatileArmor_Physical", "500", "Earth", "AMER_RS3_FX_VolatileArmor", 50.0, 1);
+NOT DB_AMER_Artifacts_EquippedStatusMod_ExtendedStat("Artifact_Goldforge", "Both", "AMER_PROSPERITY", "VolatileArmor_Magic", "500", "Fire", "", 50.0, 1);
+DB_AMER_Artifacts_EquippedStatusMod_ExtendedStat("Artifact_Goldforge", "Both", "AMER_PROSPERITY", "VolatileArmor_Physical", "300", "Earth", "AMER_RS3_FX_VolatileArmor", 50.0, 1);
+DB_AMER_Artifacts_EquippedStatusMod_ExtendedStat("Artifact_Goldforge", "Both", "AMER_PROSPERITY", "VolatileArmor_Magic", "300", "Fire", "", 50.0, 1);
+PROC_AMER_Artifacts_Patch_End("Artifact_Goldforge");
+
+PROC_AMER_Artifacts_Patch_Begin("Artifact_AntediluvianCarapace");
+NOT DB_AMER_Artifacts_EquippedExtendedStat("Artifact_AntediluvianCarapace", "Both", "MaxRes", "ELERES_NOPSN", "Artifact_AntediluvianCarapace", "", 2.0);
+NOT DB_AMER_Artifacts_EquippedScalingStat_ExtendedStat("Artifact_AntediluvianCarapace", "Both", "Ability", "Perseverance", "MaxRes", "ELERES_NOPSN", "Artifact_AntediluvianCarapace", "", 0.5);
+DB_AMER_Artifacts_EquippedExtendedStat("Artifact_AntediluvianCarapace", "Both", "MaxRes", "ELERES", "Artifact_AntediluvianCarapace", "", 10.0);
+DB_AMER_Artifacts_EquippedScalingStat_ExtendedStat("Artifact_AntediluvianCarapace", "Both", "Ability", "Perseverance", "MaxRes", "ELERES", "Artifact_AntediluvianCarapace", "", 1.0);
+PROC_AMER_Artifacts_Patch_End("Artifact_AntediluvianCarapace");
+
+PROC_AMER_Artifacts_Patch_Begin("Artifact_Savage");
+NOT DB_AMER_Artifacts_EquippedFlexStat("Artifact_Savage", "Both", "Ability", "AirSpecialist", -1.0);
+NOT DB_AMER_Artifacts_EquippedFlexStat("Artifact_Savage", "Both", "Ability", "EarthSpecialist", -1.0);
+NOT DB_AMER_Artifacts_EquippedFlexStat("Artifact_Savage", "Both", "Ability", "WaterSpecialist", -1.0);
+NOT DB_AMER_Artifacts_EquippedFlexStat("Artifact_Savage", "Both", "Ability", "FireSpecialist", -1.0);
+NOT DB_AMER_Artifacts_EquippedFlexStat("Artifact_Savage", "Both", "Ability", "Necromancy", -1.0);
+NOT DB_AMER_Artifacts_EquippedFlexStat("Artifact_Savage", "Both", "Ability", "Summoning", -1.0);
+DB_AMER_Artifacts_EquippedFlexStat("Artifact_Savage", "Both", "Ability", "AirSpecialist", -2.0);
+DB_AMER_Artifacts_EquippedFlexStat("Artifact_Savage", "Both", "Ability", "EarthSpecialist", -2.0);
+DB_AMER_Artifacts_EquippedFlexStat("Artifact_Savage", "Both", "Ability", "WaterSpecialist", -2.0);
+DB_AMER_Artifacts_EquippedFlexStat("Artifact_Savage", "Both", "Ability", "FireSpecialist", -2.0);
+DB_AMER_Artifacts_EquippedFlexStat("Artifact_Savage", "Both", "Ability", "Necromancy", -2.0);
+DB_AMER_Artifacts_EquippedFlexStat("Artifact_Savage", "Both", "Ability", "Summoning", -2.0);
+PROC_AMER_Artifacts_Patch_End("Artifact_Savage");
+
+PROC_AMER_Artifacts_Patch_Begin("Artifact_BlackglassBrand");
+NOT DB_AMER_Artifacts_EquippedExtendedStat("Artifact_BlackglassBrand", "Both", "FreeReactionCharge", "AMER_Centurion", "", "", 1.0);
+DB_AMER_Artifacts_EquippedExtendedStat("Artifact_BlackglassBrand", "Both", "FreeReactionCharge", "AMER_Centurion", "", "", 2.0);
+PROC_AMER_Artifacts_Patch_End("Artifact_BlackglassBrand");
+
+PROC_AMER_Artifacts_Patch_Begin("Artifact_RodOfConviction");
+NOT DB_AMER_Artifacts_EquippedStatusMod_ExtendedStat("Artifact_RodOfConviction", "Both", "AMER_RODOFCONV", "VolatileArmor_Physical", "300", "Physical", "AMER_RS3_FX_VolatileArmor", 50.0, 1);
+NOT DB_AMER_Artifacts_EquippedStatusMod_ExtendedStat("Artifact_RodOfConviction", "Both", "AMER_RODOFCONV", "VolatileArmor_Physical", "300", "Physical", "AMER_RS3_FX_VolatileArmor", 75.0, 1);
+DB_AMER_Artifacts_EquippedStatusMod_ExtendedStat("Artifact_RodOfConviction", "Both", "AMER_RODOFCONV", "VolatileArmor_Physical", "300", "Physical", "AMER_RS3_FX_VolatileArmor", 60.0, 1);
+PROC_AMER_Artifacts_Patch_End("Artifact_RodOfConviction");
+
+PROC_AMER_Artifacts_Patch_Begin("Artifact_Pestilence");
+NOT DB_AMER_Artifacts_EquippedExtendedStat("Artifact_Pestilence", "Both", "Shoot_OnStatus", "POISONED", "Projectile_AMER_SCRIPT_Artifact_Pestilence", "Explosion", 1.0);
+PROC_AMER_Artifacts_Patch_End("Artifact_Pestilence");
+
+PROC_AMER_Artifacts_Patch_Begin("Artifact_MalleusMaleficarum");
+DB_AMER_Artifacts_EquippedFlexStat("Artifact_MalleusMaleficarum", "Both", "Spell", "Target_MalleusMaleficarum_DazingBolt", 1.0);
+PROC_AMER_Artifacts_Patch_End("Artifact_MalleusMaleficarum");
+
+PROC_AMER_Artifacts_Patch_Begin("Artifact_Paragon");
+DB_AMER_Artifacts_EquippedFlexStat("Artifact_Paragon", "Both", "Spell", "Shout_AMER_Benevolence_Mercy", 1.0);
+PROC_AMER_Artifacts_Patch_End("Artifact_Paragon");
+
+PROC_AMER_Artifacts_Patch_Begin("Artifact_Expedition");
+DB_AMER_Artifacts_EquippedExtendedStat("Artifact_Expedition", "Both", "BattHarr_Threshold_Mult_Target", "Both", "", "", 0.5);
+PROC_AMER_Artifacts_Patch_End("Artifact_Expedition");
+
+PROC_AMER_Artifacts_Patch_Begin("Artifact_Cannibal");
+DB_AMER_Artifacts_EquippedFlexStat("Artifact_Cannibal", "Both", "Spell", "Summon_Derpy_BoneshapedSkitterer", 1.0);
+DB_AMER_Artifacts_EquippedFlexStat("Artifact_Cannibal", "Both", "Spell", "Shout_MassFeast", 1.0);
+PROC_AMER_Artifacts_Patch_End("Artifact_Cannibal");
+
+PROC_AMER_Artifacts_Patch_Begin("Artifact_Mountain");
+NOT DB_AMER_Artifacts_EquippedScalingStat_ExtendedStat("Artifact_Mountain", "Both", "Attribute", "Strength", "Artifact_MountainThreshold", "", "", "", 1.5);
+PROC_AMER_Artifacts_Patch_End("Artifact_Mountain");
+
+PROC_AMER_Artifacts_Patch_Begin("Artifact_Ghostflame");
+DB_AMER_Artifacts_EquippedExtendedStat("Artifact_Ghostflame", "Both", "FreeReactionCharge", "AMER_Occultist", "", "", 1.0);
+PROC_AMER_Artifacts_Patch_End("Artifact_Ghostflame");
+
+PROC_AMER_Artifacts_Patch_Begin("Artifact_Misery");
+NOT DB_AMER_Artifacts_EquippedStatusMod_AddStatus("Artifact_Misery", "Both", "POISONED", "AMER_DECAYING_1", 6.0, 0, 1);
+PROC_AMER_Artifacts_Patch_End("Artifact_Misery");
+
+
+KBSECTION
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

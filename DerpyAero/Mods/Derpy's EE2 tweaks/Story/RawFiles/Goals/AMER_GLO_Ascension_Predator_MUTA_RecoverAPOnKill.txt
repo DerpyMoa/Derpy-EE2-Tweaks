@@ -1,0 +1,26 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Predator reactions now recover 2 AP once per round and have +20% crit chance.
+
+PROC PROC_AMER_KeywordStat_Predator_PreFire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Predator_MUTA_RecoverAPOnKill", _)
+THEN
+PROC_AMER_TempStat_FlexStat_Add(_Char, "Stat", "CRITICALCHANCE", 20.0, 2500, "Attack");
+
+PROC PROC_AMER_KeywordStat_Predator_PreFire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Predator_MUTA_RecoverAPOnKill", _)
+AND
+QRY_AMER_GEN_OncePerRound(_Char, "Ascension_Predator_MUTA_RecoverAPOnKill")
+THEN
+DB_AMER_GEN_OncePerRound(_Char, "Ascension_Predator_MUTA_RecoverAPOnKill");
+PROC_AMER_ActionPoints_Add(_Char, 2);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

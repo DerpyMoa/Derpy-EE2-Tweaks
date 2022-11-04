@@ -1,0 +1,31 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Staff of Magus grants Elemental Affinity talent for 2 turns, if not already had.
+
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, "Projectile_StaffOfMagus", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_WeaponSkillTalent_Sortilege", _)
+AND
+CharacterIsInCombat(_Char, 1)
+THEN
+PROC_AMER_AscensionReward_BasicSkill_SoMSavageSortilege(_Char);
+
+
+PROC PROC_AMER_AscensionReward_BasicSkill_SoMSavageSortilege((CHARACTERGUID)_Char)
+THEN
+PROC_AMER_GEN_RemoveAndApplyStatus(_Char, "AMER_ASCBOOST_STAFFOFMAGUS", 18.0, _Char);
+
+
+PROC PROC_AMER_AscensionReward_BasicSkill_SoMSavageSortilege((CHARACTERGUID)_Char)
+AND
+CharacterHasTalent(_Char, "ElementalAffinity", 0)
+THEN
+PROC_AMER_StatusMod_FlexStat_TryApplyModForStatus(_Char, _Char, "AMER_ASCBOOST_STAFFOFMAGUS", "PlayerTempTalent", "ElementalAffinity", 1.0, "ASCBOOST_SoM_SavageSortilege");
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

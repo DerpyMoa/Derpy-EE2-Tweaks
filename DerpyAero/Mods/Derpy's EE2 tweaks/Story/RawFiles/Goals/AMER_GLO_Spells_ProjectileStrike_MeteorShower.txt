@@ -1,0 +1,33 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "ProjectileStrike_MeteorShower", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "FireSpecialist", 25.0, 4.0, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "ProjectileStrike_MeteorShower", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 2)
+THEN
+PROC_AMER_GEN_Shoot_Delayed("ProjectileStrike", _Char, NULL_00000000-0000-0000-0000-000000000000, _X, _Y, _Z, "ProjectileStrike_MeteorShower", 5.0, 2, 80);	//3 total strikes within 5m, 80ms interval.
+ApplyStatus(_Char, "AMER_METEORSHOWER_INFUS_3", 6.0, 0);
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "ProjectileStrike_MeteorShower", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 3)
+THEN
+ApplyStatus(_Char, "AMER_METEORSHOWER_INFUS_3", 18.0, 0);
+PROC_AMER_GEN_Shoot_Delayed("ProjectileStrike", _Char, NULL_00000000-0000-0000-0000-000000000000, _X, _Y, _Z, "ProjectileStrike_MeteorShower", 5.0, 8, 80);	//9 total strikes within 5m, 80ms interval.
+
+
+
+PROC PROC_AMER_GEN_FilteredStatus_Applied(_Char, _, "AMER_METEORSHOWER_HIT", _)
+THEN
+RemoveStatus(_Char, "AMER_METEORSHOWER_HIT");
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Pyrokinetic"

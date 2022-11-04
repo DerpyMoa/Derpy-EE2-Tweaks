@@ -1,0 +1,96 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+NRD_OnStatusAttempt(_Char, "DAMAGE_ON_MOVE", _Handle, _Source)
+AND
+ObjectIsItem(_Char, 1)
+THEN
+NRD_StatusPreventApply(_Char, _Handle, 1);
+
+
+//====================================================================================================================================================
+
+
+IF
+NRD_OnHit((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, _Damage, _Handle)
+AND
+NRD_StatusGetString(_Target, _Handle, "SkillId", "Projectile_EnemyPinDown_-1")
+AND
+NRD_StatusGetInt(_Target, _Handle, "Missed", 0)
+AND
+DB_AMER_Source_Infusion_Pending(_Char, _InfusCount)
+THEN
+PROC_Derpy_PinDown_SI_Effects(_Target, _Char, _InfusCount);
+
+
+//====================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Projectile_EnemyPinDown", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "ACCURACYBOOST", "Ability", "RangerLore", 10.0, 2.0, 2000, "SkillCast");
+
+
+PROC PROC_Derpy_PinDown_SI_Effects((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, 1)
+AND
+NRD_ApplyDamageOnMove(_Target, "DAMAGE_ON_MOVE", _Char, 6.0, 0.75, _PinDownSI1)
+THEN
+DB_NOOP(1);
+
+
+//====================================================================================================================================================
+
+
+PROC PROC_Derpy_PinDown_SI_Effects((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, 2)
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, 1.0, 0.2, 0.0, "Ability", "RangerLore")
+AND
+DB_AMER_GEN_OUTPUT_Real(_Scaling)
+AND
+Integer(_Scaling, _ScalingInt)
+AND
+NRD_ApplyDamageOnMove(_Target, "DAMAGE_ON_MOVE", _Char, 12.0, 0.75, _PinDownSI2)
+THEN
+PROC_AMER_BatteredHarried_DirectManip(_Target, 0, _ScalingInt, _Char);
+
+
+//====================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Projectile_EnemyPinDown", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat_Scaling(_Char, "Derpy_PinDown_SI3_FakeStatus", "InstantEffect", "ApplyBattered", "", "", "PinDown_Infus", 0, "Ability", "RangerLore", 3.0, 0.4, 3000, "SkillCast");
+
+
+PROC PROC_Derpy_PinDown_SI_Effects((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, 3)
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, 3.0, 0.4, 0.0, "Ability", "RangerLore")
+AND
+DB_AMER_GEN_OUTPUT_Real(_Scaling)
+AND
+Integer(_Scaling, _ScalingInt)
+AND
+QRY_AMER_GEN_GetNearestInCombat(_Char, _Target, _Target, 13.0, 10)	//Living enemies within 13m of character hit.
+AND
+DB_AMER_GEN_OUTPUT_NearestInCombat(_NearestTarget, _)
+AND
+NRD_ApplyDamageOnMove(_Target, "DAMAGE_ON_MOVE", _Char, 12.0, 0.75, _PinDownSI3)
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+PROC_AMER_BatteredHarried_DirectManip(_Target, 0, _ScalingInt, _Char);
+ApplyStatus(_Target, "AMER_ATAXIA_APPLY", 12.0, 0, _Char);
+PROC_AMER_GEN_ShootProjectileAt(_Char, _NearestTarget, "Projectile_Derpy_SCRIPT_PinDown_SI3");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Huntsman"

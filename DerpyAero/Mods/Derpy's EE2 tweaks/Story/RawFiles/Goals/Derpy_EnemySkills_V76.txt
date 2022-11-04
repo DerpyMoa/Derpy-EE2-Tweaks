@@ -1,0 +1,175 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+NOT DB_AMER_Spells_IDOverride("Target_FirstAidEnemy", "Target_FirstAid");
+NOT DB_AMER_Spells_IDOverride("Projectile_EnemyPoisonDart", "Projectile_PoisonDartStart");
+NOT DB_AMER_Spells_IDOverride("Projectile_EnemyFireball_Cursed", "Projectile_Fireball");
+
+//==============================================================================================================
+
+DB_AMER_Spells_IDOverride("Target_EnemyBurningTouch", "Target_EnemyBurningTouch");
+DB_AMER_Spells_IDOverride("Target_EnemyFreezingTouch", "Target_EnemyFreezingTouch");
+DB_AMER_Spells_IDOverride("Projectile_EnemyFlare", "Projectile_EnemyFlare");
+DB_AMER_Spells_IDOverride("Projectile_EnemyFlare_Beetle", "Projectile_EnemyFlare");
+DB_AMER_Spells_IDOverride("Projectile_EnemyIceShard", "Projectile_EnemyIceShard");
+DB_AMER_Spells_IDOverride("Projectile_EnemyTurtleBubbles", "Projectile_EnemyTurtleBubbles");
+DB_AMER_Spells_IDOverride("Target_EnemyTargetedFireSurface_Lucian", "Target_EnemyTargetedFireSurface_Lucian");
+
+DB_AMER_Spells_IDOverride("Target_EnemyImmolate", "Target_EnemyImmolate");
+
+DB_AMER_Spells_IDOverride("Shout_EnemySupernova", "Shout_EnemySupernova");
+
+DB_AMER_Spells_IDOverride("Target_EnemyWormTremor", "Target_EnemyWormTremor");
+DB_AMER_Spells_IDOverride("Target_EnemyWormTremor_MotherTree", "Target_EnemyWormTremor");
+
+DB_AMER_Spells_IDOverride("Shout_EnemyReactiveArmor", "Shout_EnemyReactiveArmor");
+
+DB_AMER_Spells_IDOverride("Shout_EnemyThickOfTheFight", "Shout_EnemyThickOfTheFight");
+
+DB_AMER_Spells_IDOverride("Projectile_EnemyBouncingShield", "Projectile_EnemyBouncingShield");
+
+DB_AMER_Spells_IDOverride("Projectile_EnemyLightningBolt", "Projectile_EnemyLightningBolt");
+DB_AMER_Spells_IDOverride("Projectile_EnemyLightningBolt_Empowered", "Projectile_EnemyLightningBolt");
+
+DB_AMER_Spells_IDOverride("Shout_EnemyBlindingRadiance", "Shout_EnemyBlindingRadiance");
+
+DB_AMER_Spells_IDOverride("Target_EnemyPressureSpike", "Target_EnemyPressureSpike");
+
+DB_AMER_Spells_IDOverride("Projectile_EnemySuperconductor", "Projectile_EnemySuperconductor");
+DB_AMER_Spells_IDOverride("Shout_EnemyElectricFence", "Shout_EnemyElectricFence");
+
+DB_AMER_Spells_IDOverride("Projectile_EnemyChainLightning", "Projectile_EnemyChainLightning");
+
+DB_AMER_Spells_IDOverride("ProjectileStrike_EnemyMeteorShower", "ProjectileStrike_EnemyMeteorShower");
+DB_AMER_Spells_IDOverride("ProjectileStrike_EnemyPunisherMeteorShower", "ProjectileStrike_EnemyPunisherMeteorShower");
+DB_AMER_Spells_IDOverride("ProjectileStrike_EnemyMeteorShower_Adrama", "ProjectileStrike_EnemyMeteorShower");
+DB_AMER_Spells_IDOverride("ProjectileStrike_EnemyMeteorShower_Windego", "ProjectileStrike_EnemyMeteorShower");
+DB_AMER_Spells_IDOverride("ProjectileStrike_EnemyMeteorShower_Alan", "ProjectileStrike_EnemyMeteorShower");
+
+DB_AMER_Spells_IDOverride("MultiStrike_EnemyBlinkStrike", "MultiStrike_EnemyBlinkStrike");
+DB_AMER_Spells_IDOverride("MultiStrike_EnemyBlinkStrike_Empowered_2", "MultiStrike_EnemyBlinkStrike");
+
+DB_AMER_Spells_IDOverride("Cone_EnemyGroundSmash", "Cone_EnemyGroundSmash");
+DB_AMER_Spells_IDOverride("Cone_EnemyGroundSmash_Devourer", "Cone_EnemyGroundSmash");
+
+DB_AMER_Spells_IDOverride("Rush_EnemyBatteringRam", "Rush_EnemyBatteringRam");
+DB_AMER_Spells_IDOverride("Rush_EnemyBatteringRam_Empowered", "Rush_EnemyBatteringRam");
+
+DB_AMER_Spells_IDOverride("Target_EnemyFlurry", "Target_EnemyFlurry");
+DB_AMER_Spells_IDOverride("Target_EnemyFlurry_Empowered", "Target_EnemyFlurry");
+
+DB_AMER_Spells_IDOverride("Shout_EnemySparkingSwings", "Shout_EnemySparkingSwings");
+
+DB_AMER_Spells_IDOverride("Target_EnemyOverpower", "Target_EnemyOverpower");
+
+DB_AMER_Spells_IDOverride("Target_EnemyCripplingBlow", "Target_EnemyCripplingBlow");
+
+DB_AMER_Spells_IDOverride("Projectile_EnemyBallisticShot", "Projectile_EnemyBallisticShot");
+
+DB_AMER_Spells_IDOverride("Projectile_EnemySkyShot", "Projectile_EnemySkyShot");
+
+DB_AMER_Spells_IDOverride("Target_EnemyFarsight", "Target_EnemyFarsight");
+
+DB_AMER_Spells_IDOverride("Projectile_EnemyPiercingShot", "Projectile_EnemyPiercingShot");
+
+DB_AMER_Spells_IDOverride("Projectile_EnemySnipe", "Projectile_EnemySnipe");
+
+DB_AMER_Spells_IDOverride("Projectile_EnemyMark", "Projectile_EnemyMark");
+
+DB_AMER_Spells_IDOverride("Projectile_EnemyPinDown", "Projectile_EnemyPinDown");
+
+DB_AMER_Spells_IDOverride("ProjectileStrike_EnemyRainOfArrows", "ProjectileStrike_EnemyRainOfArrows");
+
+DB_AMER_Spells_IDOverride("Target_FirstAidEnemy", "Target_FirstAidEnemy");
+
+DB_AMER_Spells_IDOverride("Target_EnemyDecayingTouch", "Target_EnemyDecayingTouch");
+DB_AMER_Spells_IDOverride("Target_EnemyDecayingTouch_Empowered_2", "Target_EnemyDecayingTouch");
+DB_AMER_Spells_IDOverride("Target_EnemyDecayingTouch_Empowered_3", "Target_EnemyDecayingTouch");
+
+DB_AMER_Spells_IDOverride("Shout_EnemyWhirlwind", "Shout_EnemyWhirlwind");
+DB_AMER_Spells_IDOverride("Shout_EnemyWhirlwind_Empowered", "Shout_EnemyWhirlwind");
+
+DB_AMER_Spells_IDOverride("Zone_EnemyLaserRay", "Zone_EnemyLaserRay");
+DB_AMER_Spells_IDOverride("Zone_EnemyLaserRayCursed", "Zone_EnemyLaserRay");
+DB_AMER_Spells_IDOverride("Zone_EnemyLaserRay_Empowered", "Zone_EnemyLaserRay");
+
+DB_AMER_Spells_IDOverride("Projectile_EnemyArrowSpray", "Projectile_EnemyArrowSpray");
+DB_AMER_Spells_IDOverride("Projectile_EnemyArrowSpray_Empowered_2", "Projectile_EnemyArrowSpray");
+
+DB_AMER_Spells_IDOverride("Target_EnemyHaste", "Target_EnemyHaste");
+DB_AMER_Spells_IDOverride("Target_EnemyFrostyShell", "Target_EnemyFrostyShell");
+
+DB_AMER_Spells_IDOverride("Projectile_EnemyFireball", "Projectile_EnemyFireball");
+DB_AMER_Spells_IDOverride("Projectile_EnemyFireball_Cursed", "Projectile_EnemyFireball");
+DB_AMER_Spells_IDOverride("Projectile_EnemyFireball_Witch", "Projectile_EnemyFireball");
+DB_AMER_Spells_IDOverride("Projectile_EnemyFireball_Cursed_Insect", "Projectile_EnemyFireball");
+DB_AMER_Spells_IDOverride("Projectile_EnemyFireball_Newt", "Projectile_EnemyFireball");
+
+DB_AMER_Spells_IDOverride("Target_DEV06_Dragon_Grasp", "Target_GraspOfTheStarved");
+
+DB_AMER_Spells_IDOverride("Projectile_EnemyPoisonDart_Cursed", "Projectile_EnemyPoisonDart");
+DB_AMER_Spells_IDOverride("Projectile_EnemyPoisonDart", "Projectile_EnemyPoisonDart");
+DB_AMER_Spells_IDOverride("Projectile_EnemyPoisonDartStart_Empowered", "Projectile_EnemyPoisonDart");
+
+DB_AMER_Spells_IDOverride("Shout_EnemyContamination", "Shout_EnemyContamination");
+
+DB_AMER_Spells_IDOverride("Projectile_EnemyEarthShard", "Projectile_EnemyEarthShard");
+DB_AMER_Spells_IDOverride("Projectile_EnemyEarthShard_Scarecrow_Single", "Projectile_EnemyEarthShard");
+DB_AMER_Spells_IDOverride("Projectile_EnemyEarthShard_Scarecrow", "Projectile_EnemyEarthShard");
+DB_AMER_Spells_IDOverride("Projectile_EnemyEarthShard_Knockdown", "Projectile_EnemyEarthShard");
+
+DB_AMER_Spells_IDOverride("Target_EnemyOverpower_Werewolf", "Target_EnemyOverpower");
+DB_AMER_Spells_IDOverride("Target_EnemyHaste_Wolf", "Target_EnemyHaste");
+DB_AMER_Spells_IDOverride("Target_EnemyCripplingBlow_Wolf", "Target_EnemyCripplingBlow");
+DB_AMER_Spells_IDOverride("Cone_EnemySilencingStare_Wolf", "Cone_SilencingStare");
+
+DB_AMER_Spells_IDOverride("Target_EnemyOverpower_Shambling", "Target_EnemyOverpower");
+DB_AMER_Spells_IDOverride("Target_EnemyCripplingBlow_Shambling", "Target_EnemyCripplingBlow");
+DB_AMER_Spells_IDOverride("Target_EnemyCripplingBlow_Shambling_Boss", "Target_EnemyCripplingBlow");
+
+DB_AMER_Spells_IDOverride("Shout_EnemyElectricFence_Septa", "Shout_EnemyElectricFence");
+DB_AMER_Spells_IDOverride("Projectile_EnemySuperconductor_Septa", "Projectile_EnemySuperconductor");
+DB_AMER_Spells_IDOverride("Projectile_EnemyChainLightning_Septa", "Projectile_ChainLightning");
+
+DB_AMER_Spells_IDOverride("Shout_EnemyChameleonSkin", "Shout_EnemyChameleonSkin");
+DB_AMER_Spells_IDOverride("Projectile_EnemyThrowingKnife", "Projectile_EnemyThrowingKnife");
+DB_AMER_Spells_IDOverride("Target_EnemySleepingArms", "Target_EnemySleepingArms");
+DB_AMER_Spells_IDOverride("Target_EnemyDaggersDrawn", "Target_EnemyDaggersDrawn");
+DB_AMER_Spells_IDOverride("Projectile_EnemyFanOfKnives", "Projectile_EnemyFanOfKnives");
+DB_AMER_Spells_IDOverride("Projectile_EnemyFanOfKnives_Empowered", "Projectile_EnemyFanOfKnives");
+DB_AMER_Spells_IDOverride("Target_EnemyCorruptedBlade", "Target_EnemyCorruptedBlade");
+
+DB_AMER_Spells_IDOverride("Target_EnemyGagOrder_Gheist", "Target_GagOrder");
+DB_AMER_Spells_IDOverride("Target_EnemyTerrifyingCruelty_Gheist", "Target_TerrifyingCruelty");
+DB_AMER_Spells_IDOverride("Target_EnemyCorruptedBlade_Gheist", "Target_EnemyCorruptedBlade");
+
+DB_AMER_Spells_IDOverride("Summon_EnemyTotemFromSurface", "Summon_EnemyTotemFromSurface");
+
+DB_AMER_Source_AI_DoNotInfuse("Target_ReactionShot", 0);
+DB_AMER_Source_AI_DoNotInfuse("Target_DeathWish", 0);
+DB_AMER_Source_AI_DoNotInfuse("Shout_Adrenaline", 0);
+DB_AMER_Source_AI_DoNotInfuse("Shout_EnemyFireBrand_0AP1DUR", 0);
+DB_AMER_Source_AI_DoNotInfuse("Shout_EnemyChameleonSkin", 0);
+
+
+PROC_AMER_GEN_SkillScaling_AddSkillToSettings("AirSpecialist", "Shout_EnemyVacuumAura", "Shout_VacuumAura_DisplayName", 0.0, 0.0);
+PROC_AMER_GEN_SkillScaling_AddSkillToSettings("AirSpecialist", "Shout_EnemyElectricFence", "Shout_ElectricFence_DisplayName", 0.0, 0.0);
+
+PROC_AMER_GEN_SkillScaling_AddSkillToSettings("FireSpecialist", "Target_EnemyFireWhip", "Target_FireWhip_DisplayName", 0.0, 0.0);
+PROC_AMER_GEN_SkillScaling_AddSkillToSettings("FireSpecialist", "Shout_EnemySupernova", "Shout_Supernova_DisplayName", 0.0, 0.0);
+
+PROC_AMER_GEN_SkillScaling_AddSkillToSettings("RangerLore", "Projectile_EnemyArrowSpray", "Projectile_ArrowSpray_DisplayName", 0.0, 0.0);
+PROC_AMER_GEN_SkillScaling_AddSkillToSettings("RangerLore", "Projectile_EnemySnipe", "Projectile_Snipe_DisplayName", 0.0, 0.0);
+
+PROC_AMER_GEN_SkillScaling_AddSkillToSettings("EarthSpecialist", "Target_EnemyRockSpikes", "Target_RockSpikes_DisplayName", 0.0, 0.0);
+
+PROC_AMER_GEN_SkillScaling_AddSkillToSettings("WarriorLore", "Shout_EnemyThickOfTheFight", "Shout_ThickOfTheFight_DisplayName", 0.0, 0.0);
+PROC_AMER_GEN_SkillScaling_AddSkillToSettings("WarriorLore", "Shout_EnemyGuardianAngel", "Shout_GuardianAngel_DisplayName", 0.0, 0.0);
+
+KBSECTION
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

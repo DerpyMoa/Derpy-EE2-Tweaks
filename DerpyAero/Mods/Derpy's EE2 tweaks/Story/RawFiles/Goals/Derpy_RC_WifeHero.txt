@@ -1,0 +1,48 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+RegionStarted(_)
+THEN
+SetIsBoss(CHARACTERGUID_S_RC_DU_HeroicRescue_GiantInsect_Wings_01_899212c1-3ba7-438d-981f-51ecf75c01a9, 1);
+
+IF
+DB_KillCounterDied(_Voidwoken,"RC_DU_HeroicRescue_Voidwoken")
+THEN
+ProcObjectTimer(CHARACTERGUID_S_RC_DU_HeroicRescue_GiantInsect_Wings_02_00166785-b066-4b72-adae-4fb97dc9795e, "PleaseCombatBro", 500);
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "PleaseCombatBro")
+AND
+QRY_AMER_GEN_GetNearestPlayer(CHARACTERGUID_S_RC_DU_HeroicRescue_GiantInsect_Wings_02_00166785-b066-4b72-adae-4fb97dc9795e)
+AND
+DB_AMER_GEN_OUTPUT_Char(_Player)
+THEN
+EnterCombat(CHARACTERGUID_S_RC_DU_HeroicRescue_GiantInsect_Wings_02_00166785-b066-4b72-adae-4fb97dc9795e, _Player);
+
+IF
+CharacterPrecogDying(CHARACTERGUID_S_RC_DU_HeroicRescue_GiantInsect_Wings_01_899212c1-3ba7-438d-981f-51ecf75c01a9)
+AND
+GetPosition(CHARACTERGUID_S_RC_DU_HeroicRescue_GiantInsect_Wings_01_899212c1-3ba7-438d-981f-51ecf75c01a9,_X,_Y,_Z)
+AND
+CreateItemTemplateAtPosition("LOOT_BackPack_A_6c70c298-aa29-418f-a659-f8e0b5f5fa60", _X, _Y, _Z, _Backpack)
+THEN
+GenerateTreasure(_Backpack, "MiniBoss", 10, NULL_00000000-0000-0000-0000-000000000000);
+MoveAllItemsTo(_Backpack, CHARACTERGUID_S_RC_DU_HeroicRescue_GiantInsect_Wings_01_899212c1-3ba7-438d-981f-51ecf75c01a9, 0, 0, 1);
+PlaySound(_Backpack,"GP_ScriptedEvent_HOE_Channel_Spell_Final");
+PlayEffect(_Backpack, "AMER_RS3_FX_LootShine_Unique", "");
+ItemDestroy(_Backpack);
+SetOnStage(_Backpack, 0);
+
+PROC
+ProcRegionEnded("RC_Main")
+THEN
+GoalCompleted;
+
+EXITSECTION
+
+
+ENDEXITSECTION
+ParentTargetEdge "ReapersCoast"

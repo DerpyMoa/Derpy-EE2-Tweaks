@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<save>
+    <header version="2" time="1389735651" />
+    <version major="1" minor="3" revision="0" build="0" />
+    <region id="CharacterCreationClass">
+        <node id="root">
+            <attribute id="ClassDescription" value="Specialised in war tactics, knights are trained not only to fight, but to rally troops" handle="hb65dc088g72a7g4d2fg8e87g729e28699399" type="28" />
+			<attribute id="ClassLongDescription" value="The Knight was one of many in his clan, yet he is the last who remains. The House of Sturmgrave offered countless fearless fighters for the protection of the realm, and they were widely revered for their prowess in battle and the righteousness of their swords.  Indeed, so much were they admired that lesser lords grew green with envy. One among them refused to be second-loved among the armies, second-honoured by the queen, and hatched a plan to undo the so-called &quot;House of Heroes&quot;.  The lord ordered a terrible act: the pillaging and destruction of a small and peaceful town. Through careful manipulations, the wicked lord succeeded in fingering the Knights of the House of Sturmgrave as the culprits. All were tried, all found guilty by a corrupted judge, and all hanged.  The Knight, a mere child at the time, never forgot the gravity of the injustice. The mark of the House of Sturmgrave, the House of Heroes, was upon the youth already, and as the child's strength and honour grew, so did the desire for justice.  Now the Knight rides, leading the unrelenting charge against those who would inflict base misdeeds upon innocents." handle="h75ee7b39g4414g48c6gb0e2g98d6ae8af2d7" type="28" />
+            <attribute id="ClassName" value="Knight" handle="hba3c8e0dg5162g47d0gbc0agbb1ab257d441" type="28" />
+            <attribute id="ClassType" value="Knight" type="22" />
+            <attribute id="SkillSet" value="Class_Knight" type="22" />
+            <attribute id="Voice" value="2" type="5" />
+			<attribute id="Icon" value="5" type="5" />
+
+            <attribute id="NumStartingCombatAbilityPoints" value="2" type="4" />
+            <attribute id="NumStartingCivilAbilityPoints" value="1" type="4" />
+            <attribute id="NumStartingAttributePoints" value="3" type="4" />
+            <attribute id="NumStartingTalentPoints" value="1" type="4" />
+            
+			<attribute id="AreStatsWeighted" value="1" type="19" />
+            <children>
+            <node id="EquipmentProperties">
+                    <children>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Human" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Knight_Humans" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Knight_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Dwarf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Knight_Dwarves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Knight_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Elf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Knight_Elves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Knight_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Lizard" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Knight_Lizards" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Knight_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Human" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Knight_Humans" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Knight_Start_Undead" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Dwarf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Knight_Dwarves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Knight_Start_Undead" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Elf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Knight_Elves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Knight_Start_Undead" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Lizard" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Knight_Lizards" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Knight_Start_Undead" type="22" />
+                        </node>
+                    </children>
+                </node>
+                <node id="AbilityChanges">
+                    <children>
+                        <node id="AbilityChange">
+                            <attribute id="Ability" value="WarriorLore" type="23" />
+                            <attribute id="AmountIncreased" value="1" type="4" />
+                        </node>
+						    <node id="AbilityChange">
+                            <attribute id="Ability" value="TwoHanded" type="23" />
+                            <attribute id="AmountIncreased" value="1" type="4" />
+                        </node>
+                        <node id="AbilityChange">
+                            <attribute id="Ability" value="Barter" type="23" />
+                            <attribute id="AmountIncreased" value="1" type="4" />
+                        </node>
+                    </children>
+                </node>
+                <node id="AttributeChanges">
+                    <children>
+                        <node id="AttributeChange">
+                            <attribute id="AmountIncreased" value="3" type="4" />
+                            <attribute id="Attribute" value="CON" type="23" />
+                        </node>
+                    </children>
+                </node>
+                <node id="TalentsAdded">
+                    <children>
+                        <node id="TalentAdded">
+                            <attribute id="Talent" value="QuickStep" type="23" />
+                        </node>
+                    </children>
+                </node>
+            </children>
+        </node>
+    </region>
+</save>

@@ -1,0 +1,24 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Free SI1 for certain skills
+
+PROC PROC_AMER_Source_Infusion_GetUnlockedTier_Manipulate((CHARACTERGUID)_Char, (STRING)_Skill, (STRING)_Element, (INTEGER)_InfusCount)
+AND
+CharacterIsInCombat(_Char, 1)
+AND
+DB_AMER_Source_Infusion_OUTPUT_InfusCountBounded(_Char, _OutputSpent, _OutputEffective)
+AND
+_OutputEffective == 0
+AND
+DB_AMER_ExtendedStat_AddedStat(_Char, "AlwaysSI1", _Skill, _, _, _)
+THEN
+DB_AMER_Source_Infusion_OUTPUT_InfusCountBounded(_Char, _OutputSpent, 1);
+NOT DB_AMER_Source_Infusion_OUTPUT_InfusCountBounded(_Char, _OutputSpent, _OutputEffective);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GEN_Stats_ExtendedStats"

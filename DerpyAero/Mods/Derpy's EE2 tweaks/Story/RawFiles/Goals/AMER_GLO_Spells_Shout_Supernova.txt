@@ -1,0 +1,57 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, "Shout_Supernova", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_GEN_ApplyStatusUntilEndOfTurn(_Char, "Supernova_FireRes");
+
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, "Shout_Supernova", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+DB_Derpy_SupernovaCharDying(_Char);
+
+PROC PROC_AMER_Spells_CastCleanup((CHARACTERGUID)_Char, "Shout_Supernova", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+NOT DB_Derpy_SupernovaCharDying(_Char);
+
+IF
+CharacterPrecogDying(_Char)
+AND
+DB_Derpy_SupernovaCharDying(_Char)
+THEN
+NOT DB_Derpy_SupernovaCharDying(_Char);
+PROC_AMER_GEN_CharacterCauseExplosion(_Char, _Char, "Projectile_Derpy_SCRIPT_SuicideSupernova");
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_Supernova", 1)
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "FireSpecialist", 25.0, 4.0, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_Supernova", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "FireSpecialist", 65.0, 12.0, 2000, "SkillCast");
+PROC_AMER_Source_Infusion_AddRefund(_Char, 2, 0);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_Supernova", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_GEN_IterateCharsAroundObject(_Char,  5.0, _Char, 10, "AMER_SourceInfusion_Supernova_Infus3");	//Only living enemies.
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "AMER_SourceInfusion_Supernova_Infus3", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+PROC_AMER_GEN_CharacterCauseExplosion(_SourceChar, _Char, "Projectile_AMER_SCRIPT_Artifact_AngelsEgg");
+
+
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Pyrokinetic"

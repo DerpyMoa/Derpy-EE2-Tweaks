@@ -1,0 +1,27 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_RC_DW_SourceLich_Stronger_2c8d84ef-bfd0-4ff7-93fe-b3728d05ee87);
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_RC_DW_SourceLich_Stronger_2c8d84ef-bfd0-4ff7-93fe-b3728d05ee87, "Rain_EnemyBlood");
+
+KBSECTION
+
+
+IF
+ObjectEnteredCombat(CHARACTERGUID_S_RC_DW_SourceLich_Stronger_2c8d84ef-bfd0-4ff7-93fe-b3728d05ee87, _)
+THEN
+ItemToInventory(ITEMGUID_S_RC_DW_SourceLich_Jar_86d90342-6351-4e07-b583-cf455f709437, CHARACTERGUID_S_RC_DW_SourceLich_Stronger_2c8d84ef-bfd0-4ff7-93fe-b3728d05ee87,1);
+GoalCompleted;
+
+
+PROC
+ProcRegionEnded("RC_Main")
+THEN
+GoalCompleted;
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "ReapersCoast"

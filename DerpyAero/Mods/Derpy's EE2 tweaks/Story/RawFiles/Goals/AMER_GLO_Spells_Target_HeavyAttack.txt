@@ -1,0 +1,49 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Target_HeavyAttack", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_GEN_BasicAttackObjectStarted(_Target, _Char, _Char, "AllIn");
+
+
+IF
+NRD_OnHit((CHARACTERGUID)_Target, (CHARACTERGUID)_Attacker, _Damage, _Handle)
+AND
+NRD_StatusGetString(_Target, _Handle, "SkillId", "Target_HeavyAttack_-1")
+AND
+NRD_StatusGetInt(_Target, _Handle, "Missed", 0)
+AND
+DB_AMER_GEN_DamageTypeEnum(_TypeIndex, _DamageType)
+AND
+NRD_HitStatusGetDamage(_Target, _Handle, _DamageType, _Amount)
+AND
+_Amount != 0
+THEN
+DB_Derpy_AllIn_HitData(_Attacker, _DamageType, _Amount);
+DB_AMER_IterateCharsAroundObject_Exclusion(_Target);    //Don't double-cast on target.
+PROC_AMER_GEN_IterateCharsAroundObject(_Target, 3.0, _Attacker, 10, "Derpy_AllIn_Shockwave");    //Living enemies.
+PlayEffect(_Target, "Derpy_HeavyAttack_Shockwave");
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Derpy_AllIn_Shockwave", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+AND
+DB_Derpy_AllIn_HitData(_Attacker, _DamageType, _Amount)
+AND
+IntegerDivide(_Amount, 2, _AmountFinal)
+THEN
+PROC_AMER_GEN_ApplyDamage(_Char, _AmountFinal, _DamageType, _SourceChar, 1);
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Finished((INTEGER)_RequestID, "Derpy_AllIn_Shockwave", (CHARACTERGUID)_SourceChar)
+AND
+DB_Derpy_AllIn_HitData(_Attacker, _DamageType, _Amount)
+THEN
+NOT DB_Derpy_AllIn_HitData(_Attacker, _DamageType, _Amount);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Special"

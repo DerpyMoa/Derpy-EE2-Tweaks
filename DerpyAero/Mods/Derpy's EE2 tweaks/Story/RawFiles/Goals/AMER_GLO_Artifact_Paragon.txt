@@ -1,0 +1,45 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_KeywordStat_VitalityVoid_Fire_Override((CHARACTERGUID)_Char, (GUIDSTRING)_RadiusSource, (REAL)_Radius, (INTEGER)_Conditions, (REAL)_VitPerc)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Char, "Artifact_Paragon", _)
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, 0.50, 0.10, 0.0, "Ability", "Leadership")
+AND
+DB_AMER_GEN_OUTPUT_Real(_Scaling)
+AND
+RealMin(1.50, _Scaling, _ParagonPenalty)    //50% + 10% per Leadership, maximum of 150%.
+AND
+DB_AMER_Summoning_ActiveSummon(_Char, _Summon)
+AND
+GetVarFloat(_Summon, "AMER_GEN_MaximumVitality", _VitMax)
+AND
+RealProduct(_VitMax, _VitPerc, _Damage)
+AND
+RealProduct(_Damage, _ParagonPenalty, _DamageFinal)
+AND
+Integer(_DamageFinal, _DamageFinalInt)
+THEN
+DB_AMER_KeywordStat_VitalityVoid_Data(_Char, _Summon, _Radius, _Conditions, _DamageFinalInt); //Create a data DB for each summon--we're starting an iterator around each of them.
+PROC_AMER_KeywordStat_VitalityVoid_InitIterator(_Char, _Summon, _Radius, _Conditions);
+
+
+PROC PROC_AMER_KeywordStat_Benevolence_Finished(_Char, _TotalBattered, _TotalHarried, _TotalTargets)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Char, "Artifact_Paragon", _)
+AND
+IntegerSum(_TotalBattered, _TotalHarried, _TotalStacks)
+AND
+_TotalStacks >= 3
+THEN
+PROC_AMER_KeywordStat_VitalityVoid_Fire(_Char, 1);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"

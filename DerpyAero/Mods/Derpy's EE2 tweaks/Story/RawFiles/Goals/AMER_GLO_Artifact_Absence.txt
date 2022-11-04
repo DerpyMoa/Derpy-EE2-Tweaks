@@ -1,0 +1,37 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+CharacterKilledBy(_Defender, _, _Attacker)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Attacker, "Artifact_Absence", _)
+AND
+CharacterIsEnemy(_Defender, _Attacker, 1)
+AND
+CharacterIsSummon(_Defender, 0)
+AND
+QRY_AMER_GEN_CharacterGetDisplayName(_Defender)
+AND
+DB_AMER_GEN_OUTPUT_String(_Name)
+AND
+QRY_AMER_GEN_TSK_Get("AMER_Artifact_Absence_LogText")
+AND
+DB_AMER_GEN_OUTPUT_String(_LogText)
+THEN
+PROC_AMER_GEN_CharacterCombatLogText_Param_Str(_Attacker, _LogText, _Name);
+PROC_AMER_GEN_ApplyStatusUntilEndOfTurn(_Attacker, "AMER_ARTIFACT_ABSENCE_SKILL");
+
+
+PROC PROC_AMER_Spells_SkillCast(_Char, "Shout_AMER_Artifact_Absence", _, _, _)
+THEN
+PlayEffect(_Char, "RS3_FX_GP_Impacts_Grenade_Smoke_01");
+RemoveStatus(_Char, "AMER_ARTIFACT_ABSENCE_SKILL");
+PROC_AMER_GEN_DoFreeSneak_Delayed_Invis_UntilMyTurn(_Char, 350);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"

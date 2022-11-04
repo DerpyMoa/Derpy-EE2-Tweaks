@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<save>
+    <header version="2" time="1387205254" />
+    <version major="1" minor="3" revision="0" build="0" />
+    <region id="CharacterCreationClass">
+        <node id="root">
+            <attribute id="ClassDescription" value="An intimidating presence whose bone-chilling powers terrify friend and foe alike" handle="h88074679g6a8eg4c1bg9a66gb34ae0a8ff14" type="28" />
+			<attribute id="ClassLongDescription" value="The Witch grinned over the great cauldron. Golden vapours twined upward in intricate patterns, and a fragrance of sweet jasmine filled the dark cellar. The perfect poison, the Witch thought. Beautiful and deadly.  Suddenly, BANG; the cellar door flew open and a troop of ten Source Hunters burst in. The witch smiled and, with a single nod, a small army of oozing undead filled the space before the cauldron.  &quot;This time, we are not here to fight,&quot; the leader of the Source Hunters called. &quot;We need you.&quot; She paused. &quot;...and you need us.&quot;" handle="he1bc7d5eg3dabg4a75gbfb9gfd0e42c6aaf2" type="28" />
+            <attribute id="ClassName" value="Witch" handle="h68d6c885g6c39g47ddgae79gde2ba97a1f1e" type="28" />
+            <attribute id="ClassType" value="Witch" type="22" />
+            <attribute id="SkillSet" value="Class_Witch" type="22" />
+            <attribute id="Voice" value="1" type="5" />
+			<attribute id="Icon" value="10" type="5" />
+
+            <attribute id="NumStartingCombatAbilityPoints" value="2" type="4" />
+            <attribute id="NumStartingCivilAbilityPoints" value="1" type="4" />
+            <attribute id="NumStartingAttributePoints" value="3" type="4" />
+            <attribute id="NumStartingTalentPoints" value="1" type="4" />
+            
+			<attribute id="AreStatsWeighted" value="1" type="19" />
+            <children>
+            <node id="EquipmentProperties">
+                    <children>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Human" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Witch_Humans" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Witch_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Dwarf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Witch_Dwarves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Witch_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Elf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Witch_Elves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Witch_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Lizard" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Witch_Lizards" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Witch_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Human" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Witch_Humans" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Witch_Start_Undead" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Dwarf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Witch_Dwarves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Witch_Start_Undead" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Elf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Witch_Elves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Witch_Start_Undead" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Lizard" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Witch_Lizards" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Witch_Start_Undead" type="22" />
+                        </node>
+                    </children>
+                </node>
+                <node id="AbilityChanges">
+                    <children>
+                        <node id="AbilityChange">
+                            <attribute id="Ability" value="Summoning" type="23" />
+                            <attribute id="AmountIncreased" value="1" type="4" />
+                        </node>
+                        <node id="AbilityChange">
+                            <attribute id="Ability" value="Necromancy" type="23" />
+                            <attribute id="AmountIncreased" value="1" type="4" />
+                        </node>
+                        <node id="AbilityChange">
+                            <attribute id="Ability" value="Persuasion" type="23" />
+                            <attribute id="AmountIncreased" value="1" type="4" />
+                        </node>
+                    </children>
+                </node>
+                <node id="AttributeChanges">
+                    <children>
+                        <node id="AttributeChange">
+                            <attribute id="AmountIncreased" value="3" type="4" />
+                            <attribute id="Attribute" value="CON" type="23" />
+                        </node>
+                    </children>
+                </node>
+                <node id="TalentsAdded">
+                    <children>
+                        <node id="TalentAdded">
+                            <attribute id="Talent" value="WarriorLoreGrenadeRange" type="23" />
+                        </node>
+                    </children>
+                </node>
+            </children>
+        </node>
+    </region>
+</save>

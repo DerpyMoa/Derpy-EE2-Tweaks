@@ -1,0 +1,37 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Apply Withered for 1 turn when you apply tier II or III of Slowed or Weakened to an enemy.
+
+PROC PROC_AMER_Status_StatusFamily_Applied((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, (STRING)_Status, "Slowed", (INTEGER)_Tier)
+AND
+DB_AMER_Ascension_SpecialLogic(_Source, "Ascension_Wither_ACT_SlowAndWeak2And3", _)
+AND
+QRY_AMER_GEN_OncePerRound_PerChar(_Source, "Ascension_Wither_ACT_Slow", _Char)
+AND
+_Tier >= 2
+AND
+CharacterIsEnemy(_Char, _Source, 1)
+THEN
+DB_AMER_GEN_OncePerRound_PerChar(_Source, "Ascension_Wither_ACT_Slow", _Char);
+ApplyStatus(_Char, "AMER_WITHER", 6.0, 0, _Source);
+
+PROC PROC_AMER_Status_StatusFamily_Applied((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, (STRING)_Status, "Weakened", (INTEGER)_Tier)
+AND
+DB_AMER_Ascension_SpecialLogic(_Source, "Ascension_Wither_ACT_SlowAndWeak2And3", _)
+AND
+QRY_AMER_GEN_OncePerRound_PerChar(_Source, "Ascension_Wither_ACT_Weak", _Char)
+AND
+_Tier >= 2
+AND
+CharacterIsEnemy(_Char, _Source, 1)
+THEN
+DB_AMER_GEN_OncePerRound_PerChar(_Source, "Ascension_Wither_ACT_Weak", _Char);
+ApplyStatus(_Char, "AMER_WITHER", 6.0, 0, _Source);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

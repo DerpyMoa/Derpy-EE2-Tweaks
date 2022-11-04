@@ -1,0 +1,68 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_GEN_BasicAttackObjectStarted((CHARACTERGUID)_Defender, (REAL)_X, (REAL)_Y, (REAL)_Z, (CHARACTERGUID)_Owner, (CHARACTERGUID)_Attacker, (STRING)_AttackID)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Attacker, "Artifact_Chthonian", _)
+AND
+CharacterGetAttribute(_Attacker, "Strength", _Str)
+AND
+IntegerSubtract(_Str, 10, _StrOverTen)
+AND
+IntegerSum(30, _StrOverTen, _Chance)
+AND
+QRY_AMER_GEN_RandomSuccess(_Chance)
+THEN
+PlaySound(_Attacker, "Skill_Warrior_GroundSmash_Impact_01");    //Playing the sound now so it lines-up with the animations.
+DB_AMER_Artifacts_Chthonian_Data(_Attacker, _Defender, _X, _Y, _Z);
+PROC_AMER_TempStat_HitStatus_ThrowProc(_Attacker, "Artifact_Chthonian", 1000, "");
+
+
+PROC PROC_AMER_HitStatus_Event((CHARACTERGUID)_Defender, (CHARACTERGUID)_Attacker, "Artifact_Chthonian")
+AND
+DB_AMER_Artifacts_Chthonian_Data(_Attacker, _Defender, _X, _Y, _Z)
+THEN
+NOT DB_AMER_Artifacts_Chthonian_Data(_Attacker, _Defender, _X, _Y, _Z);
+PROC_AMER_TempStat_HitStatus_ThrowProc_Clear(_Attacker, "Artifact_Chthonian");
+PROC_AMER_Artifacts_Chthonian_Fire(_Attacker, _Defender, _X, _Y, _Z);
+
+//Fire the cone even if we missed the initial attack.
+PROC PROC_AMER_TempStat_HitStatus_Cleanup((CHARACTERGUID)_Attacker, "Artifact_Chthonian")
+AND
+DB_AMER_Artifacts_Chthonian_Data(_Attacker, _Defender, _X, _Y, _Z)
+THEN
+NOT DB_AMER_Artifacts_Chthonian_Data(_Attacker, _Defender, _X, _Y, _Z);
+PROC_AMER_Artifacts_Chthonian_Fire(_Attacker, _Defender, _X, _Y, _Z);
+
+
+//Show log text if the target is a character.
+PROC PROC_AMER_Artifacts_Chthonian_Fire((CHARACTERGUID)_Attacker, (CHARACTERGUID)_Defender, (REAL)_X, (REAL)_Y, (REAL)_Z)
+AND
+ObjectExists(_Defender, 1)
+AND
+ObjectIsCharacter(_Defender, 1)
+AND
+QRY_AMER_GEN_CharacterGetDisplayName(_Defender)
+AND
+DB_AMER_GEN_OUTPUT_String(_Name)
+AND
+QRY_AMER_GEN_TSK_Get("AMER_Artifact_Chthonian_LogText")
+AND
+DB_AMER_GEN_OUTPUT_String(_LogText)
+THEN
+PROC_AMER_GEN_CharacterCombatLogText_Param_Str(_Attacker, _LogText, _Name);
+
+//Fire the projectile.
+PROC PROC_AMER_Artifacts_Chthonian_Fire((CHARACTERGUID)_Attacker, (CHARACTERGUID)_Defender, (REAL)_X, (REAL)_Y, (REAL)_Z)
+THEN
+CharacterStatusText(_Attacker, "Artifact_Chthonian");
+//PROC_AMER_GEN_ShootConeAt(_Attacker, _Defender, "Cone_AMER_SCRIPT_Chthonian", "RS3_FX_Skills_Warrior_GroundSmash_Cast_01");
+PROC_AMER_GEN_ShootConeAtPos(_Attacker, _X, _Y, _Z, "Cone_AMER_SCRIPT_Chthonian", "RS3_FX_Skills_Warrior_GroundSmash_Cast_01");
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"

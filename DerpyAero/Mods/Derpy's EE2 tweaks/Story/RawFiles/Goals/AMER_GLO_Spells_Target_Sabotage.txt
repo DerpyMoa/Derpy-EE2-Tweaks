@@ -1,0 +1,114 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+
+PROC PROC_AMER_Spells_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_Sabotage", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_Derpy_Sabotage_SI0(_Char, _Target);
+
+
+PROC PROC_Derpy_Sabotage_SI0((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+AND
+HasActiveStatus(_Target, "SabotageCD", 0)
+AND
+GetVarFloat(_Target, "AMER_GEN_PoisonResistance", _PoisonRes)
+AND
+_PoisonRes < 100
+AND
+Random(18, _Rand)
+AND
+DB_Derpy_Sabotage_Items(_Rand, _Proj)
+THEN
+PROC_AMER_GEN_CharacterCauseExplosion(_Char, _Target, _Proj);
+
+
+PROC PROC_Derpy_Sabotage_SI0((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+AND
+HasActiveStatus(_Target, "SabotageCD", 0)
+AND
+GetVarFloat(_Target, "AMER_GEN_PoisonResistance", _PoisonRes)
+AND
+_PoisonRes >= 100
+AND
+Random(13, _Rand)
+AND
+DB_Derpy_Sabotage_Items(_Rand, _Proj)
+THEN
+PROC_AMER_GEN_CharacterCauseExplosion(_Char, _Target, _Proj);
+
+
+//=======================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_Sabotage", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_Derpy_Sabotage_SI0(_Char, _Target);
+PROC_AMER_GEN_DoFreeSneak(_Char);
+
+
+//=======================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_Sabotage", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "RogueLore", 40.0, 8.0);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_Sabotage", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 2)
+AND
+QRY_AMER_GEN_IterateCharsAroundObject_GetRequestIndex()
+AND
+DB_AMER_GEN_OUTPUT_Integer(_RequestID)
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+DB_AMER_Source_Infusion_Sabotage_Data(_RequestID, "AMER_SABOTAGE", 6.0);
+DB_AMER_IterateCharsAroundObject_Exclusion(_Target);	//Don't cast again on target.
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 13.0, _Char, 42, "AMER_SourceInfusion_SabotageIterator");	//Only living enemies _Char can see.
+
+
+//=======================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_Sabotage", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+AND
+QRY_AMER_GEN_IterateCharsAroundObject_GetRequestIndex()
+AND
+DB_AMER_GEN_OUTPUT_Integer(_RequestID)
+THEN
+DB_AMER_Source_Infusion_Sabotage_Data(_RequestID, "AMER_SABOTAGE_INFUS_3", 12.0);
+ApplyStatus(_Target, "AMER_SABOTAGE_INFUS_3", 12.0, 0, _Char);	//Overwrite base sabotage debuff on primary _Target with Infus3 one.
+DB_AMER_IterateCharsAroundObject_Exclusion(_Target);	//Don't cast again on target.
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 13.0, _Char, 42, "AMER_SourceInfusion_SabotageIterator");	//Only living enemies _Char can see.
+PROC_AMER_Source_Infusion_AddRefund(_Char, 2, 1);
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "AMER_SourceInfusion_SabotageIterator", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+AND
+DB_AMER_Source_Infusion_Sabotage_Data(_RequestID, _Status, _Duration)
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Sabotage_Impact_Root_01", "Dummy_BodyFX");
+ApplyStatus(_Char, _Status, _Duration, 0, _SourceChar);
+PROC_Derpy_Sabotage_SI0(_SourceChar, _Char);
+ApplyStatus(_Char, "AMER_BLIND_2", 12.0, 0, _SourceChar);
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Finished((INTEGER)_RequestID, "AMER_SourceInfusion_SabotageIterator", (CHARACTERGUID)_SourceChar)
+AND
+DB_AMER_Source_Infusion_Sabotage_Data(_RequestID, _Status, _Duration)
+THEN
+NOT DB_AMER_Source_Infusion_Sabotage_Data(_RequestID, _Status, _Duration);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Scoundrel"

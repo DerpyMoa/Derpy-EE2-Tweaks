@@ -1,0 +1,34 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_GEN_BasicAttackObjectStarted((CHARACTERGUID)_Defender, (REAL)_X, (REAL)_Y, (REAL)_Z, (CHARACTERGUID)_Owner, (CHARACTERGUID)_Attacker, (STRING)_AttackID)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Attacker, "Artifact_BountyHunter", _)
+AND
+QRY_AMER_GEN_SneakingOrSpellStartedInSneak(_Attacker)
+THEN
+PROC_AMER_TempStat_HitStatus_ThrowProc(_Attacker, "Artifact_BountyHunter", 2000, "");
+
+
+PROC PROC_AMER_HitStatus_Event((CHARACTERGUID)_Defender, (CHARACTERGUID)_Attacker, "Artifact_BountyHunter")
+AND
+ObjectExists(_Defender, 1)
+AND
+ObjectIsCharacter(_Defender, 1)
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Attacker, -6.0, -1.5, 0.0, "Ability", "RogueLore")
+AND
+DB_AMER_GEN_OUTPUT_Real(_Scaling)
+THEN
+PROC_AMER_TempStat_HitStatus_ThrowProc_Clear(_Attacker, "Artifact_BountyHunter");
+PROC_AMER_GEN_RemoveAndApplyStatus(_Defender, "AMER_BOUNTYHUNTER", 12.0, _Attacker);
+PROC_AMER_StatusMod_FlexStat_TryApplyModForStatus(_Defender, _Attacker, "AMER_BOUNTYHUNTER", "Stat_SpecialCase", "AllResistance", _Scaling, "Artifact_BountyHunter");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"

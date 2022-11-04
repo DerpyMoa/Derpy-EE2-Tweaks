@@ -1,0 +1,87 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+//Opportunist grants 2 free Reaction charges.
+
+PROC PROC_AMER_Talents_Toggle((CHARACTERGUID)_Char, "AttackOfOpportunity", (REAL)_Toggle)
+AND
+RealProduct(_Toggle, 2.0, _Amount)
+THEN
+PROC_AMER_ExtendedStat_CharacterAddStat(_Char, "FreeReactionCharge", "AnyReaction", "", "", _Amount);
+
+
+IF
+CharacterCharacterEvent(_Char, _Target, "AMER_GEN_AoO_Started")
+THEN
+PROC_Derpy_AOO_Effects(_Char, _Target);
+
+
+PROC PROC_Derpy_AOO_Effects((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+AND
+NOT DB_IsPlayer(_Char)
+THEN
+PROC_Derpy_AOO_Actions(_Char, _Target);
+
+
+PROC PROC_Derpy_AOO_Effects((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+AND
+DB_IsPlayer(_Char)
+AND
+QRY_Derpy_Talents_AOO_CanUse(_Char)
+THEN
+PROC_Derpy_AOO_Actions(_Char, _Target);
+
+
+PROC PROC_Derpy_AOO_Actions((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+THEN
+PROC_Derpy_Talents_AOO_ClearDB(_Char);
+DB_Derpy_Talents_AOO_Target(_Char, _Target);
+ClearVarObject(_Char, "AttackOfOpportunity");
+PROC_AMER_Reaction_Request(_Char, _Target, "AMER_Centurion", "Derpy_Talent_AOO", "", 0);
+
+
+PROC PROC_Derpy_Talents_AOO_ClearDB((CHARACTERGUID)_Char)
+AND
+DB_Derpy_Talents_AOO_Target(_Char, _Target)
+THEN
+NOT DB_Derpy_Talents_AOO_Target(_Char, _Target);
+
+
+//=======================================================================
+
+
+PROC PROC_AMER_Reaction_Conditions_Additional_WithinWeaponRange_GetRange_Manip((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, "AMER_Centurion", "Derpy_Talent_AOO")
+AND
+DB_AMER_GEN_OUTPUT_Real(_OldOutput)
+AND
+RealSum(_OldOutput, 0.5, _NewOutput)    //Add a small buffer for range, because AoO probably reacted *after* the target left our weapon range, so without this our range could be insufficient.
+THEN
+DB_AMER_GEN_OUTPUT_Real(_NewOutput);
+NOT DB_AMER_GEN_OUTPUT_Real(_OldOutput);
+
+
+//=======================================================================
+
+
+QRY QRY_Derpy_Talents_AOO_CanUse((CHARACTERGUID)_Char)
+AND
+DB_AMER_GEN_PlayerWeaponData(_Char, _, _, _WeaponType1, _WeaponType2)
+AND
+_WeaponType1 != "Bow"
+AND
+_WeaponType1 != "Crossbow"
+AND
+_WeaponType1 != "Wand"
+AND
+_WeaponType2 != "Wand"
+THEN
+DB_NOOP();
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Talents"

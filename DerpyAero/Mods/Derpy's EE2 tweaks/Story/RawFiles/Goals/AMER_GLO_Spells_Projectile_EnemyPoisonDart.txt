@@ -1,0 +1,30 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Projectile_EnemyPoisonDart", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_GEN_ShootProjectileAtPos(_Char, _X, _Y, _Z, "Projectile_AMER_SCRIPT_PoisonDartStart_Infusion_1");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Projectile_EnemyPoisonDart", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_GEN_Shoot_Delayed("Projectile", _Char, _X, _Y, _Z, "Projectile_Derpy_SCRIPT_EnemyPoisonDart_Infusion_2", 0, 150);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Projectile_EnemyPoisonDart", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+ApplyStatus(_Char, "Derpy_EnemyPoisonDart_SI", 18.0, 0, _Char);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Geomancer"

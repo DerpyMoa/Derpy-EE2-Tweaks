@@ -1,0 +1,32 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_Derpy_Sabotage_Items(0, "Projectile_FireArrow");
+DB_Derpy_Sabotage_Items(1, "Projectile_ExplosionArrow");
+DB_Derpy_Sabotage_Items(2, "Projectile_FreezingArrow");
+DB_Derpy_Sabotage_Items(3, "Projectile_CursedFireArrow");
+DB_Derpy_Sabotage_Items(4, "Projectile_StunningArrow");
+DB_Derpy_Sabotage_Items(5, "Projectile_StaticCloudArrow");
+DB_Derpy_Sabotage_Items(6, "Projectile_KnockedOutArrow");
+
+DB_Derpy_Sabotage_Items(7, "Projectile_Grenade_Nailbomb");
+DB_Derpy_Sabotage_Items(8, "Projectile_Grenade_Molotov");
+DB_Derpy_Sabotage_Items(9, "Projectile_Grenade_CursedMolotov");
+DB_Derpy_Sabotage_Items(10, "Projectile_Grenade_Ice");
+DB_Derpy_Sabotage_Items(11, "Projectile_Grenade_Tremor");
+DB_Derpy_Sabotage_Items(12, "Projectile_Grenade_Taser");
+
+DB_Derpy_Sabotage_Items(13, "Projectile_PoisonedCloudArrow");
+DB_Derpy_Sabotage_Items(14, "Projectile_PoisonArrow");
+DB_Derpy_Sabotage_Items(15, "Projectile_Grenade_MustardGas");
+DB_Derpy_Sabotage_Items(16, "Projectile_Grenade_PoisonFlask");
+DB_Derpy_Sabotage_Items(17, "Projectile_Grenade_CursedPoisonFlask");
+
+
+KBSECTION
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

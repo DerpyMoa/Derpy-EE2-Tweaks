@@ -1,0 +1,60 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Teleportation_Netherswap", (INTEGER)_InfusCount)
+THEN
+DB_AMER_Source_Infusion_RefundPoints(_Char, 2, 0);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Teleportation_Netherswap", 2)
+THEN
+PROC_AMER_GEN_ApplyStatusUntilEndOfTurn(_Char, "AMER_NETHERSWAP_INFUS_2", _Char);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Teleportation_Netherswap", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_Source_Infusion_Netherswap_2(_Char, _X, _Y, _Z);
+
+
+PROC PROC_AMER_Source_Infusion_Netherswap_2((CHARACTERGUID)_Char, (REAL)_X, (REAL)_Y, (REAL)_Z)
+THEN
+PlayEffectAtPosition("RS3_FX_Skills_Air_Wind_Cast_Ground_02", _X, _Y, _Z);
+PROC_AMER_GEN_IterateCharsAroundPoint(_X, _Y, _Z, 3.0, _Char, 10, "AMER_SourceInfusion_Netherswap_2");	//Living enemies within 3.0m of _Target. Iterate around point instead of char because the char is being teleported.
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "AMER_SourceInfusion_Netherswap_2", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+ApplyStatus(_Char, "AMER_SLOWED_APPLY", 12.0, 0, _SourceChar);
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Teleportation_Netherswap", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Teleportation_Netherswap", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+ApplyStatus(_Char, "AMER_NETHERSWAP_INFUS_2", 18.0, 0, _Char);
+
+
+
+//Empowered Netherswap slow effect.
+PROC PROC_AMER_Spells_SkillCast_PerTarget((CHARACTERGUID)_Char, "Teleportation_Netherswap", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+AND
+DB_AMER_Spells_IDOverride_Current(_Char, "Teleportation_Netherswap_Empowered", _)
+THEN
+PROC_AMER_Source_Infusion_Netherswap_2(_Char, _X, _Y, _Z);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Aerotheurge"

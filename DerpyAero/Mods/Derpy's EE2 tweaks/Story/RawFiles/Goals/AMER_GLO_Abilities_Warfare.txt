@@ -1,0 +1,85 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Warfare grants +1% critical chance while casting when caster is flanked, or directly targeting a flanked character, or when within 5m of at least 2 or more enemies.
+
+PROC PROC_AMER_Spells_SkillPreCast_PerTarget((CHARACTERGUID)_Char, (STRING)_Skill, _Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount, (STRING)_Type, "Warrior")
+AND
+NOT DB_AMER_Abilities_WarfarePreCastBonusApplied(_Char)	//Choke for spells that have multiple targets.
+AND
+_Target != NULL_00000000-0000-0000-0000-000000000000
+AND
+ObjectIsCharacter((CHARACTERGUID)_Target, 1)
+AND
+QRY_AMER_GEN_IterateCharsAroundObject_GetRequestIndex()
+AND
+DB_AMER_GEN_OUTPUT_Integer(_RequestIndex)
+THEN
+DB_AMER_Abilities_Warfare_TargetBuffer(_RequestIndex, _Target);
+PROC_AMER_GEN_CountCharsAroundObject(_Char, 5.0, _Char, 10, "WarfareBonus_CountChars");	//Count only living enemies within 5m.
+
+PROC PROC_AMER_GEN_CountCharsAroundObject_Returned((INTEGER)_RequestIndex, "WarfareBonus_CountChars", (CHARACTERGUID)_Char, (INTEGER)_Count)
+AND
+DB_AMER_Abilities_Warfare_TargetBuffer(_RequestIndex, _Target)
+THEN
+NOT DB_AMER_Abilities_Warfare_TargetBuffer(_RequestIndex, _Target);
+PROC_AMER_Abilities_Warfare_TryAddBonus(_Char, (CHARACTERGUID)_Target, _Count);
+
+PROC PROC_AMER_Abilities_Warfare_TryAddBonus((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (INTEGER)_Count)
+AND
+QRY_AMER_Abilities_Warfare_CanAddBonus(_Char, _Target, _Count)  //Either _Char or _Target must be flanked, or _Char is within 5m of 2 or more enemies.
+AND
+CharacterGetAbility(_Char, "WarriorLore", _Amount)
+AND
+Real(_Amount, _AmountReal)
+THEN
+PROC_AMER_TempStat_FlexStat_Add(_Char, "Stat", "CRITICALCHANCE", _AmountReal, 2000, "SkillCast");
+DB_AMER_Abilities_WarfarePreCastBonusApplied(_Char);
+
+PROC PROC_AMER_Spells_SkillCast((CHARACTERGUID)_Char, (STRING)_Skill, (INTEGER)_InfusCount, (STRING)_Type, "Warrior")
+AND
+DB_AMER_Abilities_WarfarePreCastBonusApplied(_Char)
+THEN
+NOT DB_AMER_Abilities_WarfarePreCastBonusApplied(_Char);
+
+
+
+QRY QRY_AMER_Abilities_Warfare_CanAddBonus((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (INTEGER)_Count)
+AND
+HasActiveStatus(_Target, "FLANKED", 1)
+THEN
+DB_NOOP(1);
+
+QRY QRY_AMER_Abilities_Warfare_CanAddBonus((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (INTEGER)_Count)
+AND
+HasActiveStatus(_Char, "FLANKED", 1)
+THEN
+DB_NOOP(1);
+
+QRY QRY_AMER_Abilities_Warfare_CanAddBonus((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (INTEGER)_Count)
+AND
+_Count >= 2
+THEN
+DB_NOOP(1);
+
+
+//===================================================================================================================================
+
+
+PROC PROC_AMER_Spells_SkillCast((CHARACTERGUID)_Char, (STRING)_Skill, (INTEGER)_InfusCount, (STRING)_Type, "Warrior")
+AND
+CharacterIsPlayer(_Char, 1)
+AND
+CharacterGetAbility(_Char, "WarriorLore", _Warfare)
+AND
+Real(_Warfare, _WarfareReal)
+THEN
+PROC_AMER_GEN_Heal_Percentage(_Char, _WarfareReal,  "BothArmors", _Char, 1, 1, 1);	//Triage heal. Counts as Necromantic. Ability scaling enabled (if any).
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Abilities"

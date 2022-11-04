@@ -1,0 +1,71 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Projectile_Chloroform", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat_Scaling(_Char, "AMER_CHLOROFORM", "InstantEffect", "ApplyHarried", "", "", "Chloroform_Infus", 0, "Ability", "RogueLore", 2.0, 0.3, 3000, "SkillCast");
+
+
+//============================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Projectile_Chloroform", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 2)
+THEN
+PROC_AMER_Source_Infusion_Chloroform_2(_Char, _Target);	//Execute two GetNearest queries in succession, the second excludes the target of the first.
+
+PROC PROC_AMER_Source_Infusion_Chloroform_2((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+AND
+QRY_AMER_GEN_GetNearestInCombat(_Char, _Target, _Char, 13.0, 42)	//Living visible enemies within 13m of _Char.
+AND
+DB_AMER_GEN_OUTPUT_NearestInCombat(_Nearest, _)
+THEN
+PROC_AMER_GEN_ShootProjectileAt(_Char, _Nearest, "Projectile_AMER_SCRIPT_Chloroform_Infusion_2");
+DB_AMER_GEN_NearestInCombat_Exclusion(_Nearest);
+
+PROC PROC_AMER_Source_Infusion_Chloroform_2((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+AND
+QRY_AMER_GEN_GetNearestInCombat(_Char, _Target, _Char, 13.0, 42)	//Living visible enemies within 13m of _Char, excluding previous target.
+AND
+DB_AMER_GEN_OUTPUT_NearestInCombat(_Nearest, _)
+THEN
+PROC_AMER_GEN_ShootProjectileAt(_Char, _Nearest, "Projectile_AMER_SCRIPT_Chloroform_Infusion_2");
+
+
+//============================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Projectile_Chloroform", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_TempStat_StatusMod_AddStatus(_Char, "AMER_CHLOROFORM", "AMER_ATAXIA_APPLY", 12.0, 0, 0, 1);
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Projectile_Chloroform", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 13.0, _Char, 42, "AMER_SourceInfusion_Chloroform_3");	//Living enemies _Char can see within 13m of _Char.
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "AMER_SourceInfusion_Chloroform_3", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+PROC_AMER_GEN_ShootProjectileAt(_SourceChar, _Char, "Projectile_AMER_SCRIPT_Chloroform_Infusion_2");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Projectile_Chloroform", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+AND
+DB_AMER_Spells_CastWhileSneaking(_Char, "Projectile_Chloroform", 1)
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Scoundrel"

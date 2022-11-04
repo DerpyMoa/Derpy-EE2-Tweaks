@@ -1,0 +1,92 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_Derpy_ProjectileLanded("6770f065-df9b-4a0b-a6cb-bfa5e5c28c0e", (CHARACTERGUID)_Char, (REAL)_X, (REAL)_Y, (REAL)_Z)
+AND
+Random(4, _Rand)
+AND
+DB_Derpy_FakeChaosProjDimensionalBolt(_Rand, _Proj)
+THEN
+PROC_AMER_GEN_CharacterCauseExplosionAtPos(_Char, _X, _Y, _Z, _Proj);
+
+
+//===========================================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Projectile_DimensionalBolt", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, _InfusCount)
+AND
+_InfusCount > 0
+AND
+Random(4, _Rand1)
+AND
+Random(4, _Rand2)
+AND
+Random(4, _Rand3)
+AND
+DB_Derpy_FakeChaosProjDimensionalBolt_SI1(_Rand1, _Proj1)
+AND
+DB_Derpy_FakeChaosProjDimensionalBolt_SI1(_Rand2, _Proj2)
+AND
+DB_Derpy_FakeChaosProjDimensionalBolt_SI1(_Rand3, _Proj3)
+THEN
+PROC_AMER_GEN_Shoot_Delayed("Explosion", _Char, _X, _Y, _Z, _Proj1, 300);
+PROC_AMER_GEN_Shoot_Delayed("Explosion", _Char, _X, _Y, _Z, _Proj2, 400);
+PROC_AMER_GEN_Shoot_Delayed("Explosion", _Char, _X, _Y, _Z, _Proj3, 500);
+
+
+//===========================================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Projectile_DimensionalBolt", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, _InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 8.0, _Char, 42, "Derpy_SourceInfusion_DimensionalBolt_2");    //Visible living enemies.
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Derpy_SourceInfusion_DimensionalBolt_2", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+PROC_AMER_GEN_Shoot_Delayed("ProjectileStrike", _SourceChar, _Char, "Derpy_ProjectileStrike_Stormbolt_Oil", 200);
+PROC_AMER_GEN_Shoot_Delayed("ProjectileStrike", _SourceChar, _Char, "Derpy_ProjectileStrike_Stormbolt_Fire", 400);
+PROC_AMER_GEN_Shoot_Delayed("ProjectileStrike", _SourceChar, _Char, "Derpy_ProjectileStrike_Stormbolt_Ice", 600);
+PROC_AMER_GEN_Shoot_Delayed("ProjectileStrike", _SourceChar, _Char, "Derpy_ProjectileStrike_Stormbolt_Zap", 800);
+
+
+//===========================================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Projectile_DimensionalBolt", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+ProcObjectTimer(_Char, "Derpy_DimensionalBolt_SI3_Delay", 1200);
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "Derpy_DimensionalBolt_SI3_Delay")
+THEN
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 8.0, _Char, 42, "Derpy_SourceInfusion_DimensionalBolt_3");    //Visible living enemies.
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Derpy_SourceInfusion_DimensionalBolt_3", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+PROC_AMER_Status_Brittle_Detonate(_Char, _SourceChar);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Projectile_DimensionalBolt", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 2, 0);
+ApplyStatus(_Char, "AMER_WINTERBLAST_INFUS_3", 6.0, 0, _Char);
+ApplyStatus(_Char, "AMER_THROWDUST_INFUS_2", 6.0, 0, _Char);
+ApplyStatus(_Char, "Derpy_CHAINLIGHTNING_INFUS_3", 6.0, 0, _Char);
+ApplyStatus(_Char, "AMER_FIREWHIP_INFUS_3", 6.0, 0, _Char);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Summoning"

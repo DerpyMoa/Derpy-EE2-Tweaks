@@ -1,0 +1,60 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_FlamingCrescendo", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+AND
+_InfusCount < 3
+THEN
+PROC_AMER_StatusMod_ExtendedStat_TryApplyModForStatus(_Target, _Char, "AMER_FLAMING_CRESCENDO", "Shoot_OnStatusEnd",  "Explosion", "Projectile_AMER_SCRIPT_FlamingCrescendo_Explosion_Infusion_1", "AMER_FLAMING_CRESCENDO", 1.0, "FlamingCrescendo_Explosion");
+
+
+//======================================================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_FlamingCrescendo", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+AND
+_InfusCount < 3
+AND
+QRY_AMER_GEN_GetNearestInCombat(_Char, _Target, _Char, 13.0, 42)	//Visible living enemies.
+AND
+DB_AMER_GEN_OUTPUT_NearestInCombat(_NearestTarget, _)
+THEN
+PlayEffect(_NearestTarget, "RS3_FX_Skills_Fire_FireBlood_Impact_Root_01", "");
+ApplyStatus(_NearestTarget, "AMER_FLAMING_CRESCENDO", 6.0, 0, _Char);
+PROC_AMER_StatusMod_ExtendedStat_TryApplyModForStatus(_NearestTarget, _Char, "AMER_FLAMING_CRESCENDO", "Shoot_OnStatusEnd",  "Explosion", "Projectile_AMER_SCRIPT_FlamingCrescendo_Explosion_Infusion_1", "AMER_FLAMING_CRESCENDO", 1.0, "FlamingCrescendo_Explosion");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Target_FlamingCrescendo", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+AND
+_InfusCount < 3
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+
+
+//======================================================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_FlamingCrescendo", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 3)
+THEN
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 13.0, _Char, 42, "AMER_SourceInfusion_Immolation_3");	//Visible living enemies.
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "AMER_SourceInfusion_Immolation_3", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+PROC_AMER_GEN_RemoveAndApplyStatus(_Char, "AMER_FLAMING_CRESCENDO", 18.0, _SourceChar);
+PROC_AMER_StatusMod_ExtendedStat_TryApplyModForStatus(_Char, _SourceChar, "AMER_FLAMING_CRESCENDO", "Shoot_OnTurn", "RemoteImpact", "Projectile_AMER_SCRIPT_FlamingCrescendo_Explosion_Infusion_1", "AMER_FLAMING_CRESCENDO", 1.0, "FlamingCrescendo_ExplosionSI3");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Pyrokinetic"

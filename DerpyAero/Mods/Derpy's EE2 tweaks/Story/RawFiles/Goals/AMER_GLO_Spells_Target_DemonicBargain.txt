@@ -1,0 +1,140 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Target_DemonicBargain", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+AND
+HasActiveStatus(_Target, "Derpy_ForcedExchangeCD", 0)
+AND
+DB_Derpy_ForcedExchangeStatuses(_Status)
+AND
+HasActiveStatus(_Target, _Status, 1)
+AND
+SysCount("DB_Derby_ForcedExchange_IteratedStatuses", 2, _Index)
+AND
+GetStatusTurns(_Target, _Status, _Turns)
+AND
+_Turns >= 1
+THEN
+DB_Derby_ForcedExchange_IteratedStatuses(_Index, _Status);
+
+
+PROC PROC_AMER_Spells_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Target_DemonicBargain", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+AND
+HasActiveStatus(_Target, "Derpy_ForcedExchangeCD", 0)
+AND
+SysCount("DB_Derby_ForcedExchange_IteratedStatuses", 2, _DBSize)
+AND
+Random(_DBSize, _Rand)
+AND
+DB_Derby_ForcedExchange_IteratedStatuses(_Rand, _Status)
+THEN
+PROC_Derpy_ForcedExchangePlayerStatuses(_Char, _Status);
+DB_Derpy_ForcedExchange_EnemyStatus(_Char, _Status);
+
+
+PROC PROC_Derpy_ForcedExchangePlayerStatuses((CHARACTERGUID)_Char, (STRING)_Status)
+AND
+_Status != "LIVINGONTHEEDGE_INFUS_1"
+AND
+_Status != "LIVINGONTHEEDGE_INFUS_3"
+THEN
+DB_Derpy_ForcedExchange_SIStatus(_Char, _Status);
+
+
+PROC PROC_Derpy_ForcedExchangePlayerStatuses((CHARACTERGUID)_Char, "LIVINGONTHEEDGE_INFUS_1")
+THEN
+DB_Derpy_ForcedExchange_SIStatus(_Char, "LIVINGONTHEEDGE");
+
+
+PROC PROC_Derpy_ForcedExchangePlayerStatuses((CHARACTERGUID)_Char, "LIVINGONTHEEDGE_INFUS_3")
+THEN
+DB_Derpy_ForcedExchange_SIStatus(_Char, "LIVINGONTHEEDGE");
+
+
+PROC PROC_AMER_Spells_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_DemonicBargain", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 0, (STRING)_Type, (STRING)_Element)
+AND
+DB_Derpy_ForcedExchange_EnemyStatus(_Char, _EnemyStatus)
+AND
+DB_Derpy_ForcedExchange_SIStatus(_Char, _Status)
+THEN
+RemoveStatus(_Target, _EnemyStatus);
+ApplyStatus(_Target, "Derpy_ForcedExchangeCD", 12.0, 0, _Char);
+ApplyStatus(_Char, _Status, 12.0, 0, _Char);
+
+
+//=============================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_DemonicBargain", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 1)
+AND
+DB_Derpy_ForcedExchange_EnemyStatus(_Char, _EnemyStatus)
+AND
+DB_Derpy_ForcedExchange_SIStatus(_Char, _Status)
+AND
+QRY_AMER_GEN_GetNearestInCombat(_Char, _Char, _Char, 13.0, 76)	//Living non-summon ally of _Char that is nearest to _Char, within 13.0 of _Char.
+AND
+DB_AMER_GEN_OUTPUT_NearestInCombat(_NearestTarget, _)
+THEN
+RemoveStatus(_Target, _EnemyStatus);
+ApplyStatus(_Target, "Derpy_ForcedExchangeCD", 12.0, 0, _Char);
+ApplyStatus(_Char, _Status, 12.0, 0, _Char);
+ApplyStatus(_NearestTarget, _Status, 12.0, 0, _Char);
+
+
+//=============================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_DemonicBargain", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 2)
+AND
+DB_Derpy_ForcedExchange_EnemyStatus(_Char, _EnemyStatus)
+AND
+DB_Derpy_ForcedExchange_SIStatus(_Char, _Status)
+THEN
+RemoveStatus(_Target, _EnemyStatus);
+ApplyStatus(_Target, "Derpy_ForcedExchangeCD", 12.0, 0, _Char);
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 13.0, _Char, 12, "Derpy_ForcedExchange_SI2");	//Living allies.
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Derpy_ForcedExchange_SI2", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+AND
+DB_Derpy_ForcedExchange_SIStatus(_, _Status)
+THEN
+ApplyStatus(_Char, _Status, 18.0, 0, _SourceChar);
+
+
+//=============================================================================================================
+
+
+PROC PROC_AMER_Spells_SkillCast_Finished((CHARACTERGUID)_Char, "Target_DemonicBargain", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+ProcObjectTimer(_Char, "Derpy_ForcedExchange_DelayedCleanup", 100);
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "Derpy_ForcedExchange_DelayedCleanup")
+AND
+DB_Derby_ForcedExchange_IteratedStatuses(_Index, _Status)
+THEN
+NOT DB_Derby_ForcedExchange_IteratedStatuses(_Index, _Status);
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "Derpy_ForcedExchange_DelayedCleanup")
+AND
+DB_Derpy_ForcedExchange_EnemyStatus(_Char, _Status)
+THEN
+NOT DB_Derpy_ForcedExchange_EnemyStatus(_Char, _Status);
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "Derpy_ForcedExchange_DelayedCleanup")
+AND
+DB_Derpy_ForcedExchange_SIStatus(_Char, _Status)
+THEN
+NOT DB_Derpy_ForcedExchange_SIStatus(_Char, _Status);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Polymorph"

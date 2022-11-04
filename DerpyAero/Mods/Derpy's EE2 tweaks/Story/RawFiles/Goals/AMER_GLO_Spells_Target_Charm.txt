@@ -1,0 +1,68 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Target_Charm", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+AND
+_InfusCount < 3
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, 2.0, 0.2, 0.0, "Ability", "Summoning")
+AND
+DB_AMER_GEN_OUTPUT_Real(_Scaling)
+AND
+Integer(_Scaling, _ScalingInt)
+THEN
+PROC_AMER_BatteredHarried_ManipAroundPoint(_X, _Y, _Z, 3.0, 1, _ScalingInt, _Char, 10);	//Living enemies.
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Target_Charm", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 13.0, _Char, 10, "AMER_SourceInfusion_Charm_2");	//Living enemies.
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "AMER_SourceInfusion_Charm_2", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+AND
+IsTagged(_Char, "TOTEM", 1)
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Voodoo_DominateMind_Impact_StatusFx_01", "Dummy_StatusFX");
+/* [OSITOOLS_ONLY]
+DB_AMER_Status_BlockLegacyConversion(_Char, "CHARMED"); //When using extender, block conversion of CHARMED in this instance.
+*/
+ApplyStatus(_Char, "CHARMED", -1.0, 0, _SourceChar);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Target_Charm", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Target_Charm", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 13.0, _Char, 10, "AMER_SourceInfusion_Charm_3");	//Living enemies.
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "AMER_SourceInfusion_Charm_3", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+AND
+CharacterIsSummon(_Char, 1)
+AND
+IsTagged(_Char, "TOTEM", 0)
+AND
+IsBoss(_Char, 0)	//Non-totem, non-boss summons are affected by this.
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Voodoo_DominateMind_Impact_StatusFx_01", "Dummy_StatusFX");
+/* [OSITOOLS_ONLY]
+DB_AMER_Status_BlockLegacyConversion(_Char, "CHARMED"); //When using extender, block conversion of CHARMED in this instance.
+*/
+ApplyStatus(_Char, "CHARMED", 12.0, 0, _SourceChar);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Summoning"

@@ -1,0 +1,22 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_Derpy_TerrainTransmuteOffsets(0.0, 0.0);
+DB_Derpy_TerrainTransmuteOffsets(0.0, 3.0);
+DB_Derpy_TerrainTransmuteOffsets(2.1, 2.1);
+DB_Derpy_TerrainTransmuteOffsets(3.0, 0.0);
+DB_Derpy_TerrainTransmuteOffsets(2.1, -2.1);
+DB_Derpy_TerrainTransmuteOffsets(0.0, -3.0);
+DB_Derpy_TerrainTransmuteOffsets(-2.1, -2.1);
+DB_Derpy_TerrainTransmuteOffsets(-3.0, 0.0);
+DB_Derpy_TerrainTransmuteOffsets(-2.1, 2.1);
+
+
+KBSECTION
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

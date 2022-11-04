@@ -1,0 +1,17 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Status_Charged_GetRadius((CHARACTERGUID)_Char)
+AND
+DB_AMER_GEN_OUTPUT_Real(_OldOutput)
+THEN
+NOT DB_AMER_GEN_OUTPUT_Real(_OldOutput);
+DB_AMER_GEN_OUTPUT_Real(4.5);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

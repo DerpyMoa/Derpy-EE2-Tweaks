@@ -1,0 +1,29 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Gain +%damage while performing a Predator reaction for each corpse you can see.
+
+PROC PROC_AMER_KeywordStat_Predator_PreFire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Predator_MUTA_DamagePerCorpse", _)
+THEN
+PROC_AMER_GEN_CountCharsAroundObject(_Char, 30.0, _Char, 16, "Ascension_Predator_MUTA_DamagePerCorpse_CorpseIterator");	//Count only dead characters within target radius.
+
+
+PROC PROC_AMER_GEN_CountCharsAroundObject_Returned((INTEGER)_RequestIndex, "Ascension_Predator_MUTA_DamagePerCorpse_CorpseIterator", (CHARACTERGUID)_Caster, (INTEGER)_Corpses)
+AND
+Real(_Corpses, _CorpsesReal)
+AND
+RealProduct(_CorpsesReal, 20.0, _Bonus)
+AND
+RealMin(_Bonus, 200.0, _BonusBounded)
+THEN
+PROC_AMER_TempStat_FlexStat_Add(_Caster, "Stat", "DAMAGEBOOST", _BonusBounded, 2000, "Attack");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

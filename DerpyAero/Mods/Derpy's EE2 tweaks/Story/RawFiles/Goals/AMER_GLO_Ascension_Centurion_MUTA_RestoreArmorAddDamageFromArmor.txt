@@ -1,0 +1,43 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Centurion restores 20% of missing armors, and grants +0.75% damage during the reaction per percent of current armors.
+
+PROC PROC_AMER_KeywordStat_Centurion_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Centurion_MUTA_RestoreArmorAddDamageFromArmor", _)
+AND
+HasActiveStatus(_Char, "AMER_WARD", 1)
+AND
+QRY_AMER_UI_Ascension_GetEmbodimentCount(_Char, "Inertia")
+AND
+DB_AMER_GEN_OUTPUT_Integer(_Inertia)
+AND
+Real(_Inertia, _InertiaReal)
+AND
+RealProduct(_InertiaReal, 1.0, _Bonus)
+AND
+RealSum(20.0, _Bonus, _Heal)
+THEN
+PROC_AMER_GEN_Heal_Percentage(_Char, _Heal,  "BothArmors", _Char, 1, 1, 1);	//Triage heal. Counts as Necromantic. Ability scaling enabled (if any).
+PROC_AMER_Ascension_Centurion_MUTA_RestoreArmorAddDamageFromArmor(_Char);
+
+
+PROC PROC_AMER_Ascension_Centurion_MUTA_RestoreArmorAddDamageFromArmor((CHARACTERGUID)_Char)
+AND
+CharacterGetArmorPercentage(_Char, _ArmorPerc)
+AND
+CharacterGetMagicArmorPercentage(_Char, _MagicArmorPerc)
+AND
+RealSum(_ArmorPerc, _MagicArmorPerc, _TotalArmorPerc)
+AND
+RealProduct(_TotalArmorPerc, 0.5, _Bonus)
+THEN
+PROC_AMER_TempStat_FlexStat_Add(_Char, "Stat", "DAMAGEBOOST", _Bonus, 2000, "Attack");
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

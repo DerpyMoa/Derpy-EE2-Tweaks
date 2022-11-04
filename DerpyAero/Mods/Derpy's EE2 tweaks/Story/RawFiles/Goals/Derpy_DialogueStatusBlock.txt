@@ -1,0 +1,15 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+DB_DialogNPCs(_, _, _)
+THEN
+PROC_AMER_GEN_Goal_Activate("Derpy_DialogueStatusBlock_Internal");
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

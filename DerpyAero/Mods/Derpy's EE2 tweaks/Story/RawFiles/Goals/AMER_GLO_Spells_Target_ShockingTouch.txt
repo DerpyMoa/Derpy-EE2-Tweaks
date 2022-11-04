@@ -1,0 +1,52 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+//REGION Pay AP logic.
+
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, "Target_ShockingTouch", 0, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_Spells_BatteredHarried_PayAP(_Char, 4, 0, 1);
+
+//END_REGION
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_ShockingTouch", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_Spells_BatteredHarried_PayAP(_Char, 4, 1, 1);
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "AirSpecialist", 25.0, 4.0, 2000, "SkillCast");
+//PROC_AMER_TempStat_ExtendedStat_Add_StatScaling(_Char, "AttributeIntelligenceEffect_Multiplier", "", "", "", "Ability", "AirSpecialist", 0.075, 0.015, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Target_ShockingTouch", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 2)
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat_Scaling(_Char, "AMER_DISINTEGRATING_AIR", "Disintegrating", "Air", "", "", "ShockingTouchInfus", 0, "Ability", "AirSpecialist", 0.25, 0.025);
+ApplyStatus(_Target, "AMER_DISINTEGRATING_AIR", 6.0, 0, _Char);
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Target_ShockingTouch", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat_Scaling(_Char, "AMER_DISINTEGRATING_AIR", "Disintegrating", "Air", "", "", "ShockingTouchInfus", 0, "Ability", "AirSpecialist", 0.25, 0.035);
+ApplyStatus(_Target, "AMER_DISINTEGRATING_AIR", 12.0, 0, _Char);
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_ShockingTouch", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, 2.0, 0.20, 0.0, "Ability", "AirSpecialist")
+AND
+DB_AMER_GEN_OUTPUT_Real(_Scaling)
+AND
+Integer(_Scaling, _ScalingInt)
+THEN
+PROC_AMER_BatteredHarried_DirectManip(_Target, 1, _ScalingInt, _Char);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Aerotheurge"

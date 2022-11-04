@@ -1,0 +1,48 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_HealingTears", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+AND
+_InfusCount < 3
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat_Scaling(_Char, "HEALING_TEARS", "Regen_Life", "", "", "", "HealingTears_Infus", 1, "Ability", "WaterSpecialist", 20.0, 1.0, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_HealingTears", 1)
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "HEALING_TEARS", "HealingTears_SI1", "", "", "", 1.0, "HealingTears_Infus", 1, 2000, "SkillCast");
+
+
+//==================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_HealingTears", 2)
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "HEALING_TEARS", "HealingTears_SI2", "", "", "", 1.0, "HealingTears_Infus", 1, 2000, "SkillCast");
+
+
+//==================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_HealingTears", 3)
+AND
+NRD_ApplyActiveDefense(_Char, "HEALING_TEARS_INFUS3", 24.0, _HealingTears_SI3)
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat_Scaling(_Char, "HEALING_TEARS_INFUS3", "Regen_Life", "", "", "", "HealingTears_Infus", 1, "Ability", "WaterSpecialist", 20.0, 1.0, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "HEALING_TEARS_INFUS3", "HealingTears_SI2", "", "", "", 1.0, "HealingTears_Infus", 1, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_HealingTears", 3)
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 2, 1);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Hydrosophist"

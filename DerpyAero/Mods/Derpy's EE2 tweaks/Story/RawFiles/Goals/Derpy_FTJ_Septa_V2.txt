@@ -1,0 +1,34 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_FTJ_BeachCrab_ba6d2b58-c978-4ce9-a99b-3aef542dd2e7);
+PROC_AMER_ModSetting_AlwaysInfuse_Specific(CHARACTERGUID_S_FTJ_BeachCrab_ba6d2b58-c978-4ce9-a99b-3aef542dd2e7, 3);
+
+KBSECTION
+
+IF
+RegionStarted(_)
+AND
+QueryOnlyOnce("Derpy_SeptaSetup")
+THEN
+SetIsBoss(CHARACTERGUID_S_FTJ_BeachCrab_ba6d2b58-c978-4ce9-a99b-3aef542dd2e7, 1);
+
+
+IF
+AttackedByObject(CHARACTERGUID_S_FTJ_BeachCrab_ba6d2b58-c978-4ce9-a99b-3aef542dd2e7,(CHARACTERGUID)_Player,_,_,_)
+AND
+DB_IsPlayer(_Player)
+THEN
+ProcMakeNPCHostile(CHARACTERGUID_S_FTJ_BeachCrab_ba6d2b58-c978-4ce9-a99b-3aef542dd2e7,_Player);
+
+
+PROC
+ProcRegionEnded("FJ_FortJoy_Main")
+THEN
+GoalCompleted;
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "FortJoy"

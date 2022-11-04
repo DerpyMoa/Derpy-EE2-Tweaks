@@ -1,0 +1,14 @@
+new ItemCombination "SCROLL_Resurrect_QUEST_Resurrection_Idol_Inert"
+data "RecipeCategory" "Objects"
+data "Type 1" "Object"
+data "Object 1" "SCROLL_Resurrect"
+data "Transform 1" "Consume"
+data "Type 2" "Object"
+data "Object 2" "QUEST_Resurrection_Idol_Inert"
+data "Transform 2" "Transform"
+
+new ItemCombinationResult "SCROLL_Resurrect_QUEST_Resurrection_Idol_Inert_1"
+data "ResultAmount 1" "1"
+data "Result 1" "CON_Drink_Cup_A_Water"
+data "PreviewStatsID" "CON_Drink_Cup_A_Water"
+

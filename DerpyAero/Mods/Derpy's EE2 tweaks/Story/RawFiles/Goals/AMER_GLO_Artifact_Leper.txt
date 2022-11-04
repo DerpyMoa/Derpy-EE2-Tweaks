@@ -1,0 +1,21 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+CharacterCriticalHitBy(_Defender, _Owner, _Attacker)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Owner, "Artifact_Leper", _)
+AND
+QRY_AMER_GEN_OncePerRound_PerChar(_Owner, "Artifact_Leper", _Defender)
+THEN
+DB_AMER_GEN_OncePerRound_PerChar(_Owner, "Artifact_Leper", _Defender);
+ApplyStatus(_Defender, "AMER_DECAYING_2", 6.0, 0, _Owner);
+ApplyStatus(_Owner, "AMER_DECAYING_2", 6.0, 0, _Owner);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"

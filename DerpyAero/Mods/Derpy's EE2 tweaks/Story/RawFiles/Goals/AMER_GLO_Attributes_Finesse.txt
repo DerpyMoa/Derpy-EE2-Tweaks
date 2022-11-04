@@ -1,0 +1,146 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+//Finesse grants +0.1 Start AP to players.
+//Finesse grants +1% Critical Chance to players and their summons.
+//Finesse grants 10% (2.5% for enemies) chance to recover 1 AP when performing Basic and Weapon attacks. If you have more than a 100% chance to recover AP in this way, that surplus becomes your chance to recover an additional AP (up to 2 for enemies).
+
+
+//================================================================================================================
+
+//Start AP and Critical Chance
+
+PROC PROC_AMER_Attributes_AttributeChanged((CHARACTERGUID)_Char, "Finesse", (INTEGER)_New, (INTEGER)_Old, (INTEGER)_Diff)
+THEN
+PROC_Derpy_FinesseBonuses(_Char, _New, _Old, _Diff);
+
+
+//Player Start AP and Critical Chance
+PROC PROC_Derpy_FinesseBonuses((CHARACTERGUID)_Char, (INTEGER)_New, (INTEGER)_Old, (INTEGER)_Diff)
+AND
+DB_IsPlayer(_Char)
+AND
+Real(_Diff, _DiffReal)
+AND
+RealProduct(_DiffReal, 0.1, _StartAP)
+THEN
+PROC_AMER_FlexStat_AddStatAsBatch_Volatile(_Char, "APSTART", _StartAP, "");
+PROC_AMER_FlexStat_AddStatAsBatch_Volatile(_Char, "CRITICALCHANCE", _DiffReal, "");
+
+
+//Summon Critical Chance
+PROC PROC_Derpy_FinesseBonuses((CHARACTERGUID)_Char, (INTEGER)_New, (INTEGER)_Old, (INTEGER)_Diff)
+AND
+CharacterIsSummon(_Char, 1)
+AND
+QRY_AMER_GEN_GetOwner(_Char)
+AND
+DB_AMER_GEN_OUTPUT_Char(_Owner)
+AND
+DB_IsPlayer(_Owner)
+AND
+Real(_Diff, _DiffReal)
+THEN
+PROC_AMER_FlexStat_AddStatAsBatch_Volatile(_Char, "CRITICALCHANCE", _DiffReal, "");
+
+
+//================================================================================================================
+
+//AP Recovery
+
+PROC PROC_AMER_ActionPoints_BasicAttackCost_Returned((CHARACTERGUID)_Char, (INTEGER)_Cost)
+AND
+CharacterIsInCombat(_Char, 1)
+AND
+QRY_AMER_GEN_GetOwner(_Char)
+AND
+DB_AMER_GEN_OUTPUT_Char(_Owner)
+AND
+CharacterIsPlayer(_Owner, _IsPlayer)
+THEN
+PROC_Derpy_FinesseRecovery(_Char, _Owner, _IsPlayer);
+
+
+//Player
+PROC PROC_Derpy_FinesseRecovery((CHARACTERGUID)_Char, (CHARACTERGUID)_Owner, 1)
+AND
+CharacterGetAttribute(_Char, "Finesse", _Fin)
+AND
+IntegerSubtract(_Fin, 10, _FinOverTen)
+AND
+Real(_FinOverTen, _FinOverTenReal)
+AND
+RealProduct(_FinOverTenReal, 10.0, _Chance)
+AND
+RealProduct(_Chance, 0.01, _GuaranteedAP)	//Chance over 100 grants 1 AP always, chance of 200 grants 2 AP always, chance of 300 grants 3 AP always, etc.
+AND
+Integer(_GuaranteedAP, _GuaranteedAPInt)	//_GuaranteedAPInt is 0, 1, 2, 3, etc
+AND
+IntegerProduct(_GuaranteedAPInt, 100, _ChanceAdjust)	//_ChanceAdjust will become 0, 100, 200, 300, etc
+AND
+Real(_ChanceAdjust, _ChanceAdjustReal)
+AND
+RealSubtract(_Chance, _ChanceAdjustReal, _ChanceSurplus)	//_ChanceSurplus is the _Chance over 100, or just _Chance if _Chance was originally less than 100. If _Chance was 200 (or 300, 400, etc), then _ChanceSurplus is 0.
+AND
+Integer(_ChanceSurplus, _ChanceSurplusInt)
+THEN
+PROC_AMER_Attributes_Finesse_BasicAttackRecoverAP(_Char, _ChanceSurplusInt, _GuaranteedAPInt);
+
+
+//Enemy
+PROC PROC_Derpy_FinesseRecovery((CHARACTERGUID)_Char, (CHARACTERGUID)_Owner, 0)
+AND
+CharacterGetAttribute(_Char, "Finesse", _Fin)
+AND
+IntegerSubtract(_Fin, 10, _FinOverTen)
+AND
+Real(_FinOverTen, _FinOverTenReal)
+AND
+RealProduct(_FinOverTenReal, 2.5, _Chance)
+AND
+RealMin(_Chance, 200.0, _ChanceBounded)	//_Chance over 200 grants no additional effect, which occurs at Finesse > 90 (with each Finesse granting 2.5% chance).
+AND
+RealProduct(_ChanceBounded, 0.01, _GuaranteedAP)	//Chance over 100 grants 1 AP always. Chance of 200 grants 2 AP always.
+AND
+Integer(_GuaranteedAP, _GuaranteedAPInt)	// _GuaranteedAPInt is 0, 1, or 2.
+AND
+IntegerProduct(_GuaranteedAPInt, 100, _ChanceAdjust)	//_ChanceAdjust will become 0, 100, or 200.
+AND
+Real(_ChanceAdjust, _ChanceAdjustReal)
+AND
+RealSubtract(_ChanceBounded, _ChanceAdjustReal, _ChanceSurplus)	//_ChanceSurplus is the _ChanceBounded over 100, or just _ChanceBounded if _ChanceBounded was originally less than 100. If _ChanceBounded was 200, then _ChanceSurplus is 0.
+AND
+Integer(_ChanceSurplus, _ChanceSurplusInt)
+THEN
+PROC_AMER_Attributes_Finesse_BasicAttackRecoverAP(_Char, _ChanceSurplusInt, _GuaranteedAPInt);
+
+
+PROC PROC_AMER_Attributes_Finesse_BasicAttackRecoverAP((CHARACTERGUID)_Char, (INTEGER)_Chance, (INTEGER)_GuaranteedAP)
+AND
+NOT QRY_AMER_Attributes_Finesse_BasicAttackRecoverAP_ChanceBonus(_Char, _Chance, _GuaranteedAP)	//If chance fails, only award guaranteed AP.
+AND
+Real(_GuaranteedAP, _GuaranteedAPReal)
+THEN
+PROC_AMER_ExtendedStat_CharacterAddStat(_Char, "BasicAttackRecoverAP_Oneshot", "", "", "", _GuaranteedAPReal);
+
+
+QRY QRY_AMER_Attributes_Finesse_BasicAttackRecoverAP_ChanceBonus((CHARACTERGUID)_Char, (INTEGER)_Chance, (INTEGER)_GuaranteedAP)
+AND
+_Chance != 0
+AND
+QRY_AMER_GEN_RandomSuccess(_Chance)
+AND
+IntegerSum(_GuaranteedAP, 1, _TotalBonus)
+AND
+Real(_TotalBonus, _BonusReal)
+THEN
+PROC_AMER_ExtendedStat_CharacterAddStat(_Char, "BasicAttackRecoverAP_Oneshot", "", "", "", _BonusReal);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Attributes"

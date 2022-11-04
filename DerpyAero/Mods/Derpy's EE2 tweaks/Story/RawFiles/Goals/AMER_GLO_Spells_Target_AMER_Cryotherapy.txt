@@ -1,0 +1,69 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+//Basic logic for Cryotherapy.
+PROC PROC_AMER_GEN_FilteredStatus_Applied((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, "AMER_CRYOTHERAPY", (INTEGER)_Turns)
+AND
+CharacterIsEnemy(_Char, _Source, _EnemyBool)
+THEN
+PROC_AMER_Spells_Cryotherapy(_Char, _Source, _EnemyBool);
+
+//Neutral/allied targets.
+PROC PROC_AMER_Spells_Cryotherapy((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, 0)
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Water_Cast_Self_WaterFrost_Root_01", "Dummy_Root");
+RemoveStatus(_Char, "AMER_SCORCHED");
+RemoveStatus(_Char, "BURNING");
+RemoveStatus(_Char, "NECROFIRE");
+RemoveStatus(_Char, "DECAYING_TOUCH");
+RemoveStatus(_Char, "AMER_DECAYING_STORY");
+RemoveStatus(_Char, "MARKED");
+PROC_AMER_GEN_RemoveStatusFamily(_Char, "Decaying");
+ApplyStatus(_Char, "CRYOTHERAPY", 0.0, 0, _Source);
+
+//Enemy targets.
+PROC PROC_AMER_Spells_Cryotherapy((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, 1)
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Water_WinterBlast_Impact_01", "");
+ApplyStatus(_Char, "AMER_BRITTLE_APPLY", 12.0, 0, _Source);
+CreateSurface(_Char, "SurfaceWaterFrozen", 2.0, 12.0);
+
+//Base battered/harried removal scripted into CRYOTHERAPY status so that it's easier to disseminate it.
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, "Target_AMER_Cryotherapy", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "CRYOTHERAPY", "InstantEffect", "ApplyHarried", "", "", -2.0, "Cryotherapy_Base", 0, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_AMER_Cryotherapy", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_StatusMod_AddFlexStat_Scaling(_Char, "CRYOTHERAPY_INFUS_2", "Stat_SpecialCase", "EleResistance", "Cryotherapy_Infus", 0, "Ability", "WaterSpecialist", 5.0, 1.0);
+PROC_AMER_TempStat_StatusMod_AddStatus(_Char, "CRYOTHERAPY", "CRYOTHERAPY_INFUS_2", 12.0, 0, 0, 1);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Target_AMER_Cryotherapy", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 13.0, _Char, 8, "AMER_SourceInfusion_Cryotherapy_2");	//Living characters.
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "AMER_SourceInfusion_Cryotherapy_2", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+ApplyStatus(_Char, "AMER_CRYOTHERAPY", 0.0, 0, _SourceChar);
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_AMER_Cryotherapy", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+DB_AMER_Source_Infusion_RefundPoints(_Char, 0, 1);
+PROC_AMER_TempStat_StatusMod_AddFlexStat_Scaling(_Char, "CRYOTHERAPY_INFUS_2", "Stat_SpecialCase", "EleResistance", "Cryotherapy_Infus", 0, "Ability", "WaterSpecialist", 0.0, 2.0);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Hydrosophist"

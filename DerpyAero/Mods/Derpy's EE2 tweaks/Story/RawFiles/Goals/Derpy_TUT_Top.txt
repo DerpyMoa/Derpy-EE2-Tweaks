@@ -1,0 +1,63 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_TUT_ForceCombatTopDeck()
+AND
+DB_IsPlayer(_Player)
+THEN
+SetFaction(CHARACTERGUID_S_TUT_TopDeckMagister1_de400bda-b14e-4cff-b5f5-737781437902,"Evil NPC");
+SetFaction(CHARACTERGUID_S_TUT_TopDeckMagister2_e2d47d73-4f9d-4de2-8a3c-c774a0ea114a,"Evil NPC");
+SetFaction(CHARACTERGUID_S_TUT_TopDeckVoidling10_bd0123ae-26fd-4dad-8326-b6ae9a3fc1c5,"Evil NPC");
+SetFaction(CHARACTERGUID_S_TUT_TopDeckVoidling11_2fcb5b84-875f-42bd-ac80-6f8495c6a47c,"Evil NPC");
+EnterCombat(CHARACTERGUID_S_TUT_TopDeckVoidling10_bd0123ae-26fd-4dad-8326-b6ae9a3fc1c5, _Player);
+EnterCombat(CHARACTERGUID_S_TUT_TopDeckVoidling11_2fcb5b84-875f-42bd-ac80-6f8495c6a47c, _Player);
+EnterCombat(CHARACTERGUID_S_TUT_TopDeckMagister1_de400bda-b14e-4cff-b5f5-737781437902, _Player);
+EnterCombat(CHARACTERGUID_S_TUT_TopDeckMagister2_e2d47d73-4f9d-4de2-8a3c-c774a0ea114a, _Player);
+
+IF
+CharacterPrecogDying(CHARACTERGUID_S_TUT_TopDeckVoidling10_bd0123ae-26fd-4dad-8326-b6ae9a3fc1c5)
+THEN
+SetFaction(CHARACTERGUID_S_TUT_DeadMagister_TentaclesTop_5bb96a55-cd6b-4db0-9af1-f1da42b8971d,"Evil NPC");
+CharacterTransform(CHARACTERGUID_S_TUT_DeadMagister_TentaclesTop_5bb96a55-cd6b-4db0-9af1-f1da42b8971d,"Derpy_TUT_ZombieMagister_199ac459-973d-4d46-987a-a8bf5c9cbd77",0,0,1,0,1,1,1);
+ProcObjectTimer(CHARACTERGUID_S_TUT_DeadMagister_TentaclesTop_5bb96a55-cd6b-4db0-9af1-f1da42b8971d, "DerpyTUTZombieMagister", 100);
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "DerpyTUTZombieMagister")
+THEN
+PlayEffect(CHARACTERGUID_S_TUT_DeadMagister_TentaclesTop_5bb96a55-cd6b-4db0-9af1-f1da42b8971d, "RS3_FX_GP_ScriptedEvent_Lightning_Vertical_01");
+CharacterResurrect(CHARACTERGUID_S_TUT_DeadMagister_TentaclesTop_5bb96a55-cd6b-4db0-9af1-f1da42b8971d);
+ProcObjectTimer(CHARACTERGUID_S_TUT_DeadMagister_TentaclesTop_5bb96a55-cd6b-4db0-9af1-f1da42b8971d, "DerpyTUTZombieMagister_Move", 250);
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "DerpyTUTZombieMagister_Move")
+THEN
+CharacterMoveTo(CHARACTERGUID_S_TUT_DeadMagister_TentaclesTop_5bb96a55-cd6b-4db0-9af1-f1da42b8971d,CHARACTERGUID_S_TUT_TopDeckVoidling10_bd0123ae-26fd-4dad-8326-b6ae9a3fc1c5,1,"",0);
+
+IF
+ObjectEnteredCombat(CHARACTERGUID_S_TUT_DeadMagister_TentaclesTop_5bb96a55-cd6b-4db0-9af1-f1da42b8971d, _)
+THEN
+TeleportTo(CHARACTERGUID_S_TUT_DeadMagister_TentaclesTop_5bb96a55-cd6b-4db0-9af1-f1da42b8971d,CHARACTERGUID_S_TUT_DeadMagister_TentaclesTop_5bb96a55-cd6b-4db0-9af1-f1da42b8971d);
+
+IF
+CharacterUsedSkill(_Tentacle, "Zone_Quest_EnemyTentacleSweep", _, _)
+THEN
+CharacterSetImmortal(CHARACTERGUID_S_TUT_TopDeckMagister1_de400bda-b14e-4cff-b5f5-737781437902, 1);
+CharacterSetImmortal(CHARACTERGUID_S_TUT_TopDeckMagister2_e2d47d73-4f9d-4de2-8a3c-c774a0ea114a, 1);
+ProcObjectTimer(CHARACTERGUID_S_TUT_TopDeckMagister1_de400bda-b14e-4cff-b5f5-737781437902, "ImNotDyingBro", 3000);
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "ImNotDyingBro")
+THEN
+CharacterSetImmortal(CHARACTERGUID_S_TUT_TopDeckMagister1_de400bda-b14e-4cff-b5f5-737781437902, 0);
+CharacterSetImmortal(CHARACTERGUID_S_TUT_TopDeckMagister2_e2d47d73-4f9d-4de2-8a3c-c774a0ea114a, 0);
+
+IF
+RegionEnded(_)
+THEN
+GoalCompleted;
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Tutorial_PrisonShip"

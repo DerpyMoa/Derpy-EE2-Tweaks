@@ -1,0 +1,28 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_GEN_FilteredStatus_Removed((CHARACTERGUID)_Char, _, "AMER_SABOTAGE")
+AND
+HasActiveStatus(_Char, "SabotageCD", 0)
+AND
+HasActiveStatus(_Char, "AMER_SABOTAGE_INFUS_3", 0)
+THEN
+ApplyStatus(_Char, "SabotageCD", 12.0, 1, _Char);
+PROC_AMER_StatusMod_ExtendedStat_TryApplyModForStatus(_Char, _Char, "SabotageCD", "BlockStatus", "AMER_SABOTAGE", "", "", 1.0, "DerpySabotageCD");
+PROC_AMER_StatusMod_ExtendedStat_TryApplyModForStatus(_Char, _Char, "SabotageCD", "BlockStatus", "AMER_SABOTAGE_INFUS_3", "", "", 1.0, "DerpySabotageCD");
+
+PROC PROC_AMER_GEN_FilteredStatus_Removed((CHARACTERGUID)_Char, _, "AMER_SABOTAGE_INFUS_3")
+AND
+HasActiveStatus(_Char, "SabotageCD", 0)
+THEN
+ApplyStatus(_Char, "SabotageCD", 12.0, 1, _Char);
+PROC_AMER_StatusMod_ExtendedStat_TryApplyModForStatus(_Char, _Char, "SabotageCD", "BlockStatus", "AMER_SABOTAGE", "", "", 1.0, "DerpySabotageSI3CD");
+PROC_AMER_StatusMod_ExtendedStat_TryApplyModForStatus(_Char, _Char, "SabotageCD", "BlockStatus", "AMER_SABOTAGE_INFUS_3", "", "", 1.0, "DerpySabotageSI3CD");
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

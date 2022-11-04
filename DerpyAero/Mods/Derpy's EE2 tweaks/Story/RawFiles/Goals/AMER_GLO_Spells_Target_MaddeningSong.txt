@@ -1,0 +1,64 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_MaddeningSong", _Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_GEN_IterateCharsAroundPoint(_X, _Y, _Z, 5.0, _Char, 10, "Derpy_MaddeningSong"); //Only living enemies.
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Derpy_MaddeningSong", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Voodoo_MaddeningSong_Impact_01", "root");
+
+
+//==========================================================================================================================================================================================
+
+
+PROC PROC_AMER_Spells_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_MaddeningSong", _Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_GEN_CountCharsAroundPoint(_X, _Y, _Z, 5.0, _Char, 10, "Derpy_MaddeningSong_ApplyBuff");	//Only living enemies.
+
+
+PROC PROC_AMER_GEN_CountCharsAroundObject_Returned((INTEGER)_RequestIndex, "Derpy_MaddeningSong_ApplyBuff", (CHARACTERGUID)_Char, (INTEGER)_Enemies)
+AND
+_Enemies > 0
+THEN
+ApplyStatus(_Char, "Derpy_Insanitys_Crescendo_Player", 12.0, 0, _Char);
+
+
+//==========================================================================================================================================================================================
+
+
+PROC PROC_AMER_Spells_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Target_MaddeningSong", _Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_GEN_CountCharsAroundPoint(_X, _Y, _Z, 5.0, _Char, 10, "Derpy_MaddeningSong_CountEnemies");	//Only living enemies.
+
+
+PROC PROC_AMER_GEN_CountCharsAroundObject_Returned((INTEGER)_RequestIndex, "Derpy_MaddeningSong_CountEnemies", (CHARACTERGUID)_Char, (INTEGER)_Enemies)
+AND
+_Enemies > 0
+AND
+Real(_Enemies, _RealEnemies)
+AND
+RealProduct(_RealEnemies, 3.0, _PlayerBuff)
+AND
+RealProduct(_RealEnemies, -3.0, _EnemyDebuff)
+THEN
+PROC_AMER_TempStat_StatusMod_AddFlexStat(_Char, "Derpy_Insanitys_Crescendo_Player", "Attribute", "Finesse", _PlayerBuff, "MaddeningSongBuff", 0, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddFlexStat(_Char, "Derpy_Insanitys_Crescendo_Player", "Attribute", "Intelligence", _PlayerBuff, "MaddeningSongBuff", 0, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddFlexStat(_Char, "Derpy_Insanitys_Crescendo_Player", "Attribute", "Memory", _PlayerBuff, "MaddeningSongBuff", 0, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddFlexStat(_Char, "Derpy_Insanitys_Crescendo_Player", "Attribute", "Wits", _PlayerBuff, "MaddeningSongBuff", 0, 2000, "SkillCast");
+
+PROC_AMER_TempStat_StatusMod_AddFlexStat(_Char, "Derpy_Insanitys_Crescendo_Enemy", "Attribute", "Finesse", _EnemyDebuff, "MaddeningSongDebuff", 0, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddFlexStat(_Char, "Derpy_Insanitys_Crescendo_Enemy", "Attribute", "Intelligence", _EnemyDebuff, "MaddeningSongDebuff", 0, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddFlexStat(_Char, "Derpy_Insanitys_Crescendo_Enemy", "Attribute", "Wits", _EnemyDebuff, "MaddeningSongDebuff", 0, 2000, "SkillCast");
+
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Special"

@@ -1,0 +1,49 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_EnemyDecayingTouch", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+AND
+_InfusCount < 3
+THEN
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "StatusFamily_AddDuration", "Decaying", "", "", 1.0, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_EnemyDecayingTouch", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, 3.0, 0.5, 0.0, "Ability", "Necromancy")
+AND
+DB_AMER_GEN_OUTPUT_Real(_Scaling)
+AND
+Integer(_Scaling, _ScalingInt)
+THEN
+PROC_AMER_BatteredHarried_DirectManip(_Target, 0, _ScalingInt, _Char);
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_EnemyDecayingTouch", 2)
+THEN
+PROC_AMER_GEN_ApplyStatusUntilEndOfTurn(_Char, "Derpy_EnemyDecayingTouch_SI2");
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_EnemyDecayingTouch", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "StatusFamily_AddDuration", "Decaying", "", "", 2.0, 2000, "SkillCast");
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Target_EnemyDecayingTouch", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+ApplyStatus(_Char, "Derpy_EnemyDecayingTouch_SI3", 18.0, 0, _Char);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Necromancer"

@@ -1,0 +1,65 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//If you activate Paucity when you have a dagger equipped, sneak and become invisible until the end of your next turn.
+
+PROC PROC_AMER_KeywordStat_Paucity_Activate((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, (CHARACTERGUID)_Attacker, (REAL)_Duration)
+AND
+DB_AMER_Ascension_SpecialLogic(_Source, "Ascension_Paucity_MUTA_Sneak", _)
+AND
+QRY_AMER_GEN_PlayerHasWeaponTypeEquipped(_Char, "Knife")
+THEN
+PROC_AMER_Paucity_MUTA_Sneak(_Char);
+
+
+PROC PROC_AMER_Paucity_MUTA_Sneak((CHARACTERGUID)_Char)
+AND
+DB_AMER_Combat_ActiveChar(_, _, _, _Char)
+THEN
+PROC_AMER_GEN_DoFreeSneak_Delayed_Invis_UntilMyTurn(_Char, 1400);
+DB_Derpy_Ascension_Paucity_MUTA_Sneak_Activated(_Char, 1);
+
+PROC PROC_AMER_Paucity_MUTA_Sneak((CHARACTERGUID)_Char)
+AND
+NOT DB_AMER_Combat_ActiveChar(_, _, _, _Char)
+THEN
+PROC_AMER_GEN_DoFreeSneak_Delayed_Invis_UntilMyTurn(_Char, 1400);
+DB_Derpy_Ascension_Paucity_MUTA_Sneak_Activated(_Char, 0);
+
+
+PROC PROC_AMER_Combat_TurnEnded(_, _Char, _)
+AND
+DB_Derpy_Ascension_Paucity_MUTA_Sneak_Activated(_Char, _ActiveTurnBool)
+AND
+HasActiveStatus(_Char, "INVISIBLE", 1)
+AND
+HasActiveStatus(_Char, "SNEAKING", 1)
+THEN
+RemoveStatus(_Char, "INVISIBLE");
+RemoveStatus(_Char, "SNEAKING");
+NOT DB_Derpy_Ascension_Paucity_MUTA_Sneak_Activated(_Char, _ActiveTurnBool);
+
+
+QRY QRY_AMER_GEN_FreeSneak_Delayed_Block((CHARACTERGUID)_Char)
+AND
+DB_Derpy_Ascension_Paucity_MUTA_Sneak_Activated(_Char, 1)
+AND
+NOT DB_AMER_Combat_ActiveChar(_, _, _, _Char)   //If sneak started during our turn, but happened after turn ended, then block the sneak since we don't want it.
+THEN
+NOT DB_Derpy_Ascension_Paucity_MUTA_Sneak_Activated(_Char, 1);
+DB_AMER_GEN_FreeSneak_Delayed_Block(_Char);
+
+
+PROC PROC_AMER_GEN_FilteredStatus_Removed((CHARACTERGUID)_Char, _, "INVISIBLE")
+AND
+DB_Derpy_Ascension_Paucity_MUTA_Sneak_Activated(_Char, _ActiveTurnBool)
+THEN
+NOT DB_Derpy_Ascension_Paucity_MUTA_Sneak_Activated(_Char, _ActiveTurnBool);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

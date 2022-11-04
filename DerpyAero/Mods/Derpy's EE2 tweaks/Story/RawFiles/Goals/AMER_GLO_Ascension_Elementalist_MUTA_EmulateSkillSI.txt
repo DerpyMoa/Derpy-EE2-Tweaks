@@ -1,0 +1,147 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Reaction_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, "AMER_Elementalist", (STRING)_RequestID, (INTEGER)_RitualBool)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Elementalist_MUTA_EmulateSkillSI", _)
+AND
+QRY_AMER_KeywordStat_Elementalist_Feedback_GetStacksAndType(_Char)
+AND
+DB_AMER_GEN_OUTPUT_Integer(_Stacks)
+AND
+DB_AMER_GEN_OUTPUT_String(_Type)
+AND
+_Stacks >= 5
+AND
+NOT DB_Derpy_ElementalistTargetStore(_Char, _Target, _, _, _, _)
+AND
+StringConcatenate("AMER_Ascension_Elementalist_MUTA_EmulateSkillSI_", _Type, _LogText)
+THEN
+DB_Derpy_ElementalistTargetStore(_Char, _Target, _X, _Y, _Z, _Type);
+PROC_AMER_GEN_CharacterCombatLogText(_Char, _LogText);
+ProcObjectTimer(_Char, "ArcanistMinusStacks", 200);
+ProcObjectTimer(_Char, "ArcanistShoot", 10);
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "ArcanistMinusStacks")
+THEN
+PROC_AMER_KeywordStat_Elementalist_Feedback_AddStacks(_Char, -3);
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "ArcanistShoot")
+AND
+DB_Derpy_ElementalistTargetStore(_Char, _Target, _X, _Y, _Z, _Type)
+THEN
+PROC_AMER_Ascension_Elementalist_MUTA_EmulateSkillSI(_Char, _Target, _X, _Y, _Z, _Type);
+NOT DB_Derpy_ElementalistTargetStore(_Char, _Target, _X, _Y, _Z, _Type);
+
+
+PROC PROC_AMER_Ascension_Elementalist_MUTA_EmulateSkillSI((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (STRING)_Element)
+AND
+QRY_AMER_Ascension_Elementalist_MUTA_EmulateSkillSI_GetProjectile(_Char, _X, _Y, _Z, _Element)
+AND
+DB_AMER_GEN_OUTPUT_String(_Projectile)
+AND
+DB_AMER_GEN_OUTPUT_String_B(_ShootType)
+THEN
+PROC_AMER_Ascension_Elementalist_MUTA_EmulateSkillSI_Shoot(_Char, _X, _Y, _Z, _Projectile, _ShootType);
+
+PROC PROC_AMER_Ascension_Elementalist_MUTA_EmulateSkillSI_Shoot((CHARACTERGUID)_Char, (REAL)_X, (REAL)_Y, (REAL)_Z, (STRING)_Projectile, "Explode")
+THEN
+PROC_AMER_GEN_CharacterCauseExplosionAtPos(_Char, _X, _Y, _Z, _Projectile);
+
+PROC PROC_AMER_Ascension_Elementalist_MUTA_EmulateSkillSI_Shoot((CHARACTERGUID)_Char, (REAL)_X, (REAL)_Y, (REAL)_Z, (STRING)_Projectile, "ProjectileStrike")
+THEN
+PROC_AMER_GEN_ShootProjectileStrikeAtPos(_Char, _X, _Y, _Z, _Projectile);
+
+
+QRY QRY_AMER_Ascension_Elementalist_MUTA_EmulateSkillSI_GetProjectile((CHARACTERGUID)_Char, (REAL)_X, (REAL)_Y, (REAL)_Z, (STRING)_Element)
+AND
+DB_AMER_GEN_OUTPUT_String(_OldOutput)
+THEN
+NOT DB_AMER_GEN_OUTPUT_String(_OldOutput);
+
+QRY QRY_AMER_Ascension_Elementalist_MUTA_EmulateSkillSI_GetProjectile((CHARACTERGUID)_Char, (REAL)_X, (REAL)_Y, (REAL)_Z, (STRING)_Element)
+AND
+DB_AMER_GEN_OUTPUT_String_B(_OldOutput)
+THEN
+NOT DB_AMER_GEN_OUTPUT_String_B(_OldOutput);
+
+QRY QRY_AMER_Ascension_Elementalist_MUTA_EmulateSkillSI_GetProjectile((CHARACTERGUID)_Char, (REAL)_X, (REAL)_Y, (REAL)_Z, (STRING)_Element)
+THEN
+PROC_AMER_Ascension_Elementalist_MUTA_EmulateSkillSI_GetProjectile_Override(_Char, _X, _Y, _Z, _Element);
+
+
+QRY QRY_AMER_Ascension_Elementalist_MUTA_EmulateSkillSI_GetProjectile((CHARACTERGUID)_Char, (REAL)_X, (REAL)_Y, (REAL)_Z, "Fire")
+AND
+NOT DB_AMER_GEN_OUTPUT_String(_)
+THEN
+DB_AMER_GEN_OUTPUT_String("Projectile_Fireball");
+DB_AMER_GEN_OUTPUT_String_B("ProjectileStrike");
+
+QRY QRY_AMER_Ascension_Elementalist_MUTA_EmulateSkillSI_GetProjectile((CHARACTERGUID)_Char, (REAL)_X, (REAL)_Y, (REAL)_Z, "Water")
+AND
+NOT DB_AMER_GEN_OUTPUT_String(_)
+THEN
+PlayEffectAtPosition("RS3_FX_Skills_Water_WinterBlast_Impact_01", _X, _Y, _Z);
+DB_AMER_GEN_OUTPUT_String("Projectile_AMER_SCRIPT_Winterblast");
+DB_AMER_GEN_OUTPUT_String_B("Explode");
+
+QRY QRY_AMER_Ascension_Elementalist_MUTA_EmulateSkillSI_GetProjectile((CHARACTERGUID)_Char, (REAL)_X, (REAL)_Y, (REAL)_Z, "Air")
+AND
+NOT DB_AMER_GEN_OUTPUT_String(_)
+THEN
+DB_AMER_GEN_OUTPUT_String("ProjectileStrike_DazingBolt");
+DB_AMER_GEN_OUTPUT_String_B("ProjectileStrike");
+
+QRY QRY_AMER_Ascension_Elementalist_MUTA_EmulateSkillSI_GetProjectile((CHARACTERGUID)_Char, (REAL)_X, (REAL)_Y, (REAL)_Z, "Earth")
+AND
+NOT DB_AMER_GEN_OUTPUT_String(_)
+THEN
+DB_AMER_GEN_OUTPUT_String("Projectile_SCRIPT_ArcanistEarth");
+DB_AMER_GEN_OUTPUT_String_B("Explode");
+
+
+//Having splendor no FF node changes the emulated skills.
+PROC PROC_AMER_Ascension_Elementalist_MUTA_EmulateSkillSI_GetProjectile_Override((CHARACTERGUID)_Char, (REAL)_X, (REAL)_Y, (REAL)_Z, "Fire")
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Elementalist_MUTA_RadiusAndNoFF", _)
+THEN
+DB_AMER_GEN_OUTPUT_String("Projectile_SCRIPT_ArcanistFireballNoFF");
+DB_AMER_GEN_OUTPUT_String_B("ProjectileStrike");
+
+PROC PROC_AMER_Ascension_Elementalist_MUTA_EmulateSkillSI_GetProjectile_Override((CHARACTERGUID)_Char, (REAL)_X, (REAL)_Y, (REAL)_Z, "Water")
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Elementalist_MUTA_RadiusAndNoFF", _)
+THEN
+PlayEffectAtPosition("RS3_FX_Skills_Water_WinterBlast_Impact_01", _X, _Y, _Z);
+DB_AMER_GEN_OUTPUT_String("Projectile_SCRIPT_ArcabistWinterblastNoFF");
+DB_AMER_GEN_OUTPUT_String_B("Explode");
+
+PROC PROC_AMER_Ascension_Elementalist_MUTA_EmulateSkillSI_GetProjectile_Override((CHARACTERGUID)_Char, (REAL)_X, (REAL)_Y, (REAL)_Z, "Air")
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Elementalist_MUTA_RadiusAndNoFF", _)
+THEN
+DB_AMER_GEN_OUTPUT_String("ProjectileStrike_SCRIPT_ArcanistDazingBoltNoFF");
+DB_AMER_GEN_OUTPUT_String_B("ProjectileStrike");
+
+PROC PROC_AMER_Ascension_Elementalist_MUTA_EmulateSkillSI_GetProjectile_Override((CHARACTERGUID)_Char, (REAL)_X, (REAL)_Y, (REAL)_Z, "Earth")
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Elementalist_MUTA_RadiusAndNoFF", _)
+THEN
+DB_AMER_GEN_OUTPUT_String("Projectile_SCRIPT_ArcanistEarthNoFF");
+DB_AMER_GEN_OUTPUT_String_B("Explode");
+
+
+
+
+
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

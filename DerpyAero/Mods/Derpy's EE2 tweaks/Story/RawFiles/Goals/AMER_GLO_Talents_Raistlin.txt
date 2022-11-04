@@ -1,0 +1,32 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+//You take 40% more damage.
+
+IF
+NRD_OnHit((CHARACTERGUID)_Target, (CHARACTERGUID)_Attacker, _Damage, _Handle)
+AND
+CharacterHasTalent(_Target, "Raistlin", 1)
+AND
+DB_AMER_GEN_DamageTypeEnum(_TypeIndex, _DamageType)
+AND
+NRD_HitStatusGetDamage(_Target, _Handle, _DamageType, _Amount)
+AND
+_Amount != 0
+AND
+Real(_Amount, _AmountReal)
+AND
+RealProduct(_AmountReal, 0.40, _Bonus)
+AND
+Integer(_Bonus, _BonusInt)
+THEN
+NRD_HitStatusAddDamage(_Target, _Handle, _DamageType, _BonusInt);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Talents"

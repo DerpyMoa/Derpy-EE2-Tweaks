@@ -1,0 +1,26 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+CharacterPrecogDying(CHARACTERGUID_S_RC_DW_WhiteMagister_b1bdd004-a286-4ad5-9826-a763d672b2a7)
+AND
+GetPosition(CHARACTERGUID_S_RC_DW_WhiteMagister_b1bdd004-a286-4ad5-9826-a763d672b2a7,_X,_Y,_Z)
+AND
+CreateItemTemplateAtPosition("LOOT_BackPack_A_6c70c298-aa29-418f-a659-f8e0b5f5fa60", _X, _Y, _Z, _Backpack)
+THEN
+GenerateTreasure(_Backpack, "MegaBoss", 18, NULL_00000000-0000-0000-0000-000000000000);
+MoveAllItemsTo(_Backpack, CHARACTERGUID_S_RC_DW_WhiteMagister_b1bdd004-a286-4ad5-9826-a763d672b2a7, 0, 0, 1);
+PlaySound(_Backpack,"GP_ScriptedEvent_HOE_Channel_Spell_Final");
+PlayEffect(_Backpack, "AMER_RS3_FX_LootShine_Unique", "");
+ItemDestroy(_Backpack);
+SetOnStage(_Backpack, 0);
+GoalCompleted;
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "ARX"

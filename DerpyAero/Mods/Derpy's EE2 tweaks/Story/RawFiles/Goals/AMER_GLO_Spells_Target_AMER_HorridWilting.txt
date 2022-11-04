@@ -1,0 +1,146 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillPreCast(_Char, "Target_AMER_HorridWilting", 0, _Type, _Element)
+THEN
+PROC_AMER_Spells_HorridWilting_Init(_Char, 0);
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_AMER_HorridWilting", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_Spells_HorridWilting_Init(_Char, _InfusCount);
+
+
+
+//Probably isn't possible to have the skill cast fast enough to warrant this cleanup, but it's worth doing for safety.
+PROC PROC_AMER_Spells_HorridWilting_Init((CHARACTERGUID)_Char, (INTEGER)_InfusCount)
+AND
+DB_AMER_Spells_HorridWilting_CastPending(_Char, _OldInfusCount)
+THEN
+NOT DB_AMER_Spells_HorridWilting_CastPending(_Char, _OldInfusCount);
+
+PROC PROC_AMER_Spells_HorridWilting_Init((CHARACTERGUID)_Char, (INTEGER)_InfusCount)
+THEN
+DB_AMER_Spells_HorridWilting_CastPending(_Char, _InfusCount);
+
+
+PROC PROC_AMER_Spells_HorridWilting_Init((CHARACTERGUID)_Char, 2)
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "Necromancy", 40.0, 8.0, 2000, "SkillCast");
+//PROC_AMER_TempStat_ExtendedStat_Add_StatScaling(_Char, "AttributeIntelligenceEffect_Multiplier", "", "", "", "Ability", "Necromancy", 0.18, 0.045, 2000, "SkillCast");
+
+PROC PROC_AMER_Spells_HorridWilting_Init((CHARACTERGUID)_Char, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "Necromancy", 80.0, 16.0, 2000, "SkillCast");
+//PROC_AMER_TempStat_ExtendedStat_Add_StatScaling(_Char, "AttributeIntelligenceEffect_Multiplier", "", "", "", "Ability", "Necromancy", 0.36, 0.09, 2000, "SkillCast");
+
+
+
+PROC PROC_AMER_GEN_FilteredStatus_Applied(_Char, _Source, "AMER_HORRIDWILTING_HIT", _)
+AND
+DB_AMER_Spells_HorridWilting_CastPending(_Source, _InfusCount)
+AND
+QRY_AMER_Spells_HorridWilting_GetData(_InfusCount)
+AND
+DB_AMER_GEN_OUTPUT_Real(_Threshold)
+AND
+DB_AMER_GEN_OUTPUT_Integer(_Damage)
+AND
+CharacterGetArmorPercentage(_Char, _Armor)
+AND
+CharacterGetMagicArmorPercentage(_Char, _MagicArmor)
+THEN
+PROC_AMER_Spells_HorridWilting_Hit(_Char, _Source, _Threshold, _Armor, _MagicArmor, _Damage, _InfusCount);
+
+
+PROC PROC_AMER_Spells_HorridWilting_Hit((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, (REAL)_Threshold, (REAL)_Armor, (REAL)_MagicArmor, (INTEGER)_Damage, (INTEGER)_InfusCount)
+AND
+_Armor <= _Threshold
+AND
+IntegertoString(_Damage, _DamageStr)
+AND
+StringConcatenate("Projectile_AMER_SCRIPT_HorridWilting_Water_", _DamageStr, _Proj)
+THEN
+PROC_AMER_GEN_CharacterCauseRemoteProjectileDamage(_Source, _Char, _Proj);
+
+PROC PROC_AMER_Spells_HorridWilting_Hit((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, (REAL)_Threshold, (REAL)_Armor, (REAL)_MagicArmor, (INTEGER)_Damage, (INTEGER)_InfusCount)
+AND
+_MagicArmor <= _Threshold
+AND
+IntegertoString(_Damage, _DamageStr)
+AND
+StringConcatenate("Projectile_AMER_SCRIPT_HorridWilting_Physical_", _DamageStr, _Proj)
+THEN
+PROC_AMER_GEN_CharacterCauseRemoteProjectileDamage(_Source, _Char, _Proj);
+
+PROC PROC_AMER_Spells_HorridWilting_Hit((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, (REAL)_Threshold, (REAL)_Armor, (REAL)_MagicArmor, (INTEGER)_Damage, (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+ApplyStatus(_Char, "AMER_DECAYING_APPLY", 12.0, 0, _Source);
+
+
+
+QRY QRY_AMER_Spells_HorridWilting_GetData((INTEGER)_InfusCount)
+AND
+DB_AMER_GEN_OUTPUT_Real(_OldOutput)
+THEN
+NOT DB_AMER_GEN_OUTPUT_Real(_OldOutput);
+
+QRY QRY_AMER_Spells_HorridWilting_GetData((INTEGER)_InfusCount)
+AND
+DB_AMER_GEN_OUTPUT_Integer(_OldOutput)
+THEN
+NOT DB_AMER_GEN_OUTPUT_Integer(_OldOutput);
+
+QRY QRY_AMER_Spells_HorridWilting_GetData((INTEGER)_InfusCount)
+THEN
+DB_AMER_GEN_OUTPUT_Real(0.0);    //Default 0% armor required.
+
+QRY QRY_AMER_Spells_HorridWilting_GetData((INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+AND
+DB_AMER_GEN_OUTPUT_Real(_OldOutputReal)
+THEN
+NOT DB_AMER_GEN_OUTPUT_Real(_OldOutputReal);
+DB_AMER_GEN_OUTPUT_Real(50.0);
+
+QRY QRY_AMER_Spells_HorridWilting_GetData((INTEGER)_InfusCount)
+THEN
+DB_AMER_GEN_OUTPUT_Integer(50);    //Default 50% additional damage per-armor.
+
+QRY QRY_AMER_Spells_HorridWilting_GetData((INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+AND
+DB_AMER_GEN_OUTPUT_Integer(_OldOutputInt)
+THEN
+NOT DB_AMER_GEN_OUTPUT_Integer(_OldOutputInt);
+DB_AMER_GEN_OUTPUT_Integer(150);
+
+PROC PROC_AMER_Spells_HorridWilting_Hit((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, (REAL)_Threshold, (REAL)_Armor, (REAL)_MagicArmor, (INTEGER)_Damage, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_Status_Brittle_Detonate(_Char, _Source);
+
+
+
+PROC PROC_AMER_GEN_Goal_ShuttingDown("AMER_GLO_Spells_Target_AMER_HorridWilting")
+AND
+DB_AMER_Spells_HorridWilting_CastPending(_Char, _InfusCount)
+THEN
+NOT DB_AMER_Spells_HorridWilting_CastPending(_Char, _InfusCount);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Necromancer"

@@ -1,0 +1,57 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+//Init DB for uninfused spell.
+PROC PROC_AMER_Spells_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_DeathWish", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 0, (STRING)_Type, (STRING)_Element)
+THEN
+DB_AMER_Status_DeathWish(_Target, "DEATH_WISH");
+PROC_AMER_GEN_Goal_Activate("AMER_GLO_Spells_REMOTE_DeathWish");
+
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_DeathWish", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+ApplyStatus(_Target, "DEATH_WISH_INFUS_1", 12.0, 0, _Char);
+DB_AMER_Status_DeathWish(_Target, "DEATH_WISH_INFUS_1");
+PROC_AMER_GEN_Goal_Activate("AMER_GLO_Spells_REMOTE_DeathWish");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_DeathWish", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+AND
+CharacterGetHitpointsPercentage(_Target, _CurrentVitPerc)
+AND
+RealSubtract(_CurrentVitPerc, 1.0, _PercToLose)
+AND
+DB_AMER_CharVitals_Max(_Target, _VitMax, _, _)
+AND
+RealProduct(_PercToLose, -0.01, _Mult)
+AND
+RealProduct(_VitMax, _Mult, _Loss)
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+CharacterSetHitpointsPercentage(_Target, 1.0);
+PROC_AMER_CharVitals_Add_Direct(_Target, _Loss, 0.0, 0.0);
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_DeathWish", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, 1.0, 0.10, 0.0, "Ability", "Necromancy")
+AND
+DB_AMER_GEN_OUTPUT_Real(_Scaling)
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "DEATH_WISH_INFUS_1", "Battered_StackInfluence_Enemy", "", "", "", _Scaling, "DeathWish_Infus", 0, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "DEATH_WISH_INFUS_1", "Harried_StackInfluence_Enemy", "", "", "", _Scaling, "DeathWish_Infus", 0);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Necromancer"

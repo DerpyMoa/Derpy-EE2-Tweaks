@@ -1,0 +1,53 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Summon_BonePile", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+AND
+DB_AMER_GEN_OUTPUT_Real(_Scaling)
+THEN
+PROC_AMER_Summoning_AddKeywordStatToNext(_Char, "Summons_BonePile_2a923cb8-beeb-48be-9a3a-5da981b1e3fe", "SourceGeneration", 1);
+PROC_AMER_Summoning_AddExtendedStatToNext(_Char, "Summons_BonePile_2a923cb8-beeb-48be-9a3a-5da981b1e3fe", "SourceGen_AddTurns", "", "", "", 2.0, 1);
+PROC_AMER_Summoning_AddFlexStatToNext(_Char, "Summons_BonePile_2a923cb8-beeb-48be-9a3a-5da981b1e3fe", "Spell", "Shout_SourceInfusion", 1.0, 1);
+PROC_AMER_Summoning_AddFlexStatToNext(_Char, "Summons_BonePile_2a923cb8-beeb-48be-9a3a-5da981b1e3fe", "Spell", "Cone_IncarnateSilencingStare", 1.0, 1);
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Summon_BonePile", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_Summoning_AddStatusToNext(_Char, "Summons_BonePile_2a923cb8-beeb-48be-9a3a-5da981b1e3fe", "BONE_PILE", -1.0, 1);
+PROC_AMER_Summoning_AddExtendedStatToNext(_Char, "Summons_BonePile_2a923cb8-beeb-48be-9a3a-5da981b1e3fe", "InstantEffect", "AddSP", "", "", 2.0, 1);
+PROC_AMER_Summoning_AddExtendedStatToNext(_Char, "Summons_BonePile_2a923cb8-beeb-48be-9a3a-5da981b1e3fe", "BonePile_MakeBoneCorpses", "", "", "", 1.0, 1);
+PROC_AMER_Summoning_AddExtendedStatToNext(_Char, "Summons_BonePile_2a923cb8-beeb-48be-9a3a-5da981b1e3fe", "BonePile_CorpseStacks", "", "", "", 1.0, 1);
+PROC_AMER_Summoning_AddFlexStatToNext(_Char, "Summons_BonePile_2a923cb8-beeb-48be-9a3a-5da981b1e3fe", "Spell", "Shout_InnerDemon", 1.0, 1);
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Summon_BonePile", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+AND
+CharacterGetAbility(_Char, "Summoning", _Sum)
+AND
+Real(_Sum, _SumReal)
+AND
+CharacterGetAbility(_Char, "Necromancy", _Nec)
+AND
+Real(_Nec, _NecReal)
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+PROC_AMER_Summoning_AddFlexStatToNext(_Char, "Summons_BonePile_2a923cb8-beeb-48be-9a3a-5da981b1e3fe", "Ability", "Summoning", _SumReal, 1);
+PROC_AMER_Summoning_AddFlexStatToNext(_Char, "Summons_BonePile_2a923cb8-beeb-48be-9a3a-5da981b1e3fe", "Ability", "Necromancy", _NecReal, 1);
+PROC_AMER_Summoning_AddFlexStatToNext(_Char, "Summons_BonePile_2a923cb8-beeb-48be-9a3a-5da981b1e3fe", "Spell", "Summon_AMER_BoneshapedSkitterer", 1.0, 1);
+PROC_AMER_Summoning_AddFlexStatToNext(_Char, "Summons_BonePile_2a923cb8-beeb-48be-9a3a-5da981b1e3fe", "Spell", "Shout_ThickOfTheFight", 1.0, 1);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Necromancer"

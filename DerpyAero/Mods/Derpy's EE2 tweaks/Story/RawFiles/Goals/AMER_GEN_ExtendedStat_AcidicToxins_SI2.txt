@@ -1,0 +1,30 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+//Applying Calcifying has a 30% (+1% per Geomancer) chance to also apply Corroding for 1 turn.
+
+IF
+NRD_OnStatusAttempt((CHARACTERGUID)_Defender, "AMER_CALCIFYING", _StatusHandle, (CHARACTERGUID)_Attacker)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Attacker, "AcidicToxins_SI2", _, _, _, _)
+AND
+_Attacker != _Defender
+AND
+NOT QRY_Derpy_AcidicToxins_IsUndeadAlly(_Defender, _Attacker)
+AND
+CharacterGetAbility(_Attacker, "EarthSpecialist", _Geo)
+AND
+IntegerSum(30, _Geo, _RngChance)
+AND
+QRY_AMER_GEN_RandomSuccess(_RngChance)
+THEN
+ApplyStatus(_Defender, "AMER_CORRODING", 6.0, 0, _Attacker);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GEN_Stats_ExtendedStats"

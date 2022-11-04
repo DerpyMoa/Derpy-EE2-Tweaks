@@ -1,0 +1,72 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillCast((CHARACTERGUID)_Char, "Jump_CloakAndDagger", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+AND
+CharacterIsInCombat(_Char, 1)
+AND
+DB_AMER_Spells_CastWhileSneaking(_Char, "Jump_CloakAndDagger", 1)
+THEN
+PROC_AMER_ActionPoints_Add(_Char, 1);
+
+
+//==========================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Jump_CloakAndDagger", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_GEN_DoFreeSneak_Delayed_Invis(_Char, 750);
+
+
+//==========================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Jump_CloakAndDagger", 2)
+AND
+DB_AMER_Spells_CastWhileSneaking(_Char, "Jump_CloakAndDagger", 1)
+THEN
+NRD_SkillSetCooldown(_Char, "Jump_CloakAndDagger", 0.0);
+ProcObjectTimer(_Char, "Derpy_Source_Infusion_CloakAndDagger_SI2CDDelay", 100);
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "Derpy_Source_Infusion_CloakAndDagger_SI2CDDelay")
+THEN
+NRD_SkillSetCooldown(_Char, "Jump_CloakAndDagger", 6.0);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Jump_CloakAndDagger", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 1, 1);
+ProcObjectTimer(_Char, "AMER_Source_Infusion_CloakAndDagger_SI2Delay", 750);
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "AMER_Source_Infusion_CloakAndDagger_SI2Delay")
+THEN
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 5.0, _Char, 42, "AMER_SourceInfusion_CloakAndDagger");	//Living enemies _Char can see within 13m of _Char.
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "AMER_SourceInfusion_CloakAndDagger", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+PROC_AMER_GEN_ShootProjectileAt(_SourceChar, _Char, "Projectile_Derpy_SCRIPT_Chloroform");
+
+
+//==========================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Jump_CloakAndDagger", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_GEN_CharacterResetCooldowns(_Char, "Rogue");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Scoundrel"

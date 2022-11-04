@@ -1,0 +1,53 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillPreCast(_Char, "Shout_InnerDemon", _, _, _)
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "INNER_DEMON", "StatusRemoval_OnStatusEnd", "INNER_DEMON", "DEMONIC_TUTELAGE", "", 1.0, "InnerDemon_RemoveTutelageOnEnd", 0, 1000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_InnerDemon", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+AND
+DB_AMER_Summoning_ActiveSummon_Autonomous(_, _Summon)
+AND
+CharacterIsAlly(_Char, _Summon, 1)
+AND
+NRD_ApplyActiveDefense(_Summon, "DEMONIC_TUTELAGE", 18.0, _InnerDemon_SI)
+THEN
+PlayEffect(_Summon, "RS3_FX_Skills_Totem_Cast_DemonicTutelage_Root_01", "Dummy_BodyFX");
+PlayEffect(_Summon, "RS3_FX_Skills_Totem_Cast_InnerDemon_OverheadFX_01", "Dummy_OverheadFX");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_InnerDemon", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+AND
+DB_AMER_Summoning_ActiveSummon(_Char, _Summon)
+THEN
+ApplyStatus(_Summon, "INNER_DEMON", 18.0, 0, _Char);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_InnerDemon", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+AND
+CombatGetIDForCharacter(_Char, _Combat)
+AND
+DB_IsPlayer(_Ally)
+AND
+CombatGetIDForCharacter(_Ally, _Combat)
+AND
+CharacterIsAlly(_Char, _Ally, 1)
+THEN
+ApplyStatus(_Ally, "INNER_DEMON", 18.0, 0, _Char);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Summoning"

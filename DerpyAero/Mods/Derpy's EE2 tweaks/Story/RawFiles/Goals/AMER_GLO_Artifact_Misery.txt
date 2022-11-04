@@ -1,0 +1,59 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Status_StatusFamily_Applied((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, (STRING)_Status, "Decaying", (INTEGER)_Tier)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Char, "Artifact_Misery", _)
+AND
+CharacterIsInCombat(_Char, 1)
+THEN
+PlayEffect(_Char, "RS3_FX_GP_Impacts_Grenade_ChemicalWarfare_01", "");
+CharacterStatusText(_Char, "Artifact_Misery");
+PROC_AMER_GEN_CharacterCombatLogText(_Char, "AMER_Artifact_Misery_Activated");
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "BatteredHarried_DirectManipStatuses_Activate", "0", "2", "", 1.0, 1000, "");    //This skill uses B/H direct manip statuses in stats, need to activate their logic before the skill fires.
+PROC_AMER_GEN_CharacterCauseExplosion(_Char, _Char, "Projectile_AMER_SCRIPT_Artifact_Misery");
+
+
+IF
+NRD_OnPrepareHit((CHARACTERGUID)_Defender, (CHARACTERGUID)_Attacker, _Damage, _HitHandle)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Defender, "Artifact_Misery", _)
+AND
+CharacterIsInCombat(_Defender, 1)
+AND
+NRD_HitGetInt(_HitHandle, "HitType", 4)
+AND
+NRD_HitGetDamage(_HitHandle, "Poison", _Amount)
+AND
+_Amount != 0
+THEN
+ObjectSetFlag(_Defender, "Derpy_Misery_HitBySurface");
+
+
+IF
+NRD_OnStatusAttempt((CHARACTERGUID)_Target, "POISONED", (INTEGER64)_StatusHandle, (CHARACTERGUID)_Instigator)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Target, "Artifact_Misery", _)
+AND
+ObjectGetFlag(_Target, "Derpy_Misery_HitBySurface", _HasFlag)
+THEN
+PROC_Derpy_Misery(_Target, _StatusHandle, _HasFlag);
+
+
+PROC PROC_Derpy_Misery((CHARACTERGUID)_Target, (INTEGER64)_StatusHandle, 1)
+THEN
+ObjectClearFlag(_Target, "Derpy_Misery_HitBySurface");
+
+
+PROC PROC_Derpy_Misery((CHARACTERGUID)_Target, (INTEGER64)_StatusHandle, 0)
+THEN
+ApplyStatus(_Target, "AMER_DECAYING_1", 6.0, 0, _Target);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"

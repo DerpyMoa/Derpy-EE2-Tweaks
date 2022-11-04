@@ -1,0 +1,28 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_RockSpikes", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "EarthSpecialist", 25.0, 4.0, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_RockSpikes", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 2)
+THEN
+PROC_AMER_GEN_Shoot_Delayed("Explosion", _Char, NULL_00000000-0000-0000-0000-000000000000, _X, _Y, _Z, "Projectile_AMER_SCRIPT_RockSpikes_Infusion_2", 0.0, 0, 200);	//1 total strike, 200ms delay.
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_RockSpikes", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_GEN_Shoot_Delayed("Explosion", _Char, NULL_00000000-0000-0000-0000-000000000000, _X, _Y, _Z, "Projectile_AMER_SCRIPT_RockSpikes_Infusion_2", 0.0, 3, 200);	//4 total strikes, 200ms delay.
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Geomancer"

@@ -1,0 +1,16 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+SavegameLoaded(_, _, _, _)
+THEN
+NRD_ModCall("EpipEncounters", "PerformFullStatsUpdate");
+GoalCompleted;
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

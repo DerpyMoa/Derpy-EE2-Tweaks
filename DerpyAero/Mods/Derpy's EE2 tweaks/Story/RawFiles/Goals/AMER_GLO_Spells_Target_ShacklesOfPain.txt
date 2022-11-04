@@ -1,0 +1,53 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillCast((CHARACTERGUID)_Char, "Target_ShacklesOfPain", 0, (STRING)_Type, (STRING)_Element)
+AND
+NOT DB_AMER_Spells_IDOverride_Current(_Char, "Target_EnemyShacklesOfPain", _)	//Don't do damage reduction mechanic for enemies.
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "SHACKLES_OF_PAIN_CASTER", "AttributeIntelligenceEffect_Multiplier", "", "", "", -0.75, "Shackles_CasterPenalty", 1, 2000, "");
+
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Target_ShacklesOfPain", (INTEGER)_InfusCount)
+AND
+NOT DB_AMER_Spells_IDOverride_Current(_Char, "Target_EnemyShacklesOfPain", _)
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, -0.75, 0.05, 0.0, "Ability", "Necromancy")
+AND
+DB_AMER_GEN_OUTPUT_Real(_Scaling)
+AND
+RealMin(-0.25, _Scaling, _PenaltyReductionBounded)
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "SHACKLES_OF_PAIN_CASTER", "AttributeIntelligenceEffect_Multiplier", "", "", "", _PenaltyReductionBounded, "Shackles_CasterPenalty", 1);
+//PROC_AMER_TempStat_StatusMod_AddFlexStat(_Char, "SHACKLES_OF_PAIN_CASTER", "Stat", "DAMAGEBOOST", _PenaltyReductionBounded, "Shackles_CasterPenalty", 1, 2000);	//Moved to attribute effect reduction instead of flat damage reduction.
+
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_ShacklesOfPain", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 2)
+AND
+QRY_AMER_GEN_GetNearestInCombat(_Char, _Target, _Char, 13.0, 42)	//Visible living enemies.
+AND
+DB_AMER_GEN_OUTPUT_NearestInCombat(_NearestTarget, _)
+THEN
+ApplyStatus(_NearestTarget, "SHACKLES_OF_PAIN", 18.0, 0, _Char);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_ShacklesOfPain", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+DB_AMER_IterateCharsAroundObject_Exclusion(_Target);	//Don't iterate the primary target.
+PROC_AMER_GEN_IterateCharsAroundObject(_Char,  13.0, _Char, 42, "AMER_SourceInfusion_ShacklesOfPain_Infus3");	//Visible living enemies.
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "AMER_SourceInfusion_ShacklesOfPain_Infus3", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+ApplyStatus(_Char, "SHACKLES_OF_PAIN", 18.0, 0, _SourceChar);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Necromancer"

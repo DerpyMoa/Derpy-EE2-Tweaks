@@ -1,0 +1,39 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+PROC_Derpy_ProtoCCcheck();
+
+KBSECTION
+
+PROC PROC_Derpy_ProtoCCcheck()
+AND
+DB_CurrentLevel(_Level)
+AND
+IsCharacterCreationLevel(_level, 1)
+THEN
+GoalCompleted;
+
+
+IF
+SavegameLoaded(_, _, _, _)
+AND
+DB_IsPlayer(_Char)
+AND
+CharacterHasSkill(_Char, "Shout_AMER_Core_GenerateSource", 1)
+THEN
+PROC_AMER_FlexStat_CharacterAddStat(_Char, "Spell", "Shout_AMER_Core_GenerateSource", -1.0);
+PROC_AMER_ExtendedStat_CharacterAddStat(_Char, "SourceGen_AddDuration", "", "", "", 1.0);
+GoalCompleted;
+
+
+IF
+SavegameLoaded(_, _, _, _)
+THEN
+GoalCompleted;
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

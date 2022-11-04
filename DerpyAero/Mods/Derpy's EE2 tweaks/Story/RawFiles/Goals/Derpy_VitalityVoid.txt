@@ -1,0 +1,18 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_KeywordStat_VitalityVoid_ManipulateDamageType(_SourceChar, _Char, _Damage)
+AND
+DB_AMER_GEN_OUTPUT_String(_Type)
+THEN
+NOT DB_AMER_GEN_OUTPUT_String(_Type);
+DB_AMER_GEN_OUTPUT_String("Physical");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

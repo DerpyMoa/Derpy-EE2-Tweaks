@@ -1,0 +1,38 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+//Bone Widow's Consume Corpse is scripted to apply its statuses per-corpse within radius.
+PROC PROC_AMER_Spells_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_BonePileConsumeCorpse", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_GEN_CountCharsAroundPoint(_X, _Y, _Z, 2.5, _Char, 16, "AMER_BoneWidow_ConsumeCorpse_CorpseCount");	//Count only dead characters within area radius. Radius is 2.5 because stats radius seems to be slightly larger than that of script.
+PROC_AMER_GEN_IterateCharsAroundPoint(_X, _Y, _Z, 2.5, _Char, 16, "Derpy_BoneWidow_BeamFX");	//Only dead characters within 2.5m.
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Derpy_BoneWidow_BeamFX", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Voodoo_BloodBubble_Impact_01");
+PlayBeamEffect(_Char, _SourceChar, "AMER_RS3_FX_Beams_Blood_Instant", "Dummy_BodyFX", "Dummy_BodyFX");
+
+PROC PROC_AMER_GEN_CountCharsAroundObject_Returned((INTEGER)_RequestIndex, "AMER_BoneWidow_ConsumeCorpse_CorpseCount", (CHARACTERGUID)_Char, (INTEGER)_Corpses)
+AND
+_Corpses > 0
+THEN
+PROC_AMER_Spells_BoneWidow_ConsumeCorpse_ApplyStatus(_Char, _Corpses);
+
+PROC PROC_AMER_Spells_BoneWidow_ConsumeCorpse_ApplyStatus((CHARACTERGUID)_Char, (INTEGER)_Count)
+AND
+_Count != 0
+AND
+IntegerSubtract(_Count, 1, _NewCount)
+THEN
+ApplyStatus(_Char, "CONSUME_CORPSE", 0.0, 0, _Char);
+ApplyStatus(_Char, "BONE_PILE", -1.0, 0, _Char);
+PROC_AMER_ExtendedStat_CharacterAddStat(_Char, "BonePile_CorpseStacks", "", "", "", 1.0);
+PROC_AMER_Spells_BoneWidow_ConsumeCorpse_ApplyStatus(_Char, _NewCount);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Necromancer"

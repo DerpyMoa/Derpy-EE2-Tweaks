@@ -1,0 +1,16 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_RC_FL_AlanBoss_ef0adba7-2471-4972-9feb-ceb4c7547141);
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_RC_FL_AlanBoss_ef0adba7-2471-4972-9feb-ceb4c7547141, "Quake_EnemyEarthquake");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_RC_FL_AlanBoss_ef0adba7-2471-4972-9feb-ceb4c7547141, "Shout_EnemyIgnition");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_RC_FL_AlanBoss_ef0adba7-2471-4972-9feb-ceb4c7547141, "Shout_Ignition_Empowered");
+
+KBSECTION
+
+EXITSECTION
+
+
+ENDEXITSECTION
+ParentTargetEdge "ReapersCoast"

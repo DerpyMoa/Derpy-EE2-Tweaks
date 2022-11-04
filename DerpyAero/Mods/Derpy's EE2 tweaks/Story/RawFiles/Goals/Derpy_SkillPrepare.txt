@@ -1,0 +1,20 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+
+KBSECTION
+
+
+IF
+NRD_OnActionStateEnter((CHARACTERGUID)_Char, "PrepareSkill")
+AND
+NRD_ActionStateGetString(_Char, "SkillId", _SkillBeingPrepared)
+THEN
+PROC_Derpy_SkillBeingPrepared(_Char, _SkillBeingPrepared);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

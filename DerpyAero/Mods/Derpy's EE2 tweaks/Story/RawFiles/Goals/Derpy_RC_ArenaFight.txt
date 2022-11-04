@@ -1,0 +1,26 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+RegionStarted(_)
+THEN
+SetIsBoss(CHARACTERGUID_S_RC_DW_UnderTavern_Voidwoken_13bb467b-de20-4726-8afd-757705352361, 1);
+
+IF
+CharacterDied(CHARACTERGUID_S_RC_DW_UnderTavern_Voidwoken_13bb467b-de20-4726-8afd-757705352361)
+THEN
+GenerateTreasure(ITEMGUID_S_RC_DW_TotO_Chest_0892895b-ab13-468e-a287-950c08df49eb, "MegaBoss", 12, NULL_00000000-0000-0000-0000-000000000000);
+
+PROC
+ProcRegionEnded("RC_Main")
+THEN
+GoalCompleted;
+
+EXITSECTION
+
+
+ENDEXITSECTION
+ParentTargetEdge "ReapersCoast"

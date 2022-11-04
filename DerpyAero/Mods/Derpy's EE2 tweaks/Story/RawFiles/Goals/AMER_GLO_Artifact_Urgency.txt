@@ -1,0 +1,78 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Combat_TurnStarted((CHARACTERGUID)_Char, (INTEGER)_Bool)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Char, "Artifact_Urgency", _)
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, 0.0, 20.0, 0.0, "Embodiment", "Force")	//Force x 20 for movement.
+AND
+DB_AMER_GEN_OUTPUT_Real(_Movement)
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, 0.0, 5.0, 0.0, "Embodiment", "Force")	//Force x 5 for damage.
+AND
+DB_AMER_GEN_OUTPUT_Real(_Damage)
+THEN
+DB_AMER_StatusMod_BindToStatus("AMER_URGENCY");
+PROC_AMER_StatusMod_Add_FlexStat(_Char, "AMER_URGENCY", "Stat", "DAMAGEBOOST", _Damage, "Artifact_Urgency", 1);
+DB_AMER_StatusMod_BindToStatus("AMER_URGENCY");
+PROC_AMER_StatusMod_Add_FlexStat(_Char, "AMER_URGENCY", "Stat", "MOVEMENT", _Movement, "Artifact_Urgency", 1);
+ApplyStatus(_Char, "AMER_URGENCY", 6.0, 0, _Char);
+ProcObjectTimer_Repeated(_Char, "AMER_Artifact_Urgency", 1000, 29);
+
+PROC ProcObjectTimer_Repeated_Repeat((CHARACTERGUID)_Char, "AMER_Artifact_Urgency", (INTEGER)_Time, (INTEGER)_Repeats)
+AND
+NOT DB_AMER_DescentModifier_Active("Exigent_A")
+AND
+IntegertoString(_Repeats, _Str)
+THEN
+CharacterStatusText(_Char, _Str);
+
+PROC ProcObjectTimer_Repeated_Finished((CHARACTERGUID)_Char, "AMER_Artifact_Urgency")
+THEN
+RemoveStatus(_Char, "AMER_URGENCY");
+
+
+
+//Spell casts add 7 seconds.
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, (STRING)_Spell, (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Char, "Artifact_Urgency", _)
+AND
+NOT DB_AMER_GEN_SkillIsMetaSkill(_Spell)
+AND
+DB_AMER_ObjectTimer_Repeats(_Char, "AMER_Artifact_Urgency", _Time, _Repeats)
+AND
+IntegerSum(_Repeats, 7, _NewRepeats)
+THEN
+NOT DB_AMER_ObjectTimer_Repeats(_Char, "AMER_Artifact_Urgency", _Time, _Repeats);
+DB_AMER_ObjectTimer_Repeats(_Char, "AMER_Artifact_Urgency", _Time, _NewRepeats);
+
+
+
+PROC PROC_AMER_Combat_TurnEnded((INTEGER)_Combat, (CHARACTERGUID)_Char, (INTEGER)_HasActedBool)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Char, "Artifact_Urgency", _)
+AND
+DB_AMER_ObjectTimer_Repeats(_Char, "AMER_Artifact_Urgency", _, _)
+THEN
+ProcObjectTimerCancel(_Char, "AMER_Artifact_Urgency");
+RemoveStatus(_Char, "AMER_URGENCY");
+
+
+PROC PROC_AMER_CharLeftCombat((CHARACTERGUID)_Char, (INTEGER)_Combat)
+AND
+DB_AMER_Artifacts_EquippedEffects((CHARACTERGUID)_Char, "Artifact_Urgency", _)
+AND
+DB_AMER_ObjectTimer_Repeats(_Char, "AMER_Artifact_Urgency", _, _)
+THEN
+ProcObjectTimerCancel(_Char, "AMER_Artifact_Urgency");
+RemoveStatus(_Char, "AMER_URGENCY");
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"

@@ -1,0 +1,32 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+
+IF
+NRD_OnHit(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b, (CHARACTERGUID)_Attacker, _Damage, _Handle)
+AND
+HasActiveStatus(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b, "Punisher_CoolingDown", 1)
+THEN
+NRD_HitStatusClearAllDamage(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b, _Handle);
+
+
+PROC PROC_AMER_Combat_TurnStarted(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b, 0)
+AND
+HasActiveStatus(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b, "Punisher_CoolingDown", 1)
+THEN
+PROC_AMER_GEN_Heal_Percentage(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b, 50.0,  "Vitality", CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b, 1, 1, 0);
+
+
+PROC
+ProcRegionEnded("FJ_FortJoy_Main")
+THEN
+GoalCompleted;
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Derpy_FTJ_Punisher_V2"

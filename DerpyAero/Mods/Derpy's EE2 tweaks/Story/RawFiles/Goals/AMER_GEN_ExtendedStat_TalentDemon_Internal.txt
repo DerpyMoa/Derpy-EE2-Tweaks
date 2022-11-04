@@ -1,0 +1,37 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+NRD_OnHit((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, _Damage, _Handle)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Char, "TalentDemon_Internal", _, _, _, _)
+AND
+NOT DB_Derpy_Talen_Demon_Choke(_Char)
+AND
+CharacterIsEnemy(_Target, _Char, 1)
+AND
+DB_AMER_Combat_ActiveChar(_, _, _, _Char)
+THEN
+DB_Derpy_Talen_Demon_Choke(_Char);
+ProcObjectTimer(_Char, "Derpy_Talen_Demon_ChokePrevention", 2000);
+PROC_AMER_GEN_CharacterCauseExplosion(_Char, _Target, "Projectile_Derpy_SCRIPT_DemonScorch");
+PlayEffect(_Char, "RS3_FX_Skills_Fire_Cast_Hand_01", "Dummy_L_HandFX");
+PlayEffect(_Char, "RS3_FX_Skills_Fire_Cast_Hand_01", "Dummy_R_HandFX");
+PlayEffect(_Char, "RS3_FX_Skills_Fire_Throw_Cast_Hand_01", "Dummy_L_HandFX");
+PlayEffect(_Char, "RS3_FX_Skills_Fire_Throw_Cast_Hand_01", "Dummy_R_HandFX");
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "Derpy_Talen_Demon_ChokePrevention")
+AND
+DB_Derpy_Talen_Demon_Choke(_Char)
+THEN
+NOT DB_Derpy_Talen_Demon_Choke(_Char);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GEN_Stats_ExtendedStats"

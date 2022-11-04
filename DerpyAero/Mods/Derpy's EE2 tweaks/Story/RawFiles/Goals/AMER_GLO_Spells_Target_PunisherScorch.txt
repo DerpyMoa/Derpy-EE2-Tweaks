@@ -1,0 +1,49 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_PunisherScorch", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "FireSpecialist", 10.0, 1.0, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_PunisherScorch", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "FireSpecialist", 10.0, 1.0, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_PunisherScorch", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "FireSpecialist", 10.0, 1.0, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Target_PunisherScorch", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+AND
+GetPosition(CHARACTERGUID_S_GLO_Dallis_69b951dc-55a4-44b8-a2d5-5efedbd7d572, _X, _Y, _Z)
+AND
+GetPosition(CHARACTERGUID_S_FTJ_DallisGheist_001_fa573f6f-7af3-40da-bc9a-e7d984711b09, _X1, _Y1, _Z1)
+AND
+GetPosition(CHARACTERGUID_S_FTJ_DallisGheist_002_5aff71df-ec52-41cc-9b28-fb6b491a15c4, _X2, _Y2, _Z2)
+AND
+GetPosition(CHARACTERGUID_S_FTJ_GhettoGuard_002_098c299c-a7a1-4857-9ab5-fb01849a68ae, _X3, _Y3, _Z3)
+THEN
+PROC_AMER_GEN_CharacterCauseExplosionAtPos(_Char, _X, _Y, _Z, "Projectile_Derpy_SCRIPT_PunisherScorch");
+PROC_AMER_GEN_CharacterCauseExplosionAtPos(_Char, _X1, _Y1, _Z1, "Projectile_Derpy_SCRIPT_PunisherScorch");
+PROC_AMER_GEN_CharacterCauseExplosionAtPos(_Char, _X2, _Y2, _Z2, "Projectile_Derpy_SCRIPT_PunisherScorch");
+PROC_AMER_GEN_CharacterCauseExplosionAtPos(_Char, _X3, _Y3, _Z3, "Projectile_Derpy_SCRIPT_PunisherScorch");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Pyrokinetic"

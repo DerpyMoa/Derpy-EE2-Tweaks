@@ -1,0 +1,77 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_Cannibalize", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+AND
+_InfusCount < 3
+THEN
+PROC_AMER_GEN_CharacterCauseExplosion(_Target, _Target, "Projectile_Derpy_SCRIPT_CannibalizeSurface");
+PROC_AMER_GEN_IterateCharsAroundObject(_Target, 3.0, _Target, 9, "Derpy_Cannibalize_SI1");	//Characters except SourceChar.
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Derpy_Cannibalize_SI1", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+AND
+GetVarFloat(_SourceChar, "AMER_GEN_MaximumVitality", _MaxVit)
+AND
+Integer(_MaxVit, _MaxVitInt)
+THEN
+PROC_AMER_GEN_ApplyDamage(_Char, _MaxVitInt, "Physical", _SourceChar, 0);
+
+
+//===========================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_Cannibalize", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "Summoning", 40.0, 8.0, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_Cannibalize", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PlayEffectAtPosition("RS3_FX_Skills_Fire_Impact_CorpseExplosion_01", _X, _Y, _Z);
+PROC_AMER_GEN_Shoot_Delayed("Explosion", _Char, _Target, "Projectile_CorpseExplosion_Explosion", 0, 200); //Small delay because Cannibalize SkillPreCast and SkillCast are at the same time.
+
+
+//===========================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_Cannibalize", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "Summoning", 40.0, 8.0, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_Cannibalize", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_GEN_CharacterCauseExplosion(_Target, _Target, "Projectile_Derpy_SCRIPT_CannibalizeSurface");
+PROC_AMER_GEN_IterateCharsAroundObject(_Target, 3.0, _Target, 9, "Derpy_Cannibalize_SI3");	//Characters except SourceChar.
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Derpy_Cannibalize_SI3", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+AND
+GetVarFloat(_SourceChar, "AMER_GEN_MaximumVitality", _MaxVit)
+AND
+RealProduct(_MaxVit, 2.0, _Damage)
+AND
+Integer(_Damage, _DamageInt)
+THEN
+PROC_AMER_GEN_ApplyDamage(_Char, _DamageInt, "Physical", _SourceChar, 0);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Summoning"

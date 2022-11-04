@@ -1,0 +1,55 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_GEN_FilteredStatus_Applied((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, "AMER_WEAKENED_3", (INTEGER)_Turns)
+AND
+DB_AMER_Artifacts_EquippedEffects(_ArtifactWielder, "Artifact_EtherTide", _)
+THEN
+PROC_AMER_Artifacts_EtherTide(_ArtifactWielder, _Char);
+
+PROC PROC_AMER_GEN_FilteredStatus_Applied((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, "AMER_ENTHRALLED_3", (INTEGER)_Turns)
+AND
+DB_AMER_Artifacts_EquippedEffects(_ArtifactWielder, "Artifact_EtherTide", _)
+THEN
+PROC_AMER_Artifacts_EtherTide(_ArtifactWielder, _Char);
+
+PROC PROC_AMER_GEN_FilteredStatus_Applied((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, "AMER_SLOWED_3", (INTEGER)_Turns)
+AND
+DB_AMER_Artifacts_EquippedEffects(_ArtifactWielder, "Artifact_EtherTide", _)
+THEN
+PROC_AMER_Artifacts_EtherTide(_ArtifactWielder, _Char);
+
+
+
+PROC PROC_AMER_Artifacts_EtherTide((CHARACTERGUID)_ArtifactWielder, (CHARACTERGUID)_Char)
+AND
+CharacterIsEnemy(_Char, _ArtifactWielder, 1)
+AND
+IsBoss(_Char, 0)
+AND
+CharacterCanSee(_ArtifactWielder, _Char, 1)
+AND
+GetPosition(_ArtifactWielder, _X, _Y, _Z)
+AND
+QRY_AMER_GEN_GetDistanceToPosition_2D_BoundsSubtracted(_Char, _ArtifactWielder)
+AND
+DB_AMER_GEN_OUTPUT_Real(_Distance)
+AND
+_Distance >= 1.5
+THEN
+PROC_AMER_Reaction_Request(_ArtifactWielder, _Char, "Artifact_EtherTide", "", "skill_cast_aoe_divine_01_cast", 1);
+
+
+PROC PROC_AMER_Reaction_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, "Artifact_EtherTide", (STRING)_RequestID, (INTEGER)_RitualBool)
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Air_FreeFall_Cast_01", "Dummy_R_HandFX");
+PROC_AMER_GEN_TeleportWithFX(_Target, _Char);
+ApplyStatus(_Target, "AMER_SQUELCHED_APPLY", 12.0, 0, _Char);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"

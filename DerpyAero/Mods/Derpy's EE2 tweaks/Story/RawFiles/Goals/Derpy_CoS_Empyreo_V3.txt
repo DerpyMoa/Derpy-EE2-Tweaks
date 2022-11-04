@@ -1,0 +1,102 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_CoS_Temples_Animal_002_ab1ba23b-227b-4315-a096-b6c0b4bc8a5c);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_EmpyreoAd_004_7054b288-0602-4a1e-9c8a-41c0bf85c169);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_EmpyreoAd_005_eed220c6-a106-4a6e-be9a-832f3b155b10);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_EmpyreoAd_007_0fa9769c-e7f1-4538-885c-04faf00d30db);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_EmpyreoAd_008_85127767-632b-4f2f-895a-c98d2415570f);
+
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_CoS_Temples_Animal_002_ab1ba23b-227b-4315-a096-b6c0b4bc8a5c, "Quake_EnemyEarthquake");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_CoS_Temples_Animal_002_ab1ba23b-227b-4315-a096-b6c0b4bc8a5c, "Rain_EnemyBlood");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_CoS_Temples_Animal_002_ab1ba23b-227b-4315-a096-b6c0b4bc8a5c, "Target_EnemyMosquitoSwarm");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_CoS_Temples_Animal_002_ab1ba23b-227b-4315-a096-b6c0b4bc8a5c, "Target_EnemyInfect");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_CoS_Temples_Animal_002_ab1ba23b-227b-4315-a096-b6c0b4bc8a5c, "Projectile_EnemyFlamingDaggers");
+
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_EmpyreoAd_005_eed220c6-a106-4a6e-be9a-832f3b155b10, "Rain_EnemyBlood");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_EmpyreoAd_005_eed220c6-a106-4a6e-be9a-832f3b155b10, "Target_EnemyInfect");
+
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_EmpyreoAd_007_0fa9769c-e7f1-4538-885c-04faf00d30db, "Shout_EnemyGlobalCooling");
+
+KBSECTION
+
+IF
+RegionStarted(_)
+AND
+QueryOnlyOnce("Derpy_EmpyreoSetup_V3")
+THEN
+SetOnStage(CHARACTERGUID_EmpyreoAd_004_7054b288-0602-4a1e-9c8a-41c0bf85c169, 0);
+SetOnStage(CHARACTERGUID_EmpyreoAd_005_eed220c6-a106-4a6e-be9a-832f3b155b10, 0);
+SetOnStage(CHARACTERGUID_EmpyreoAd_007_0fa9769c-e7f1-4538-885c-04faf00d30db, 0);
+SetOnStage(CHARACTERGUID_EmpyreoAd_008_85127767-632b-4f2f-895a-c98d2415570f, 0);
+SetIsBoss(CHARACTERGUID_S_CoS_Temples_Animal_002_ab1ba23b-227b-4315-a096-b6c0b4bc8a5c, 1);
+
+IF
+CombatRoundStarted(_Combat, _Round)
+AND
+CombatGetIDForCharacter(CHARACTERGUID_S_CoS_Temples_Animal_002_ab1ba23b-227b-4315-a096-b6c0b4bc8a5c, _Combat)
+THEN
+PROC_Derpy_EmpyreoMech(_Round);
+
+PROC PROC_Derpy_EmpyreoMech(1)
+AND
+GetPosition(CHARACTERGUID_EmpyreoAd_004_7054b288-0602-4a1e-9c8a-41c0bf85c169,_X1,_Y1,_Z1)
+AND
+GetPosition(CHARACTERGUID_EmpyreoAd_005_eed220c6-a106-4a6e-be9a-832f3b155b10,_X2,_Y2,_Z2)
+THEN
+Foop(CHARACTERGUID_EmpyreoAd_004_7054b288-0602-4a1e-9c8a-41c0bf85c169);
+Foop(CHARACTERGUID_EmpyreoAd_005_eed220c6-a106-4a6e-be9a-832f3b155b10);
+ApplyStatus(CHARACTERGUID_EmpyreoAd_004_7054b288-0602-4a1e-9c8a-41c0bf85c169, "FIRE_SKIN", -1.0, 1, CHARACTERGUID_EmpyreoAd_000_f81e6b4c-0317-4840-b683-6b3958ee3a8e);
+ApplyStatus(CHARACTERGUID_EmpyreoAd_005_eed220c6-a106-4a6e-be9a-832f3b155b10, "POISON_SKIN", -1.0, 1, CHARACTERGUID_EmpyreoAd_002_cc8ed802-437e-4d23-9158-ab4ce28522ee);
+EnterCombat(CHARACTERGUID_EmpyreoAd_004_7054b288-0602-4a1e-9c8a-41c0bf85c169,CHARACTERGUID_S_CoS_Temples_Animal_002_ab1ba23b-227b-4315-a096-b6c0b4bc8a5c);
+EnterCombat(CHARACTERGUID_EmpyreoAd_005_eed220c6-a106-4a6e-be9a-832f3b155b10,CHARACTERGUID_S_CoS_Temples_Animal_002_ab1ba23b-227b-4315-a096-b6c0b4bc8a5c);
+PlayEffectAtPosition("RS3_FX_GP_ScriptedEvent_DW_ArenaVoidwoken_Appear_01", _X1, _Y1, _Z1);
+PlayEffectAtPosition("RS3_FX_GP_ScriptedEvent_DW_ArenaVoidwoken_Appear_01", _X2, _Y2, _Z2);
+
+
+PROC PROC_Derpy_EmpyreoMech(2)
+AND
+GetPosition(CHARACTERGUID_EmpyreoAd_007_0fa9769c-e7f1-4538-885c-04faf00d30db,_X1,_Y1,_Z1)
+AND
+GetPosition(CHARACTERGUID_EmpyreoAd_008_85127767-632b-4f2f-895a-c98d2415570f,_X2,_Y2,_Z2)
+THEN
+Foop(CHARACTERGUID_EmpyreoAd_007_0fa9769c-e7f1-4538-885c-04faf00d30db);
+Foop(CHARACTERGUID_EmpyreoAd_008_85127767-632b-4f2f-895a-c98d2415570f);
+ApplyStatus(CHARACTERGUID_EmpyreoAd_007_0fa9769c-e7f1-4538-885c-04faf00d30db, "ICE_SKIN", -1.0, 1, CHARACTERGUID_EmpyreoAd_001_9ff24280-65bb-43b5-8f35-71a40014e35b);
+ApplyStatus(CHARACTERGUID_EmpyreoAd_008_85127767-632b-4f2f-895a-c98d2415570f, "ELECTRIC_SKIN", -1.0, 1, CHARACTERGUID_EmpyreoAd_003_6400a686-9c77-4cb5-87b4-e0f3e0157d5f);
+EnterCombat(CHARACTERGUID_EmpyreoAd_007_0fa9769c-e7f1-4538-885c-04faf00d30db,CHARACTERGUID_S_CoS_Temples_Animal_002_ab1ba23b-227b-4315-a096-b6c0b4bc8a5c);
+EnterCombat(CHARACTERGUID_EmpyreoAd_008_85127767-632b-4f2f-895a-c98d2415570f,CHARACTERGUID_S_CoS_Temples_Animal_002_ab1ba23b-227b-4315-a096-b6c0b4bc8a5c);
+PlayEffectAtPosition("RS3_FX_GP_ScriptedEvent_DW_ArenaVoidwoken_Appear_01", _X1, _Y1, _Z1);
+PlayEffectAtPosition("RS3_FX_GP_ScriptedEvent_DW_ArenaVoidwoken_Appear_01", _X2, _Y2, _Z2);
+
+
+PROC PROC_AMER_Combat_TurnStarted(CHARACTERGUID_EmpyreoAd_007_0fa9769c-e7f1-4538-885c-04faf00d30db, _)
+AND
+CombatGetIDForCharacter(CHARACTERGUID_EmpyreoAd_007_0fa9769c-e7f1-4538-885c-04faf00d30db, _Combat)
+AND
+DB_AMER_Combat_Round(_Combat, 2)
+THEN
+PROC_AMER_GEN_ApplyStatusUntilEndOfTurn(CHARACTERGUID_EmpyreoAd_007_0fa9769c-e7f1-4538-885c-04faf00d30db, "Derpy_AIBabysitting_Invisible");
+PROC_AMER_CharacterAddSourcePoints(CHARACTERGUID_EmpyreoAd_007_0fa9769c-e7f1-4538-885c-04faf00d30db, 1);
+
+
+PROC PROC_AMER_Combat_TurnStarted(CHARACTERGUID_EmpyreoAd_008_85127767-632b-4f2f-895a-c98d2415570f, _)
+AND
+CombatGetIDForCharacter(CHARACTERGUID_EmpyreoAd_008_85127767-632b-4f2f-895a-c98d2415570f, _Combat)
+AND
+DB_AMER_Combat_Round(_Combat, 2)
+THEN
+PROC_AMER_GEN_ApplyStatusUntilEndOfTurn(CHARACTERGUID_EmpyreoAd_008_85127767-632b-4f2f-895a-c98d2415570f, "Derpy_AIBabysitting_Invisible");
+PROC_AMER_CharacterAddSourcePoints(CHARACTERGUID_EmpyreoAd_008_85127767-632b-4f2f-895a-c98d2415570f, 1);
+
+
+PROC
+ProcRegionEnded("CoS_Main")
+THEN
+GoalCompleted;
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "CouncilOfSeven"

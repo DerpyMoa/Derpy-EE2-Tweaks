@@ -1,0 +1,24 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Activate Paucity for 2 turns when reaching Battered or Harried 7 or greater.
+
+PROC PROC_AMER_BatteredHarried_StacksChanged((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, (INTEGER)_WhichStack, (INTEGER)_AddedStacks, (INTEGER)_NewStacks)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Paucity_ACT_BHStacks", _)
+AND
+_AddedStacks > 0
+AND
+_NewStacks >= 7
+AND
+QRY_AMER_GEN_OncePerRound(_Char, "Ascension_Paucity_ACT_BHStacks")
+THEN
+DB_AMER_GEN_OncePerRound(_Char, "Ascension_Paucity_ACT_BHStacks");
+PROC_AMER_KeywordStat_Paucity_Activate(_Char, _Char, _Source);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

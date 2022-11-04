@@ -1,0 +1,21 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_ARX_JahansDemons_Fallback_Mage_01_cfef563e-2391-43a3-b291-acc6ba6a6692);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_ARX_JahansDemons_Fallback_Ranger_01_185efcd7-4aa8-4091-b65e-2c62ff4199a3);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_ARX_JahansDemons_Fallback_Warrior_01_adeb719d-86a5-46c2-b7a9-1b82b5f24544);
+
+KBSECTION
+
+IF
+RegionStarted(_)
+THEN
+SetIsBoss(CHARACTERGUID_S_ARX_JahansDemons_Fallback_Mage_01_cfef563e-2391-43a3-b291-acc6ba6a6692, 1);
+GoalCompleted;
+
+EXITSECTION
+
+
+ENDEXITSECTION
+ParentTargetEdge "ARX"

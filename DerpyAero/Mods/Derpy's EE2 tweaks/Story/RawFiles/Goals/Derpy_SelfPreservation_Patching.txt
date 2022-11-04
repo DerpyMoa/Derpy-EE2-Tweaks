@@ -1,0 +1,36 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+PROC_Derpy_SelfPreservationCCcheck();
+
+KBSECTION
+
+PROC PROC_Derpy_SelfPreservationCCcheck()
+AND
+DB_CurrentLevel(_Level)
+AND
+IsCharacterCreationLevel(_level, 1)
+THEN
+GoalCompleted;
+
+
+IF
+SavegameLoaded(_, _, _, _)
+AND
+DB_IsPlayer(_Char)
+AND
+CharacterHasSkill(_Char, "Target_AMER_VampiricTouch", 1)
+THEN
+CharacterRemoveSkill(_Char, "Target_AMER_VampiricTouch");
+CharacterAddSkill(_Char, "Shout_SelfPreservation", 0);
+
+IF
+SavegameLoaded(_, _, _, _)
+THEN
+GoalCompleted;
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

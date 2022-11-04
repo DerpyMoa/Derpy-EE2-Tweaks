@@ -1,0 +1,39 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Cone_Shatter", 1)
+THEN
+ProcObjectTimer(_Char, "DeepFreezeSI1", 2000);
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "DeepFreezeSI1")
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "Derpy_Frostbite", "Shoot_OnStatus_WithICD", "AMER_BRITTLE_APPLY", "Projectile_Derpy_StatusDamage_Brittle_Full", "RemoteImpact", 1.0, "Derpy_DeepFreeze_SI1", 0, 2000, "SkillCast");
+PROC_AMER_GEN_ApplyStatusUntilEndOfTurn(_Char, "Derpy_Frostbite", _Char);
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Cone_Shatter", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 2)
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "Derpy_Frostbite", "Shoot_OnStatus_WithICD", "AMER_BRITTLE_APPLY", "Projectile_Derpy_StatusDamage_Brittle_Full", "RemoteImpact", 1.0, "Derpy_DeepFreeze_SI2", 0, 2000, "SkillCast");
+ApplyStatus(_Char, "Derpy_Frostbite", 6.0, 0, _Char);
+PROC_AMER_Source_Infusion_AddRefund(_Char, 2, 1);
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Cone_Shatter", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 3)
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "Derpy_Frostbite", "Shoot_OnStatus_WithICD", "AMER_BRITTLE_APPLY", "Projectile_Derpy_StatusDamage_Brittle_Full", "RemoteImpact", 1.0, "Derpy_DeepFreeze_SI3", 0, 2000, "SkillCast");
+ApplyStatus(_Char, "Derpy_Frostbite", 18.0, 0, _Char);
+PROC_AMER_Source_Infusion_AddRefund(_Char, 2, 0);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Cone_Shatter", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 3)
+THEN
+PROC_AMER_GEN_ShootConeAtPos(_Char, _X, _Y, _Z, "Cone_Shatter");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Hydrosophist"

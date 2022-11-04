@@ -1,0 +1,41 @@
+    Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//During your turn, your allies perform their reactions without spending any AP. Once per turn, whenever one or more allies perform a reaction, recover 1AP.
+
+PROC PROC_AMER_Reaction_PayCost_SetAPCostOverride((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (STRING)_ReactionID, (INTEGER)_APCost, (INTEGER)_AP)
+AND
+DB_AMER_Ascension_SpecialLogic(_Ally, "Ascension_GoddessReactionAP", _)
+AND
+DB_AMER_Combat_ActiveChar(_, _, _, _Ally)
+AND
+CharacterIsAlly(_Char, _Ally, 1)
+THEN
+DB_AMER_Reaction_APCostOverride(0);
+
+PROC PROC_AMER_Reaction_RequestApproved((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (STRING)_ReactionID, (STRING)_RequestID, (INTEGER)_PaidAPCost, (STRING)_Animation, (INTEGER)_RitualBool)
+AND
+DB_AMER_Ascension_SpecialLogic(_Ally, "Ascension_GoddessReactionAP", _)
+AND
+QRY_AMER_GEN_OncePerTurn(_Char, "Derpy_Ascension_Goddess")
+AND
+CharacterIsAlly(_Ally, _Char, 1)
+AND
+NOT DB_AMER_Ascension_GoddessReactionAP_RefundChoke(_Ally)
+THEN
+PROC_AMER_GEN_OncePerTurn_Store(_Char, "Derpy_Ascension_Goddess");
+PlayEffect(_Ally, "AMER_RS3_FX_Initiative_Prepared", "Dummy_OverheadFX");
+PROC_AMER_ActionPoints_Add(_Ally, 1);
+DB_AMER_Ascension_GoddessReactionAP_RefundChoke(_Ally);
+ProcObjectTimer(_Ally, "AMER_Ascension_GoddessReactionAP_RefundChoke", 250);
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "AMER_Ascension_GoddessReactionAP_RefundChoke")
+THEN
+NOT DB_AMER_Ascension_GoddessReactionAP_RefundChoke(_Char);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

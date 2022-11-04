@@ -1,0 +1,18 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+
+PROC PROC_AMER_KeywordStat_Predator_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Char, "ReactiveShot_SI3_Player", _, _, _, _)
+THEN
+PROC_AMER_GEN_Shoot_Delayed("Projectile", _Char, _Target, "Projectile_Derpy_SCRIPT_LockOn_Barrage", 5, 150);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GEN_Stats_ExtendedStats"

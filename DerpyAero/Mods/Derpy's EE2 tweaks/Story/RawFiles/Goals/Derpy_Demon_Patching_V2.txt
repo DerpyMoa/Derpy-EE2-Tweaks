@@ -1,0 +1,38 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+PROC_Derpy_DemonCCcheck_V2();
+
+KBSECTION
+
+PROC PROC_Derpy_DemonCCcheck_V2()
+AND
+DB_CurrentLevel(_Level)
+AND
+IsCharacterCreationLevel(_level, 1)
+THEN
+GoalCompleted;
+
+
+IF
+SavegameLoaded(_, _, _, _)
+AND
+DB_IsPlayer(_Char)
+AND
+CharacterHasTalent(_Char, "Demon", 1)
+THEN
+PROC_AMER_ExtendedStat_CharacterAddStat(_Char, "MaxRes", "FIRERESISTANCE", "", "", -10.0);
+PROC_AMER_FlexStat_CharacterAddStat(_Char, "Stat", "WATERRESISTANCE", 15.0);
+PROC_AMER_FlexStat_CharacterAddStat(_Char, "Stat", "FIRERESISTANCE", -15.0);
+
+
+IF
+SavegameLoaded(_, _, _, _)
+THEN
+GoalCompleted;
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

@@ -1,0 +1,90 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_GEN_BasicAttackObjectStarted((CHARACTERGUID)_Defender, (REAL)_X, (REAL)_Y, (REAL)_Z, (CHARACTERGUID)_Owner, (CHARACTERGUID)_Attacker, (STRING)_AttackID)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Attacker, "Artifact_Momentum", _)
+AND
+QRY_AMER_GEN_OncePerRound(_Attacker, "Artifact_Momentum")
+THEN
+DB_AMER_GEN_OncePerRound(_Attacker, "Artifact_Momentum");
+DB_AMER_Artifacts_Momentum_Data(_Attacker, _Defender, _X, _Y, _Z);
+ProcObjectTimer(_Attacker, "AMER_Artifacts_MomentumDelay", 250);
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Attacker, "AMER_Artifacts_MomentumDelay")
+THEN
+PROC_AMER_GEN_CharacterGetStat(_Attacker, "Movement", "AMER_Artifact_Momentum_GetSpeed");
+
+PROC PROC_AMER_GEN_CharacterGetStat_Returned((INTEGER)_RequestIndex, (CHARACTERGUID)_Char, "AMER_Artifact_Momentum_GetSpeed", "Movement", (REAL)_Amount)
+AND
+DB_AMER_Artifacts_Momentum_Data(_Char, _Target, _X, _Y, _Z)
+THEN
+NOT DB_AMER_Artifacts_Momentum_Data(_Char, _Target, _X, _Y, _Z);
+PROC_AMER_Artifacts_Momentum_Returned(_Char, _Target, _X, _Y, _Z, _Amount);
+
+
+//Combat log text if _Target exists.
+PROC PROC_AMER_Artifacts_Momentum_Returned((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (REAL)_Amount)
+AND
+ObjectExists(_Target, 1)
+AND
+ObjectIsCharacter(_Target, 1)
+AND
+QRY_AMER_GEN_CharacterGetDisplayName(_Target)
+AND
+DB_AMER_GEN_OUTPUT_String(_Name)
+AND
+QRY_AMER_GEN_TSK_Get("AMER_Artifact_Momentum_LogText")
+AND
+DB_AMER_GEN_OUTPUT_String(_LogText)
+THEN
+PROC_AMER_GEN_CharacterCombatLogText_Param_Str(_Char, _LogText, _Name);
+
+
+PROC PROC_AMER_Artifacts_Momentum_Returned((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (REAL)_Amount)
+THEN
+CharacterStatusText(_Char, "Artifact_Momentum");
+PROC_AMER_Artifacts_Momentum_Fire(_Char, _Target, _X, _Y, _Z, _Amount);
+
+
+PROC PROC_AMER_Artifacts_Momentum_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (REAL)_Amount)
+AND
+RealDivide(_Amount, 1.8, _Tier)
+AND
+Integer(_Tier, _TierInt)
+AND
+_TierInt > 0
+AND
+IntegerSubtract(_TierInt, 1, _Repeats)
+AND
+IntegerMin(_Repeats, 4, _RepeatsBounded)
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Air_Attack_Precision_Cast_Snipe_ArrowFX_01", "Dummy_ArrowFX");
+PlayEffect(_Char, "RS3_FX_Skills_Air_Attack_Precision_Cast_Snipe_Root_01", "Dummy_Root");
+PROC_AMER_Artifacts_Momentum_DoProjectiles(_Char, _Target, _X, _Y, _Z, _RepeatsBounded);
+
+
+PROC PROC_AMER_Artifacts_Momentum_DoProjectiles((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_Repeats)
+AND
+NOT QRY_AMER_Artifacts_Momentum_DoProjectiles_ValidTarget(_Char, _Target, _X, _Y, _Z, _Repeats)
+THEN
+PROC_AMER_GEN_Shoot_Delayed("Projectile", _Char, _X, _Y, _Z, "Projectile_AMER_SCRIPT_Artifact_Momentum_1", _Repeats, 150);
+
+
+QRY QRY_AMER_Artifacts_Momentum_DoProjectiles_ValidTarget((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_Repeats)
+AND
+ObjectExists(_Target, 1)
+AND
+ObjectIsCharacter(_Target, 1)
+THEN
+PROC_AMER_GEN_Shoot_Delayed("Projectile", _Char, _Target, "Projectile_AMER_SCRIPT_Artifact_Momentum_1", _Repeats, 150);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"

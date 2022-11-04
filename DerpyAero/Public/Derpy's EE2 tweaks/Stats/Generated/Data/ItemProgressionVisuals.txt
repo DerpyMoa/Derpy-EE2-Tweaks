@@ -1,0 +1,14 @@
+new itemgroup "Derpy_Scythe"
+
+add levelgroup 1,0,"All"
+add rootgroup "44525b09-a2b1-4b45-8d52-e893d04390dd",""
+add namegroup "Scythe","",""
+
+
+
+new itemgroup "UNI_RC_FL_Armor_Platemail_AncientTrophy"
+
+add levelgroup 0,0,"All"
+add rootgroup "244b9246-5a87-45cb-9f61-387c639d680a",""
+add namegroup "UNI_RC_FL_Armor_Platemail_AncientTrophy","","Item_EQ_Armor_Platemail_Upperbody_A_VAR"
+

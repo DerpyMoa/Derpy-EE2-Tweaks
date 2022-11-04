@@ -1,0 +1,61 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_PressureSpike", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "AirSpecialist", 15.0, 3.0, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Target_PressureSpike", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+CreateSurfaceAtPosition(_X, _Y, _Z, "SurfaceNone", 3.0, 0.0);
+CreateSurfaceAtPosition(_X, _Y, _Z, "SurfaceWaterCloudElectrified", 3.0, 12.0);
+
+
+//=================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_PressureSpike", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 1, 0);
+PROC_AMER_GEN_IterateCharsAroundPoint(_X, _Y, _Z, 3.0, _Char, 10, "AMER_SourceInfusion_PressureSpike_2");	//Living enemies.
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "AMER_SourceInfusion_PressureSpike_2", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+PROC_AMER_BatteredHarried_DirectManip(_Char, 1, 2, _SourceChar);
+ApplyStatus(_Char, "AMER_SQUELCHED_APPLY", 12.0, 0, _SourceChar);
+
+
+//=================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_PressureSpike", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "AirSpecialist", 40.0, 8.0, 2000, "SkillCast");
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_PressureSpike", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_GEN_Shoot_Delayed("Explosion", _Char, NULL_00000000-0000-0000-0000-000000000000, _X, _Y, _Z, "Projectile_Derpy_SCRIPT_PressureSpike", 0.0, 4, 100);	//5 total strikes within 0m, 100ms interval.
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Aerotheurge"

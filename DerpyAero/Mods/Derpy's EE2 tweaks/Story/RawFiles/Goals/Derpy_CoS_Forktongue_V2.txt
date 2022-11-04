@@ -1,0 +1,21 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_CoS_Temples_Elf_BlackRing_002_4078d759-ed9d-4971-9f68-415cb9a71704);
+
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_CoS_Temples_Elf_BlackRing_002_4078d759-ed9d-4971-9f68-415cb9a71704, "Quake_EnemyEarthquake");
+
+KBSECTION
+
+IF
+RegionStarted(_)
+THEN
+SetIsBoss(CHARACTERGUID_S_CoS_Temples_Elf_BlackRing_002_4078d759-ed9d-4971-9f68-415cb9a71704, 1);
+RemoveStatus(CHARACTERGUID_S_CoS_Temples_Elf_BlackRing_002_4078d759-ed9d-4971-9f68-415cb9a71704,"QUEST_DEFLECTION_AURA");
+GoalCompleted;
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "CouncilOfSeven"

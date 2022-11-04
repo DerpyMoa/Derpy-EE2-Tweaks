@@ -1,0 +1,15 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_KeywordStat_Elementalist_BlackList("Target_AMER_Storm_Ethereal_Move");
+DB_AMER_KeywordStat_Elementalist_BlackList("Target_AMER_Storm_Blizzard_Move");
+DB_AMER_KeywordStat_Elementalist_BlackList("Target_AMER_Storm_Lightning_Move");
+DB_AMER_KeywordStat_Elementalist_BlackList("Target_AMER_Storm_Scourge_Move");
+
+KBSECTION
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

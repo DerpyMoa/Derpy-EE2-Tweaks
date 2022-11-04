@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<save>
+    <header version="2" time="1387205254" />
+    <version major="1" minor="3" revision="0" build="0" />
+    <region id="CharacterCreationClass">
+        <node id="root">
+            <attribute id="ClassDescription" value="With a lot of skill and a little luck, this rogue sees the world as an open coffer" handle="h3c4d9bd2gc1e1g48cega2e1gbc95eb7c7fe0" type="28" />
+			<attribute id="ClassLongDescription" value="The job was supposed to be simple: Break into the vault, take the gold. The Rogue hadn't bothered to ask whose vault and whose gold it was - such questions were irrelevant.  Cold, thick steel and shining, precious gold had no human element, after all. One could be coaxed into yielding, and the other could be delivered to whomever had ordered the job in exchange for a small fee or, on particularly ill-fated occasions, the Rogue's life.  This job was, unfortunately, the latter.  The vault's internal mechanisms clicked small high- and low-pitched sounds, satisfying to the practiced ear. A few more manipulations, and- success! The rogue pulled open the great, heavy door just enough to slip inside. Noiselessly filling a satchel with gold, the thief had no time to react to the heavy hands that seized both busy shoulders.  &quot;Well done,&quot; it said, turning the Rogue to face the voice's owner. &quot;But anyone so adept with a lockpick should be working for the realm, not against it.  &quot; &quot;You did manage to catch me,&quot; the Rogue replied. &quot;I'm the Grand Master of the Source Hunters,&quot; he laughed. &quot;I can catch anyone.&quot;" handle="hc3cf3297g9b57g4402g9ca0g43174f5c2718" type="28" />
+            <attribute id="ClassName" value="Rogue" handle="h57648e96ga41bg4f1cg8abcgf355df7ee7bb" type="28" />
+            <attribute id="ClassType" value="Rogue" type="22" />
+            <attribute id="SkillSet" value="Class_Rogue" type="22" />
+            <attribute id="Voice" value="0" type="5" />
+			<attribute id="Icon" value="7" type="5" />
+
+            <attribute id="NumStartingCombatAbilityPoints" value="2" type="4" />
+            <attribute id="NumStartingCivilAbilityPoints" value="1" type="4" />
+            <attribute id="NumStartingAttributePoints" value="3" type="4" />
+            <attribute id="NumStartingTalentPoints" value="1" type="4" />
+            
+			<attribute id="AreStatsWeighted" value="1" type="19" />
+            <children>
+            <node id="EquipmentProperties">
+                    <children>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Human" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Rogue_Humans" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Rogue_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Dwarf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Rogue_Dwarves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Rogue_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Elf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Rogue_Elves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Rogue_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Lizard" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Rogue_Lizards" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Rogue_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Human" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Rogue_Humans" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Rogue_Start_Undead" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Dwarf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Rogue_Dwarves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Rogue_Start_Undead" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Elf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Rogue_Elves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Rogue_Start_Undead" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Lizard" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Rogue_Lizards" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Rogue_Start_Undead" type="22" />
+                        </node>
+                    </children>
+                </node>
+                <node id="AbilityChanges">
+                    <children>
+                        <node id="AbilityChange">
+                            <attribute id="Ability" value="RogueLore" type="23" />
+                            <attribute id="AmountIncreased" value="1" type="4" />
+                        </node>
+                        <node id="AbilityChange">
+                            <attribute id="Ability" value="WarriorLore" type="23" />
+                            <attribute id="AmountIncreased" value="1" type="4" />
+                        </node>
+						<node id="AbilityChange">
+                            <attribute id="Ability" value="Thievery" type="23" />
+                            <attribute id="AmountIncreased" value="1" type="4" />
+                        </node>
+                    </children>
+                </node>
+                <node id="AttributeChanges">
+                    <children>
+                        <node id="AttributeChange">
+                            <attribute id="AmountIncreased" value="3" type="4" />
+                            <attribute id="Attribute" value="CON" type="23" />
+                        </node>
+                    </children>
+                </node>
+                <node id="TalentsAdded">
+                    <children>
+                        <node id="TalentAdded">
+                            <attribute id="Talent" value="QuickStep" type="23" />
+                        </node>
+                    </children>
+                </node>
+            </children>
+        </node>
+    </region>
+</save>

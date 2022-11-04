@@ -1,0 +1,65 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, "Shout_FlamingTongues", 0, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "FLAMING_TONGUES", "FlamingTongues_SI0", "", "", "", 1.0, "FlamingTongues", 1, 2000, "SkillCast");
+
+
+//=======================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_FlamingTongues", 1)
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "FLAMING_TONGUES_INFUS1", "FlamingTongues_SI1", "", "", "", 1.0, "FlamingTongues", 1, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "FLAMING_TONGUES_INFUS1", "BatteredHarried_DirectManipStatuses_Activate", "1", "1", "", 1.0, "FlamingTongues_Infus", 1, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_FlamingTongues", 1)
+AND
+NRD_ApplyActiveDefense(_Char, "FLAMING_TONGUES_INFUS1", 24.0, _FlamingTongues_SI1)
+THEN
+DB_NOOP(1);
+
+
+//=======================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_FlamingTongues", 2)
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "FLAMING_TONGUES_INFUS2", "FlamingTongues_SI2", "", "", "", 1.0, "FlamingTongues", 1, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "FLAMING_TONGUES_INFUS2", "BatteredHarried_DirectManipStatuses_Activate", "1", "1", "", 1.0, "FlamingTongues_Infus", 1, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_FlamingTongues", 2)
+AND
+NRD_ApplyActiveDefense(_Char, "FLAMING_TONGUES_INFUS2", 24.0, _FlamingTongues_SI2)
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+
+
+//=======================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_FlamingTongues", 3)
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "FLAMING_TONGUES_INFUS3", "FlamingTongues_SI3", "", "", "", 1.0, "FlamingTongues", 1, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "FLAMING_TONGUES_INFUS3", "BatteredHarried_DirectManipStatuses_Activate", "1", "1", "", 1.0, "FlamingTongues_Infus", 1, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "FLAMING_TONGUES_INFUS3", "BatteredHarried_DirectManipStatuses_Activate", "2", "2", "", 1.0, "FlamingTongues_Infus", 1, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_FlamingTongues", 3)
+AND
+NRD_ApplyActiveDefense(_Char, "FLAMING_TONGUES_INFUS3", 30.0, _FlamingTongues_SI3)
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Pyrokinetic"

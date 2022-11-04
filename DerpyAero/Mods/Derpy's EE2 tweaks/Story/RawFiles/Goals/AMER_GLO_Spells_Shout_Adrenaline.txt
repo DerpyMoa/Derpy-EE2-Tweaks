@@ -1,0 +1,44 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+//!!! This must accurately reflect the amount of action points granted by adrenaline!!!
+PROC PROC_AMER_Spells_SkillCast((CHARACTERGUID)_Char, "Shout_Adrenaline", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_ActionPoints_UpdateRecord_Add(_Char, 4);
+//!!! This must accurately reflect the amount of action points granted by adrenaline!!!
+
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_Adrenaline", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 2, 0);
+ApplyStatus(_Char, "HASTED", 6.0, 0, _Char);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_Adrenaline", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, 10.0, 4.0, 0.0, "Ability", "RogueLore")
+AND
+DB_AMER_GEN_OUTPUT_Real(_Scaling)
+THEN
+PROC_AMER_StatusMod_ExtendedStat_TryApplyModForStatus(_Char, _Char, "ADRENALINE", "PercAttributeIncrease", "Intelligence", "", "", _Scaling, "Adrenaline_Infus");
+//PROC_AMER_TempStat_StatusMod_AddExtendedStat_Scaling(_Char, "ADRENALINE", "PercAttributeIncrease", "Intelligence", "", "", "Adrenaline_Infus", 0, "Ability", "RogueLore", 5.0, 3.0, 2000);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_Adrenaline", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_ActionPoints_Add(_Char, 4);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Scoundrel"

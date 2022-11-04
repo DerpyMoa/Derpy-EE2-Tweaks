@@ -1,0 +1,117 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Talents_Toggle((CHARACTERGUID)_Char, "IceKing", (REAL)_Toggle)
+THEN
+PROC_AMER_ExtendedStat_CharacterAddStat(_Char, "Shoot_OnStatus_WithICD", "AMER_BRITTLE_APPLY", "Projectile_Derpy_StatusDamage_Brittle", "RemoteImpact", _Toggle);
+
+
+PROC PROC_AMER_Talents_Toggle((CHARACTERGUID)_Char, "IceKing", 1.0)
+THEN
+PROC_AMER_ExtendedStat_CharacterAddStat(_Char, "MaxRes", "WATERRESISTANCE", "", "", -10.0);
+PROC_AMER_FlexStat_CharacterAddStat(_Char, "Stat", "WATERRESISTANCE", -15.0);
+PROC_AMER_FlexStat_CharacterAddStat(_Char, "Stat", "FIRERESISTANCE", 15.0);
+PROC_AMER_ExtendedStat_CharacterAddStat(_Char, "Brittle_Countdown_Target_Add", "", "", "", -1.0);
+
+
+PROC PROC_AMER_Talents_Toggle((CHARACTERGUID)_Char, "IceKing", -1.0)
+THEN
+PROC_AMER_ExtendedStat_CharacterAddStat(_Char, "MaxRes", "WATERRESISTANCE", "", "", 10.0);
+PROC_AMER_FlexStat_CharacterAddStat(_Char, "Stat", "WATERRESISTANCE", 15.0);
+PROC_AMER_FlexStat_CharacterAddStat(_Char, "Stat", "FIRERESISTANCE", -15.0);
+PROC_AMER_ExtendedStat_CharacterAddStat(_Char, "Brittle_Countdown_Target_Add", "", "", "", 1.0);
+
+
+//===========================================================================================================================
+
+
+IF
+NRD_OnHit((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, _Damage, _Handle)
+AND
+CharacterHasTalent(_Char, "IceKing", 1)
+AND
+_Target == _Char
+AND
+NRD_StatusGetString(_Target, _Handle, "SkillId", _Skill)
+AND
+QRY_Derpy_IsShatterDamage(_Skill)
+THEN
+NRD_HitStatusClearAllDamage(_Target, _Handle);
+
+
+QRY QRY_Derpy_IsShatterDamage("Projectile_AMER_SCRIPT_StatusDamage_FrostCloud")
+THEN
+DB_NOOP();
+
+
+QRY QRY_Derpy_IsShatterDamage("Projectile_AMER_SCRIPT_StatusDamage_FrostCloud_50")
+THEN
+DB_NOOP();
+
+
+//===========================================================================================================================
+
+
+PROC PROC_AMER_Status_Brittle_Detonate((CHARACTERGUID)_Char, (CHARACTERGUID)_Source)
+AND
+CharacterHasTalent(_Source, "IceKing", 1)
+THEN
+PROC_Derpy_IceKing_CooldownEffects(_Source);
+
+
+//===========================================================================================================================
+
+
+PROC PROC_Derpy_IceKing_CooldownEffects((CHARACTERGUID)_Source)
+AND
+NRD_SkillGetCooldown(_Source, "Shout_GlobalCooling", _GlaciateCooldown)
+AND
+_GlaciateCooldown != 0.0
+AND
+RealSubtract(_GlaciateCooldown, 6.0, _NewGlaciateCooldown)
+THEN
+DB_Derpy_IceKing_Glaciate_CDAdjusted(_Source, _NewGlaciateCooldown);
+NRD_SkillSetCooldown(_Source, "Shout_GlobalCooling", 0.0);
+ProcObjectTimer(_Source, "Derpy_IceKing_Glaciate_CD", 100);
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Source, "Derpy_IceKing_Glaciate_CD")
+AND
+DB_Derpy_IceKing_Glaciate_CDAdjusted(_Source, _NewGlaciateCooldown)
+THEN
+NOT DB_Derpy_IceKing_Glaciate_CDAdjusted(_Source, _NewGlaciateCooldown);
+NRD_SkillSetCooldown(_Source, "Shout_GlobalCooling", _NewGlaciateCooldown);
+
+
+//===========================================================================================================================
+
+
+PROC PROC_Derpy_IceKing_CooldownEffects((CHARACTERGUID)_Source)
+AND
+NRD_SkillGetCooldown(_Source, "Shout_IceBreaker", _ShatterCooldown)
+AND
+_ShatterCooldown != 0.0
+AND
+RealSubtract(_ShatterCooldown, 6.0, _NewShatterCooldown)
+THEN
+DB_Derpy_IceKing_Shatter_CDAdjusted(_Source, _NewShatterCooldown);
+NRD_SkillSetCooldown(_Source, "Shout_IceBreaker", 0.0);
+ProcObjectTimer(_Source, "Derpy_IceKing_Shatter_CD", 100);
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Source, "Derpy_IceKing_Shatter_CD")
+AND
+DB_Derpy_IceKing_Shatter_CDAdjusted(_Source, _NewShatterCooldown)
+THEN
+NOT DB_Derpy_IceKing_Shatter_CDAdjusted(_Source, _NewShatterCooldown);
+NRD_SkillSetCooldown(_Source, "Shout_IceBreaker", _NewShatterCooldown);
+
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Talents"

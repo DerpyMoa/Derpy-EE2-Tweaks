@@ -1,0 +1,45 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Status_StatusFamily_Applied((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, (STRING)_Status, "Squelched", (INTEGER)_Tier)
+AND
+DB_AMER_Artifacts_EquippedEffects(_ArtifactWielder, "Artifact_Dominion", _)
+THEN
+PROC_AMER_Artifacts_Dominion(_ArtifactWielder, _Char);
+
+
+PROC PROC_AMER_GEN_FilteredStatus_Applied(_Char, _Source, "SUFFOCATING", _)
+AND
+DB_AMER_Artifacts_EquippedEffects(_ArtifactWielder, "Artifact_Dominion", _)
+THEN
+PROC_AMER_Artifacts_Dominion(_ArtifactWielder, _Char);
+
+
+PROC PROC_AMER_Artifacts_Dominion((CHARACTERGUID)_ArtifactWielder, (CHARACTERGUID)_Char)
+AND
+CharacterIsEnemy(_Char, _ArtifactWielder, 1)
+AND
+CharacterCanSee(_ArtifactWielder, _Char, 1)
+AND
+QRY_AMER_GEN_OncePerRound_PerChar(_ArtifactWielder, "Artifact_Dominion", _Char)
+THEN
+PROC_AMER_Reaction_Request(_ArtifactWielder, _Char, "Artifact_Dominion", "", "skill_cast_target_voodoo_01_cast", 0);
+
+
+PROC PROC_AMER_Reaction_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, "Artifact_Dominion", (STRING)_RequestID, (INTEGER)_RitualBool)
+THEN
+DB_AMER_GEN_OncePerRound_PerChar(_Char, "Artifact_Dominion", _Target);
+PlayEffect(_Char, "RS3_FX_Skills_Cast_Target_Voodoo_DominateMind_Root_01", "");
+PlayEffect(_Char, "RS3_FX_Skills_Cast_Target_Voodoo_DominateMind_Hand_01", "Dummy_L_HandFX");
+PlayEffect(_Target, "RS3_FX_Skills_Voodoo_DominateMind_Impact_Root_01", "");
+PlayEffect(_Target, "RS3_FX_Skills_Voodoo_DominateMind_Impact_StatusFx_01", "facesource:Dummy_StatusFX");
+ApplyStatus(_Target, "AMER_ENTHRALLED_APPLY", 12.0, 0, _Char);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"

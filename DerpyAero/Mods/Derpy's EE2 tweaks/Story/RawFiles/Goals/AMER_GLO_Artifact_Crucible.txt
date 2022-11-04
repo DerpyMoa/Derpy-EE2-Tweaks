@@ -1,0 +1,22 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_CorpseExplosion", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Char, "Artifact_Crucible", _)
+THEN
+PROC_AMER_GEN_IterateCharsAroundObject(_Target, 4.0, _Char, 10, "Artifact_Crucible_ExploIterator");	//Living enemies within 4.0m.
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Artifact_Crucible_ExploIterator", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+ApplyStatus(_Char, "FLAMING_CRESCENDO", 6.0, 0, _SourceChar);
+PROC_AMER_GEN_RemoveAndApplyStatus(_Char, "AMER_EPIDEMICOFFIRE", 6.0, _SourceChar);
+PROC_AMER_StatusMod_ExtendedStat_TryApplyModForStatus(_Char, _SourceChar, "AMER_EPIDEMICOFFIRE", "Shoot_OnTurn", "RemoteImpact", "Projectile_AMER_SCRIPT_InfectiousFlame", "EpidemicOfFire", 1.0, "EpidemicOfFire");
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"

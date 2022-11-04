@@ -1,0 +1,20 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_GLO_Tovah_69c31947-b004-44aa-b856-2a9a96ff218a);
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_RC_MIL_ElvenRanger_01_58613267-ab70-408e-8564-9825d9b5383e);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_RC_MIL_ElvenRogue_01_c1b8a0ea-7df4-4970-8c2a-17a26245d4d9);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_RC_MIL_ElvenTank_21cf95b4-c4a7-4a54-9beb-71a9ba711aba);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_RC_MIL_ElvenTank2_55dc1982-2f24-4ece-a592-ad3dda6272cb);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_RC_MIL_ElfShaman_ce67ffa8-7919-4ec3-8440-23ed94b7cf5b);
+
+
+KBSECTION
+
+EXITSECTION
+
+
+ENDEXITSECTION
+ParentTargetEdge "ReapersCoast"

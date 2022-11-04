@@ -1,0 +1,61 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_CoS_MonolithBoss_Char_c963ad5d-72f7-4c0e-8f08-910ffe11a0a3);
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_CoS_BossAutomation_002_79e728db-4a6c-4b4f-a39b-630c924ba5d9);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_CoS_BossAutomation_004_3238298b-05d0-41e4-b368-82aeb643e832);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_CoS_BossAutomation_003_028a43db-1718-4125-b7c7-f05a517ed0d2);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_CoS_BossAutomation_001_95e541c2-9b4f-49a9-91d7-2e6875a8721d);
+
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_CoS_MonolithBoss_Char_c963ad5d-72f7-4c0e-8f08-910ffe11a0a3, "Projectile_EnemyFireball");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_CoS_MonolithBoss_Char_c963ad5d-72f7-4c0e-8f08-910ffe11a0a3, "Target_EnemyRockSpikes");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_CoS_MonolithBoss_Char_c963ad5d-72f7-4c0e-8f08-910ffe11a0a3, "ProjectileStrike_EnemyDazingBolt");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_CoS_MonolithBoss_Char_c963ad5d-72f7-4c0e-8f08-910ffe11a0a3, "Projectile_EnemyFlamingDaggers");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_CoS_MonolithBoss_Char_c963ad5d-72f7-4c0e-8f08-910ffe11a0a3, "Projectile_EnemyLightningBolt");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_CoS_MonolithBoss_Char_c963ad5d-72f7-4c0e-8f08-910ffe11a0a3, "Projectile_EnemyFlare");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_CoS_MonolithBoss_Char_c963ad5d-72f7-4c0e-8f08-910ffe11a0a3, "Projectile_EnemyImmolate");
+
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_CoS_BossAutomation_003_028a43db-1718-4125-b7c7-f05a517ed0d2, "Projectile_EnemySuperconductor");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_CoS_BossAutomation_003_028a43db-1718-4125-b7c7-f05a517ed0d2, "Shout_EnemyElectricFence");
+
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_CoS_BossAutomation_001_95e541c2-9b4f-49a9-91d7-2e6875a8721d, "Quake_EnemyEarthquake");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_CoS_BossAutomation_001_95e541c2-9b4f-49a9-91d7-2e6875a8721d, "Shout_EnemyReactiveArmor");
+
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_CoS_BossAutomation_002_79e728db-4a6c-4b4f-a39b-630c924ba5d9, "Rain_EnemyBlood");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_CoS_BossAutomation_002_79e728db-4a6c-4b4f-a39b-630c924ba5d9, "Target_EnemyInfect");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_CoS_BossAutomation_002_79e728db-4a6c-4b4f-a39b-630c924ba5d9, "Target_EnemyMosquitoSwarm");
+
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_CoS_BossAutomation_004_3238298b-05d0-41e4-b368-82aeb643e832, "Target_EnemyBlackShroud");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_CoS_BossAutomation_004_3238298b-05d0-41e4-b368-82aeb643e832, "Target_EnemyInfect");
+
+
+KBSECTION
+
+IF
+RegionStarted(_)
+AND
+QueryOnlyOnce("Derpy_CoS_ArenaSetup_V4")
+THEN
+PROC_AMER_FlexStat_CharacterAddStat(CHARACTERGUID_S_CoS_MonolithBoss_Char_c963ad5d-72f7-4c0e-8f08-910ffe11a0a3, "Stat", "RANGEBOOST", 1000.0);
+
+
+PROC PROC_AMER_Combat_TurnStarted(CHARACTERGUID_S_CoS_MonolithBoss_Char_c963ad5d-72f7-4c0e-8f08-910ffe11a0a3, _)
+AND
+CombatGetIDForCharacter(CHARACTERGUID_S_CoS_MonolithBoss_Char_c963ad5d-72f7-4c0e-8f08-910ffe11a0a3, _Combat)
+AND
+DB_AMER_Combat_Round(_Combat, 3)
+THEN
+PROC_AMER_CharacterAddSourcePoints(CHARACTERGUID_S_CoS_MonolithBoss_Char_c963ad5d-72f7-4c0e-8f08-910ffe11a0a3, 3);
+
+
+PROC
+ProcRegionEnded("CoS_Main")
+THEN
+GoalCompleted;
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "CouncilOfSeven"

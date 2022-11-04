@@ -1,0 +1,62 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Combat_CharacterDiedInCombat((CHARACTERGUID)_Dying, (INTEGER)_Combat, (INTEGER)_IsSummon)
+AND
+DB_AMER_Artifacts_EquippedEffects(_ArtifactWielder, "Artifact_Gluttony", _)
+AND
+IsTagged(_Dying, "TOTEM", 0)
+AND
+CombatGetIDForCharacter(_ArtifactWielder, _Combat)
+AND
+QRY_AMER_GEN_IterateCharsAroundObject_GetRequestIndex()
+AND
+DB_AMER_GEN_OUTPUT_Integer(_RequestIndex)
+AND
+QRY_AMER_GEN_CharacterGetDisplayName(_Dying)
+AND
+DB_AMER_GEN_OUTPUT_String(_Name)
+AND
+QRY_AMER_GEN_TSK_Get("AMER_Artifact_Gluttony_LogText")
+AND
+DB_AMER_GEN_OUTPUT_String(_LogText)
+THEN
+ApplyStatus(_ArtifactWielder, "AMER_SLOWED_2", 6.0, 0, _ArtifactWielder);
+DB_AMER_Artifacts_Gluttony_CorpseCount(_RequestIndex, 0);
+PROC_AMER_GEN_IterateCharsAroundObject(_ArtifactWielder, 13.0, _ArtifactWielder, 16, "AMER_Artifacts_Gluttony_CorpseIterator");	//Only dead characters within 8.0m.
+PROC_AMER_GEN_CharacterCombatLogText_Param_Str(_ArtifactWielder, _LogText, _Name);
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "AMER_Artifacts_Gluttony_CorpseIterator", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+AND
+DB_AMER_Artifacts_Gluttony_CorpseCount(_RequestIndex, _Count)
+AND
+IntegerSum(_Count, 1, _NewCount)
+THEN
+NOT DB_AMER_Artifacts_Gluttony_CorpseCount(_RequestIndex, _Count);
+DB_AMER_Artifacts_Gluttony_CorpseCount(_RequestIndex, _NewCount);
+PlayEffect(_Char, "RS3_FX_GP_Beams_Blood_01", "");
+PlayBeamEffect(_Char, _SourceChar, "AMER_RS3_FX_Beams_Blood_Instant", "Dummy_BodyFX", "Dummy_BodyFX");
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Finished((INTEGER)_RequestID, "AMER_Artifacts_Gluttony_CorpseIterator", (CHARACTERGUID)_SourceChar)
+AND
+DB_AMER_Artifacts_Gluttony_CorpseCount(_RequestIndex, _Count)
+AND
+Real(_Count, _CountReal)
+AND
+RealProduct(_CountReal, 4.0, _Lifesteal)
+AND
+RealProduct(_CountReal, 10.0, _Damage)
+THEN
+NOT DB_AMER_Artifacts_Gluttony_CorpseCount(_RequestIndex, _Count);
+PlaySound(_SourceChar, "Skill_Earth_Cast_AoE_Voodoo_Poison");
+PROC_AMER_GEN_RemoveAndApplyStatus(_SourceChar, "AMER_GLUTTONY", 12.0, _SourceChar);
+PROC_AMER_StatusMod_FlexStat_TryApplyModForStatus(_SourceChar, _SourceChar, "AMER_GLUTTONY", "Stat", "DAMAGEBOOST", _Damage, "Artifact_Gluttony");
+PROC_AMER_StatusMod_FlexStat_TryApplyModForStatus(_SourceChar, _SourceChar, "AMER_GLUTTONY", "Stat", "LIFESTEAL", _Lifesteal, "Artifact_Gluttony");
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"

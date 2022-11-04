@@ -1,0 +1,26 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC ProcLaunchAmbush(S_FTJ_FrogAmbush_Box_01_10df8c5b-5811-41b4-88b7-e7e884ced161,_Player)
+THEN
+SetIsBoss(CHARACTERGUIDS_FTJ_FrogAmbush_Melee_01_747af1e4-d204-4564-9a50-9f1955dd4723, 1);
+
+IF
+RegionStarted(_)
+THEN
+SetIsBoss(CHARACTERGUID_S_FTJ_BeachVw_001_08348b3a-bded-4811-92ce-f127aa4310e0, 1);
+SetIsBoss(CHARACTERGUID_S_FTJ_SpikedTurtle_03_fb4618f9-9c61-4640-a32c-e4735783e878, 1);
+SetIsBoss(CHARACTERGUID_S_FTJ_IfanHandler_d0920841-a984-4ea4-92c6-31d236ee2540, 1);
+
+PROC
+ProcRegionEnded("FJ_FortJoy_Main")
+THEN
+GoalCompleted;
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "FortJoy"

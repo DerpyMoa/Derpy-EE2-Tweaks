@@ -1,0 +1,95 @@
+new skillset "Summon_FireSlug"
+add skill "Rush_SlugBatteringRam"
+add skill "Projectile_IncarnateFireball"
+
+new skillset "Summon_Condor"
+add skill "Projectile_CondorFlight"
+add skill "Target_CondorPeck"
+add skill "Cone_CondorGust"
+
+new skillset "Summon_OilBlob"
+add skill "Projectile_PyroclasticRock"
+add skill "Target_OilBlobRockSpikes"
+
+
+new skillset "Class_Metamorph"
+add skill "Shout_MedusaHead"
+add skill "Target_Challenge"
+add skill "Shout_BullHorns"
+
+new skillset "Class_Witch"
+add skill "Summon_BonePile"
+add skill "Projectile_DimensionalBolt"
+add skill "Target_MosquitoSwarm"
+
+new skillset "Class_Fighter"
+add skill "Target_Challenge"
+add skill "Target_CripplingBlow"
+add skill "Shout_GlobalCooling"
+
+new skillset "Class_Knight"
+add skill "Rush_BatteringRam"
+add skill "Target_Challenge"
+add skill "Target_CripplingBlow"
+
+new skillset "Class_Ranger"
+add skill "Target_ElementalArrowheads"
+add skill "Target_ReactionShot"
+add skill "Projectile_LaunchExplosiveTrap"
+
+new skillset "Class_Cleric"
+add skill "Shout_FlamingTongues"
+add skill "Target_Haste"
+add skill "Target_CleanseWounds"
+
+new skillset "Class_Rogue"
+add skill "Target_SleepingArms"
+add skill "Target_Challenge"
+add skill "Target_CripplingBlow"
+
+new skillset "Class_Wizard"
+add skill "Projectile_FlamingDaggers"
+add skill "Projectile_PyroclasticRock"
+add skill "Shout_Ignition"
+
+new skillset "Class_Enchanter"
+add skill "Projectile_LightningBolt"
+add skill "Target_Apportation"
+add skill "Rain_Water"
+
+new skillset "Class_Battlemage"
+add skill "Projectile_FlamingDaggers"
+add skill "Shout_Whirlwind"
+add skill "Target_Challenge"
+
+new skillset "Class_Wayfarer"
+add skill "Shout_Derpy_AcidicToxins"
+add skill "Shout_Contamination"
+add skill "Projectile_PoisonDartStart"
+
+new skillset "Class_Shadowblade"
+add skill "Target_CorruptedBlade"
+add skill "Target_BloatedCorpse"
+add skill "Target_DecayingTouch"
+
+new skillset "Class_Inquisitor"
+add skill "Shout_BlindingRadiance"
+add skill "Target_ShockingTouch"
+add skill "Target_Challenge"
+
+new skillset "Class_Conjurer"
+add skill "Summon_FireSlug"
+add skill "Projectile_DimensionalBolt"
+add skill "Summon_TotemFromSurface"
+
+new skillset "Race_Undead_Dwarf"
+add skill "Shout_SelfPreservation"
+new skillset "Race_Undead_Elf"
+add skill "Shout_SelfPreservation"
+new skillset "Race_Undead_Lizard"
+add skill "Shout_SelfPreservation"
+new skillset "Race_Undead_Human"
+add skill "Shout_SelfPreservation"
+
+new skillset "Avatar_Fane"
+add skill "Shout_RacialRefresh"

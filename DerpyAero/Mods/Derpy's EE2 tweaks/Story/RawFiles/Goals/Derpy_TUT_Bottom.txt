@@ -1,0 +1,170 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_Derpy_TUT_Ambush(CHARACTERGUID_S_TUT_MD_DeadMagister2_7d40ca96-bac3-4883-96a0-565f3c06dfe8);
+DB_Derpy_TUT_Ambush(CHARACTERGUID_S_TUT_MD_DeadMagister5_2d33316f-d660-4ed7-bd32-e253f54459ba);
+DB_Derpy_TUT_Ambush(CHARACTERGUID_S_TUT_MD_DeadMagister3_7c8990c4-9771-471d-a9f8-f2849463119e);
+DB_Derpy_TUT_Ambush(CHARACTERGUID_S_TUT_MD_DeadMagister6_fc0b8aff-7b96-4302-ba2b-94e0a7c3f9fb);
+DB_Derpy_TUT_Ambush(CHARACTERGUID_S_TUT_MD_DeadMagister4_5bf1d00c-8e35-493f-88a0-fc649009763c);
+DB_Derpy_TUT_Ambush(CHARACTERGUID_S_TUT_MD_DeadMagister1_84b8d088-2358-4283-a225-7a18128677b0);
+
+KBSECTION
+
+IF
+RegionStarted(_)
+AND
+QueryOnlyOnce("Derpy_PunisherSetup")
+THEN
+SetOnStage(CHARACTERGUID_Derpy_Punisher_003_1fe33c06-e97a-4baa-92ec-fcb230b89bbf, 0);
+
+IF
+CharacterEnteredTrigger((CHARACTERGUID)_Char, TRIGGERGUID_Derpy_TUT_SkeletonAmbush_41dbc837-9699-4a5e-8719-290007588ed1)
+AND
+DB_IsPlayer(_Char)
+AND
+QueryOnlyOnce("Derpy_SkeletonAmbushSetup")
+THEN
+RemoveStatus(_Char, "SNEAKING");
+PlayEffect(CHARACTERGUID_S_TUT_MD_DeadMagister2_7d40ca96-bac3-4883-96a0-565f3c06dfe8, "RS3_FX_GP_ScriptedEvent_Lightning_Vertical_01");
+PlayEffect(CHARACTERGUID_S_TUT_MD_DeadMagister5_2d33316f-d660-4ed7-bd32-e253f54459ba, "RS3_FX_GP_ScriptedEvent_Lightning_Vertical_01");
+PlayEffect(CHARACTERGUID_S_TUT_MD_DeadMagister3_7c8990c4-9771-471d-a9f8-f2849463119e, "RS3_FX_GP_ScriptedEvent_Lightning_Vertical_01");
+PlayEffect(CHARACTERGUID_S_TUT_MD_DeadMagister6_fc0b8aff-7b96-4302-ba2b-94e0a7c3f9fb, "RS3_FX_GP_ScriptedEvent_Lightning_Vertical_01");
+PlayEffect(CHARACTERGUID_S_TUT_MD_DeadMagister4_5bf1d00c-8e35-493f-88a0-fc649009763c, "RS3_FX_GP_ScriptedEvent_Lightning_Vertical_01");
+PlayEffect(CHARACTERGUID_S_TUT_MD_DeadMagister1_84b8d088-2358-4283-a225-7a18128677b0, "RS3_FX_GP_ScriptedEvent_Lightning_Vertical_01");
+SetFaction(CHARACTERGUID_S_TUT_MD_DeadMagister2_7d40ca96-bac3-4883-96a0-565f3c06dfe8,"Evil NPC");
+SetFaction(CHARACTERGUID_S_TUT_MD_DeadMagister5_2d33316f-d660-4ed7-bd32-e253f54459ba,"Evil NPC");
+SetFaction(CHARACTERGUID_S_TUT_MD_DeadMagister3_7c8990c4-9771-471d-a9f8-f2849463119e,"Evil NPC");
+SetFaction(CHARACTERGUID_S_TUT_MD_DeadMagister6_fc0b8aff-7b96-4302-ba2b-94e0a7c3f9fb,"Evil NPC");
+SetFaction(CHARACTERGUID_S_TUT_MD_DeadMagister4_5bf1d00c-8e35-493f-88a0-fc649009763c,"Evil NPC");
+SetFaction(CHARACTERGUID_S_TUT_MD_DeadMagister1_84b8d088-2358-4283-a225-7a18128677b0,"Evil NPC");
+CharacterTransform(CHARACTERGUID_S_TUT_MD_DeadMagister2_7d40ca96-bac3-4883-96a0-565f3c06dfe8,"Derpy_TUT_SkeletonAmbusher_9523cb58-c354-4906-893d-93d897a0c843",0,0,1,0,1,1,1);
+CharacterTransform(CHARACTERGUID_S_TUT_MD_DeadMagister5_2d33316f-d660-4ed7-bd32-e253f54459ba,"Derpy_TUT_SkeletonAmbusher_9523cb58-c354-4906-893d-93d897a0c843",0,0,1,0,1,1,1);
+CharacterTransform(CHARACTERGUID_S_TUT_MD_DeadMagister3_7c8990c4-9771-471d-a9f8-f2849463119e,"Derpy_TUT_SkeletonAmbusher_9523cb58-c354-4906-893d-93d897a0c843",0,0,1,0,1,1,1);
+CharacterTransform(CHARACTERGUID_S_TUT_MD_DeadMagister6_fc0b8aff-7b96-4302-ba2b-94e0a7c3f9fb,"Derpy_TUT_SkeletonAmbusher_9523cb58-c354-4906-893d-93d897a0c843",0,0,1,0,1,1,1);
+CharacterTransform(CHARACTERGUID_S_TUT_MD_DeadMagister4_5bf1d00c-8e35-493f-88a0-fc649009763c,"Derpy_TUT_SkeletonAmbusher_9523cb58-c354-4906-893d-93d897a0c843",0,0,1,0,1,1,1);
+CharacterTransform(CHARACTERGUID_S_TUT_MD_DeadMagister1_84b8d088-2358-4283-a225-7a18128677b0,"Derpy_TUT_SkeletonAmbusher_9523cb58-c354-4906-893d-93d897a0c843",0,0,1,0,1,1,1);
+ProcObjectTimer(CHARACTERGUID_S_TUT_MD_DeadMagister5_2d33316f-d660-4ed7-bd32-e253f54459ba, "DerpyTUTSkeletonAmbush", 100);
+ProcObjectTimer(CHARACTERGUID_S_TUT_MD_DeadMagister5_2d33316f-d660-4ed7-bd32-e253f54459ba, "DerpyTUTSkeletonNerf", 500);
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "DerpyTUTSkeletonAmbush")
+THEN
+CharacterResurrect(CHARACTERGUID_S_TUT_MD_DeadMagister2_7d40ca96-bac3-4883-96a0-565f3c06dfe8);
+CharacterResurrect(CHARACTERGUID_S_TUT_MD_DeadMagister5_2d33316f-d660-4ed7-bd32-e253f54459ba);
+CharacterResurrect(CHARACTERGUID_S_TUT_MD_DeadMagister3_7c8990c4-9771-471d-a9f8-f2849463119e);
+CharacterResurrect(CHARACTERGUID_S_TUT_MD_DeadMagister6_fc0b8aff-7b96-4302-ba2b-94e0a7c3f9fb);
+CharacterResurrect(CHARACTERGUID_S_TUT_MD_DeadMagister4_5bf1d00c-8e35-493f-88a0-fc649009763c);
+CharacterResurrect(CHARACTERGUID_S_TUT_MD_DeadMagister1_84b8d088-2358-4283-a225-7a18128677b0);
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "DerpyTUTSkeletonNerf")
+AND
+CharacterGetEquippedShield(CHARACTERGUID_S_TUT_MD_DeadMagister5_2d33316f-d660-4ed7-bd32-e253f54459ba,_Shield1)
+AND
+CharacterGetEquippedShield(CHARACTERGUID_S_TUT_MD_DeadMagister6_fc0b8aff-7b96-4302-ba2b-94e0a7c3f9fb,_Shield2)
+AND
+CharacterGetEquippedShield(CHARACTERGUID_S_TUT_MD_DeadMagister1_84b8d088-2358-4283-a225-7a18128677b0,_Shield3)
+AND
+CharacterGetEquippedShield(CHARACTERGUID_S_TUT_MD_DeadMagister4_5bf1d00c-8e35-493f-88a0-fc649009763c,_Shield4)
+THEN
+DB_Derpy_TUT_Okay(1);
+CharacterUnequipItem(CHARACTERGUID_S_TUT_MD_DeadMagister5_2d33316f-d660-4ed7-bd32-e253f54459ba,(ITEMGUID)_Shield1); //Removing Shields because they add unwanted armors
+CharacterUnequipItem(CHARACTERGUID_S_TUT_MD_DeadMagister6_fc0b8aff-7b96-4302-ba2b-94e0a7c3f9fb,(ITEMGUID)_Shield2);
+CharacterUnequipItem(CHARACTERGUID_S_TUT_MD_DeadMagister1_84b8d088-2358-4283-a225-7a18128677b0,(ITEMGUID)_Shield3);
+CharacterUnequipItem(CHARACTERGUID_S_TUT_MD_DeadMagister4_5bf1d00c-8e35-493f-88a0-fc649009763c,(ITEMGUID)_Shield4);
+
+CharacterSetHitpointsPercentage(CHARACTERGUID_S_TUT_MD_DeadMagister2_7d40ca96-bac3-4883-96a0-565f3c06dfe8, 50.0);
+
+CharacterSetHitpointsPercentage(CHARACTERGUID_S_TUT_MD_DeadMagister5_2d33316f-d660-4ed7-bd32-e253f54459ba, 50.0);
+
+CharacterSetHitpointsPercentage(CHARACTERGUID_S_TUT_MD_DeadMagister3_7c8990c4-9771-471d-a9f8-f2849463119e, 50.0);
+
+CharacterSetHitpointsPercentage(CHARACTERGUID_S_TUT_MD_DeadMagister6_fc0b8aff-7b96-4302-ba2b-94e0a7c3f9fb, 50.0);
+
+CharacterSetHitpointsPercentage(CHARACTERGUID_S_TUT_MD_DeadMagister4_5bf1d00c-8e35-493f-88a0-fc649009763c, 50.0);
+
+CharacterSetHitpointsPercentage(CHARACTERGUID_S_TUT_MD_DeadMagister1_84b8d088-2358-4283-a225-7a18128677b0, 50.0);
+
+EnterCombat(CHARACTERGUID_S_TUT_MD_DeadMagister2_7d40ca96-bac3-4883-96a0-565f3c06dfe8, CHARACTERGUID_S_TUT_MD_DeadMagister5_2d33316f-d660-4ed7-bd32-e253f54459ba);
+
+
+IF
+CharacterPrecogDying(_Char)
+AND
+DB_Derpy_TUT_Okay(1)
+AND
+DB_Derpy_TUT_Ambush(_Char)
+AND
+DB_Derpy_TUT_Ambush_KillCount(_OldCount)
+AND
+IntegerSum(_OldCount, 1, _NewCount)
+THEN
+NOT DB_Derpy_TUT_Ambush_KillCount(_OldCount);
+DB_Derpy_TUT_Ambush_KillCount(_NewCount);
+
+
+IF
+CharacterPrecogDying(_Char)
+AND
+DB_Derpy_TUT_Okay(1)
+AND
+DB_Derpy_TUT_Ambush(_Char)
+AND
+QueryOnlyOnce("Derpy_TUT_AmbushStartCount")
+THEN
+DB_Derpy_TUT_Ambush_KillCount(1);
+
+
+IF 
+DB_Derpy_TUT_Ambush_KillCount(4)
+THEN
+PROC_Derpy_PunisherFirstEncounter_Camera();
+CharacterAppearCustom(CHARACTERGUID_Derpy_Punisher_003_1fe33c06-e97a-4baa-92ec-fcb230b89bbf,"Teleport_In_01","");
+ProcObjectTimer(CHARACTERGUID_Derpy_Punisher_003_1fe33c06-e97a-4baa-92ec-fcb230b89bbf, "PunisherFirstEncounter", 500);
+CharacterSetImmortal(CHARACTERGUID_Derpy_Punisher_003_1fe33c06-e97a-4baa-92ec-fcb230b89bbf, 1);
+
+
+PROC PROC_Derpy_PunisherFirstEncounter_Camera()
+AND
+DB_IsPlayer(_Player)
+THEN
+CameraActivate(_Player, "Derpy_Punisher_Camera", 4.0, 0, 0, 1);
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "PunisherFirstEncounter")
+AND
+DB_IsPlayer(_Player)
+THEN
+EnterCombat(CHARACTERGUID_Derpy_Punisher_003_1fe33c06-e97a-4baa-92ec-fcb230b89bbf, _Player);
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "PunisherFirstEncounter")
+THEN
+CharacterStatusText(CHARACTERGUID_Derpy_Punisher_003_1fe33c06-e97a-4baa-92ec-fcb230b89bbf, "Greetings mortal!");
+
+
+IF
+CharacterReceivedDamage(CHARACTERGUID_Derpy_Punisher_003_1fe33c06-e97a-4baa-92ec-fcb230b89bbf, _, _)
+AND
+CharacterGetHitpointsPercentage(CHARACTERGUID_Derpy_Punisher_003_1fe33c06-e97a-4baa-92ec-fcb230b89bbf,_Per)
+AND
+_Per < 25.0
+AND
+QueryOnlyOnce("PunisherFirstEncounter_End")
+THEN
+JumpToTurn(CHARACTERGUID_Derpy_Punisher_003_1fe33c06-e97a-4baa-92ec-fcb230b89bbf);
+PROC_AMER_GEN_RemoveHarmfulStatuses(CHARACTERGUID_Derpy_Punisher_003_1fe33c06-e97a-4baa-92ec-fcb230b89bbf);
+PlayAnimation(CHARACTERGUID_Derpy_Punisher_003_1fe33c06-e97a-4baa-92ec-fcb230b89bbf,"Teleport_Out_01","GEN_GoOffStage");
+CharacterStatusText(CHARACTERGUID_Derpy_Punisher_003_1fe33c06-e97a-4baa-92ec-fcb230b89bbf, "This ain't over!");
+
+
+IF
+RegionEnded(_)
+THEN
+GoalCompleted;
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Tutorial_PrisonShip"

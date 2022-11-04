@@ -1,0 +1,72 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_EnemyOverpower", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "ACCURACYBOOST", "Ability", "WarriorLore", 5.0, 1.0, 2000, "SkillCast");
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "WarriorLore", 25.0, 4.0);
+
+
+PROC PROC_AMER_Source_Infusion_ExpectedTargetHit((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, "Target_EnemyOverpower", 2, (STRING)_Element)
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, 2.0, 0.2, 0.0, "Ability", "WarriorLore")
+AND
+DB_AMER_GEN_OUTPUT_Real(_Scaling)
+AND
+Integer(_Scaling, _ScalingInt)
+THEN
+PROC_AMER_BatteredHarried_DirectManip(_Target, 0, _ScalingInt, _Char);
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_EnemyOverpower", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "WarriorLore", 40.0, 8.0);
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+
+
+PROC PROC_AMER_Source_Infusion_ExpectedTargetHit((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, "Target_EnemyOverpower", (INTEGER)_InfusCount, (STRING)_Element)
+AND
+_InfusCount > 2
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, 4.0, 0.4, 0.0, "Ability", "WarriorLore")
+AND
+DB_AMER_GEN_OUTPUT_Real(_Scaling)
+AND
+Integer(_Scaling, _ScalingInt)
+THEN
+PROC_AMER_BatteredHarried_DirectManip(_Target, 0, _ScalingInt, _Char);
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_EnemyOverpower", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "WarriorLore", 40.0, 8.0);
+
+PROC PROC_AMER_Source_Infusion_ExpectedTargetHit((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, "Target_EnemyOverpower", (INTEGER)_InfusCount, (STRING)_Element)
+AND
+_InfusCount > 2
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, 0.25, 0.01, 0.0, "Ability", "WarriorLore")
+AND
+DB_AMER_GEN_OUTPUT_Real(_Scaling)
+AND
+DB_AMER_CharVitals(_Char, _Vit, _Phys, _Magic)
+AND
+RealProduct(_Phys, _Scaling, _DamageFromArmor)
+AND
+Integer(_DamageFromArmor, _DamageFromArmorInt)
+THEN
+PROC_AMER_GEN_ApplyDamage(_Target, _DamageFromArmorInt, "Physical", _Char, 0);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Warfare"

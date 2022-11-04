@@ -1,0 +1,177 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Intelligence applies +3.5% all-damage per point without a shield,
+//or +1.0% with a shield. Because of this (and because we can't know
+//if an item un/equipped is a shield unless we expand player equipment
+//data logic to accommodate NPCs), we need to store the applied bonus
+//so we know how much to manipulate when shield use changes.
+//
+//PLAYERS also receive +1% critical chance per point.
+
+/*
+PROC PROC_AMER_Attributes_AttributeChanged((CHARACTERGUID)_Char, "Intelligence", (INTEGER)_New, (INTEGER)_Old, (INTEGER)_Diff)
+AND
+CharacterIsPlayer(_Char, 1)
+AND
+Real(_Diff, _DiffReal)
+THEN
+PROC_AMER_FlexStat_AddStatAsBatch_Volatile(_Char, "CRITICALCHANCE", _DiffReal, "");
+*/
+
+/*
+PROC PROC_AMER_Attributes_Initialized((CHARACTERGUID)_Char, "Intelligence")
+AND
+DB_IsPlayer(_Char)
+THEN
+PROC_AMER_Attributes_Intelligence_Init(_Char);
+
+PROC PROC_AMER_Attributes_Intelligence_Init((CHARACTERGUID)_Char)
+AND
+NOT DB_AMER_ScalingStat_FlexStat_Volatile(_Char, "Attribute", "Intelligence", "Stat", "CRITICALCHANCE", _)  //Protect against adding again.
+THEN
+PROC_AMER_ScalingStat_ExtendedStat_Add_Volatile(_Char, "Attribute", "Intelligence", "BattHarr_Threshold_EffectiveDamage", "", "", "Intelligence_BaseEffect", 0.0125);    //ONLY PLAYERS receive this benefit at the moment.
+*/
+
+PROC PROC_AMER_Attributes_AttributeChanged((CHARACTERGUID)_Char, "Intelligence", (INTEGER)_New, (INTEGER)_Old, (INTEGER)_Diff)
+AND
+DB_IsPlayer(_Char)	//Handled differently for players.
+AND
+IntegerSubtract(_New, 10, _NewOverTen)
+AND
+QRY_AMER_Attributes_Intelligence_GetBonusMult(_Char)
+AND
+DB_AMER_GEN_OUTPUT_Real(_Mult)
+THEN
+PROC_AMER_Attributes_UpdateBonus_Intelligence(_Char, _NewOverTen, _Mult);
+
+PROC PROC_AMER_Attributes_AttributeChanged((CHARACTERGUID)_Char, "Intelligence", (INTEGER)_New, (INTEGER)_Old, (INTEGER)_Diff)
+AND
+NOT DB_IsPlayer(_Char)	//Handled differently for NPCs, don't reduce if using a shield.
+AND
+IntegerSubtract(_New, 10, _NewOverTen)
+AND
+QRY_AMER_ExtendedStat_AttributeIntelligenceEffect_GetMultiplier(_Char)
+AND
+DB_AMER_GEN_OUTPUT_Real(_Stat)
+AND
+RealSum(_Stat, 1.0, _Mult)
+AND
+DB_AMER_ModSettings_Value("NPCStats", "Damage", _NPCDamageFromPower)
+AND
+RealProduct(_NPCDamageFromPower, _Mult, _NPCMult)
+THEN
+PROC_AMER_Attributes_UpdateBonus_Intelligence(_Char, _NewOverTen, _NPCMult);
+//PROC_AMER_FlexStat_AddStatAsBatch_Volatile(_Char, "DAMAGEBOOST", _NPCBonusFinal, "");
+
+
+PROC PROC_AMER_GEN_PlayerItemEquipped((ITEMGUID)_Item, (CHARACTERGUID)_Char, "Shield")
+THEN
+PROC_AMER_Attributes_Intelligence_ForceUpdateFromShieldChange(_Char);
+
+PROC PROC_AMER_GEN_PlayerItemUnequipped((ITEMGUID)_Item, (CHARACTERGUID)_Char, "Shield")
+THEN
+PROC_AMER_Attributes_Intelligence_ForceUpdateFromShieldChange(_Char);
+
+
+//We need to force an update for players who un/equip a shield.
+PROC PROC_AMER_Attributes_Intelligence_ForceUpdateFromShieldChange((CHARACTERGUID)_Char)
+AND
+CharacterGetAttribute(_Char, "Intelligence", _Int)
+AND
+IntegerSubtract(_Int, 10, _IntOverTen)
+AND
+QRY_AMER_Attributes_Intelligence_GetBonusMult(_Char)
+AND
+DB_AMER_GEN_OUTPUT_Real(_Mult)
+THEN
+PROC_AMER_Attributes_UpdateBonus_Intelligence(_Char, _IntOverTen, _Mult);
+PROC_AMER_FlexStat_CharacterAddStat_Stat_ExecBatch(_Char);
+
+
+QRY QRY_AMER_Attributes_Intelligence_GetBonusMult((CHARACTERGUID)_Char)
+AND
+DB_AMER_GEN_OUTPUT_Real(_OldOutput)
+THEN
+NOT DB_AMER_GEN_OUTPUT_Real(_OldOutput);
+
+//QRY QRY_AMER_Attributes_Intelligence_GetBonusMult((CHARACTERGUID)_Char)
+//AND
+//NOT DB_IsPlayer(_Char)
+//THEN
+//DB_AMER_GEN_OUTPUT_Real(5.0);	//Non-players always get 5.0% benefit, because their shields are not necessarily built to be as those of a player, and because enemy damage tends to be too low.
+
+QRY QRY_AMER_Attributes_Intelligence_GetBonusMult((CHARACTERGUID)_Char)
+AND
+CharacterGetEquippedShield(_Char, _)
+AND
+NOT DB_AMER_ExtendedStat_AddedStat(_Char, "IgnoreShieldPowerPenalty", _, _, _, _)
+AND
+QRY_AMER_ExtendedStat_AttributeIntelligenceEffect_GetMultiplier(_Char)
+AND
+DB_AMER_GEN_OUTPUT_Real(_Stat)
+AND
+RealSum(_Stat, 1.0, _Multiplier)
+AND
+RealProduct(1.0, _Multiplier, _BonusFinal)
+THEN
+NOT DB_AMER_GEN_OUTPUT_Real(_Stat);
+DB_AMER_GEN_OUTPUT_Real(_BonusFinal);
+
+QRY QRY_AMER_Attributes_Intelligence_GetBonusMult((CHARACTERGUID)_Char)
+AND
+NOT DB_AMER_GEN_OUTPUT_Real(_)
+AND
+QRY_AMER_ExtendedStat_AttributeIntelligenceEffect_GetMultiplier(_Char)
+AND
+DB_AMER_GEN_OUTPUT_Real(_Stat)
+AND
+RealSum(_Stat, 1.0, _Multiplier)
+AND
+RealProduct(3.5, _Multiplier, _BonusFinal)
+THEN
+NOT DB_AMER_GEN_OUTPUT_Real(_Stat);
+DB_AMER_GEN_OUTPUT_Real(_BonusFinal);
+
+
+
+PROC PROC_AMER_Attributes_UpdateBonus_Intelligence((CHARACTERGUID)_Char, (INTEGER)_New, (REAL)_BonusPerInt)
+AND
+DB_AMER_Attributes_Intelligence_StoredBonus(_Char, _Stored)
+THEN
+NOT DB_AMER_Attributes_Intelligence_StoredBonus(_Char, _Stored);
+PROC_AMER_Attributes_UpdateBonus_Intelligence(_Char, _New, _BonusPerInt, _Stored);
+
+PROC PROC_AMER_Attributes_UpdateBonus_Intelligence((CHARACTERGUID)_Char, (INTEGER)_New, (REAL)_BonusPerInt)
+AND
+NOT DB_AMER_Attributes_Intelligence_StoredBonus(_Char, _)
+AND
+_New > 0
+THEN
+PROC_AMER_Attributes_UpdateBonus_Intelligence(_Char, _New, _BonusPerInt, 0.0);
+
+PROC PROC_AMER_Attributes_UpdateBonus_Intelligence((CHARACTERGUID)_Char, (INTEGER)_New, (REAL)_BonusPerInt)
+AND
+DB_AMER_Attributes_Intelligence_StoredBonus(_Char, 0.0)	//Clear zero entries.
+THEN
+NOT DB_AMER_Attributes_Intelligence_StoredBonus(_Char, 0.0);
+
+
+PROC PROC_AMER_Attributes_UpdateBonus_Intelligence((CHARACTERGUID)_Char, (INTEGER)_New, (REAL)_BonusPerInt, (REAL)_Stored)
+AND
+Real(_New, _NewReal)
+AND
+RealProduct(_BonusPerInt, _NewReal, _BonusDesired)
+AND
+RealSubtract(_BonusDesired, _Stored, _Diff)
+THEN
+DB_AMER_Attributes_Intelligence_StoredBonus(_Char, _BonusDesired);
+PROC_AMER_FlexStat_AddStatAsBatch_Volatile(_Char, "DAMAGEBOOST", _Diff, "");
+//PROC_AMER_FlexStat_CharacterAddStat_Volatile(_Char, "Stat", "DAMAGEBOOST", _Diff);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Attributes"

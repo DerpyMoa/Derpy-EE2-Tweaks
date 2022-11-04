@@ -1,0 +1,24 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+NRD_OnHit((CHARACTERGUID)_Defender, (CHARACTERGUID)_Attacker, _Damage, _Handle)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Attacker, "Expedition_Internal", _, _, _, _)
+AND
+DB_AMER_Combat_ActiveChar(_, _, _, _Attacker)
+AND
+CharacterIsEnemy(_Defender, _Attacker, 1)
+AND
+HasActiveStatus(_Defender, "AMER_BANE", 0)
+THEN
+PROC_AMER_KeywordStat_Occultist_Bane_Apply(_Defender, _Attacker, 12.0);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GEN_Stats_ExtendedStats"

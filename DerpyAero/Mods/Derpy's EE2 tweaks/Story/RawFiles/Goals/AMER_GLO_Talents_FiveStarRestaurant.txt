@@ -1,0 +1,32 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+CharacterUsedItem((CHARACTERGUID)_Char,_Item)
+AND
+CharacterHasTalent(_Char, "FiveStarRestaurant", 1)
+AND
+CharacterIsInCombat(_Char, 1)
+AND
+IsTagged(_Item,"FOOD",1)
+THEN
+PROC_AMER_ActionPoints_Add(_Char, 1);
+
+IF
+CharacterUsedItem((CHARACTERGUID)_Char,_Item)
+AND
+CharacterHasTalent(_Char, "FiveStarRestaurant", 1)
+AND
+CharacterIsInCombat(_Char, 1)
+AND
+IsTagged(_Item,"DRINK",1)
+THEN
+PROC_AMER_ActionPoints_Add(_Char, 1);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Talents"

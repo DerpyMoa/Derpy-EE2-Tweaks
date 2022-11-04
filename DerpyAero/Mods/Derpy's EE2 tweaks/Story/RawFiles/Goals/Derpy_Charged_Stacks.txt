@@ -1,0 +1,49 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Status_Charged_GetProj((CHARACTERGUID)_Char, (CHARACTERGUID)_Source)
+AND
+HasActiveStatus(_Char, "AMER_BLINDINGRADIANCE", 1)
+AND
+CharacterIsPlayer(_Char, _IsPlayer)
+AND
+CharacterHasTalent(_Source, "Executioner", _HasExecutioner)
+THEN
+PROC_Derpy_ChargedProjAdjust(_Char, _Source, _IsPlayer, _HasExecutioner);
+
+
+PROC PROC_Derpy_ChargedProjAdjust((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, 1, 0)
+AND
+DB_AMER_GEN_OUTPUT_String(_OldOutput)
+THEN
+NOT DB_AMER_GEN_OUTPUT_String(_OldOutput);
+DB_AMER_GEN_OUTPUT_String("");
+PROC_AMER_BatteredHarried_DirectManip(_Char, 2, 1, _Source);
+PlayEffect(_Char, "RS3_FX_Skills_Air_LightningBolt_Impact_01");
+
+
+PROC PROC_Derpy_ChargedProjAdjust((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, 1, 1)
+AND
+DB_AMER_GEN_OUTPUT_String(_OldOutput)
+THEN
+NOT DB_AMER_GEN_OUTPUT_String(_OldOutput);
+DB_AMER_GEN_OUTPUT_String("");
+PlayEffect(_Char, "RS3_FX_Skills_Air_LightningBolt_Impact_01");
+
+
+PROC PROC_Derpy_ChargedProjAdjust((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, 0, (INTEGER)_HasExecutioner)
+AND
+DB_AMER_GEN_OUTPUT_String(_OldOutput)
+THEN
+NOT DB_AMER_GEN_OUTPUT_String(_OldOutput);
+DB_AMER_GEN_OUTPUT_String("");
+PlayEffect(_Char, "RS3_FX_Skills_Air_LightningBolt_Impact_01");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

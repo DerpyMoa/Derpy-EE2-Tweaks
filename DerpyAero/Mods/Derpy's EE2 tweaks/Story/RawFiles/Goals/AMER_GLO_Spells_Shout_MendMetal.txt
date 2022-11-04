@@ -1,0 +1,66 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, "Shout_MendMetal", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "BatteredHarried_DirectManipStatuses_Activate", "0", "-1", "", 1.0, 2000, "SkillCast");
+
+
+//==============================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_MendMetal", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_StatusMod_AddHealing(_Char, "MEND_METAL", 25.0, "Armor", 2.5, "Ability", "EarthSpecialist", 0, 0, 2000, "SkillCast");
+
+
+//==============================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_MendMetal", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat_Scaling(_Char, "MEND_METAL", "Regen_PhysicalArmor", "", "", "", "MendMetal_Infus", 0, "Ability", "EarthSpecialist", 15.0, 3.0, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "MEND_METAL", "BatteredGrowth", "", "", "", -1.0, "MendMetal_Infus", 0, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_MendMetal", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+DB_AMER_IterateCharsAroundObject_Exclusion(_Char);	//Don't double-cast on target.
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 10.0, _Char, 12, "Derpy_MendMetal_SI2");	//Allies, not dead.
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Derpy_MendMetal_SI2", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+ApplyStatus(_Char, "MEND_METAL", 18.0, 0, _SourceChar);
+
+
+//==============================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_MendMetal", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "Status_AddDuration", "MEND_METAL", "", "", 1.0);
+PROC_AMER_TempStat_StatusMod_AddHealing(_Char, "MEND_METAL", 25.0, "Armor", 2.5, "Ability", "EarthSpecialist", 0, 0, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_MendMetal", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 2, 1);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Geomancer"

@@ -1,0 +1,92 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Your Vitality is always limited to 5% of its total. As long as you have more than zero of both armors, you cannot die; If you suffer damage that would reduce one of your armors to zero, you die. Gain +65% maximum physical and magic armor. The "What a Rush" talent can only ever grant you 1 AP recovery.
+
+//Initial set vit for demilich node that locks vitality %.
+PROC PROC_AMER_UI_Ascension_SpecialLogic_Init((CHARACTERGUID)_Char, "Ascension_DemilichCannotDie", (REAL)_Add)
+THEN
+CharacterSetHitpointsPercentage(_Char, 5.0);
+
+//Set to 100% vitality when deallocating Demilich, else the character may die as the deallocation occurs.
+PROC PROC_AMER_UI_Ascension_SpecialLogic_Removed((CHARACTERGUID)_Char, "Ascension_DemilichCannotDie")
+THEN
+CharacterSetHitpointsPercentage(_Char, 100.0);
+
+//Prevent usual instant slay.
+QRY QRY_AMER_GEN_CharacterDie_BlockDie((CHARACTERGUID)_Char)
+AND
+NOT DB_AMER_AscensionReward_Demilich_AllowDie(_Char)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_DemilichCannotDie", _)
+THEN
+DB_NOOP(1);
+
+
+PROC PROC_AMER_CharacterReceivedDamage((CHARACTERGUID)_CharHurt, (GUIDSTRING)_Source, (REAL)_DamageTotal, (REAL)_DamageVit, (REAL)_DamagePhys, (REAL)_DamageMagic)
+AND
+DB_AMER_Ascension_SpecialLogic(_CharHurt, "Ascension_DemilichCannotDie", _)
+AND
+DB_AMER_CharVitals(_CharHurt, _Vit, _Phys, _Magic)
+AND
+QRY_AMER_AscensionReward_Demilich_CanDie(_CharHurt, _Phys, _Magic)
+AND
+NOT DB_Illusionist(_CharHurt, _)	//Don't force die if the player is in the respec mirror.
+AND
+NOT DB_AMER_UI_UsersInUI(_, _, _CharHurt)	//Don't force die if the player is in a UI.
+THEN
+DB_AMER_AscensionReward_Demilich_AllowDie(_CharHurt);
+PROC_AMER_GEN_CharacterDie(_CharHurt, 1, "DoT", _Source);
+NOT DB_AMER_AscensionReward_Demilich_AllowDie(_CharHurt);
+
+
+QRY QRY_AMER_AscensionReward_Demilich_CanDie((CHARACTERGUID)_Char, 0.0, (REAL)_Magic)
+THEN
+DB_NOOP(1);
+
+QRY QRY_AMER_AscensionReward_Demilich_CanDie((CHARACTERGUID)_Char, (REAL)_Phys, 0.0)
+THEN
+DB_NOOP(1);
+
+
+PROC PROC_AMER_CharVitals_Update_Done((CHARACTERGUID)_Char)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_DemilichCannotDie", _)
+AND
+CharacterGetHitpointsPercentage(_Char, _Perc)
+AND
+_Perc > 6.0 //6% instead of 5% to grant enough leeway to prevent infinite loops with Soul Mate/Guardian Angel and two Demilich chars. Essentially allowing for +/- 1 Vitality should solve this issue.
+AND
+GetVarFloat(_Char, "AMER_GEN_MaximumVitality", _MaxVit)
+AND
+RealProduct(_MaxVit, 0.05, _VitResult)
+AND
+QRY_AMER_GEN_RealRound_Up(_VitResult)
+AND
+DB_AMER_GEN_OUTPUT_Real(_VitResultRoundedUp)    //Round up because if this is, for example, 3.5, the engine will set vitality to 4.0.
+AND
+DB_AMER_CharVitals(_Char, _Vit, _PA, _MA)
+THEN
+NOT DB_AMER_CharVitals(_Char, _Vit, _PA, _MA);
+DB_AMER_CharVitals(_Char, _VitResultRoundedUp, _PA, _MA);    //Directly set the new vital so this change isn't considered as healing or damage.
+CharacterSetHitpointsPercentage(_Char, 5.0);
+
+
+/* [OSITOOLS_ONLY]
+//Derpy: this prevents the zero armors visual bug and the combat log death bug.
+PROC PROC_AMER_Combat_TurnStarted((CHARACTERGUID)_Char, 0)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_DemilichCannotDie", _)
+AND
+NRD_HitPrepare(_Char, _Char, _HitHandle)
+THEN
+NRD_HitExecute(_HitHandle);
+*/
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

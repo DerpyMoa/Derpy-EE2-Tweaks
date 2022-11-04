@@ -1,0 +1,93 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_GEN_CharAttackedChar((CHARACTERGUID)_Target, (CHARACTERGUID)_Source)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Source, "Artifact_Nemesis", _)
+AND
+NOT DB_Derpy_Nemesis_ICD(_Source)
+AND
+QRY_AMER_KeywordStat_ViolentStrikes_CanActivate(_Source)
+AND
+_Source != _Target
+AND
+NOT DB_AMER_KeywordStat_ViolentStrikes_Choke(_Source)
+AND
+HasActiveStatus(_Source, "AMER_VIOLENTSTRIKES", 0)  //Only attempt to activate if we don't already have the buff.
+AND
+QRY_AMER_Artifacts_Nemesis_IsDesiredType(_Target)
+AND
+QRY_AMER_Artifacts_Nemesis_GetTiers(_Target)
+AND
+DB_AMER_Artifacts_Nemesis_Tiers(_Tiers)
+AND
+IntegerProduct(_Tiers, 10, _Chance)
+AND
+QRY_AMER_GEN_RandomSuccess(_Chance)
+THEN
+DB_Derpy_Nemesis_ICD(_Source);
+PROC_AMER_KeywordStat_ViolentStrikes_Activate(_Source);
+ProcObjectTimer(_Source, "Derpy_Nemesis_Delay", 2000);
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Source, "Derpy_Nemesis_Delay")
+AND
+DB_Derpy_Nemesis_ICD(_Source)
+THEN
+NOT DB_Derpy_Nemesis_ICD(_Source);
+
+
+
+QRY QRY_AMER_Artifacts_Nemesis_GetTiers((CHARACTERGUID)_Char)
+AND
+DB_AMER_Artifacts_Nemesis_Tiers(_OldOutput)
+THEN
+NOT DB_AMER_Artifacts_Nemesis_Tiers(_OldOutput);
+
+
+QRY QRY_AMER_Artifacts_Nemesis_GetTiers((CHARACTERGUID)_Char)
+THEN
+DB_AMER_Artifacts_Nemesis_Tiers(0);
+
+
+QRY QRY_AMER_Artifacts_Nemesis_GetTiers((CHARACTERGUID)_Char)
+AND
+QRY_AMER_GEN_HasStatusFamily(_Char, "TieredStatuses")
+AND
+DB_AMER_GEN_HasStatusFamily_OUTPUT(_, _Tier)
+AND
+DB_AMER_Artifacts_Nemesis_Tiers(_StoredTiers)
+AND
+IntegerSum(_StoredTiers, _Tier, _NewStoredTiers)
+THEN
+NOT DB_AMER_Artifacts_Nemesis_Tiers(_StoredTiers);
+DB_AMER_Artifacts_Nemesis_Tiers(_NewStoredTiers);
+
+
+
+QRY QRY_AMER_Artifacts_Nemesis_IsDesiredType((CHARACTERGUID)_Target)
+AND
+IsBoss(_Target, 1)
+THEN
+DB_NOOP(1);
+
+QRY QRY_AMER_Artifacts_Nemesis_IsDesiredType((CHARACTERGUID)_Target)
+AND
+IsTagged(_Target, "AMER_IsElite", 1)
+THEN
+DB_NOOP(1);
+
+QRY QRY_AMER_Artifacts_Nemesis_IsDesiredType((CHARACTERGUID)_Target)
+AND
+IsTagged(_Target, "AMER_IsGeneral", 1)
+THEN
+DB_NOOP(1);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"

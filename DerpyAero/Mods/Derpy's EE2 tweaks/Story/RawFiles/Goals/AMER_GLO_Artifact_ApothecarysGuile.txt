@@ -1,0 +1,58 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_GEN_BasicAttackObjectStarted((CHARACTERGUID)_Defender, (REAL)_X, (REAL)_Y, (REAL)_Z, (CHARACTERGUID)_Owner, (CHARACTERGUID)_Attacker, (STRING)_AttackID)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Attacker, "Artifact_ApothecarysGuile", _)
+AND
+QRY_AMER_GEN_SneakingOrSpellStartedInSneak(_Attacker)
+THEN
+PROC_AMER_TempStat_HitStatus_ThrowProc(_Attacker, "Artifact_ApothecarysGuile", 2000, "");
+
+
+PROC PROC_AMER_Spells_SkillCast_PerTarget((CHARACTERGUID)_Char, (STRING)_Skill, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Char, "Artifact_ApothecarysGuile", _)
+AND
+DB_AMER_Spells_CastWhileSneaking(_Char, _Skill, 1)
+THEN
+PROC_AMER_TempStat_HitStatus_ThrowProc(_Char, "Artifact_ApothecarysGuile", 2000, "");
+
+
+PROC PROC_AMER_HitStatus_Event((CHARACTERGUID)_Defender, (CHARACTERGUID)_Attacker, "Artifact_ApothecarysGuile")
+AND
+ObjectExists(_Defender, 1)
+AND
+ObjectIsCharacter(_Defender, 1)
+AND
+CharacterIsEnemy(_Attacker, _Defender, 1)
+AND
+QRY_AMER_GEN_OncePerRound(_Attacker, "Artifact_ApothecarysGuile")
+AND
+HasActiveStatus(_Defender, "POISONED", 1)
+AND
+QRY_AMER_GEN_CharacterGetDisplayName(_Defender)
+AND
+DB_AMER_GEN_OUTPUT_String(_Name)
+AND
+QRY_AMER_GEN_TSK_Get("AMER_Artifact_ApothecarysGuile_LogText")
+AND
+DB_AMER_GEN_OUTPUT_String(_LogText)
+THEN
+DB_AMER_GEN_OncePerRound(_Attacker, "Artifact_ApothecarysGuile");
+PROC_AMER_TempStat_HitStatus_ThrowProc_Clear(_Attacker, "Artifact_ApothecarysGuile");
+PlayEffect(_Defender, "RS3_FX_Skills_Voodoo_SleepingArms_HandImpact_01", "Dummy_L_HandFX");
+PlayEffect(_Defender, "RS3_FX_Skills_Voodoo_SleepingArms_HandImpact_01", "Dummy_R_HandFX");
+PlayEffect(_Defender, "RS3_FX_Skills_Voodoo_SleepingArms_HandImpact_01", "Dummy_BodyFX");
+CharacterStatusText(_Attacker, "Artifact_ApothecarysGuile");
+PROC_AMER_GEN_CharacterCombatLogText_Param_Str(_Attacker, _LogText, _Name);
+PROC_AMER_GEN_CharacterCauseRemoteProjectileDamage(_Attacker, _Defender, "Projectile_AMER_SCRIPT_Artifact_ApothecarysGuile");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"

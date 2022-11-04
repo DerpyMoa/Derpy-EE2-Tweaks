@@ -1,0 +1,24 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+
+KBSECTION
+
+PROC PROC_AMER_Summoning_PreInitSummon((CHARACTERGUID)_Summon, (CHARACTERGUID)_Owner, "Apportation_Gareth_52753b81-7c2b-42ea-a70c-75fc857dd08f", (INTEGER)_IsBoss)
+THEN
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(_Summon, "Quake_EnemyEarthquake_Gareth");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(_Summon, "Target_EnemyFlurry_Gareth");
+
+
+PROC PROC_AMER_GEN_SummonDied((CHARACTERGUID)_Summon, (CHARACTERGUID)_Owner)
+AND
+GetTemplate(_Summon, "Apportation_Gareth_52753b81-7c2b-42ea-a70c-75fc857dd08f")
+THEN
+NOT DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(_Summon, "Quake_EnemyEarthquake_Gareth");
+NOT DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(_Summon, "Target_EnemyFlurry_Gareth");
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

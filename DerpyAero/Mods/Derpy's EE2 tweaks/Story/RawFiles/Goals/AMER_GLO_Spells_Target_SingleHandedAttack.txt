@@ -1,0 +1,36 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Target_SingleHandedAttack", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_GEN_BasicAttackObjectStarted(_Target, _Char, _Char, "SuckerPunch");
+PROC_AMER_ActionPoints_BasicAttackCost_Wrapper(_Char, 2);
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "SingleHanded", 0.0, 7.0, 2000, "SkillCast");
+PROC_Derpy_SuckerPunch_FollowUp(_Char);
+
+
+PROC PROC_Derpy_SuckerPunch_FollowUp((CHARACTERGUID)_Char)
+AND
+HasActiveStatus(_Char, "Derpy_SuckerPunchBoost", 1)
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "SingleHanded", 50.0, 4.0, 2000, "SkillCast");
+
+
+IF
+NRD_OnHit((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, _Damage, _Handle)
+AND
+NRD_StatusGetString(_Target, _Handle, "SkillId", "Target_SingleHandedAttack_-1")
+AND
+HasActiveStatus(_Char, "DISARMED", 0)
+THEN
+NRD_StatusSetInt(_Target, _Handle, "HitWithWeapon", 1);
+PROC_AMER_GEN_CharacterCauseRemoteProjectileDamage(_Char, _Target, "Projectile_Derpy_SCRIPT_SuckerPunch");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Special"

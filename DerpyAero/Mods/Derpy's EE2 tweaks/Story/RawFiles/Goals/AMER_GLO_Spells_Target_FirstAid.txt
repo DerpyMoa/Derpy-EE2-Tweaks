@@ -1,0 +1,54 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, "Target_FirstAid", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "BatteredHarried_DirectManipStatuses_Activate", "2", "-1", "", 1.0, 2000, "SkillCast");   //Stats use B/H direct manip status, so need to enable it first.
+
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_FirstAid", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+AND
+QRY_AMER_GEN_NotDamagedByHeal(_Target)
+THEN
+PROC_AMER_GEN_ScaledHeal_Percentage(_Target, 25.0, "Vitality", 3.0, "Ability", "RangerLore", _Char, 1, 0, 1);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_FirstAid", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+DB_AMER_IterateCharsAroundObject_Exclusion(_Target);	//Don't apply to target twice.
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 13.0, _Char, 12, "AMER_SourceInfusion_FirstAid_2");	//Allies, not dead.
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "AMER_SourceInfusion_FirstAid_2", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+AND
+QRY_AMER_GEN_NotDamagedByHeal(_Char)
+THEN
+ApplyStatus(_Char, "FIRST_AID", 0.0, 0, _SourceChar);
+ApplyStatus(_Char, "RESTED", 6.0, 0, _SourceChar);
+PROC_AMER_GEN_ScaledHeal_Percentage(_Char, 30.0, "Vitality", 4.0, "Ability", "RangerLore", _SourceChar, 1, 0, 1);
+PROC_AMER_BatteredHarried_DirectManip(_Char, 2, -1, _SourceChar);	//Replicate base effects' removal.
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_FirstAid", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, -2.0, -0.2, 0.0, "Ability", "RangerLore")
+AND
+DB_AMER_GEN_OUTPUT_Real(_Scaling)
+THEN
+DB_AMER_Source_Infusion_RefundPoints(_Char, 0, 1);
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "BatteredDirectManipScaling", "", "", "", _Scaling, 2000, "SkillCast");
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "HarriedDirectManipScaling", "", "", "", _Scaling);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Huntsman"

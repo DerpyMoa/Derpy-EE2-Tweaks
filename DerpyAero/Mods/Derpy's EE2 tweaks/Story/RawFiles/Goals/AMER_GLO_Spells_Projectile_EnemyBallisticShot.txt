@@ -1,0 +1,47 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Projectile_EnemyBallisticShot", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, _InfusCount)
+AND
+_InfusCount > 0
+AND
+GetDistanceToPosition(_Char, _X, _Y, _Z, _Distance)
+AND
+RealProduct(_Distance, 4.0, _DamageBonus)
+THEN
+PROC_AMER_TempStat_FlexStat_Add(_Char, "Stat", "DAMAGEBOOST", _DamageBonus, 2000, "SkillCast");
+
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Projectile_EnemyBallisticShot", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+AND
+GetDistanceToPosition(_Char, _X, _Y, _Z, _Distance)
+AND
+RealProduct(_Distance, 4.0, _DamageBonus)
+THEN
+PROC_AMER_TempStat_FlexStat_Add(_Char, "Stat", "DAMAGEBOOST", _DamageBonus, 2000, "SkillCast");
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Projectile_EnemyBallisticShot", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+AND
+GetDistanceToPosition(_Char, _X, _Y, _Z, _Distance)
+AND
+RealProduct(_Distance, 5.0, _DamageBonus)
+THEN
+PROC_AMER_GEN_Shoot_Delayed("Projectile", _Char, _X, _Y, _Z, "Projectile_BallisticShot", 100);
+
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Huntsman"

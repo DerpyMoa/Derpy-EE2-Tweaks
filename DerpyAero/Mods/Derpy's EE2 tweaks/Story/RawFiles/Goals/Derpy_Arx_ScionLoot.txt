@@ -1,0 +1,44 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+RegionStarted(_)
+AND
+QueryOnlyOnce("Derpy_Arx_ScionLoot")
+THEN
+SetIsBoss(S_CON01_Elven_Scholar_e13fde00-fca4-494e-973b-7812c56a08d1, 1);
+SetIsBoss(S_CON00_ElvenScion_ARX_9369895e-df54-4613-8fd9-8e7a0e8f1339, 1);
+
+IF
+CharacterPrecogDying(CHARACTERGUID_S_CON01_Elven_Scholar_e13fde00-fca4-494e-973b-7812c56a08d1)
+AND
+GetPosition(S_CON01_Elven_Scholar_e13fde00-fca4-494e-973b-7812c56a08d1, _X, _Y, _Z)
+AND
+CreateItemTemplateAtPosition("LOOT_BackPack_A_6c70c298-aa29-418f-a659-f8e0b5f5fa60", _X, _Y, _Z, _Backpack)
+THEN
+GenerateTreasure(_Backpack, "MiniBoss", 20, NULL_00000000-0000-0000-0000-000000000000);
+PlaySound(_Backpack,"GP_ScriptedEvent_HOE_Channel_Spell_Final");
+PlayEffect(_Backpack, "AMER_RS3_FX_LootShine_Unique", "");
+GoalCompleted;
+
+
+IF
+CharacterPrecogDying(CHARACTERGUID_S_CON00_ElvenScion_ARX_9369895e-df54-4613-8fd9-8e7a0e8f1339)
+AND
+GetPosition(S_CON00_ElvenScion_ARX_9369895e-df54-4613-8fd9-8e7a0e8f1339, _X, _Y, _Z)
+AND
+CreateItemTemplateAtPosition("LOOT_BackPack_A_6c70c298-aa29-418f-a659-f8e0b5f5fa60", _X, _Y, _Z, _Backpack)
+THEN
+GenerateTreasure(_Backpack, "MiniBoss", 20, NULL_00000000-0000-0000-0000-000000000000);
+PlaySound(_Backpack,"GP_ScriptedEvent_HOE_Channel_Spell_Final");
+PlayEffect(_Backpack, "AMER_RS3_FX_LootShine_Unique", "");
+GoalCompleted;
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "ARX"

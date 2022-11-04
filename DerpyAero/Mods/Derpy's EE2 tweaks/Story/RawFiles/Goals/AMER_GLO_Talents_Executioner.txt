@@ -1,0 +1,106 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Talents_Toggle((CHARACTERGUID)_Char, "Executioner", (REAL)_Toggle)
+THEN
+PROC_AMER_ExtendedStat_CharacterAddStat(_Char, "Status_ChargedProjectile", "Projectile_AMER_SCRIPT_StatusDamage_Charged_Tort", "", "", _Toggle);
+
+
+//===============================================================================================================================================================
+
+
+IF
+NRD_OnPrepareHit((CHARACTERGUID)_Defender, (CHARACTERGUID)_Attacker, _Damage, _HitHandle)
+AND
+CharacterHasTalent(_Defender, "Executioner", 1)
+AND
+NRD_HitGetInt(_HitHandle, "HitType", 4)
+AND
+NRD_HitGetDamage(_HitHandle, "Air", _Amount)
+AND
+_Amount != 0
+THEN
+NRD_HitClearDamage(_HitHandle, "Air");
+
+
+//===============================================================================================================================================================
+
+
+PROC PROC_AMER_Status_Charged_Detonate((CHARACTERGUID)_Char, (CHARACTERGUID)_Source)
+AND
+CharacterHasTalent(_Source, "Executioner", 1)
+THEN
+PROC_AMER_GEN_Heal_Percentage(_Source, 7.0,  "MagicArmor", _Source, 1, 1, 1);
+
+
+//===============================================================================================================================================================
+
+
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, (STRING)_Skill, (INTEGER)_InfusCount, (STRING)_Type, "Air")
+AND
+CharacterHasTalent(_Char, "Executioner", 1)
+AND
+NOT DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_MageFin", _)
+AND
+NOT DB_AMER_GEN_SkillIsMetaSkill(_Skill)
+AND
+NRD_StatGetString(_Skill, "UseWeaponDamage", "No")
+AND
+DB_AMER_Spells_CastBuffer_APCost(_APCost)
+AND
+_APCost > 2
+AND
+CharacterIsInCombat(_Char, 1)
+AND
+CharacterGetAttribute(_Char, "Finesse", _Fin)
+AND
+IntegerSubtract(_Fin, 10, _FinOverTen)
+AND
+Real(_FinOverTen, _FinOverTenReal)
+AND
+RealProduct(_FinOverTenReal, 10.0, _Chance)
+AND
+RealProduct(_Chance, 0.01, _GuaranteedAP)	//Chance over 100 grants 1 AP always, chance of 200 grants 2 AP always, chance of 300 grants 3 AP always, etc.
+AND
+Integer(_GuaranteedAP, _GuaranteedAPInt)	//_GuaranteedAPInt is 0, 1, 2, 3, etc
+AND
+IntegerProduct(_GuaranteedAPInt, 100, _ChanceAdjust)	//_ChanceAdjust will become 0, 100, 200, 300, etc
+AND
+Real(_ChanceAdjust, _ChanceAdjustReal)
+AND
+RealSubtract(_Chance, _ChanceAdjustReal, _ChanceSurplus)	//_ChanceSurplus is the _Chance over 100, or just _Chance if _Chance was originally less than 100. If _Chance was 200 (or 300, 400, etc), then _ChanceSurplus is 0.
+AND
+Integer(_ChanceSurplus, _ChanceSurplusInt)
+THEN
+PROC_Talents_Executioner_RecoverAP(_Char, _ChanceSurplusInt, _GuaranteedAPInt);
+
+
+PROC PROC_Talents_Executioner_RecoverAP((CHARACTERGUID)_Char, (INTEGER)_Chance, (INTEGER)_GuaranteedAP)
+AND
+NOT QRY_Talents_Executioner_RecoverAP(_Char, _Chance, _GuaranteedAP)	//If chance fails, only award guaranteed AP.
+AND
+Real(_GuaranteedAP, _GuaranteedAPReal)
+THEN
+PROC_AMER_ExtendedStat_CharacterAddStat(_Char, "SpellRecoverAP_Oneshot", "", "", "", _GuaranteedAPReal);
+
+
+QRY QRY_Talents_Executioner_RecoverAP((CHARACTERGUID)_Char, (INTEGER)_Chance, (INTEGER)_GuaranteedAP)
+AND
+_Chance != 0
+AND
+QRY_AMER_GEN_RandomSuccess(_Chance)
+AND
+IntegerSum(_GuaranteedAP, 1, _TotalBonus)
+AND
+Real(_TotalBonus, _TotalBonusReal)
+THEN
+PROC_AMER_ExtendedStat_CharacterAddStat(_Char, "SpellRecoverAP_Oneshot", "", "", "", _TotalBonusReal);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Talents"

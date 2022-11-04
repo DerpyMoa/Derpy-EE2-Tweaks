@@ -1,0 +1,22 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Combat_TurnEnded(_, _Char, 0)
+AND
+HasActiveStatus(_Char, "CONTAMINATION_POISON_SKIN", 1)
+AND
+QRY_AMER_GEN_GetNearestInCombat(_Char, _Char, _Char, 30.0, 170) //Living non-totem enemies that _Char can see.
+AND
+DB_AMER_GEN_OUTPUT_NearestInCombat(_Nearest, _)
+THEN
+PROC_AMER_KeywordStat_Adaptation_Activate(_Char, _Char, 3);
+ApplyStatus(_Nearest, "AMER_CORRODING", 6.0, 1, _Char);
+ApplyStatus(_Nearest, "AMER_WITHER", 6.0, 1, _Char);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "ArmorSets_Wrapper"

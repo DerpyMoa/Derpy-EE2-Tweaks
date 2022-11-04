@@ -1,0 +1,63 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, "Shout_PoisonWave", _, _, _)
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "AMER_POISONWAVE", "BlockStatus", "AMER_CALCIFYING", "", "", 1.0, "PoisonWave_CalcifyingImmune", 0, 2000, "SkillCast");
+
+
+//=====================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_PoisonWave", 1)
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "AMER_POISONWAVE", "Shoot_OnTurn", "Explosion", "Projectile_AMER_SCRIPT_PoisonWave", "PoisonWave_Infus", 1.0, "PoisonWave_Infus", 0, 2000, "SkillCast");
+
+
+//=====================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_PoisonWave", 2)
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "AMER_POISONWAVE", "Shoot_OnTurn", "Explosion", "Projectile_AMER_SCRIPT_PoisonWave_Infusion_2", "PoisonWave_Infus", 2.0, "PoisonWave_Infus", 0, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_PoisonWave", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 5.0, _Char, 10, "AMER_SourceInfusion_PoisonWave_2");	//Enemies, not dead.
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "AMER_SourceInfusion_PoisonWave_2", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+ApplyStatus(_Char, "AMER_CALCIFYING_APPLY", 12.0, 0, _SourceChar);
+ApplyStatus(_Char, "AMER_WITHER", 6.0, 0, _SourceChar);
+
+
+//=====================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_PoisonWave", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "AMER_POISONWAVE", "Shoot_OnTurn", "Explosion", "Projectile_AMER_SCRIPT_PoisonWave_Infusion_3", "PoisonWave_Infus", 4.0, "PoisonWave_Infus", 0, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_PoisonWave", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+AND
+GetPosition(_Char, _X, _Y, _Z)
+THEN
+PROC_AMER_GEN_Shoot_Delayed("Explosion", _Char, NULL_00000000-0000-0000-0000-000000000000, _X, _Y, _Z, "Projectile_AMER_SCRIPT_PoisonWave_Infusion_3", 0.0, 6, 150);	//7 total strikes within 4m, 150ms interval.
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Geomancer"

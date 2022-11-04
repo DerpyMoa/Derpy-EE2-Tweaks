@@ -1,0 +1,35 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+NRD_OnHit((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, _Damage, _Handle)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Char, "WhatARush_Taunt", _, _, _, _)
+AND
+NOT DB_Derpy_WhatARush_Choke(_Char)
+AND
+CharacterIsEnemy(_Target, _Char, 1)
+AND
+HasActiveStatus(_Target, "TAUNTED", 0)
+THEN
+DB_Derpy_WhatARush_Choke(_Char);
+ApplyStatus(_Target, "TAUNTED", 6.0, 0, _Char);
+PlayEffect(_Target, "RS3_FX_Skills_Voodoo_Cast_Curse_Shout_Root_01", "");
+PlayEffect(_Char, "RS3_FX_Skills_Voodoo_Cast_Taunt_Icon_01", "Dummy_OverheadFX");
+ProcObjectTimer(_Char, "Derpy_WhatARush_ChokePrevention", 2000);
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "Derpy_WhatARush_ChokePrevention")
+AND
+DB_Derpy_WhatARush_Choke(_Char)
+THEN
+NOT DB_Derpy_WhatARush_Choke(_Char);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GEN_Stats_ExtendedStats"

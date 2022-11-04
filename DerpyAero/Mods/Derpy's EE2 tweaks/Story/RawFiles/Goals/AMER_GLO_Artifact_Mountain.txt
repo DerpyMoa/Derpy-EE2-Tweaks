@@ -1,0 +1,117 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_CharAddedToCombat((CHARACTERGUID)_Char, (INTEGER)_Combat)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Char, "Artifact_Mountain", _)
+THEN
+ApplyStatus(_Char, "Derpy_Mountain_0", 24.0, 1, _Char);
+
+
+PROC PROC_AMER_CharLeftCombat((CHARACTERGUID)_Char, (INTEGER)_Combat)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Char, "Artifact_Mountain", _)
+AND
+DB_Derpy_Mountain_Statuses(_Status)
+AND
+HasActiveStatus(_Char, _Status, 1)
+THEN
+RemoveStatus(_Char, _Status);
+
+
+PROC PROC_AMER_Combat_TurnStarted((CHARACTERGUID)_Char, 0)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Char, "Artifact_Mountain", _)
+AND
+DB_Derpy_Mountain_Statuses(_Status)
+AND
+HasActiveStatus(_Char, _Status, 1)
+AND
+GetStatusTurns(_Char, _Status, _Turns)
+AND
+_Turns == 0
+THEN
+RemoveStatus(_Char, _Status);
+ApplyStatus(_Char, "Derpy_Mountain_0", 18.0, 1, _Char);
+
+
+PROC PROC_AMER_GEN_FilteredStatus_Applied((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, "TAUNTED", (INTEGER)_Turns)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Source, "Artifact_Mountain", _)
+THEN
+PROC_Derpy_Mountain_Effects(_Source);
+
+
+PROC PROC_Derpy_Mountain_Effects((CHARACTERGUID)_Source)
+AND
+HasActiveStatus(_Source, "Derpy_Mountain_0", 1)
+AND
+GetStatusTurns(_Source, "Derpy_Mountain_0", _Turns)
+AND
+Real(_Turns, _TurnsReal)
+AND
+RealProduct(_TurnsReal, 6.0, _TurnsRealAdjusted)
+THEN
+ApplyStatus(_Source, "Derpy_Mountain_1", _TurnsRealAdjusted, 1, _Source);
+
+
+PROC PROC_Derpy_Mountain_Effects((CHARACTERGUID)_Source)
+AND
+HasActiveStatus(_Source, "Derpy_Mountain_1", 1)
+AND
+GetStatusTurns(_Source, "Derpy_Mountain_1", _Turns)
+AND
+Real(_Turns, _TurnsReal)
+AND
+RealProduct(_TurnsReal, 6.0, _TurnsRealAdjusted)
+THEN
+ApplyStatus(_Source, "Derpy_Mountain_2", _TurnsRealAdjusted, 1, _Source);
+
+
+PROC PROC_Derpy_Mountain_Effects((CHARACTERGUID)_Source)
+AND
+HasActiveStatus(_Source, "Derpy_Mountain_2", 1)
+AND
+GetStatusTurns(_Source, "Derpy_Mountain_2", _Turns)
+AND
+Real(_Turns, _TurnsReal)
+AND
+RealProduct(_TurnsReal, 6.0, _TurnsRealAdjusted)
+THEN
+ApplyStatus(_Source, "Derpy_Mountain_3", _TurnsRealAdjusted, 1, _Source);
+
+
+PROC PROC_Derpy_Mountain_Effects((CHARACTERGUID)_Source)
+AND
+HasActiveStatus(_Source, "Derpy_Mountain_3", 1)
+AND
+GetStatusTurns(_Source, "Derpy_Mountain_3", _Turns)
+AND
+Real(_Turns, _TurnsReal)
+AND
+RealProduct(_TurnsReal, 6.0, _TurnsRealAdjusted)
+THEN
+ApplyStatus(_Source, "Derpy_Mountain_4", _TurnsRealAdjusted, 1, _Source);
+
+
+PROC PROC_Derpy_Mountain_Effects((CHARACTERGUID)_Source)
+AND
+HasActiveStatus(_Source, "Derpy_Mountain_4", 1)
+AND
+GetStatusTurns(_Source, "Derpy_Mountain_4", _Turns)
+AND
+Real(_Turns, _TurnsReal)
+AND
+RealProduct(_TurnsReal, 6.0, _TurnsRealAdjusted)
+THEN
+ApplyStatus(_Source, "Derpy_Mountain_5", _TurnsRealAdjusted, 1, _Source);
+
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"

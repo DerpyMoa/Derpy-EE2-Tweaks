@@ -1,0 +1,50 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+//Prosperity on.
+PROC PROC_AMER_ExtendedStat_InitStat((CHARACTERGUID)_Char, "Ascension_Prosperity_MUTA_BuffDurationAndRes", "", "", "", (REAL)_Added, 0.0, 1.0)
+THEN
+PROC_AMER_Ascension_Prosperity_BuffDurationAndRes_TryToggle(_Char, 1.0);
+
+//Prosperity off.
+PROC PROC_AMER_ExtendedStat_InitStat((CHARACTERGUID)_Char, "Ascension_Prosperity_MUTA_BuffDurationAndRes", "", "", "", (REAL)_Added, (REAL)_OldAmount, 0.0)
+THEN
+PROC_AMER_Ascension_Prosperity_BuffDurationAndRes_TryToggle(_Char, -1.0);
+
+
+
+PROC PROC_AMER_Ascension_Prosperity_BuffDurationAndRes_TryToggle((CHARACTERGUID)_Char, 1.0)
+AND
+NOT DB_AMER_AscensionReward_Prosperity_BuffDurationAndRes_Active(_Char)
+THEN
+DB_AMER_AscensionReward_Prosperity_BuffDurationAndRes_Active(_Char);
+PROC_AMER_Ascension_Prosperity_BuffDurationAndRes_Toggle(_Char, 1.0);
+
+PROC PROC_AMER_Ascension_Prosperity_BuffDurationAndRes_TryToggle((CHARACTERGUID)_Char, -1.0)
+AND
+DB_AMER_AscensionReward_Prosperity_BuffDurationAndRes_Active(_Char)
+THEN
+NOT DB_AMER_AscensionReward_Prosperity_BuffDurationAndRes_Active(_Char);
+PROC_AMER_Ascension_Prosperity_BuffDurationAndRes_Toggle(_Char, -1.0);
+
+
+PROC PROC_AMER_Ascension_Prosperity_BuffDurationAndRes_Toggle((CHARACTERGUID)_Char, (REAL)_Toggle)
+AND
+RealProduct(10.0, _Toggle, _Res)
+THEN
+PROC_AMER_ExtendedStat_CharacterAddStat(_Char, "Status_AddDuration", "MEND_METAL", "", "", _Toggle);
+PROC_AMER_ExtendedStat_CharacterAddStat(_Char, "Status_AddDuration", "REGENERATION", "", "", _Toggle);
+PROC_AMER_ExtendedStat_CharacterAddStat(_Char, "Status_AddDuration", "FROST_AURA", "", "", _Toggle);
+PROC_AMER_ExtendedStat_CharacterAddStat(_Char, "Status_AddDuration", "HASTED", "", "", _Toggle);
+PROC_AMER_StatusMod_Add_FlexStat(_Char, "MEND_METAL", "Stat_SpecialCase", "EleResistance", _Res, "Ascension_Prosperity_MUTA_BuffDurationAndRes", 0);
+PROC_AMER_StatusMod_Add_FlexStat(_Char, "REGENERATION", "Stat_SpecialCase", "EleResistance", _Res, "Ascension_Prosperity_MUTA_BuffDurationAndRes", 0);
+PROC_AMER_StatusMod_Add_FlexStat(_Char, "FROST_AURA", "Stat_SpecialCase", "EleResistance", _Res, "Ascension_Prosperity_MUTA_BuffDurationAndRes", 0);
+PROC_AMER_StatusMod_Add_FlexStat(_Char, "HASTED", "Stat_SpecialCase", "EleResistance", _Res, "Ascension_Prosperity_MUTA_BuffDurationAndRes", 0);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

@@ -1,0 +1,37 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+
+KBSECTION
+
+PROC PROC_Derpy_SkillBeingPrepared((CHARACTERGUID)_Char, "Shout_MassFeast_-1")
+AND
+DB_AMER_Summoning_ActiveSummon_Autonomous(_Char, _Summon)
+AND
+GetTemplate(_Summon, "AMER_Extinction_BoneHand_A_b01d0e46-aca1-4865-9718-1be6adff888b")
+AND
+QRY_AMER_GEN_GetOwner(_Summon)
+AND
+DB_AMER_GEN_OUTPUT_Char(_Char)
+AND
+IsTagged(_Summon, "Derpy_Skitterer", 0)
+THEN
+SetTag(_Summon, "Derpy_Skitterer");
+
+
+PROC PROC_AMER_Combat_TurnEnded(_, _Char, _)
+AND
+DB_AMER_Summoning_ActiveSummon_Autonomous(_Char, _Summon)
+AND
+GetTemplate(_Summon, "AMER_Extinction_BoneHand_A_b01d0e46-aca1-4865-9718-1be6adff888b")
+AND
+IsTagged(_Summon, "Derpy_Skitterer", 1)
+THEN
+ClearTag(_Summon, "Derpy_Skitterer");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

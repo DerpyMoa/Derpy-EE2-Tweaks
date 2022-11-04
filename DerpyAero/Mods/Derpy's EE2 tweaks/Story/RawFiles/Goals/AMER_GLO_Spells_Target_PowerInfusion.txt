@@ -1,0 +1,106 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+//Apply to all incarnates, not only _Target.
+PROC PROC_AMER_Spells_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_PowerInfusion", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+AND
+DB_AMER_Summoning_ActiveSummon(_Char, _Summon)
+AND
+QRY_AMER_GEN_GetIncarnateTag(_Summon)
+AND
+_Target != _Summon	//Don't bother applying to target again.
+THEN
+PROC_AMER_Spells_PowerInfusion_TryApply(_Summon, _Char, _InfusCount);
+
+
+//REGION Only apply to other incarnates if _InfusCount is better than a previous of this status (if any).
+
+PROC PROC_AMER_Spells_PowerInfusion_TryApply((CHARACTERGUID)_Summon, (CHARACTERGUID)_Char, (INTEGER)_InfusCount)
+AND
+NOT QRY_AMER_Spells_PowerInfusion_TryApply_HasExisting(_Summon, _Char, _InfusCount)
+THEN
+PlayEffect(_Summon, "RS3_FX_Skills_Totem_Impact_Target_Root_Fire_01", "");
+ApplyStatus(_Summon, "INF_POWER", -1.0, 0, _Char);
+
+QRY QRY_AMER_Spells_PowerInfusion_TryApply_HasExisting((CHARACTERGUID)_Summon, (CHARACTERGUID)_Char, (INTEGER)_InfusCount)
+AND
+HasActiveStatus(_Summon, "INF_POWER", 1)
+AND
+QRY_AMER_Spells_PowerInfusion_TryApply_GetExistingSI(_Summon)
+AND
+DB_AMER_GEN_OUTPUT_Integer(_OldSI)
+AND
+_InfusCount > _OldSI
+THEN
+DB_NOOP(1);
+
+QRY QRY_AMER_Spells_PowerInfusion_TryApply_GetExistingSI((CHARACTERGUID)_Summon)
+AND
+DB_AMER_GEN_OUTPUT_Integer(_OldOutput)
+THEN
+NOT DB_AMER_GEN_OUTPUT_Integer(_OldOutput);
+
+QRY QRY_AMER_Spells_PowerInfusion_TryApply_GetExistingSI((CHARACTERGUID)_Summon)
+AND
+DB_AMER_StatusMod_FlexStat_ActiveMods(_Summon, _, "INF_POWER", _, _, _, "PowerInfusion_Infus_1")
+THEN
+DB_AMER_GEN_OUTPUT_Integer(1);
+
+QRY QRY_AMER_Spells_PowerInfusion_TryApply_GetExistingSI((CHARACTERGUID)_Summon)
+AND
+DB_AMER_StatusMod_FlexStat_ActiveMods(_Summon, _, "INF_POWER", _, _, _, "PowerInfusion_Infus_2")
+THEN
+DB_AMER_GEN_OUTPUT_Integer(2);
+
+QRY QRY_AMER_Spells_PowerInfusion_TryApply_GetExistingSI((CHARACTERGUID)_Summon)
+AND
+NOT DB_AMER_GEN_OUTPUT_Integer(_)
+THEN
+DB_AMER_GEN_OUTPUT_Integer(0);
+
+//END_REGION
+
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Target_PowerInfusion", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 1)
+AND
+CharacterGetAttribute(_Char, "Intelligence", _Int)
+AND
+IntegerSubtract(_Int, 10, _IntOverTen)
+AND
+Real(_IntOverTen, _IntReal)
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, 0.1, 0.04, 0.0, "Ability", "Summoning")
+AND
+DB_AMER_GEN_OUTPUT_Real(_Scaling)
+AND
+RealProduct(_IntReal, _Scaling, _Bonus)
+THEN
+PROC_AMER_TempStat_StatusMod_AddFlexStat(_Char, "INF_POWER", "Attribute", "Intelligence", _Bonus, "PowerInfusion_Infus_1", 0, 2000, "SkillCast");
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Target_PowerInfusion", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+AND
+CharacterGetAttribute(_Char, "Intelligence", _Int)
+AND
+IntegerSubtract(_Int, 10, _IntOverTen)
+AND
+Real(_IntOverTen, _IntReal)
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, 0.2, 0.08, 0.0, "Ability", "Summoning")
+AND
+DB_AMER_GEN_OUTPUT_Real(_Scaling)
+AND
+RealProduct(_IntReal, _Scaling, _Bonus)
+THEN
+PROC_AMER_TempStat_StatusMod_AddFlexStat(_Char, "INF_POWER", "Attribute", "Intelligence", _Bonus, "PowerInfusion_Infus_2", 0, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddFlexStat(_Char, "INF_POWER", "Spell", "Target_CripplingBlow", 1.0, "PowerInfusion_Infus_2", 0);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Summoning"

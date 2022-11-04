@@ -1,0 +1,30 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Celestial reactions apply Regeneration for 2 turns to living characters and Poisoned to undead characters.
+
+PROC PROC_AMER_KeywordStat_Celestial_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (STRING)_RequestID)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Celestial_MUTA_MagicShell", _)
+AND
+CharacterHasTalent(_Target, "Zombie", _IsUndead)
+THEN
+PROC_Derpy_Celestial_MUTA_RegenPoisoned(_Target, _Char, _IsUndead);
+
+
+PROC PROC_Derpy_Celestial_MUTA_RegenPoisoned((CHARACTERGUID)_Target, (CHARACTERGUID)_Caster, 1)
+THEN
+ApplyStatus(_Target, "POISONED", 12.0, 0, _Caster);
+
+
+PROC PROC_Derpy_Celestial_MUTA_RegenPoisoned((CHARACTERGUID)_Target, (CHARACTERGUID)_Caster, 0)
+THEN
+ApplyStatus(_Target, "REGENERATION", 12.0, 0, _Caster);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

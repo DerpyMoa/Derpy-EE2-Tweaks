@@ -1,0 +1,60 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_ReactionShot", 1)
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "REACTION_SHOT", "ReactiveShot_SI1_Player", "", "", "", 1.0, "ReactionShot_SI", 1, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "Derpy_LockOn", "ReactiveShot_SI1_Enemy", "", "", "", 1.0, "ReactionShot_SI", 0, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_ReactionShot", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 1)
+THEN
+PROC_AMER_GEN_IterateCharsAroundPoint(_X, _Y, _Z, 4.0, _Char, 10, "Derpy_ReactionShot_SI1");	//Only living enemies.
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Derpy_ReactionShot_SI1", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+ApplyStatus(_Char, "Derpy_LockOn", 6.0, 0, _SourceChar);
+
+
+//======================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_ReactionShot", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "REACTION_SHOT", "ReactiveShot_SI2_Player", "", "", "", 1.0, "ReactionShot_SI", 1, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "Derpy_LockOn", "ReactiveShot_SI1_Enemy", "", "", "", 1.0, "ReactionShot_SI", 0, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_ReactionShot", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_GEN_IterateCharsAroundPoint(_X, _Y, _Z, 4.0, _Char, 10, "Derpy_ReactionShot_SI2");	//Only living enemies.
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Derpy_ReactionShot_SI2", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+ApplyStatus(_Char, "Derpy_LockOn", 12.0, 0, _SourceChar);
+
+
+//======================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_ReactionShot", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "REACTION_SHOT", "ReactiveShot_SI3_Player", "", "", "", 1.0, "ReactionShot_SI", 1, 2000, "SkillCast");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Huntsman"

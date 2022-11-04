@@ -1,0 +1,17 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+RegionStarted(_)
+THEN
+SetIsBoss(CHARACTERGUID_DeathfogZone_Champion_Undead_01_192521f2-0889-4e29-aa49-705c943aa024, 1);
+GoalCompleted;
+
+EXITSECTION
+
+
+ENDEXITSECTION
+ParentTargetEdge "ARX"

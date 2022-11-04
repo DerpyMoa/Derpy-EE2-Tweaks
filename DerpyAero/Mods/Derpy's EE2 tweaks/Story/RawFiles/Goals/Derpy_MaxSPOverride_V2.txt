@@ -1,0 +1,23 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_Derpy_MaxSPOverride(CHARACTERGUID_S_GLO_BurnishedOne_dc614e64-d6ef-4b45-8864-73f2a92a1980);
+DB_Derpy_MaxSPOverride(CHARACTERGUID_S_FTJ_ArenaFan_001_bbffcfab-50b8-4200-afb8-514e5c2a64eb);
+DB_Derpy_MaxSPOverride(CHARACTERGUID_S_FTJ_ArenaFan_002_b4e2cd45-b391-48e0-8c6f-edb57cbc5eae);
+DB_Derpy_MaxSPOverride(CHARACTERGUID_S_FTJ_ArenaDwarf_7f9740f2-84c2-4858-82b1-579c969f559e);
+DB_Derpy_MaxSPOverride(CHARACTERGUID_S_FTJ_ArenaMaster_4eadc6c7-f934-43ad-bb74-c59358106114);
+
+DB_Derpy_MaxSPOverride(CHARACTERGUID_S_FTJ_ChapelMagister_Captain_c4d751d4-20ff-4281-baf4-8ddeb1383e7e);
+DB_Derpy_MaxSPOverride(CHARACTERGUID_Derpy_FTJ_ChapelReinforcement_Rogue_002_bd11bb31-959b-4154-9bdf-fc44e605925b);
+
+DB_Derpy_MaxSPOverride(CHARACTERGUID_S_FTJ_SwampBuildup_B_Undead_Ranger_01_1195a59b-ba51-4662-afa7-7602b224cfc8);
+
+DB_Derpy_MaxSPOverride(CHARACTERGUID_S_FTJ_SwampBuildup_A_Undead_Terra_01_7dee6a3d-ef4f-4281-a311-a65d483e13d1);
+
+KBSECTION
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

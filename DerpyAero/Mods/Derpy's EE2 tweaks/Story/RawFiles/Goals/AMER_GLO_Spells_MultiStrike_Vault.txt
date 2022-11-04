@@ -1,0 +1,61 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "MultiStrike_Vault", 1)
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "ACCURACYBOOST", "Ability", "RogueLore", 5.0, 1.0, 2000, "SkillCast");
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "RogueLore", 15.0, 3.0);
+//PROC_AMER_TempStat_ExtendedStat_Add_StatScaling(_Char, "AttributeIntelligenceEffect_Multiplier", "", "", "", "Ability", "RogueLore", 0.07, 0.02, 2000, "SkillCast");
+PROC_AMER_Source_Infusion_AddRefund(_Char, 2, 0);
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "MultiStrike_Vault", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "ACCURACYBOOST", "Ability", "RogueLore", 5.0, 1.0, 2000, "SkillCast");
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "RogueLore", 55.0, 11.0);
+//PROC_AMER_TempStat_ExtendedStat_Add_StatScaling(_Char, "AttributeIntelligenceEffect_Multiplier", "", "", "", "Ability", "RogueLore", 0.37, 0.08, 2000, "SkillCast");
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "MultiStrike_Vault", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_GEN_ApplyStatusUntilEndOfTurn(_Char, "INVISIBLE");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "MultiStrike_Vault", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+AND
+DB_AMER_Spells_CastWhileSneaking(_Char, "MultiStrike_Vault", _Stealth)
+THEN
+PROC_AMER_Source_Infusion_Vault_StealthKicker(_Char, _Stealth);
+ProcObjectTimer(_Char, "AMER_Source_Infusion_Vault_RepeatDelay", 400);
+
+//Because Multistrike spells do not throw their target, our logic will have passed the caster as _Target.
+//As a result, we need to try to find a proper target for skill repeat after the teleport is finished.
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "AMER_Source_Infusion_Vault_RepeatDelay")
+AND
+QRY_AMER_GEN_GetNearestInCombat(_Char, _Char, _Char, 3.0, 10)	//Get nearest living enemy.
+AND
+DB_AMER_GEN_OUTPUT_NearestInCombat(_Target, _)
+THEN
+PlayEffect(_Target, "RS3_FX_Skills_Rogue_Vault_Impact_01", "");
+PROC_AMER_GEN_Shoot_Delayed("RemoteImpact", _Char, _Target, "Projectile_AMER_SCRIPT_Vault", 1, 150);	//1 repeat, so 2 total strikes.
+
+PROC PROC_AMER_Source_Infusion_Vault_StealthKicker((CHARACTERGUID)_Char, 1)
+THEN
+ApplyStatus(_Char, "AMER_VAULT_INFUS_3_SNEAK", 18.0, 0, _Char);
+
+PROC PROC_AMER_Source_Infusion_Vault_StealthKicker((CHARACTERGUID)_Char, 0)
+THEN
+ApplyStatus(_Char, "AMER_VAULT_INFUS_3", 18.0, 0, _Char);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Scoundrel"

@@ -1,0 +1,49 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_GEN_BasicAttackObjectStarted((CHARACTERGUID)_Defender, (REAL)_X, (REAL)_Y, (REAL)_Z, (CHARACTERGUID)_Owner, (CHARACTERGUID)_Attacker, (STRING)_AttackID)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Attacker, "Artifact_WintersGrasp", _)
+THEN
+PROC_AMER_TempStat_HitStatus_ThrowProc(_Attacker, "Artifact_WintersGrasp", 2000, "");
+
+
+PROC PROC_AMER_HitStatus_Event((CHARACTERGUID)_Defender, (CHARACTERGUID)_Attacker, "Artifact_WintersGrasp")
+AND
+ObjectExists(_Defender, 1)
+AND
+ObjectIsCharacter(_Defender, 1)
+AND
+QRY_AMER_GEN_HasStatusFamily(_Defender, "Brittle")
+AND
+QRY_AMER_GEN_OncePerRound(_Attacker, "Artifact_WintersGrasp")
+AND
+_Defender != _Attacker
+AND
+GetPosition(_Defender, _X, _Y, _Z)
+AND
+QRY_AMER_GEN_CharacterGetDisplayName(_Defender)
+AND
+DB_AMER_GEN_OUTPUT_String(_Name)
+AND
+QRY_AMER_GEN_TSK_Get("AMER_Artifact_WintersGrasp_LogText")
+AND
+DB_AMER_GEN_OUTPUT_String(_LogText)
+THEN
+DB_AMER_GEN_OncePerRound(_Attacker, "Artifact_WintersGrasp");
+PROC_AMER_TempStat_HitStatus_ThrowProc_Clear(_Attacker, "Artifact_WintersGrasp");
+CreateSurfaceAtPosition(_X, _Y, _Z, "SurfaceNone", 3.0, 0.0);
+CreateSurfaceAtPosition(_X, _Y, _Z, "SurfaceWaterFrozen", 3.0, 12.0);
+CharacterStatusText(_Attacker, "Artifact_WintersGrasp");
+PROC_AMER_GEN_CharacterCombatLogText_Param_Str(_Attacker, _LogText, _Name);
+PROC_AMER_GEN_CharacterCauseExplosionAtPos(_Attacker, _X, _Y, _Z, "Projectile_AMER_SCRIPT_IceBreaker_3m");
+PROC_AMER_TempStat_ExtendedStat_Add(_Attacker, "Shoot_OnStatus", "AMER_FROSTCLOUD_DAMAGE", "Projectile_AMER_SCRIPT_StatusDamage_FrostCloud_50", "RemoteImpact", 1.0, 3000, ""); //Custom shatter damage.
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"

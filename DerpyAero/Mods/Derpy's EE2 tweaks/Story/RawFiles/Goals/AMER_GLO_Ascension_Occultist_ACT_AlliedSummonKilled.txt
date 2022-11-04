@@ -1,0 +1,21 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Occultist activates when an allied summon is killed by an enemy.
+
+PROC PROC_AMER_GEN_SummonKilled((CHARACTERGUID)_Summon, (CHARACTERGUID)_Attacker, (CHARACTERGUID)_Owner)
+AND
+DB_AMER_Ascension_SpecialLogic(_Reactor, "Ascension_Occultist_ACT_AlliedSummonKilled", _)
+AND
+CharacterIsAlly(_Reactor, _Owner, 1)
+AND
+CharacterIsEnemy(_Reactor, _Attacker, 1)
+THEN
+PROC_AMER_Reaction_Request(_Reactor, _Attacker, "AMER_Occultist", "Ascension_Occultist_ACT_AlliedSummonKilled", "skill_cast_target_voodoo_01_cast", 1);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

@@ -1,0 +1,121 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//At the end of your turn, activate Predator on the nearest enemy you can see within 8m of a corpse.
+
+PROC PROC_AMER_Combat_TurnEnded(_, _Char, 0)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Predator_ACT_NearCorpseEndOfTurn", _)
+THEN
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 35.0, _Char, 16, "Ascension_Predator_ACT_NearCorpseEndOfTurn_IterateCorpse");	//Only dead characters.
+
+
+//First step is to discover all corpses within a reasonable distance.
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Ascension_Predator_ACT_NearCorpseEndOfTurn_IterateCorpse", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+DB_AMER_Ascension_Predator_ACT_NearCorpseEndOfTurn_Corpses(_SourceChar, _Char);
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Finished((INTEGER)_RequestID, "Ascension_Predator_ACT_NearCorpseEndOfTurn_IterateCorpse", (CHARACTERGUID)_SourceChar)
+THEN
+PROC_AMER_Ascension_Predator_ACT_NearCorpseEndOfTurn_AcquireTargets(_SourceChar);
+
+
+//Next we need to discover all enemies in combat that are within our desired distance of any corpse we buffered, and are also within LoS.
+PROC PROC_AMER_Ascension_Predator_ACT_NearCorpseEndOfTurn_AcquireTargets((CHARACTERGUID)_SourceChar)
+AND
+CombatGetIDForCharacter(_SourceChar, _Combat)
+AND
+DB_CombatCharacters(_Target, _Combat)
+AND
+CharacterIsEnemy(_Target, _SourceChar, 1)
+AND
+DB_AMER_Ascension_Predator_ACT_NearCorpseEndOfTurn_Corpses(_SourceChar, _Corpse)
+AND
+NOT DB_AMER_Ascension_Predator_ACT_NearCorpseEndOfTurn_Targets(_Target) //Check within the tuples of corpses, so that we stop checking distance after the target is known to be within range of a corpse.
+AND
+GetDistanceTo(_Target, _Corpse, _Dist)
+AND
+QRY_AMER_GEN_GetAIBounds(_Corpse)
+AND
+DB_AMER_GEN_OUTPUT_Real(_CorpseBoundSize)
+AND
+QRY_AMER_GEN_GetAIBounds(_Target)
+AND
+DB_AMER_GEN_OUTPUT_Real(_TargetBoundSize)
+AND
+RealSubtract(_Dist, _CorpseBoundSize, _Dist2)
+AND
+RealSubtract(_Dist2, _TargetBoundSize, _Dist3)
+AND
+_Dist3 <= 8.0
+AND
+HasLineOfSight(_SourceChar, _Target, 1)
+AND
+NOT QRY_AMER_GEN_IsDeadOrDying(_Target)
+THEN
+DB_AMER_Ascension_Predator_ACT_NearCorpseEndOfTurn_Targets(_Target);
+
+
+//Next we get the nearest of those discovered characters.
+PROC PROC_AMER_Ascension_Predator_ACT_NearCorpseEndOfTurn_AcquireTargets((CHARACTERGUID)_SourceChar)
+THEN
+DB_AMER_Ascension_Predator_ACT_NearCorpseEndOfTurn_FinalTarget(99999.0, (CHARACTERGUID)NULL_00000000-0000-0000-0000-000000000000);
+
+PROC PROC_AMER_Ascension_Predator_ACT_NearCorpseEndOfTurn_AcquireTargets((CHARACTERGUID)_SourceChar)
+AND
+DB_AMER_Ascension_Predator_ACT_NearCorpseEndOfTurn_Targets(_Target)
+AND
+GetDistanceTo(_SourceChar, _Target, _Distance)
+AND
+DB_AMER_Ascension_Predator_ACT_NearCorpseEndOfTurn_FinalTarget(_OldDistance, _OldTargetFinal)
+AND
+_Distance < _OldDistance
+THEN
+NOT DB_AMER_Ascension_Predator_ACT_NearCorpseEndOfTurn_FinalTarget(_OldDistance, _OldTargetFinal);
+DB_AMER_Ascension_Predator_ACT_NearCorpseEndOfTurn_FinalTarget(_Distance, _Target);
+
+//Cleanup of buffered corpses.
+PROC PROC_AMER_Ascension_Predator_ACT_NearCorpseEndOfTurn_AcquireTargets((CHARACTERGUID)_SourceChar)
+AND
+DB_AMER_Ascension_Predator_ACT_NearCorpseEndOfTurn_Corpses(_SourceChar, _Corpse)
+THEN
+NOT DB_AMER_Ascension_Predator_ACT_NearCorpseEndOfTurn_Corpses(_SourceChar, _Corpse);
+
+//Cleanup of buffered targets.
+PROC PROC_AMER_Ascension_Predator_ACT_NearCorpseEndOfTurn_AcquireTargets((CHARACTERGUID)_SourceChar)
+AND
+DB_AMER_Ascension_Predator_ACT_NearCorpseEndOfTurn_Targets(_Target)
+THEN
+NOT DB_AMER_Ascension_Predator_ACT_NearCorpseEndOfTurn_Targets(_Target);
+
+PROC PROC_AMER_Ascension_Predator_ACT_NearCorpseEndOfTurn_AcquireTargets((CHARACTERGUID)_SourceChar)
+AND
+DB_AMER_Ascension_Predator_ACT_NearCorpseEndOfTurn_FinalTarget(_Distance, _Target)
+THEN
+NOT DB_AMER_Ascension_Predator_ACT_NearCorpseEndOfTurn_FinalTarget(_Distance, _Target);
+PROC_AMER_Ascension_Predator_ACT_NearCorpseEndOfTurn_TryFire(_SourceChar, _Target);
+
+
+//Lastly we request the reaction on the character.
+PROC PROC_AMER_Ascension_Predator_ACT_NearCorpseEndOfTurn_TryFire((CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Target)
+AND
+_Target != NULL_00000000-0000-0000-0000-000000000000
+THEN
+DB_Derpy_Ascension_Predator_ACT_NearCorpseEndOfTurn(_SourceChar, _Target);
+ProcObjectTimer(_SourceChar, "Derpy_Ascension_Predator_ACT_NearCorpseEndOfTurn", 100);
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_SourceChar, "Derpy_Ascension_Predator_ACT_NearCorpseEndOfTurn")
+AND
+DB_Derpy_Ascension_Predator_ACT_NearCorpseEndOfTurn(_SourceChar, _Target)
+THEN
+NOT DB_Derpy_Ascension_Predator_ACT_NearCorpseEndOfTurn(_SourceChar, _Target);
+PROC_AMER_Reaction_Request(_SourceChar, _Target, "AMER_Predator", "Ascension_Predator_ACT_NearCorpseEndOfTurn", "", 1);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

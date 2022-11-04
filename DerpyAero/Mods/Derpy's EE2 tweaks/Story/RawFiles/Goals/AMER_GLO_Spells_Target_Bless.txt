@@ -1,0 +1,28 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_Bless", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 1)
+THEN
+ApplyStatus(_Target, "Derpy_BLESSED_SI1", 12.0, 0, _Char);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_Bless", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 2)
+AND
+QRY_AMER_GEN_GetNearestInCombat(_Char, _Target, _Char, 13.0, 76)	//Living non-summon ally of _Char that is nearest to _Target, within 13.0 of _Char.
+AND
+DB_AMER_GEN_OUTPUT_NearestInCombat(_NearestTarget, _)
+THEN
+ApplyStatus(_Target, "Derpy_BLESSED_SI1", 12.0, 0, _Char);
+ApplyStatus(_NearestTarget, "Derpy_BLESSED_SI1", 12.0, 0, _Char);
+PlayEffect(_NearestTarget, "RS3_FX_Skills_Divine_Bless_Impact_01");
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Special"

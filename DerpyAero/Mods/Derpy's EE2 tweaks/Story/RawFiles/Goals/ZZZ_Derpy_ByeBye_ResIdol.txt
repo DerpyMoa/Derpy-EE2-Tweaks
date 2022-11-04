@@ -1,0 +1,16 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+RegionStarted(_)
+THEN
+ItemTemplateRemoveFrom("Quest_Resurrection_Idol_6b70e6e1-855e-4295-b79b-d87ebd6bd4af",CHARACTERGUID_S_RC_DW_UnderTavern_Dorotya_6fa62a51-5ac2-4b51-b3a8-0d7bf8e4b069,1);
+GoalCompleted;
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "ReapersCoast"

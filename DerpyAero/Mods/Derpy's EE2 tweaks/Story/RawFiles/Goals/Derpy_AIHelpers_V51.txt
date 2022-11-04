@@ -1,0 +1,151 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+
+//===========================================================================================================================
+
+
+NOT DB_AMER_AIHelpers_SILogic_SkillPriority(1000, "Projectile_EnemyChainLightning", "Projectile_ChainLightning", 2);
+NOT DB_AMER_AIHelpers_SILogic_SkillPriority(1000, "Target_EnemyPressureSpike", "Target_PressureSpike", 2);
+NOT DB_AMER_AIHelpers_SILogic_SkillPriority(1000, "ProjectileStrike_EnemyRainOfArrows", "ProjectileStrike_RainOfArrows", 2);
+NOT DB_AMER_AIHelpers_SILogic_SkillPriority(900, "Projectile_EnemyRicochet", "Projectile_Ricochet", 2);
+NOT DB_AMER_AIHelpers_SILogic_SkillPriority(1000, "Target_EnemyCorpseExplosion", "Target_CorpseExplosion", 2);
+NOT DB_AMER_AIHelpers_SILogic_SkillPriority(1000, "Target_EnemyDeathsDoor", "Target_DeathsDoor", 1);
+NOT DB_AMER_AIHelpers_SILogic_SkillPriority(900, "Target_EnemyGagOrder", "Target_GagOrder", 1);
+NOT DB_AMER_AIHelpers_SILogic_SkillPriority(1000, "Target_EnemyFatality", "Target_Fatality", 2);
+NOT DB_AMER_AIHelpers_SILogic_SkillPriority(1000, "Projectile_EnemyFireball", "Projectile_Fireball", 3);
+NOT DB_AMER_AIHelpers_SILogic_SkillPriority(950, "Target_EnemyHaste", "Target_Haste", 2);
+NOT DB_AMER_AIHelpers_SILogic_SkillPriority(1000, "Summon_EnemyTotemFromSurface", "Summon_TotemFromSurface", 2);
+NOT DB_AMER_AIHelpers_SILogic_SkillPriority(1000, "Target_EnemyOverpower", "Target_Overpower", 2);
+NOT DB_AMER_AIHelpers_SILogic_SkillPriority(1000, "Shout_EnemyWhirlwind", "Shout_Whirlwind", 2);
+NOT DB_AMER_AIHelpers_SILogic_SkillPriority(1000, "Target_EnemyWinterBlast", "Target_WinterBlast", 3);
+
+NOT DB_AMER_AIHelpers_SILogic_SkillPriority(100, "Projectile_EnemyPoisonDart", "Projectile_PoisonDartStart", 1);
+NOT DB_AMER_AIHelpers_SILogic_SkillPriority(100, "Projectile_EnemyThrowDust", "Projectile_ThrowDust", 2);
+NOT DB_AMER_AIHelpers_SILogic_SkillPriority(90, "Target_EnemyFortify", "Target_Fortify", 2);
+NOT DB_AMER_AIHelpers_SILogic_SkillPriority(100, "Projectile_EnemyLightningBolt", "Projectile_LightningBolt", 2);
+NOT DB_AMER_AIHelpers_SILogic_SkillPriority(90, "Target_EnemyFirstAid", "Target_FirstAid", 1);
+NOT DB_AMER_AIHelpers_SILogic_SkillPriority(90, "Target_EnemyFrostyShell", "Target_FrostyShell", 2);
+NOT DB_AMER_AIHelpers_SILogic_SkillPriority(90, "Projectile_EnemyChainHeal", "Projectile_ChainHeal", 1);
+NOT DB_AMER_AIHelpers_SILogic_SkillPriority(90, "Target_EnemyCleanseWounds", "Target_CleanseWounds", 2);
+NOT DB_AMER_AIHelpers_SILogic_SkillPriority(100, "Projectile_EnemyIceFan", "Projectile_IceFan", 3);
+NOT DB_AMER_AIHelpers_SILogic_SkillPriority(100, "Target_EnemyGraspOfTheStarved", "Target_GraspOfTheStarved", 1);
+NOT DB_AMER_AIHelpers_SILogic_SkillPriority(100, "Target_EnemyAMER_HorridWilting", "Target_AMER_HorridWilting", 1);
+NOT DB_AMER_AIHelpers_SILogic_SkillPriority(90, "Target_EnemyFireblood", "Target_Fireblood", 1);
+NOT DB_AMER_AIHelpers_SILogic_SkillPriority(80, "Target_EnemySerratedEdge", "Target_SerratedEdge", 3);
+NOT DB_AMER_AIHelpers_SILogic_SkillPriority(100, "Target_EnemyCripplingBlow", "Target_CripplingBlow", 2);
+
+NOT DB_AMER_AIHelpers_SILogic_SkillPriority(-1, "Target_EnemyEvasiveManeuver", "Target_EvasiveManeuver", 2);
+NOT DB_AMER_AIHelpers_SILogic_SkillPriority(-1, "Target_EnemyHarmony", "Target_Harmony", 1);
+
+
+//===========================================================================================================================
+
+
+
+//Vitality thresholds
+DB_AMER_AIHelpers_SkillLogic_Template("Target_EnemyDeathsDoor", "Target1", "Vitality_Current_Perc", "LessThan", 80.0);
+DB_AMER_AIHelpers_SkillLogic_Template("Projectile_EnemyAMER_FingerOfDeath", "Target1", "Vitality_Current_Perc", "LessThan", 50.0);
+DB_AMER_AIHelpers_SkillLogic_Template("Target_EnemyFatality", "Target1", "Vitality_Current_Perc", "LessThan", 70.0);
+DB_AMER_AIHelpers_SkillLogic_Template("Target_EnemyFrostyShell", "Target1", "MArmor_Current_Perc", "LessThan", 50.0);
+DB_AMER_AIHelpers_SkillLogic_Template("Target_EnemyFortify", "Target1", "PArmor_Current_Perc", "LessThan", 50.0);
+
+
+//Veiled Undead healing prevention
+DB_AMER_AIHelpers_SkillLogic_Template_Status("Target_Restoration","Target1","VEILED_UNDEAD", 0);
+DB_AMER_AIHelpers_SkillLogic_Template_Status("Target_CleanseWounds","Target1","VEILED_UNDEAD", 0);
+DB_AMER_AIHelpers_SkillLogic_Template_Status("Target_Harmony","Target1","VEILED_UNDEAD", 0);
+DB_AMER_AIHelpers_SkillLogic_Template_Status("Target_FirstAid","Target1","VEILED_UNDEAD", 0);
+DB_AMER_AIHelpers_SkillLogic_Template_Status("Projectile_ChainHeal","Target1","VEILED_UNDEAD", 0);
+
+DB_AMER_AIHelpers_SkillLogic_Template_Status("Target_EnemyRestoration","Target1","VEILED_UNDEAD", 0);
+DB_AMER_AIHelpers_SkillLogic_Template_Status("Target_EnemyCleanseWounds","Target1","VEILED_UNDEAD", 0);
+DB_AMER_AIHelpers_SkillLogic_Template_Status("Target_EnemyCleanseWounds_Troll","Target1","VEILED_UNDEAD", 0);
+DB_AMER_AIHelpers_SkillLogic_Template_Status("Target_EnemyHarmony","Target1","VEILED_UNDEAD", 0);
+DB_AMER_AIHelpers_SkillLogic_Template_Status("Target_FirstAidEnemy","Target1","VEILED_UNDEAD", 0);
+DB_AMER_AIHelpers_SkillLogic_Template_Status("Projectile_EnemyChainHeal","Target1","VEILED_UNDEAD", 0);
+
+
+//Status requirements
+DB_AMER_AIHelpers_SkillLogic_Template_Status("Target_EnemySpontCombustion","Target1","AMER_SCORCHED", 1);
+
+
+//Battered requirements
+DB_AMER_AIHelpers_SkillLogic_Template("Target_EnemyCripplingBlow", "Target1", "Battered", "GreaterThan", 4.0);
+DB_AMER_AIHelpers_SkillLogic_Template("Target_EnemyFireWhip", "Target1", "Battered", "GreaterThan", 5.0);
+
+
+//Harried requirements
+DB_AMER_AIHelpers_SkillLogic_Template("Target_EnemyFireblood", "Target1", "Harried", "GreaterThan", 5.0);
+
+
+//Aero
+DB_AMER_AIHelpers_SILogic_SkillPriority(1000, "Projectile_EnemyChainLightning", "Projectile_EnemyChainLightning", 3);
+DB_AMER_AIHelpers_SILogic_SkillPriority(1000, "Projectile_EnemySuperconductor", "Projectile_EnemySuperconductor", 3);
+DB_AMER_AIHelpers_SILogic_SkillPriority(950, "Target_EnemyVacuumTouch", "Target_VacuumTouch", 2);
+DB_AMER_AIHelpers_SILogic_SkillPriority(950, "Target_EnemyShockingTouch", "Target_ShockingTouch", 2);
+DB_AMER_AIHelpers_SILogic_SkillPriority(950, "Target_EnemyPressureSpike", "Target_PressureSpike", 2);
+DB_AMER_AIHelpers_SILogic_SkillPriority(950, "Projectile_EnemyLightningBolt", "Projectile_EnemyLightningBolt", 2);
+
+//Huntsman
+DB_AMER_AIHelpers_SILogic_SkillPriority(1000, "ProjectileStrike_EnemyRainOfArrows", "ProjectileStrike_EnemyRainOfArrows", 3);
+DB_AMER_AIHelpers_SILogic_SkillPriority(1000, "Projectile_EnemySkyShot", "Projectile_EnemySkyShot", 3);
+DB_AMER_AIHelpers_SILogic_SkillPriority(1000, "Projectile_EnemyRicochet", "Projectile_Ricochet", 3);
+DB_AMER_AIHelpers_SILogic_SkillPriority(950, "Projectile_EnemyPinDown", "Projectile_EnemyPinDown", 2);
+DB_AMER_AIHelpers_SILogic_SkillPriority(950, "Projectile_EnemySnipe", "Projectile_EnemySnipe", 2);
+DB_AMER_AIHelpers_SILogic_SkillPriority(950, "Target_FirstAidEnemy", "Target_FirstAid", 2);
+
+//Necro
+DB_AMER_AIHelpers_SILogic_SkillPriority(1000, "Target_EnemyCorpseExplosion", "Target_CorpseExplosion", 2);
+DB_AMER_AIHelpers_SILogic_SkillPriority(1000, "Cone_EnemySilencingStare", "Cone_SilencingStare", 2);
+DB_AMER_AIHelpers_SILogic_SkillPriority(950, "Target_EnemyInfect", "Target_Infect", 2);
+DB_AMER_AIHelpers_SILogic_SkillPriority(950, "Target_EnemyMosquitoSwarm", "Target_MosquitoSwarm", 2);
+DB_AMER_AIHelpers_SILogic_SkillPriority(950, "Rain_EnemyBlood", "Rain_Blood", 3);
+
+//Scoundrel
+DB_AMER_AIHelpers_SILogic_SkillPriority(1000, "Target_EnemyGagOrder", "Target_GagOrder", 2);
+DB_AMER_AIHelpers_SILogic_SkillPriority(1000, "Target_EnemyFatality", "Target_Fatality", 2);
+DB_AMER_AIHelpers_SILogic_SkillPriority(950, "Projectile_EnemyFanOfKnives", "Projectile_FanOfKnives", 2);
+DB_AMER_AIHelpers_SILogic_SkillPriority(950, "Target_EnemyTerrifyingCruelty", "Target_TerrifyingCruelty", 2);
+DB_AMER_AIHelpers_SILogic_SkillPriority(950, "Target_EnemyKneeBreaker", "Target_KneeBreaker", 2);
+DB_AMER_AIHelpers_SILogic_SkillPriority(900, "Target_EnemySerratedEdge", "Target_SerratedEdge", 3);
+
+//Pyro
+DB_AMER_AIHelpers_SILogic_SkillPriority(1000, "Projectile_EnemyFireball", "Projectile_EnemyFireball", 3);
+DB_AMER_AIHelpers_SILogic_SkillPriority(1000, "Projectile_EnemyFireball_Cursed", "Projectile_EnemyFireball", 3);
+DB_AMER_AIHelpers_SILogic_SkillPriority(1000, "Shout_EnemyIgnition", "Shout_Ignition", 2);
+DB_AMER_AIHelpers_SILogic_SkillPriority(1000, "Zone_EnemyLaserRay", "Zone_EnemyLaserRay", 2);
+DB_AMER_AIHelpers_SILogic_SkillPriority(1000, "ProjectileStrike_EnemyMeteorShower", "ProjectileStrike_EnemyMeteorShower", 3);
+DB_AMER_AIHelpers_SILogic_SkillPriority(950, "Projectile_EnemyInfectiousFlame", "Projectile_InfectiousFlame", 2);
+
+//Warfare
+DB_AMER_AIHelpers_SILogic_SkillPriority(1000, "Target_EnemyOverpower", "Target_EnemyOverpower", 2);
+DB_AMER_AIHelpers_SILogic_SkillPriority(1000, "Shout_EnemyWhirlwind", "Shout_EnemyWhirlwind", 2);
+DB_AMER_AIHelpers_SILogic_SkillPriority(950, "Projectile_EnemyBouncingShield", "Projectile_BouncingShield", 2);
+DB_AMER_AIHelpers_SILogic_SkillPriority(950, "Target_EnemyCripplingBlow", "Target_EnemyCripplingBlow", 2);
+DB_AMER_AIHelpers_SILogic_SkillPriority(950, "MultiStrike_EnemyBlinkStrike", "MultiStrike_EnemyBlinkStrike", 2);
+
+//Hydro
+DB_AMER_AIHelpers_SILogic_SkillPriority(1000, "Target_EnemyWinterBlast", "Target_WinterBlast", 3);
+DB_AMER_AIHelpers_SILogic_SkillPriority(1000, "Cone_EnemyShatter", "Cone_Shatter", 2);
+DB_AMER_AIHelpers_SILogic_SkillPriority(1000, "Rain_EnemyWater", "Rain_Water", 3);
+DB_AMER_AIHelpers_SILogic_SkillPriority(950, "ProjectileStrike_EnemyHailStrike", "ProjectileStrike_HailStrike", 3);
+DB_AMER_AIHelpers_SILogic_SkillPriority(950, "Target_EnemyFrostyShell", "Target_EnemyFrostyShell", 2);
+DB_AMER_AIHelpers_SILogic_SkillPriority(950, "Target_EnemyCleanseWounds", "Target_CleanseWounds", 2);
+
+//Geo
+DB_AMER_AIHelpers_SILogic_SkillPriority(1000, "Target_EnemyRockSpikes", "Target_RockSpikes", 3);
+DB_AMER_AIHelpers_SILogic_SkillPriority(1000, "Projectile_EnemyThrowDust", "Projectile_ThrowDust", 3);
+DB_AMER_AIHelpers_SILogic_SkillPriority(950, "Projectile_EnemyPoisonDart", "Projectile_EnemyPoisonDart", 2);
+DB_AMER_AIHelpers_SILogic_SkillPriority(950, "Target_EnemyCorrosiveTouch", "Target_CorrosiveTouch", 2);
+DB_AMER_AIHelpers_SILogic_SkillPriority(950, "Target_EnemyFortify", "Target_Fortify", 2);
+
+
+
+KBSECTION
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

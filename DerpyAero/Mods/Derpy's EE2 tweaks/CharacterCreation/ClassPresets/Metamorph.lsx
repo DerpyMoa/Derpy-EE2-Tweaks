@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<save>
+    <header version="2" time="1387205254" />
+    <version major="1" minor="3" revision="0" build="0" />
+    <region id="CharacterCreationClass">
+        <node id="root">
+            <attribute id="ClassDescription" value="|DreamWarrior class description|" handle="h6f6a3c6cgc2dag45fcgb3e2g8dc95151de1e" type="28" />
+			<attribute id="ClassLongDescription" value="|DreamWarrior class long description|" handle="h643f1267g9710g4e60gad4cg0a6614abc75b" type="28" />
+            <attribute id="ClassName" value="Metamorph" handle="hc0ddc9b1gf21dg4986g9030g6c9ecb0f3b73" type="28" />
+            <attribute id="ClassType" value="Metamorph" type="22" />
+            <attribute id="SkillSet" value="Class_Metamorph" type="22" />
+            <attribute id="Voice" value="2" type="5" />
+			<attribute id="Icon" value="1" type="5" />
+
+            <attribute id="NumStartingCombatAbilityPoints" value="2" type="4" />
+            <attribute id="NumStartingCivilAbilityPoints" value="1" type="4" />
+            <attribute id="NumStartingAttributePoints" value="3" type="4" />
+            <attribute id="NumStartingTalentPoints" value="1" type="4" />
+
+			<attribute id="AreStatsWeighted" value="1" type="19" />
+            <children>
+                <node id="EquipmentProperties">
+                    <children>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Human" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Metamorph_Humans" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Metamorph_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Dwarf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Metamorph_Dwarves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Metamorph_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Elf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Metamorph_Elves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Metamorph_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Lizard" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Metamorph_Lizards" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Metamorph_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Human" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Metamorph_Humans" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Metamorph_Start_Undead" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Dwarf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Metamorph_Dwarves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Metamorph_Start_Undead" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Elf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Metamorph_Elves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Metamorph_Start_Undead" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Lizard" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Metamorph_Lizards" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Metamorph_Start_Undead" type="22" />
+                        </node>
+                    </children>
+                </node>
+                <node id="AbilityChanges">
+                    <children>
+                        <node id="AbilityChange">
+                            <attribute id="Ability" value="Polymorph" type="23" />
+                            <attribute id="AmountIncreased" value="1" type="4" />
+                        </node>
+                        <node id="AbilityChange">
+                            <attribute id="Ability" value="WarriorLore" type="23" />
+                            <attribute id="AmountIncreased" value="1" type="4" />
+                        </node>
+                        <node id="AbilityChange">
+                            <attribute id="Ability" value="Barter" type="23" />
+                            <attribute id="AmountIncreased" value="1" type="4" />
+                        </node>
+                    </children>
+                </node>
+                <node id="AttributeChanges">
+                    <children>
+                        <node id="AttributeChange">
+                            <attribute id="AmountIncreased" value="4" type="4" />
+                            <attribute id="Attribute" value="CON" type="23" />
+                        </node>
+                    </children>
+                </node>
+                <node id="TalentsAdded">
+                    <children>
+                        <node id="TalentAdded">
+                            <attribute id="Talent" value="QuickStep" type="23" />
+                        </node>
+                    </children>
+                </node>
+            </children>
+        </node>
+    </region>
+</save>

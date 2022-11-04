@@ -1,0 +1,39 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_EnemyThickOfTheFight", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_GEN_Shoot_Delayed("Explosion", _Char, _Char, "Projectile_AMER_SCRIPT_Whirlwind", 100);
+PlayEffect(_Char, "RS3_FX_Skills_Fire_Cast_Attack_Round_Hand_01", "Dummy_L_Hand");
+PlayEffect(_Char, "RS3_FX_Skills_Fire_Cast_Attack_Round_Hand_01", "Dummy_R_Hand");
+PlayEffect(_Char, "RS3_FX_Skills_Fire_Cast_Attack_Round_Root_01", "Dummy_Root");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_EnemyThickOfTheFight", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+PROC_AMER_StatusMod_ExtendedStat_TryApplyModForStatus(_Char, _Char, "THICK_OF_THE_FIGHT", "BasicAttackHitStatus", "ThickOfTheFight_Infus2", "", "", 1500.0, "");
+PROC_AMER_GEN_Goal_Activate("AMER_GLO_Spells_REMOTE_ThickOfTheFight");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_EnemyThickOfTheFight", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_StatusMod_ExtendedStat_TryApplyModForStatus(_Char, _Char, "THICK_OF_THE_FIGHT", "BasicAttackHitStatus", "ThickOfTheFight_Infus3", "", "", 1500.0, "");
+PROC_AMER_GEN_Goal_Activate("AMER_GLO_Spells_REMOTE_ThickOfTheFight");
+
+
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Warfare"

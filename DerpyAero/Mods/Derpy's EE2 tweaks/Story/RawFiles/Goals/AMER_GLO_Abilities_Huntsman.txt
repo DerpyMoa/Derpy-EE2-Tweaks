@@ -1,0 +1,25 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Abilities_Initialize((CHARACTERGUID)_Char, "RangerLore", (REAL)_Toggle)
+AND
+NOT DB_AMER_ScalingStat_FlexStat_Volatile(_Char, "Ability", "RangerLore", "Stat", "ACCURACYBOOST", _)  //Protect against adding again.
+THEN
+PROC_AMER_ScalingStat_FlexStat_Add_Volatile(_Char, "Ability", "RangerLore", "Stat", "ACCURACYBOOST", _Toggle);
+
+
+PROC PROC_AMER_Spells_SkillPreCast_PerTarget((CHARACTERGUID)_Char, (STRING)_Skill, (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+AND
+DB_AMER_GEN_SpecialArrow(_Skill, _Cost)
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "RangerLore", 0.0, 2.0, 2000, "SkillCast");
+PROC_AMER_TempStat_ExtendedStat_Add_StatScaling(_Char, "AttributeIntelligenceEffect_Multiplier", "", "", "", "Ability", "RangerLore", 0.0, 0.02, 2000, "SkillCast");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Abilities"

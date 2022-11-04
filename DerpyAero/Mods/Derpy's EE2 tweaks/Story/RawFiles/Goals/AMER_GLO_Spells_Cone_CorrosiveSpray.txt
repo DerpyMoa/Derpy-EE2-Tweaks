@@ -1,0 +1,40 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, "Cone_CorrosiveSpray", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "BatteredHarried_DirectManipStatuses_Activate", "0", "1", "", 1.0, 2000, "SkillCast");
+//PROC_AMER_BatteredHarried_DirectManipStatuses_Activate(0, 1);   //This skill uses B/H direct manip statuses in stats, need to activate their logic before the skill fires.
+
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Cone_CorrosiveSpray", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "EarthSpecialist", 10.0, 3.0, 2000, "SkillCast");
+PROC_AMER_GEN_Shoot_Delayed("Cone", _Char, _X, _Y, _Z, "Cone_Derpy_SCRIPT_CorrosiveSpray_Infusion_1", 400);
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Cone_CorrosiveSpray", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat_Scaling(_Char, "AMER_DISINTEGRATING_PHYSICAL", "Disintegrating", "Physical", "", "", "CorrosiveSprayInfus", 0, "Ability", "EarthSpecialist", 0.25, 0.025);
+PROC_AMER_GEN_Shoot_Delayed("Cone", _Char, _X, _Y, _Z, "Cone_AMER_SCRIPT_CorrosiveSpray_Infusion_2", 0);	//Apply disintegrating status through cone, since we can't easily script its application in a conical fashion.
+PROC_AMER_GEN_Shoot_Delayed("Cone", _Char, _X, _Y, _Z, "Cone_Derpy_SCRIPT_CorrosiveSpray", 400);
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Cone_CorrosiveSpray", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat_Scaling(_Char, "AMER_DISINTEGRATING_PHYSICAL", "Disintegrating", "Physical", "", "", "CorrosiveSprayInfus", 0, "Ability", "EarthSpecialist", 0.0, 0.010);
+PROC_AMER_GEN_Shoot_Delayed("Cone", _Char, _X, _Y, _Z, "Cone_Derpy_SCRIPT_CorrosiveSpray_Infusion_3", 0);
+PROC_AMER_GEN_Shoot_Delayed("Cone", _Char, _X, _Y, _Z, "Cone_AMER_SCRIPT_CorrosiveSpray", 400);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Geomancer"

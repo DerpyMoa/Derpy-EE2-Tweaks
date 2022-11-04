@@ -1,0 +1,40 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Summoning_InitSummon((CHARACTERGUID)_Summon, (CHARACTERGUID)_Owner, "Derpy_Humans_Male_Skeleton_Mage_A_5e278431-9082-4dc8-ac24-a639d7a78231", (INTEGER)_BossBool)
+THEN
+ProcObjectTimer(_Summon, "Derpy_BonefideSlayerSummon", 2000);
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Summon, "Derpy_BonefideSlayerSummon")
+THEN
+ApplyStatus(_Summon, "Derpy_BonefideSlayer_EyeEfx", -1.0, 1, _Summon);
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Summon_Bonefide Slayer", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+AND
+DB_AMER_GEN_OUTPUT_Real(_Scaling)
+THEN
+PROC_AMER_Summoning_AddKeywordStatToNext(_Char, "Derpy_Humans_Male_Skeleton_Mage_A_5e278431-9082-4dc8-ac24-a639d7a78231", "SourceGeneration", 1);
+PROC_AMER_Summoning_AddExtendedStatToNext(_Char, "Derpy_Humans_Male_Skeleton_Mage_A_5e278431-9082-4dc8-ac24-a639d7a78231", "SourceGen_AddTurns", "", "", "", 3.0, 1);
+PROC_AMER_Summoning_AddFlexStatToNext(_Char, "Derpy_Humans_Male_Skeleton_Mage_A_5e278431-9082-4dc8-ac24-a639d7a78231", "Spell", "Shout_SourceInfusion", 1.0, 1);
+PROC_AMER_Summoning_AddFlexStatToNext(_Char, "Derpy_Humans_Male_Skeleton_Mage_A_5e278431-9082-4dc8-ac24-a639d7a78231", "Spell", "Target_CripplingBlow", 1.0, 1);
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Summon_Bonefide Slayer", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_Summoning_AddExtendedStatToNext(_Char, "Derpy_Humans_Male_Skeleton_Mage_A_5e278431-9082-4dc8-ac24-a639d7a78231", "InstantEffect", "AddSP", "", "", 2.0, 1);
+PROC_AMER_Summoning_AddFlexStatToNext(_Char, "Derpy_Humans_Male_Skeleton_Mage_A_5e278431-9082-4dc8-ac24-a639d7a78231", "Spell", "Rain_Blood_Slayer", 1.0, 1);
+PROC_AMER_Summoning_AddFlexStatToNext(_Char, "Derpy_Humans_Male_Skeleton_Mage_A_5e278431-9082-4dc8-ac24-a639d7a78231", "Spell", "Target_GraspOfTheStarved", 1.0, 1);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Necromancer"

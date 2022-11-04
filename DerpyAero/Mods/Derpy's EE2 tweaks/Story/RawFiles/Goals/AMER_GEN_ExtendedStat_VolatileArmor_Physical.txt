@@ -1,0 +1,40 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Volatile Armor.
+
+PROC PROC_AMER_CharacterReceivedDamage((CHARACTERGUID)_CharHurt, (GUIDSTRING)_Source, (REAL)_DamageTotal, (REAL)_DamageVit, (REAL)_DamagePhys, (REAL)_DamageMagic)
+AND
+_DamagePhys != 0.0
+AND
+DB_AMER_ExtendedStat_AddedStat(_CharHurt, "VolatileArmor_Physical", _Radius, _DamageType, _FX, _Amount)
+THEN
+PROC_AMER_ExtendedStat_VolatileArmor_Phys(_CharHurt, _Radius, _DamagePhys, _DamageType, _FX, _Amount);
+
+
+PROC PROC_AMER_ExtendedStat_VolatileArmor_Phys((CHARACTERGUID)_CharHurt, (STRING)_Radius, (REAL)_DamageIn, (STRING)_DamageType, (STRING)_FX, (REAL)_Amount)
+AND
+QRY_AMER_GEN_StringtoInteger(_Radius)
+AND
+DB_AMER_GEN_OUTPUT_Integer(_RadiusInt)
+AND
+Real(_RadiusInt, _RadiusReal)
+AND
+//RealDivide(_RadiusReal, 100.0, _RadiusFinal)
+RealProduct(_RadiusReal, 0.01, _RadiusFinal)
+AND
+//RealDivide(_Amount, 100.0, _Percentage)
+RealProduct(_Amount, 0.01, _Percentage)
+AND
+RealProduct(_DamageIn, _Percentage, _DamageReal)
+AND
+Integer(_DamageReal, _Damage)
+THEN
+PROC_AMER_GEN_DamageCharsAroundObject(_CharHurt, _RadiusFinal, _CharHurt, 9, _DamageType, _Damage, _FX, "", 1);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GEN_Stats_ExtendedStats"

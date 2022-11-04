@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<save>
+    <header version="2" time="1436346848" />
+    <version major="2" minor="0" revision="0" build="0" />
+    <region id="CharacterCreationClass">
+        <node id="root">
+            <attribute id="ClassDescription" value="A daring wand-wielder risking life and limb to decimate evil head-on" handle="hdc59fd2eg0e58g4ab7ga595g23ac9abfe89c" type="28" />
+            <attribute id="ClassLongDescription" value="The Inquisitor strolled through the town’s silent streets. 'One among you is a practitioner of dark magic. Show yourself.' As the words faded, a shadow emerged from the far end of the square. 'Another foolish Source Hunter?' it called. 'Run off while you can. This town is mine.' The Inquisitor stood firm. 'No longer.' In the distance, the dark mage's fingertips glowed sickly green. 'Then die.' Green sparks traced spiralling arcs towards the Inquisitor, though none hit their mark as it darted forward. One fist sent the Sourcerer sprawling. 'Nicely done,' the figure croaked, 'but at this range I won't miss!' His hand had only begun to blaze green once more as the Inquisitor sent an arc of electricity into the dark mage's chest. 'Neither will I'." handle="hc05f81aagb500g4634g9a9fg5ba17abaa403" type="28" />
+            <attribute id="ClassName" value="Inquisitor" handle="hc4ea0952gac9cg4754ga487g8fa66ab3a6e0" type="28" />
+            <attribute id="ClassType" value="Inquisitor" type="22" />
+            <attribute id="PreviewEquipmentSet" value="Class_Inquisitor" type="22" />
+            <attribute id="StartingEquipmentSet" value="Class_Inquisitor_Start" type="22" />
+            <attribute id="SkillSet" value="Class_Inquisitor" type="22" />
+            <attribute id="Voice" value="0" type="5" />
+			<attribute id="Icon" value="12" type="5" />
+
+            <attribute id="NumStartingCombatAbilityPoints" value="2" type="4" />
+            <attribute id="NumStartingCivilAbilityPoints" value="1" type="4" />
+            <attribute id="NumStartingAttributePoints" value="3" type="4" />
+            <attribute id="NumStartingTalentPoints" value="1" type="4" />
+            
+			<attribute id="AreStatsWeighted" value="1" type="19" />
+            <children>
+            <node id="EquipmentProperties">
+                    <children>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Human" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Inquisitor_Humans" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Inquisitor_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Dwarf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Inquisitor_Dwarves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Inquisitor_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Elf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Inquisitor_Elves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Inquisitor_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Lizard" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Inquisitor_Lizards" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Inquisitor_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Human" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Inquisitor_Humans" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Inquisitor_Start_Undead" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Dwarf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Inquisitor_Dwarves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Inquisitor_Start_Undead" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Elf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Inquisitor_Elves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Inquisitor_Start_Undead" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Lizard" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Inquisitor_Lizards" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Inquisitor_Start_Undead" type="22" />
+                        </node>
+                    </children>
+                </node>
+                <node id="AbilityChanges">
+                    <children>
+                        <node id="AbilityChange">
+                            <attribute id="Ability" value="AirSpecialist" type="23" />
+                            <attribute id="AmountIncreased" value="1" type="4" />
+                        </node>
+                        <node id="AbilityChange">
+                            <attribute id="Ability" value="WarriorLore" type="23" />
+                            <attribute id="AmountIncreased" value="1" type="4" />
+                        </node>
+                        <node id="AbilityChange">
+                            <attribute id="Ability" value="Persuasion" type="23" />
+                            <attribute id="AmountIncreased" value="1" type="4" />
+                        </node>
+                    </children>
+                </node>
+                <node id="AttributeChanges">
+                    <children>
+                        <node id="AttributeChange">
+                            <attribute id="AmountIncreased" value="3" type="4" />
+                            <attribute id="Attribute" value="CON" type="23" />
+                        </node>
+                    </children>
+                </node>
+                <node id="TalentsAdded">
+                    <children>
+                        <node id="TalentAdded">
+                            <attribute id="Talent" value="Executioner" type="23" />
+                        </node>
+                    </children>
+                </node>
+            </children>
+        </node>
+    </region>
+</save>

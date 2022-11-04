@@ -1,0 +1,36 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Celestial reactions on allies now remove 3 Battered or Harried, whichever is higher.
+
+PROC PROC_AMER_KeywordStat_Celestial_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (STRING)_RequestID)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Celestial_MUTA_ArmorRestoLifeScaling", _)
+AND
+CharacterIsAlly(_Char, _Target, 1)
+AND
+QRY_AMER_BatteredHarried_GetCurrentStacks(_Target)
+AND
+DB_AMER_BatteredHarried_OUTPUT_CurrentStacks(_Battered, _Harried, _TotalStacks)
+THEN
+PROC_AMER_Ascension_Celestial_MUTA_CleanseBH(_Target, _Char, _Battered, _Harried);
+
+
+PROC PROC_AMER_Ascension_Celestial_MUTA_CleanseBH((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, (INTEGER)_Battered, (INTEGER)_Harried)
+AND
+_Battered > _Harried
+THEN
+PROC_AMER_BatteredHarried_DirectManip(_Target, 0, -3, _Char);
+
+PROC PROC_AMER_Ascension_Celestial_MUTA_CleanseBH((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, (INTEGER)_Battered, (INTEGER)_Harried)
+AND
+_Battered <= _Harried
+THEN
+PROC_AMER_BatteredHarried_DirectManip(_Target, 1, -3, _Char);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

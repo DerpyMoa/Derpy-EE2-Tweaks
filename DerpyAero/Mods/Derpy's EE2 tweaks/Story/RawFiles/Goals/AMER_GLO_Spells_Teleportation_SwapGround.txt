@@ -1,0 +1,70 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+//"Surprise Mechanics"
+PROC PROC_AMER_Spells_SkillCast_PerTarget((CHARACTERGUID)_Char, "Teleportation_SwapGround", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_Derpy_SurpriseMechanics(_Char, _Target, _X, _Y, _Z);
+
+
+PROC PROC_Derpy_SurpriseMechanics((CHARACTERGUID)_Char, (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z)
+AND
+DB_Derpy_TerrainTransmuteOffsets(_Xoffset, _Zoffset)
+AND
+NOT DB_Derpy_SurpriseMechanics(_Char)
+AND
+RealSum(_X, _Xoffset, _Xfinal)
+AND
+RealSum(_Z, _Zoffset, _Zfinal)
+AND
+QRY_AMER_GEN_GetSurfaceAtPos(_Xfinal, _Y, _Zfinal, "Derpy_TerrainTrans_SurpriseMechanics")
+AND
+DB_AMER_GEN_OUTPUT_String(_Surface)
+AND
+DB_AMER_GEN_OUTPUT_String_B(_Cloud)
+AND
+QRY_Derpy_TerrainTrans_IsForbiddenSurface(_Surface, _Cloud)
+THEN
+DB_Derpy_SurpriseMechanics(_Char);
+
+
+QRY QRY_Derpy_TerrainTrans_IsForbiddenSurface((STRING)_Surface, (STRING)_Cloud)
+AND
+_Surface == "SurfaceLava"
+THEN
+DB_NOOP(1);
+
+QRY QRY_Derpy_TerrainTrans_IsForbiddenSurface((STRING)_Surface, (STRING)_Cloud)
+AND
+_Surface == "SurfaceSource"
+THEN
+DB_NOOP(1);
+
+QRY QRY_Derpy_TerrainTrans_IsForbiddenSurface((STRING)_Surface, (STRING)_Cloud)
+AND
+_Cloud == "SurfaceDeathfogCloud"
+THEN
+DB_NOOP(1);
+
+
+PROC PROC_Derpy_SurpriseMechanics((CHARACTERGUID)_Char, (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z)
+AND
+DB_Derpy_SurpriseMechanics(_Char)
+THEN
+NOT DB_Derpy_SurpriseMechanics(_Char);
+CreateSurfaceAtPosition(_X, _Y, _Z, "SurfaceNone", 3.0, 0.0);
+OpenMessageBox(_Char, "Stop right there, criminal scum!");
+
+
+PROC PROC_AMER_Spells_CastCleanup((CHARACTERGUID)_Char, "Teleportation_SwapGround")
+THEN
+PROC_AMER_GEN_UnreserveHelperGroup("Derpy_TerrainTrans_SurpriseMechanics");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Polymorph"

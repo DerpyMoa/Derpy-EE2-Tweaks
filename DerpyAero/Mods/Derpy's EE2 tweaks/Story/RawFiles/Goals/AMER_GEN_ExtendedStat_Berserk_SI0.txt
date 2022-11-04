@@ -1,0 +1,77 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_Derpy_SkillBeingPrepared((CHARACTERGUID)_Char, _Skill)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Char, "Berserk_SI0", _, _, _, _)
+AND
+DB_Derpy_Berserk_Warfare(_Skill)
+AND
+CharacterGetHitpointsPercentage(_Char, _Perc)
+AND
+_Perc <= 25.0
+THEN
+CharacterStatusText(_Char, "HP under 25%!");
+
+
+//=======================================================================================================================
+
+
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, (STRING)_Skill, (INTEGER)_InfusCount, (STRING)_Type, "Warrior")
+AND
+DB_AMER_ExtendedStat_AddedStat(_Char, "Berserk_SI0", _, _, _, _)
+AND
+QRY_Derpy_Berserk_CanUse(_Char)
+THEN
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "Berserk_SI0_Internal", "", "", "Derpy_Berserk_SI0_Internal", 1.0, 2000, "SkillCast");
+PROC_AMER_TempStat_FlexStat_Add(_Char, "Stat", "CRITICALCHANCE", 50.0, 2000, "SkillCast");
+
+
+//=======================================================================================================================
+
+
+PROC PROC_AMER_GEN_BasicAttackObjectStarted((CHARACTERGUID)_Defender, (REAL)_X, (REAL)_Y, (REAL)_Z, (CHARACTERGUID)_Owner, (CHARACTERGUID)_Attacker, (STRING)_AttackID)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Attacker, "Berserk_SI0", _, _, _, _)
+AND
+QRY_Derpy_Berserk_CanUse(_Attacker)
+THEN
+PROC_AMER_TempStat_HitStatus_ThrowProc(_Attacker, "Derpy_Berserk_BasicHit", 2000, "");
+
+
+PROC PROC_AMER_HitStatus_Event((CHARACTERGUID)_Defender, (CHARACTERGUID)_Attacker, "Derpy_Berserk_BasicHit")
+AND
+NRD_HitPrepare(_Attacker, _Attacker, _HitHandle)
+THEN
+PROC_AMER_TempStat_HitStatus_ThrowProc_Clear(_Attacker, "Derpy_Berserk_BasicHit");
+PROC_AMER_GEN_Heal_Percentage(_Attacker, 25.0,  "Vitality", _Attacker, 0, 1, 0);	//Not Triage heal. Necromantic. Ability scaling disabled
+NRD_HitExecute(_HitHandle);
+
+
+//=======================================================================================================================
+
+
+QRY QRY_Derpy_Berserk_CanUse((CHARACTERGUID)_Char)
+AND
+DB_AMER_Combat_ActiveChar(_, _, _, _Char)
+AND
+DB_AMER_GEN_PlayerWeaponData(_Char, _, _, _WeaponType1, _WeaponType2)
+AND
+_WeaponType1 != "Bow"
+AND
+_WeaponType1 != "Crossbow"
+AND
+_WeaponType1 != "Wand"
+AND
+_WeaponType2 != "Wand"
+THEN
+DB_NOOP();
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GEN_Stats_ExtendedStats"

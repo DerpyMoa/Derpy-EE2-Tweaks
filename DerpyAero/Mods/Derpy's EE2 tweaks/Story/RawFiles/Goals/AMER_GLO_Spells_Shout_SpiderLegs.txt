@@ -1,0 +1,42 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_SpiderLegs", 1)
+THEN
+ApplyStatus(_Char, "SPIDER_LEGS_INFUS_1", 18.0, 0, _Char);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_SpiderLegs", 2)
+THEN
+ApplyStatus(_Char, "SPIDER_LEGS_INFUS_2", 18.0, 0, _Char);
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_SpiderLegs", 3)
+THEN
+ApplyStatus(_Char, "SPIDER_LEGS_INFUS_3", 30.0, 0, _Char);
+PROC_AMER_Source_Infusion_AddRefund(_Char, 2, 0);
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+
+
+//Prevent failed to return errors in the case that we replace an equip while it is being handled by other systems.
+IF
+ItemUnEquipped(_Item, _Char)
+AND
+GetTemplate(_Item, "EQ_Avatar_SpiderLegs_9fba908e-9a00-4f34-99a3-fcda201c6e19")
+THEN
+PROC_AMER_GEN_ItemBeingRemoved(_Item);
+
+IF
+ItemUnEquipped(_Item, _Char)
+AND
+NOT GetTemplate(_Item, _)
+THEN
+PROC_AMER_GEN_ItemBeingRemoved(_Item);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Polymorph"

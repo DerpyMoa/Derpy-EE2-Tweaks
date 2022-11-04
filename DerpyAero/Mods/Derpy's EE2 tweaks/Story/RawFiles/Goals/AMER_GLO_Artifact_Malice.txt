@@ -1,0 +1,83 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Source_Infusion_GetUnlockedTier_Manipulate((CHARACTERGUID)_Char, (STRING)_Skill, (STRING)_Element, (INTEGER)_InfusCount)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Char, "Artifact_Malice", _)
+AND
+QRY_AMER_GEN_OncePerRound(_Char, "Artifact_Malice")
+AND
+_InfusCount > 0 //Only grant +1 infus count when using at least SI1.
+AND
+HasActiveStatus(_Char, "AMER_SCORCHED", 1)
+AND
+DB_AMER_Source_Infusion_OUTPUT_InfusCountBounded(_Char, _OutputSpent, _OutputEffective)
+AND
+IntegerSum(_OutputEffective, 1, _NewOutputEffective)
+AND
+QRY_AMER_Artifacts_Malice_ValidateBuffForPlayers(_Char, _Element, _NewOutputEffective)
+AND
+GetVarFloat(_Char, "AMER_GEN_MaximumVitality", _MaxVit)
+AND
+GetVarFloat(_Char, "AMER_GEN_MaximumPhysicalArmor", _MaxPA)
+AND
+GetVarFloat(_Char, "AMER_GEN_MaximumMagicArmor", _MaxMA)
+AND
+RealSum(_MaxVit, _MaxPA, _Sum)
+AND
+RealSum(_Sum, _MaxMA, _MaxVitals)
+AND
+RealProduct(_MaxVitals, 0.65, _Damage)
+AND
+Integer(_Damage, _DamageInt)
+THEN
+DB_AMER_GEN_OncePerRound(_Char, "Artifact_Malice");
+NOT DB_AMER_Source_Infusion_OUTPUT_InfusCountBounded(_Char, _OutputSpent, _OutputEffective);
+DB_AMER_Source_Infusion_OUTPUT_InfusCountBounded(_Char, _OutputSpent, _NewOutputEffective);
+CharacterStatusText(_Char, "Artifact_Malice");
+PROC_AMER_GEN_ApplyDamage(_Char, _DamageInt, "Fire", _Char, 0);
+PROC_AMER_GEN_CharacterCombatLogText(_Char, "AMER_Artifact_Malice_Activated");
+
+
+
+QRY QRY_AMER_Artifacts_Malice_ValidateBuffForPlayers((CHARACTERGUID)_Char, (STRING)_Element, (INTEGER)_OutputDesired)
+AND
+NOT DB_IsPlayer(_)  //Don't bother checking conditions for non-players.
+THEN
+DB_NOOP(1);
+
+QRY QRY_AMER_Artifacts_Malice_ValidateBuffForPlayers((CHARACTERGUID)_Char, (STRING)_Element, (INTEGER)_OutputDesired)
+AND
+NOT DB_AMER_Spells_ElementToAbility(_Element, _)
+AND
+CharacterGetMaxSourcePoints(_Char, _MaxSP)
+AND
+_OutputDesired <= _MaxSP
+THEN
+DB_NOOP(1);
+
+QRY QRY_AMER_Artifacts_Malice_ValidateBuffForPlayers((CHARACTERGUID)_Char, (STRING)_Element, (INTEGER)_OutputDesired)
+AND
+DB_AMER_Spells_ElementToAbility(_Element, _Ability)
+AND
+DB_IsPlayer(_Char)
+AND
+DB_AMER_Source_Infusion_AbilityReqs(_OutputDesired, _Req)
+AND
+CharacterGetAbility(_Char, _Ability, _AbilCount)
+AND
+_AbilCount >= _Req
+AND
+CharacterGetMaxSourcePoints(_Char, _MaxSP)
+AND
+_OutputDesired <= _MaxSP
+THEN
+DB_NOOP(1);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"

@@ -1,0 +1,42 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Thanks Amer :prayge:
+
+QRY QRY_AMER_GetRootSkillID((STRING)_Skill)
+AND
+DB_AMER_GEN_OUTPUT_String(_OldOutput)
+THEN
+NOT DB_AMER_GEN_OUTPUT_String(_OldOutput);
+
+
+QRY QRY_AMER_GetRootSkillID((STRING)_Skill)
+AND
+QRY_AMER_GEN_String_GetLength(_Skill)
+AND
+DB_AMER_GEN_OUTPUT_Integer(_Length)
+AND
+IntegerSubtract(_Length, 3, _LenReal)  //3 because "_-1" is 3 characters.
+AND
+StringSub(_Skill, _LenReal, _Length, _SkillSuffix)  //Get last 3 characters of the string
+AND
+_SkillSuffix == "_-1"
+AND
+StringSub(_Skill, 0, _LenReal, _SkillReal)  //0 because we want to take a part of the string starting at the front.
+THEN
+DB_AMER_GEN_OUTPUT_String(_SkillReal);
+
+
+QRY QRY_AMER_GetRootSkillID((STRING)_Skill)
+AND
+NOT DB_AMER_GEN_OUTPUT_String(_)
+THEN
+DB_AMER_GEN_OUTPUT_String(_Skill);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

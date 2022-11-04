@@ -1,0 +1,57 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_SleepingArms", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "ACCURACYBOOST", "Ability", "RogueLore", 5.0, 1.0, 2000, "SkillCast");
+
+
+PROC PROC_AMER_Source_Infusion_ExpectedTargetHit((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, "Target_SleepingArms", (INTEGER)_InfusCount, (STRING)_Element)
+AND
+_InfusCount > 0
+THEN
+ApplyStatus(_Target, "AMER_SLOWED_APPLY", 12.0, 0, _Char);
+
+
+//==================================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_SleepingArms", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+AND
+_InfusCount < 3
+THEN
+PROC_AMER_GEN_DoFreeSneak(_Char);
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "StatusFamily_AddDuration", "Weakened", "", "", 1.0);
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "StatusFamily_AddDuration", "Slowed", "", "", 1.0);
+
+
+//==================================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_SleepingArms", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_GEN_DoFreeSneak(_Char, 1);
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "StatusFamily_AddDuration", "Weakened", "", "", 2.0);
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "StatusFamily_AddDuration", "Slowed", "", "", 2.0);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Target_SleepingArms", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 2, 1);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Scoundrel"

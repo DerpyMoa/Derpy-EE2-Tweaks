@@ -1,0 +1,51 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_GEN_FilteredStatus_Applied(_Defender, _Attacker, "POISONED", _)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Attacker, "Artifact_Pestilence", _)
+AND
+NOT DB_Derpy_Pestilence_Choke(_Defender, _Attacker)
+THEN
+DB_Derpy_Pestilence_Choke(_Defender, _Attacker);
+PROC_AMER_GEN_CharacterCauseExplosion(_Attacker, _Defender, "Projectile_AMER_SCRIPT_Artifact_Pestilence");
+ProcObjectTimer(_Attacker, "Derpy_Pestilence_ChokePrevention", 2000);
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Attacker, "Derpy_Pestilence_ChokePrevention")
+AND
+DB_Derpy_Pestilence_Choke(_Defender, _Attacker)
+THEN
+NOT DB_Derpy_Pestilence_Choke(_Defender, _Attacker);
+
+
+
+PROC PROC_AMER_GEN_FilteredStatus_Removed((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, "POISONED")
+AND
+DB_AMER_Artifacts_EquippedEffects(_ArtifactWielder, "Artifact_Pestilence", _)
+AND
+NOT QRY_AMER_GEN_IsDeadOrDying(_Char)
+AND
+CharacterIsEnemy(_ArtifactWielder, _Char, 1)
+AND
+CharacterCanSee(_ArtifactWielder, _Char, 1)
+AND
+HasActiveStatus(_Char, "POISONED", 0)   //Don't react if we're dealing with a reapply.
+THEN
+PROC_AMER_Reaction_Request(_ArtifactWielder, _Char, "Artifact_Pestilence", "", "skill_cast_target_voodoo_01_cast", 0);
+
+
+PROC PROC_AMER_Reaction_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, "Artifact_Pestilence", (STRING)_RequestID, (INTEGER)_RitualBool)
+THEN
+ApplyStatus(_Target, "POISONED", 12.0, 0, _Char);
+PlayEffect(_Char, "RS3_FX_Skills_Voodoo_Cast_Aoe_Voodoo_Blood_Swarm_Root_01", "Dummy_Root");
+PlayEffect(_Target, "RS3_FX_GP_Impacts_Grenade_PoisonFlask_01", "");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"

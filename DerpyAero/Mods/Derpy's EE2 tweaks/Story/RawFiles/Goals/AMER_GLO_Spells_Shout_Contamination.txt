@@ -1,0 +1,153 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+NRD_OnHit((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, _Damage, _Handle)
+AND
+NRD_StatusGetString(_Target, _Handle, "SkillId", "Shout_Contamination_-1")
+AND
+DB_AMER_Source_Infusion_Pending(_Char, _InfusCount)
+THEN
+PROC_Derpy_Contamination_SI_Effects(_Target, _Char, _InfusCount);
+
+
+//=====================================================================================================================================================
+
+
+PROC PROC_Derpy_Contamination_SI_Effects((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, 1)
+THEN
+PROC_AMER_GEN_Shoot_Delayed("RemoteImpact", _Char, _Target, "Projectile_AMER_SCRIPT_Contamination_SingleHit", 0, 200);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast(_Char, "Shout_Contamination", 1)
+THEN
+ProcObjectTimer_Repeated(_Char, "Derpy_ContaminationEfx", 200, 0);
+
+
+//=====================================================================================================================================================
+
+
+PROC PROC_Derpy_Contamination_SI_Effects((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, 2)
+THEN
+PROC_AMER_GEN_Shoot_Delayed("RemoteImpact", _Char, _Target, "Projectile_AMER_SCRIPT_Contamination_SingleHit", 2, 200);
+
+
+PROC PROC_Derpy_Contamination_SI_Effects((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_Derpy_Contamination_SI2_EnemyVulnerable(_Target, _Char);
+
+
+PROC PROC_Derpy_Contamination_SI2_EnemyVulnerable((CHARACTERGUID)_Target, (CHARACTERGUID)_Char)
+AND
+CharacterIsEnemy(_Target, _Char, 1)
+THEN
+ApplyStatus(_Target, "AMER_DECAYING_APPLY", 12.0, 0, _Char);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast(_Char, "Shout_Contamination", 2)
+THEN
+ProcObjectTimer_Repeated(_Char, "Derpy_ContaminationEfx", 200, 2);
+
+
+//=====================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_Contamination", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_Source_Infusion_RitualRequest(_Char, _Char, _Char, 15.0, "InfusionRitual_Contamination_3", "", "EarthSpecialist", 1, "skill_cast_aoe_voodoo_01_cast", 0, 1);
+ProcObjectTimer(_Char, "Derpy_Contamination_SI3_PreCast", 300);
+ProcObjectTimer(_Char, "Derpy_Contamination_SI3_Cleanup", 2000);
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "Derpy_Contamination_SI3_PreCast")
+AND
+QRY_AMER_Reaction_CountHeldReactions("InfusionRitual_Contamination_3")
+AND
+DB_AMER_GEN_OUTPUT_Integer(_Participants)
+AND
+IntegerSum(4, _Participants, _Repeats)
+THEN
+DB_Derpy_Contamination_SI3_Repeats(_Char, _Repeats);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_Contamination", (INTEGER)_InfusCount)
+AND
+DB_Derpy_Contamination_SI3_Repeats(_Char, _Repeats)
+THEN
+PROC_AMER_Reaction_ApproveHeldReactions("InfusionRitual_Contamination_3");
+ProcObjectTimer_Repeated(_Char, "Derpy_ContaminationEfx", 200, _Repeats);
+
+
+PROC PROC_Derpy_Contamination_SI_Effects((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+AND
+DB_Derpy_Contamination_SI3_Repeats(_Char, _Repeats)
+THEN
+PROC_AMER_GEN_Shoot_Delayed("RemoteImpact", _Char, _Target, "Projectile_AMER_SCRIPT_Contamination_SingleHit", _Repeats, 200);
+
+
+PROC PROC_AMER_Reaction_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, "InfusionRitual_Contamination_3", (STRING)_RequestID, (INTEGER)_RitualBool)
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Earth_Cast_Aoe_Voodoo_Root_01","");
+PlayEffect(_Char, "RS3_FX_Skills_Earth_Cast_Aoe_Voodoo_Hand_01","Dummy_R_HandFX");
+PlayEffect(_Char, "RS3_FX_Skills_Earth_Cast_Aoe_Voodoo_Hand_01","Dummy_L_HandFX");
+PlayEffect(_Char, "RS3_FX_Skills_Earth_Cast_Aoe_Voodoo_Root_01_Poison_Texkey", "Dummy_Root");
+PROC_AMER_GEN_IterateCharsAroundObject_2D(_Char, 13.0, _Char, 264, "Derpy_Contamination_SI3");
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Derpy_Contamination_SI3", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+PROC_Derpy_Contamination_SI3_AllyEmulation(_SourceChar, _Char);
+
+
+PROC PROC_Derpy_Contamination_SI3_AllyEmulation((CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+AND
+CharacterHasTalent(_SourceChar, "Zombie", 1)
+THEN
+PROC_AMER_GEN_CharacterCauseRemoteProjectileDamage(_SourceChar, _SourceChar, "Projectile_AMER_SCRIPT_Contamination_SingleHit");
+
+
+PROC PROC_Derpy_Contamination_SI3_AllyEmulation((CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+AND
+CharacterIsAlly(_Char, _SourceChar, 1)
+AND
+CharacterHasTalent(_Char, "Zombie", 1)
+THEN
+PROC_AMER_GEN_CharacterCauseRemoteProjectileDamage(_SourceChar, _Char, "Projectile_AMER_SCRIPT_Contamination_SingleHit");
+
+
+PROC PROC_Derpy_Contamination_SI3_AllyEmulation((CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+AND
+CharacterIsEnemy(_Char, _SourceChar, 1)
+THEN
+PROC_AMER_GEN_CharacterCauseRemoteProjectileDamage(_SourceChar, _Char, "Projectile_AMER_SCRIPT_Contamination_SingleHit");
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "Derpy_Contamination_SI3_Cleanup")
+AND
+DB_Derpy_Contamination_SI3_Repeats(_Char, _Repeats)
+THEN
+NOT DB_Derpy_Contamination_SI3_Repeats(_Char, _Repeats);
+
+
+
+//=====================================================================================================================================================
+
+
+PROC ProcObjectTimer_Repeated_Repeat((CHARACTERGUID)_Char, "Derpy_ContaminationEfx", (INTEGER)_Time, (INTEGER)_Repeats)
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Earth_Cast_Aoe_Voodoo_Root_01_Poison_Texkey", "Dummy_Root");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Geomancer"

@@ -1,0 +1,108 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Reaction_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, "AMER_Celestial", (STRING)_RequestID, (INTEGER)_RitualBool)
+AND
+DB_AMER_Artifacts_EquippedEffects(_ArtifactWielder, "Artifact_RedOrison", _)
+AND
+CharacterIsAlly(_ArtifactWielder, _Char, 1)
+AND
+CharacterIsAlly(_ArtifactWielder, _Target, 1)
+AND
+CharacterCanSee(_ArtifactWielder, _Target, 1)
+AND
+QRY_Derpy_RedOrison_IsBlessed(_Target)
+AND
+DB_AMER_GEN_OUTPUT_Integer(_IsBlessed)
+THEN
+PROC_Derpy_RedOrison_CelestialBless(_ArtifactWielder, _Target, _IsBlessed);
+
+
+PROC PROC_Derpy_RedOrison_CelestialBless((CHARACTERGUID)_ArtifactWielder, (CHARACTERGUID)_Target, (INTEGER)_IsBlessed)
+AND
+IntegerSubtract(1, _IsBlessed, _IsBlessedNew)
+THEN
+PROC_AMER_Reaction_Request(_ArtifactWielder, _Target, "Artifact_RedOrison_Celestial", "", "skill_cast_target_voodoo_01_cast", _IsBlessedNew);
+
+
+//==========================================================================================================================================================================
+
+
+PROC PROC_AMER_Reaction_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, "AMER_Occultist", (STRING)_RequestID, (INTEGER)_RitualBool)
+AND
+DB_AMER_Artifacts_EquippedEffects(_ArtifactWielder, "Artifact_RedOrison", _)
+AND
+CharacterIsAlly(_ArtifactWielder, _Char, 1)
+AND
+CharacterIsEnemy(_ArtifactWielder, _Target, 1)
+AND
+CharacterCanSee(_ArtifactWielder, _Target, 1)
+AND
+HasActiveStatus(_Target, "CURSED", _IsCursed)
+THEN
+PROC_Derpy_RedOrison_OccultistCurse(_ArtifactWielder, _Target, _IsCursed);
+
+
+PROC PROC_Derpy_RedOrison_OccultistCurse((CHARACTERGUID)_ArtifactWielder, (CHARACTERGUID)_Target, (INTEGER)_IsCursed)
+AND
+IntegerSubtract(1, _IsCursed, _IsCursedNew)
+THEN
+PROC_AMER_Reaction_Request(_ArtifactWielder, _Target, "Artifact_RedOrison_Occultist", "", "skill_cast_target_voodoo_01_cast", _IsCursedNew);
+
+
+//==========================================================================================================================================================================
+
+
+PROC PROC_AMER_Reaction_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, "Artifact_RedOrison_Celestial", (STRING)_RequestID, (INTEGER)_RitualBool)
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Divine_Cast_Aoe_Divine_Root_01", "Dummy_L_HandFX:cast");
+PlayEffect(_Target, "RS3_FX_Skills_Divine_Bless_Impact_01", "");
+ApplyStatus(_Target, "BLESSED", 12.0, 0, _Char);
+
+
+PROC PROC_AMER_Reaction_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, "Artifact_RedOrison_Occultist", (STRING)_RequestID, (INTEGER)_RitualBool)
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Voodoo_Cast_Aoe_Voodoo_Purple_Root_01_Old", "Dummy_Root:cast");
+PlayEffect(_Target, "RS3_FX_Skills_Voodoo_Curse_Target_Ground_01", "");
+ApplyStatus(_Target, "CURSED", 12.0, 0, _Char);
+
+
+//==========================================================================================================================================================================
+
+
+QRY QRY_Derpy_RedOrison_IsBlessed((CHARACTERGUID)_Target)
+AND
+DB_AMER_GEN_OUTPUT_Integer(_OldOutput)
+THEN
+NOT DB_AMER_GEN_OUTPUT_Integer(_OldOutput);
+
+QRY QRY_Derpy_RedOrison_IsBlessed((CHARACTERGUID)_Target)
+THEN
+DB_AMER_GEN_OUTPUT_Integer(0);
+
+QRY QRY_Derpy_RedOrison_IsBlessed((CHARACTERGUID)_Target)
+AND
+DB_AMER_GEN_OUTPUT_Integer(0)
+AND
+HasActiveStatus(_Target, "BLESSED", 1)
+THEN
+NOT DB_AMER_GEN_OUTPUT_Integer(0);
+DB_AMER_GEN_OUTPUT_Integer(1);
+
+QRY QRY_Derpy_RedOrison_IsBlessed((CHARACTERGUID)_Target)
+AND
+DB_AMER_GEN_OUTPUT_Integer(0)
+AND
+HasActiveStatus(_Target, "Derpy_BLESSED_SI1", 1)
+THEN
+NOT DB_AMER_GEN_OUTPUT_Integer(0);
+DB_AMER_GEN_OUTPUT_Integer(1);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"

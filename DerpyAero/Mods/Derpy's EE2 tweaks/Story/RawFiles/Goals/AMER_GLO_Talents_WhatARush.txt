@@ -1,0 +1,41 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_Talents_WhatARush_APBonus(CHARACTERGUID_S_AMER_GLO_NullCharProxy_DONOTDELETE_bcc2987f-2daf-4172-9987-a6a5dc0d0b93, 0);
+
+KBSECTION
+
+PROC PROC_AMER_Talents_Toggle((CHARACTERGUID)_Char, "WhatARush", (REAL)_Toggle)
+AND
+RealProduct(_Toggle, 5.0, _Memory)
+THEN
+PROC_AMER_FlexStat_CharacterAddStat(_Char, "Attribute", "Memory", _Memory);
+
+
+//===================================================================================
+
+
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, (STRING)_Skill, (INTEGER)_InfusCount, (STRING)_Type, "Warrior")
+AND
+CharacterHasTalent(_Char, "WhatARush", 1)
+AND
+CharacterIsInCombat(_Char, 1)
+THEN
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "WhatARush_Taunt", "", "", "WhatARush_Taunt_Internal", 1.0, 2000, "SkillCast");
+
+
+PROC PROC_AMER_GEN_FilteredStatus_Applied((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, "TAUNTED", (INTEGER)_Turns)
+AND
+CharacterHasTalent(_Source, "WhatARush", 1)
+AND
+QRY_AMER_GEN_NPerRound(_Source, "Derpy_Talents_WhatARush", 1)
+THEN
+PROC_AMER_GEN_NPerRound_Add(_Source, "Derpy_Talents_WhatARush", 1);
+PROC_AMER_ActionPoints_Add(_Source, 2);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Talents"

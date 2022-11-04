@@ -1,0 +1,34 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+CharacterCriticalHitBy(_Defender, _, _Attacker)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Attacker, "Artifact_Cataclysm", _)
+AND
+CharacterIsInCombat(_Attacker, 1)
+AND
+QRY_AMER_GEN_OncePerRound(_Attacker, "Artifact_Cataclysm")
+AND
+HasActiveStatus(_Defender, "AMER_SCORCHED", 1)
+AND
+QRY_AMER_GEN_CharacterGetDisplayName(_Defender)
+AND
+DB_AMER_GEN_OUTPUT_String(_Name)
+AND
+QRY_AMER_GEN_TSK_Get("AMER_Artifact_Cataclysm_LogText")
+AND
+DB_AMER_GEN_OUTPUT_String(_LogText)
+THEN
+DB_AMER_GEN_OncePerRound(_Attacker, "Artifact_Cataclysm");
+CharacterStatusText(_Attacker, "Artifact_Cataclysm");
+PROC_AMER_GEN_CharacterCombatLogText_Param_Str(_Attacker, _LogText, _Name);
+PROC_AMER_GEN_CharacterCauseExplosion(_Attacker, _Attacker, "Projectile_AMER_SCRIPT_Artifact_AngelsEgg");
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"

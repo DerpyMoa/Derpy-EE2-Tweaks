@@ -1,0 +1,82 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_CripplingBlow", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "ACCURACYBOOST", "Ability", "WarriorLore", 5.0, 1.0, 2000, "SkillCast");
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "WarriorLore", 25.0, 4.0);
+
+
+//====================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_CripplingBlow", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "WarriorLore", 40.0, 8.0);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_CripplingBlow", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_GEN_Shoot_Delayed("Explosion", _Char, _Target, "Projectile_AMER_SCRIPT_CripplingBlow", 100);
+PROC_AMER_Source_Infusion_AddRefund(_Char, 2, 0);
+
+
+//====================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Target_CripplingBlow", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_Source_Infusion_RitualRequest(_Char, _Target, _Target, 13.0, "InfusionRitual_CripplingBlow_3_Infect", "", "Necromancy", 1, "skill_cast_target_voodoo_01_cast", 0, 1);
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Target_CripplingBlow", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+AND
+QRY_AMER_Reaction_CountHeldReactions("InfusionRitual_CripplingBlow_3_Infect")
+AND
+DB_AMER_GEN_OUTPUT_Integer(_RitualSize)
+AND
+Real(_RitualSize, _RitualSizeReal)
+AND
+RealProduct(_RitualSizeReal, 3.0, _Bonus)
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "WarriorLore", 0.0, _Bonus);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_CripplingBlow", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_GEN_Shoot_Delayed("Explosion", _Char, _Target, "Projectile_AMER_SCRIPT_CripplingBlow", 200);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Target_CripplingBlow", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_Reaction_ApproveHeldReactions("InfusionRitual_CripplingBlow_3_Infect");
+
+
+PROC PROC_AMER_Reaction_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, "InfusionRitual_CripplingBlow_3_Infect", (STRING)_RequestID, (INTEGER)_RitualBool)
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Voodoo_Cast_Target_Voodoo_Poison_Root_01", "root");
+PlayEffect(_Target, "RS3_FX_Skills_Voodoo_Impact_Target_Voodoo_Root_01", "root");
+PROC_AMER_GEN_CharacterCauseRemoteProjectileDamage(_Char, _Target, "Projectile_AMER_SCRIPT_Infect");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Warfare"

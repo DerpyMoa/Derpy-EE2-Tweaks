@@ -1,0 +1,86 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Centurion reactions become 5m whirlwinds.
+
+PROC PROC_AMER_KeywordStat_Centurion_PreFire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Centurion_MUTA_WhirlwindConversion", _)
+AND
+NOT QRY_AMER_GEN_PlayerHasRangedWeapon(_Char)
+THEN
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "FakeMeleeHit", "", "", "Derpy_Centurion_FakeMeleeHit", 1.0, 2000, "Attack");
+
+
+QRY QRY_AMER_KeywordStat_Centurion_OneshotOverride((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Centurion_MUTA_WhirlwindConversion", _)
+AND
+NOT QRY_AMER_GEN_PlayerHasRangedWeapon(_Char)
+AND
+QRY_Derpy_CheckIfRhino(_Char, _Target)
+THEN
+PROC_AMER_TempStat_ThrowTimerEvent(_Char, "Attack");    //Manually throw the temptstat timer, because we aren't performing the basic attack that would normally do it in this case.
+PROC_AMER_GEN_BasicAttackObjectStarted(_Target, _Char, _Char, "Ascension_Centurion_MUTA_WhirlwindConversion");
+ProcObjectTimer(_Char, "Derpy_Ascension_ArenaWhirlwind", 800);
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "Derpy_Ascension_ArenaWhirlwind")
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Fire_Cast_Attack_Round_Hand_01", "Dummy_L_Hand");
+PlayEffect(_Char, "RS3_FX_Skills_Fire_Cast_Attack_Round_Hand_01", "Dummy_R_Hand");
+PlayEffect(_Char, "Derpy_ArenaWhirlwind", "Dummy_Root");
+PROC_AMER_GEN_CharacterCauseExplosion(_Char, _Char, "Projectile_AMER_SCRIPT_Whirlwind");
+
+
+QRY QRY_Derpy_CheckIfRhino((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+AND
+NOT DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Centurion_MUTA_EmulateBattleStomp", _)
+AND
+NOT DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Centurion_MUTA_EmulateWhirlwind", _)
+THEN
+PlayAnimation(_Char, "skill_attack_round_01_cast", "");
+
+
+QRY QRY_Derpy_CheckIfRhino((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Centurion_MUTA_EmulateBattleStomp", _)
+AND
+GetDistanceTo(_Char, _Target, _Distance)
+AND
+_Distance <= 4.5
+THEN
+PlayAnimation(_Char, "skill_attack_round_01_cast", "");
+
+
+QRY QRY_Derpy_CheckIfRhino((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Centurion_MUTA_EmulateWhirlwind", _)
+AND
+GetDistanceTo(_Char, _Target, _Distance)
+AND
+_Distance <= 4.5
+THEN
+PlayAnimation(_Char, "skill_attack_round_01_cast", "");
+
+
+PROC PROC_AMER_Reaction_Conditions_Additional_WithinWeaponRange_GetRange_Manip((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, "AMER_Centurion", (STRING)_RequestID)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Centurion_MUTA_WhirlwindConversion", _)
+AND
+NOT QRY_AMER_GEN_PlayerHasRangedWeapon(_Char)
+AND
+DB_AMER_GEN_OUTPUT_Real(_OldRange)
+AND
+_OldRange < 4.50
+THEN
+NOT DB_AMER_GEN_OUTPUT_Real(_OldRange);
+DB_AMER_GEN_OUTPUT_Real(4.50);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

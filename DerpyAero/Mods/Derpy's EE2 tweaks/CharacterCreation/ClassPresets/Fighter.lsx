@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<save>
+    <header version="2" time="1389735651" />
+    <version major="1" minor="3" revision="0" build="0" />
+    <region id="CharacterCreationClass">
+        <node id="root">
+            <attribute id="ClassDescription" value="Brutal warrior and expert in close combat" handle="hcacaec91g334bg4cdfg8c45g440863e7a268" type="28" />
+			<attribute id="ClassLongDescription" value="There was no Legion in the slums of Yuthul Gor. There was no mayor, no magistrate, no law. Only the Fighter. If your horse had been stolen, the Fighter would find it. If your landlord extorted you, the Fighter would help him see reason. This justice was harsh but effective; order persisted.  When the king heard of the vigilante who dared enforce the law without the monarch's consent, he was outraged. &quot;Banish this traitor,&quot; the king said. But the king's guards could not subdue the warrior, no matter their swords and spears.  At last, the king called upon a black witch to cast a spell upon the so-called usurper. As the Fighter slept, terrible nightmares invaded where soldiers could not. Mad with terror, the Fighter fled and wandered for weeks before the nightmares began to subside. But if the Fighter dared wander in the direction of home, the nightmares began afresh.  The king might be untouchable, but dark magic was not. As a Source Hunter, the Fighter would destroy the charm at its root. Then would come the king's turn." handle="h9c376a1bga572g49cfgaab3gfab482c0b34f" type="28" />
+            <attribute id="ClassName" value="Fighter" handle="hf195e5f2gad36g45b2g949bg7fa128e98548" type="28" />
+            <attribute id="ClassType" value="Fighter" type="22" />
+            <attribute id="SkillSet" value="Class_Fighter" type="22" />
+            <attribute id="Voice" value="2" type="5" />
+			<attribute id="Icon" value="4" type="5" />
+
+            <attribute id="NumStartingCombatAbilityPoints" value="2" type="4" />
+            <attribute id="NumStartingCivilAbilityPoints" value="1" type="4" />
+            <attribute id="NumStartingAttributePoints" value="3" type="4" />
+            <attribute id="NumStartingTalentPoints" value="1" type="4" />
+            
+			<attribute id="AreStatsWeighted" value="1" type="19" />
+            <children>
+				<node id="EquipmentProperties">
+                    <children>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Human" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Fighter_Humans" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Fighter_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Dwarf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Fighter_Dwarves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Fighter_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Elf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Fighter_Elves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Fighter_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Lizard" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Fighter_Lizards" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Fighter_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Human" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Fighter_Humans" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Fighter_Start_Undead" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Dwarf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Fighter_Dwarves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Fighter_Start_Undead" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Elf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Fighter_Elves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Fighter_Start_Undead" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Lizard" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Fighter_Lizards" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Fighter_Start_Undead" type="22" />
+                        </node>
+                    </children>
+                </node>
+                <node id="AbilityChanges">
+                    <children>
+                        <node id="AbilityChange">
+                            <attribute id="Ability" value="WarriorLore" type="23" />
+                            <attribute id="AmountIncreased" value="1" type="4" />
+                        </node>
+                        <node id="AbilityChange">
+                            <attribute id="Ability" value="WaterSpecialist" type="23" />
+                            <attribute id="AmountIncreased" value="1" type="4" />
+                        </node>
+                        <node id="AbilityChange">
+                            <attribute id="Ability" value="Persuasion" type="23" />
+                            <attribute id="AmountIncreased" value="1" type="4" />
+                        </node>
+                    </children>
+                </node>
+                <node id="AttributeChanges">
+                    <children>
+                        <node id="AttributeChange">
+                            <attribute id="AmountIncreased" value="3" type="4" />
+                            <attribute id="Attribute" value="CON" type="23" />
+                        </node>
+                    </children>
+                </node>
+                <node id="TalentsAdded">
+                    <children>
+                        <node id="TalentAdded">
+                            <attribute id="Talent" value="WarriorLoreGrenadeRange" type="23" />
+                        </node>
+                    </children>
+                </node>
+            </children>
+        </node>
+    </region>
+</save>

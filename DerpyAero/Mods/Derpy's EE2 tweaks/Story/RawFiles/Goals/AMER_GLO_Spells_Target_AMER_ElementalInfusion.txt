@@ -1,0 +1,101 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+//REGION Base Logic.
+
+PROC PROC_AMER_Spells_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_AMER_ElementalInfusion", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 0, (STRING)_Type, (STRING)_Element)
+AND
+QRY_AMER_GEN_GetSurfaceAtPos(_X, _Y, _Z)
+AND
+DB_AMER_GEN_OUTPUT_String(_Surface)
+AND
+QRY_AMER_GEN_GetSurfaceKeyword(_Surface, "", "INF_BLOOD", "INF_FIRE", "INF_WATER", "INF_OIL", "INF_POISON", "INF_ELECTRIC", "INF_WATER", "", "", "INF_FIRE")
+AND
+DB_AMER_GEN_OUTPUT_String(_Status)
+AND
+_Status != ""
+AND
+QRY_AMER_GEN_GetSurfaceKeyword(_Surface, "", "", "FIRERESISTANCE", "WATERRESISTANCE", "EARTHRESISTANCE", "POISONRESISTANCE", "AIRRESISTANCE", "WATERRESISTANCE", "", "", "FIRERESISTANCE")
+AND
+DB_AMER_GEN_OUTPUT_String(_FlexStat)
+AND
+QRY_AMER_GEN_GetSurfaceKeyword(_Surface, "", "", "Fire", "Ice", "Oil", "Poison", "Lightning", "Ice", "", "", "Fire")
+AND
+DB_AMER_GEN_OUTPUT_String(_SFXSuffix)
+AND
+DB_AMER_Summoning_ActiveSummon(_Char, _Summon)	//Applies to all Incarnates.
+AND
+QRY_AMER_GEN_GetIncarnateTag(_Summon)
+AND
+DB_AMER_GEN_OUTPUT_String(_Tag)
+THEN
+PROC_AMER_Spells_ElementalInfusion_ApplyInfusion(_Char, _Summon, _Tag, _Status, _FlexStat, _SFXSuffix);
+
+
+PROC PROC_AMER_Spells_ElementalInfusion_ApplyInfusion((CHARACTERGUID)_Char, (CHARACTERGUID)_Summon, "INCARNATE_S", (STRING)_Status, (STRING)_FlexStat, (STRING)_SFXSuffix)
+THEN
+ApplyStatus(_Summon, _Status, -1.0, 0, _Char);
+
+PROC PROC_AMER_Spells_ElementalInfusion_ApplyInfusion((CHARACTERGUID)_Char, (CHARACTERGUID)_Summon, "INCARNATE_G", (STRING)_Status, (STRING)_FlexStat, (STRING)_SFXSuffix)
+AND
+StringConcatenate(_Status, "_G", _GiantStatus)
+THEN
+ApplyStatus(_Summon, _GiantStatus, -1.0, 0, _Char);
+
+PROC PROC_AMER_Spells_ElementalInfusion_ApplyInfusion((CHARACTERGUID)_Char, (CHARACTERGUID)_Summon, (STRING)_Tag, (STRING)_Status, (STRING)_FlexStat, (STRING)_SFXSuffix)
+AND
+StringConcatenate("RS3_FX_Skills_Totem_Impact_Target_Root_", _SFXSuffix, _Str)
+AND
+StringConcatenate(_Str, "_01", _FX)
+THEN
+PlayEffect(_Summon, _FX, "Dummy_BodyFX");
+PROC_AMER_ExtendedStat_CharacterAddStat(_Summon, "MaxRes", _FlexStat, "IncarnateMaxRes", "", 200.0);    //Raise incarnates' max res to their element.
+
+//END_REGION
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_AMER_ElementalInfusion", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+AND
+QRY_AMER_GEN_GetSurfaceAtPos(_X, _Y, _Z)
+AND
+DB_AMER_GEN_OUTPUT_String(_Surface)
+AND
+QRY_AMER_GEN_GetSurfaceKeyword(_Surface, "", "INF_CURSED_BLOOD", "INF_NECROFIRE", "INF_BLESSED_ICE", "INF_CURSED_OIL", "INF_ACID", "INF_CURSED_ELECTRIC", "INF_BLESSED_ICE", "", "", "INF_NECROFIRE")
+AND
+DB_AMER_GEN_OUTPUT_String(_Status)
+AND
+_Status != ""
+AND
+QRY_AMER_GEN_GetSurfaceKeyword(_Surface, "", "", "FIRERESISTANCE", "WATERRESISTANCE", "EARTHRESISTANCE", "POISONRESISTANCE", "AIRRESISTANCE", "WATERRESISTANCE", "", "", "FIRERESISTANCE")
+AND
+DB_AMER_GEN_OUTPUT_String(_FlexStat)
+AND
+QRY_AMER_GEN_GetSurfaceKeyword(_Surface, "", "", "Fire", "Ice", "Oil", "Poison", "Lightning", "Ice", "", "", "Fire")
+AND
+DB_AMER_GEN_OUTPUT_String(_SFXSuffix)
+AND
+DB_AMER_Summoning_ActiveSummon(_Char, _Summon)
+AND
+QRY_AMER_GEN_GetIncarnateTag(_Summon)
+AND
+DB_AMER_GEN_OUTPUT_String(_Tag)
+THEN
+PROC_AMER_Spells_ElementalInfusion_ApplyInfusion(_Char, _Summon, _Tag, _Status, _FlexStat, _SFXSuffix);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Target_AMER_ElementalInfusion", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+PROC_AMER_GEN_ApplyStatusUntilEndOfTurn(_Char, "AMER_ELEMENTALINFUSIONS_INFUS_2");
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Summoning"

@@ -1,0 +1,38 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//When one of your Skitterers dies, perform a Predator reaction on the nearest enemy within 3m of it.
+
+PROC PROC_AMER_GEN_SummonDied((CHARACTERGUID)_Summon, (CHARACTERGUID)_Owner)
+AND
+DB_AMER_Ascension_SpecialLogic(_Owner, "Ascension_Predator_ACT_OwnSkittererKilled", _)
+AND
+QRY_Derpy_ExtinctionIsSkitterer(_Summon)
+AND
+QRY_AMER_GEN_GetNearestInCombat(_Owner, _Summon, _Summon, 3.0, 42)	//Visible living enemies.
+AND
+DB_AMER_GEN_OUTPUT_NearestInCombat(_Target, _)
+THEN
+PROC_AMER_Reaction_Request(_Owner, _Target, "AMER_Predator", "Ascension_Predator_ACT_OwnSkittererKilled", "", 1);
+
+
+QRY QRY_Derpy_ExtinctionIsSkitterer((CHARACTERGUID)_Summon)
+AND
+GetTemplate(_Summon, "AMER_Extinction_BoneHand_A_b01d0e46-aca1-4865-9718-1be6adff888b")
+THEN
+DB_NOOP();
+
+
+QRY QRY_Derpy_ExtinctionIsSkitterer((CHARACTERGUID)_Summon)
+AND
+GetTemplate(_Summon, "AMER_Extinction_BoneHand_B_4b27963b-4f95-471a-acb4-ba11fcedd033")
+THEN
+DB_NOOP();
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

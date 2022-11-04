@@ -1,0 +1,49 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+
+KBSECTION
+
+//Infect SI1-3 counts corpses within 13m and lists the amount above the caster
+//Infect SI3 pings corpses within 13m
+
+PROC PROC_Derpy_SkillBeingPrepared((CHARACTERGUID)_Char, "Target_Infect_-1")
+AND
+DB_AMER_Source_Infusion_Current(_Char, _SI)
+THEN
+PROC_Derpy_Infect_CountCorpses(_Char, _SI);
+
+
+PROC PROC_Derpy_Infect_CountCorpses((CHARACTERGUID)_Char, (INTEGER)_SI)
+AND
+_SI > 0
+THEN
+PROC_AMER_GEN_CountCharsAroundObject(_Char, 13.0, _Char, 16, "Derpy_Infect_CountCorpses_SI");
+
+PROC PROC_AMER_GEN_CountCharsAroundObject_Returned((INTEGER)_RequestIndex, "Derpy_Infect_CountCorpses_SI", (CHARACTERGUID)_Char, (INTEGER)_Corpses)
+AND
+_Corpses > 0
+AND
+IntegertoString(_Corpses, _Count)
+THEN
+CharacterStatusText(_Char, _Count);
+
+
+PROC PROC_Derpy_Infect_CountCorpses((CHARACTERGUID)_Char, (INTEGER)_SI)
+AND
+_SI > 2
+THEN
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 13.0, _Char, 16, "Derpy_Infect_CountCorpses_SI3");
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestIndex, "Derpy_Infect_CountCorpses_SI3", (CHARACTERGUID)_Char, (CHARACTERGUID)_Corpses)
+AND
+GetPosition(_Corpses, _X, _Y, _Z)
+THEN
+PlayEffectAtPosition("RS3_FX_SubEffects_MapPing_01", _X, _Y, _Z);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

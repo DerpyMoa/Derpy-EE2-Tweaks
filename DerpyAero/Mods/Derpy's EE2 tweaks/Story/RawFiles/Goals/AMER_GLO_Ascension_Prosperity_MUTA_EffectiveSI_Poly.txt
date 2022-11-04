@@ -1,0 +1,65 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//If you have Prosperity, your Source Infusions now apply at +1 effective infusion for Aspect of the Bull and Heart of Steel; these statuses now grant +10% Finesse and Wits.
+
+PROC PROC_AMER_Source_Infusion_GetUnlockedTier_Manipulate((CHARACTERGUID)_Char, "Shout_SteelSkin", (STRING)_Element, (INTEGER)_InfusCount)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Prosperity_MUTA_EffectiveSI_Poly", _)
+AND
+_InfusCount > 0
+AND
+HasActiveStatus(_Char, "AMER_PROSPERITY", 1)
+THEN
+PROC_Ascension_Prosperity_MUTA_EffectiveSI_Poly(_Char);
+
+PROC PROC_AMER_Source_Infusion_GetUnlockedTier_Manipulate((CHARACTERGUID)_Char, "Shout_BullHorns", (STRING)_Element, (INTEGER)_InfusCount)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Prosperity_MUTA_EffectiveSI_Poly", _)
+AND
+_InfusCount > 0
+AND
+HasActiveStatus(_Char, "AMER_PROSPERITY", 1)
+THEN
+PROC_Ascension_Prosperity_MUTA_EffectiveSI_Poly(_Char);
+
+
+
+PROC PROC_Ascension_Prosperity_MUTA_EffectiveSI_Poly((CHARACTERGUID)_Char)
+AND
+DB_AMER_Source_Infusion_OUTPUT_InfusCountBounded(_Char, _OutputSpent, _OutputEffective)
+AND
+_OutputEffective < 3    //Don't bother if we're already infusing at SI3.
+AND
+IntegerSum(_OutputEffective, 1, _NewOutputEffective)
+THEN
+NOT DB_AMER_Source_Infusion_OUTPUT_InfusCountBounded(_Char, _OutputSpent, _OutputEffective);
+DB_AMER_Source_Infusion_OUTPUT_InfusCountBounded(_Char, _OutputSpent, _NewOutputEffective);
+
+
+
+
+
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, "Shout_BullHorns", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "HORNS", "PercAttributeIncrease", "Finesse", "", "", 10.0, "Inertia_TheArena", 0, 1000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "HORNS", "PercAttributeIncrease", "Intelligence", "", "", 10.0, "Inertia_TheArena", 0);
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "HORNS_INFUS_1", "PercAttributeIncrease", "Finesse", "", "", 10.0, "Inertia_TheArena", 0, 1000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "HORNS_INFUS_1", "PercAttributeIncrease", "Intelligence", "", "", 10.0, "Inertia_TheArena", 0);
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "HORNS_INFUS_2", "PercAttributeIncrease", "Finesse", "", "", 10.0, "Inertia_TheArena", 0, 1000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "HORNS_INFUS_2", "PercAttributeIncrease", "Intelligence", "", "", 10.0, "Inertia_TheArena", 0);
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "HORNS_INFUS_3", "PercAttributeIncrease", "Finesse", "", "", 10.0, "Inertia_TheArena", 0, 1000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "HORNS_INFUS_3", "PercAttributeIncrease", "Intelligence", "", "", 10.0, "Inertia_TheArena", 0);
+
+
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, "Shout_SteelSkin", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "STEEL_SKIN", "PercAttributeIncrease", "Finesse", "", "", 10.0, "Inertia_TheArena", 0, 1000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "STEEL_SKIN", "PercAttributeIncrease", "Intelligence", "", "", 10.0, "Inertia_TheArena", 0);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

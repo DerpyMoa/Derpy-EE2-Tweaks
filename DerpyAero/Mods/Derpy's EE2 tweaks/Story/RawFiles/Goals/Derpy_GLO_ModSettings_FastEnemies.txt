@@ -1,0 +1,75 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_GEN_EnemySourceGenEnabled(1);
+DB_Derpy_ModSettings_FastEnemies(1);
+
+KBSECTION
+
+QRY QRY_AMER_AIHelpers_GetMaxInfusion_Override(_Char, _SP, _MaxSP, _Spell)
+THEN
+PROC_Derpy_AIHelpers_GetMaxInfusion_Override(_Char, _SP, _MaxSP, _Spell);
+
+PROC PROC_Derpy_AIHelpers_GetMaxInfusion_Override((CHARACTERGUID)_Char, (INTEGER)_SP, (INTEGER)_MaxSP, (STRING)_Spell)
+AND
+CharacterGetLevel(_Char, _Level)
+AND
+Real(_SP, _SPReal)
+AND
+Real(_Level, _LevelReal)
+AND
+QRY_Derpy_GetMaxInfusion_Override_GetLevelScalar(_Char)
+AND
+DB_Derpy_GetMaxInfusion_Override_LevelScalar(_Scalar)
+AND
+RealProduct(_LevelReal, _Scalar, _MaxSPLimit)    //Level/2 = maximum allowed InfusCount - so SI1 is at level 2, SI2 at 4, and SI3 at 6.
+AND
+Integer(_MaxSPLimit, _MaxSPLimitInt)
+AND
+_MaxSPLimitInt > 0
+AND
+IntegerMin(_MaxSP, 3, _MaxSPSupported) //Constant would need to be changed if one implemented more/less Source Infusion levels.
+AND
+IntegerMin(_MaxSPLimitInt, _MaxSPSupported, _MaxSPBounded)    //Result is: formula limit or max SP, whichever is lower, to a maximum of the Constant above.
+THEN
+DB_AMER_GEN_OUTPUT_Integer_B(_MaxSPBounded);
+PROC_AMER_AIHelpers_GetMaxInfusion_Manip(_Char, _MaxSPBounded, _MaxSP, _Spell);
+
+
+QRY QRY_Derpy_GetMaxInfusion_Override_GetLevelScalar((CHARACTERGUID)_Char)
+AND
+DB_Derpy_GetMaxInfusion_Override_LevelScalar(_OldScalar)
+THEN
+NOT DB_Derpy_GetMaxInfusion_Override_LevelScalar(_OldScalar);
+
+QRY QRY_Derpy_GetMaxInfusion_Override_GetLevelScalar((CHARACTERGUID)_Char)
+AND
+DB_Derpy_MaxSPOverride(_Char)
+THEN
+DB_Derpy_GetMaxInfusion_Override_LevelScalar(1.0);
+
+QRY QRY_Derpy_GetMaxInfusion_Override_GetLevelScalar((CHARACTERGUID)_Char)
+AND
+NOT DB_Derpy_GetMaxInfusion_Override_LevelScalar(_)
+THEN
+DB_Derpy_GetMaxInfusion_Override_LevelScalar(0.5);  //Default is 0.5 if nothing else was defined.
+
+
+PROC PROC_AMER_Source_SourceGen_ManipulateReqTurns(_Char)
+AND
+CharacterIsPlayer(_Char, 0)
+AND
+DB_Derpy_ModSettings_FastEnemies(1)
+AND
+DB_AMER_SourceGen_OUTPUT_ReqTurns(_Amount)
+THEN
+NOT DB_AMER_SourceGen_OUTPUT_ReqTurns(_Amount);
+DB_AMER_SourceGen_OUTPUT_ReqTurns(1);
+
+EXITSECTION
+
+NOT DB_Derpy_ModSettings_FastEnemies(1);
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_ModSettings_Wrapper"

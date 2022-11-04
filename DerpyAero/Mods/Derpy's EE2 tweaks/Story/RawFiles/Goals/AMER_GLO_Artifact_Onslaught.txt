@@ -1,0 +1,34 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Combat_EnemyDiedInCombat((CHARACTERGUID)_Char, (CHARACTERGUID)_Dying, 0)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Char, "Artifact_Onslaught", _)
+THEN
+PROC_AMER_GEN_CharacterGetStat(_Char, "Movement", "AMER_Artifact_Onslaught_GetStat");
+
+PROC PROC_AMER_GEN_CharacterGetStat_Returned((INTEGER)_RequestIndex, (CHARACTERGUID)_Char, "AMER_Artifact_Onslaught_GetStat", "Movement", (REAL)_Amount)
+AND
+_Amount > 2.0
+AND
+RealSubtract(_Amount, 2.0, _OverTwo)
+AND
+RealProduct(_OverTwo, 2.5, _Bonus)	//Equivalent to division by 0.2.
+AND
+RealProduct(_Bonus, 3.0, _BonusFinal)
+AND
+Integer(_BonusFinal, _BonusFinalInt)
+AND
+Real(_BonusFinalInt, _BonusFinalRounded)
+THEN
+PROC_AMER_GEN_RemoveAndApplyStatus(_Char, "AMER_ONSLAUGHT", 12.0, _Char);
+PROC_AMER_StatusMod_ExtendedStat_TryApplyModForStatus(_Char, _Char, "AMER_ONSLAUGHT", "PercAttributeIncrease", "Intelligence", "", "", _BonusFinalRounded, "Artifact_Onslaught");
+PROC_AMER_StatusMod_ExtendedStat_TryApplyModForStatus(_Char, _Char, "AMER_ONSLAUGHT", "PercAttributeIncrease", "Finesse", "", "", _BonusFinalRounded, "Artifact_Onslaught");
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"

@@ -1,0 +1,14 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_VUL02_VultureBoss_000_45f9cba5-592d-4d7d-acf1-e1e0b8011367);
+
+
+KBSECTION
+
+EXITSECTION
+
+
+ENDEXITSECTION
+ParentTargetEdge "ReapersCoast"

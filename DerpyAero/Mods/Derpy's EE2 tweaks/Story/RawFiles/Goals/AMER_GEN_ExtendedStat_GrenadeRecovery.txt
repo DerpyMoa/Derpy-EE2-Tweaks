@@ -1,0 +1,102 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillCast(_Char, _Skill, _Infus, _, _)
+AND
+DB_AMER_ExtendedStat_GrenadeRecovery_ExpectCast(_Char, _Item, _Template)
+THEN
+PROC_AMER_ExtendedStat_GrenadeRecovery_GrenadeThrown(_Char, _Item, _Template);
+
+
+PROC PROC_AMER_ExtendedStat_GrenadeRecovery_GrenadeThrown((CHARACTERGUID)_Char, (ITEMGUID)_Item, (STRING)_Template)
+THEN
+NOT DB_AMER_ExtendedStat_GrenadeRecovery_ExpectCast(_Char, _Item, _Template);
+ItemTemplateAddTo(_Template, _Char, 1, 1);
+PROC_AMER_GEN_NPerRound_Add(_Char, "ExtendedStat_GrenadeRecovery", 1);
+CharacterStatusText(_Char, "AMER_GEN_GrenadeRecovered");
+PlayEffect(_Char, "RS3_FX_Skills_Rogue_TrapActivate_01", "Dummy_OverheadFX");
+
+
+PROC PROC_AMER_ExtendedStat_GrenadeRecovery_GrenadeThrown((CHARACTERGUID)_Char, (ITEMGUID)_Item, (STRING)_Template)
+AND
+DB_AMER_ExtendedStat_GrenadeRecovery_ExpectCast_GrenadeSlot(_Char, _Slot)
+THEN
+NOT DB_AMER_ExtendedStat_GrenadeRecovery_ExpectCast_GrenadeSlot(_Char, _Slot);
+PROC_AMER_ExtendedStat_GrenadeRecovery_TryResetSkillBar(_Char, _Item, _Template, _Slot);
+
+PROC PROC_AMER_ExtendedStat_GrenadeRecovery_TryResetSkillBar((CHARACTERGUID)_Char, (ITEMGUID)_Item, (STRING)_Template, (INTEGER)_Slot)
+AND
+ObjectExists(_Item, 0)  //Only bother doing this if the stack we threw from is expended.
+AND
+GetItemForItemTemplateInInventory(_Char, _Template, _NewStack)
+THEN
+NRD_SkillBarSetItem(_Char, _Slot, _NewStack);
+
+
+//=========================================================================================
+
+
+IF
+CanUseItem(_Char, _Item, _)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Char, "GrenadeRecovery", _, _, _, _Amount)
+AND
+DB_IsPlayer(_Char)
+AND
+HasActiveStatus(_Char, "UI_MUTED", 0)
+AND
+IsTagged(_Item, "GRENADES", 1)
+AND
+Integer(_Amount, _AmountInt)
+AND
+QRY_AMER_GEN_NPerRound(_Char, "ExtendedStat_GrenadeRecovery", _AmountInt)
+AND
+GetTemplate(_Item, _Template)
+AND
+NOT DB_AMER_ExtendedStat_GrenadeRecovery_BlacklistGrenadeRecovery(_Template)
+THEN
+PROC_AMER_ExtendedStat_GrenadeRecovery_PreThrow(_Char, _Item, _Template);
+
+
+PROC PROC_AMER_ExtendedStat_GrenadeRecovery_PreThrow((CHARACTERGUID)_Char, (ITEMGUID)_Item, (STRING)_Template)
+THEN
+DB_AMER_ExtendedStat_GrenadeRecovery_ExpectCast(_Char, _Item, _Template);
+
+
+PROC PROC_AMER_ExtendedStat_GrenadeRecovery_PreThrow((CHARACTERGUID)_Char, (ITEMGUID)_Item, (STRING)_Template)
+AND
+NRD_SkillBarFindItem(_Char, _Item, _Slot)
+THEN
+DB_AMER_ExtendedStat_GrenadeRecovery_ExpectCast_GrenadeSlot(_Char, _Slot);
+
+
+//=========================================================================================
+
+
+IF
+CharacterStoppedUsingItem(_Char, _Item)
+AND
+DB_AMER_ExtendedStat_GrenadeRecovery_ExpectCast(_Char, _Item, _Template)
+THEN
+PROC_AMER_ExtendedStat_GrenadeRecovery_PreThrow_Stopped(_Char, _Item, _Template);
+
+
+PROC PROC_AMER_ExtendedStat_GrenadeRecovery_PreThrow_Stopped((CHARACTERGUID)_Char, (ITEMGUID)_Item, (STRING)_Template)
+THEN
+NOT DB_AMER_ExtendedStat_GrenadeRecovery_ExpectCast(_Char, _Item, _Template);
+
+
+PROC PROC_AMER_ExtendedStat_GrenadeRecovery_PreThrow_Stopped((CHARACTERGUID)_Char, (ITEMGUID)_Item, (STRING)_Template)
+AND
+DB_AMER_ExtendedStat_GrenadeRecovery_ExpectCast_GrenadeSlot(_Char, _Slot)
+THEN
+NOT DB_AMER_ExtendedStat_GrenadeRecovery_ExpectCast_GrenadeSlot(_Char, _Slot);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GEN_Stats_ExtendedStats"

@@ -1,0 +1,160 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+//Make incarnate inherit its element from the location targeted, regardless of whether or not it ended up standing in that surface.
+PROC PROC_AMER_Spells_SkillCast_PerTarget((CHARACTERGUID)_Char, "Summon_Incarnate", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+AND
+NOT DB_AMER_KeywordStat_Added(_Char, "IncarnateChampion", _)	//Don't bother doing this if Inc Champ should happen, because it will do this with its own logic.
+AND
+QRY_AMER_GEN_GetSurfaceAtPos(_X, _Y, _Z)
+AND
+DB_AMER_GEN_OUTPUT_String(_Surface)
+AND
+QRY_AMER_GEN_GetSurfaceKeyword(_Surface, "", "INF_BLOOD", "INF_FIRE", "INF_WATER", "INF_OIL", "INF_POISON", "INF_ELECTRIC", "INF_WATER", "", "", "INF_FIRE")
+AND
+DB_AMER_GEN_OUTPUT_String(_Infusion)
+THEN
+PROC_AMER_Spells_Incarnate_TryStoreInfusion(_Char, "Summons_Incarnate_118d7359-b7d5-41ea-8c55-86ce27afceba", _Infusion, _Surface);
+
+
+PROC PROC_AMER_Spells_SkillCast_PerTarget((CHARACTERGUID)_Char, "Summon_Incarnate", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+AND
+DB_AMER_KeywordStat_Added(_Char, "IncarnateChampion", _)	//Hook into Inc champ if it should happen.
+AND
+QRY_AMER_GEN_GetSurfaceAtPos(_X, _Y, _Z)
+AND
+DB_AMER_GEN_OUTPUT_String(_Surface)
+THEN
+PROC_AMER_KeywordStat_IncarnateChampion_Create(_Char, _X, _Y, _Z, _Surface);
+
+
+//==========================================================================================================================================
+
+
+PROC PROC_AMER_Summoning_PreInitSummon((CHARACTERGUID)_Summon, (CHARACTERGUID)_Owner, (STRING)_Root, (INTEGER)_IsBoss)
+AND
+DB_AMER_KeywordStat_Added(_Owner, "SourceGeneration", _)
+AND
+IsTagged(_Summon, "INCARNATE_S", _SmallBool)
+AND
+IsTagged(_Summon, "INCARNATE_G", _GiantBool)
+AND
+IntegerSum(_SmallBool, _GiantBool, _Bools)
+AND
+_Bools > 0
+THEN
+PROC_AMER_Summoning_AddFlexStatToNext(_Owner, _Root, "Spell", "Shout_SourceInfusion", 1.0, 1);
+PROC_AMER_Summoning_AddFlexStatToNext(_Owner, _Root, "Spell", "Shout_Derpy_IncarnateEssenceTransfer", 1.0, 1);
+
+
+//==========================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Summon_Incarnate", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+AND
+QRY_AMER_Summoning_GetIncarnateRoot(_Char)
+AND
+DB_AMER_GEN_OUTPUT_String(_Root)
+AND
+QRY_AMER_GEN_GetSurfaceAtPos(_X, _Y, _Z)
+AND
+DB_AMER_GEN_OUTPUT_String(_Surface)
+AND
+QRY_AMER_GEN_GetSurfaceKeyword(_Surface, "", "Blood", "Fire", "Water", "Oil", "Poison", "Air", "Water", "", "", "Fire")
+AND
+DB_AMER_GEN_OUTPUT_String(_Type)
+THEN
+PROC_AMER_Source_Infusion_Incarnate_Init(_Char, _Root, _Type, _Surface, _InfusCount);
+
+
+//==========================================================================================================================================
+
+
+PROC PROC_AMER_Source_Infusion_Incarnate_Init((CHARACTERGUID)_Char, (STRING)_Root, (STRING)_Type, (STRING)_Surface, (INTEGER)_InfusCount)
+THEN
+PROC_AMER_Summoning_AddKeywordStatToNext(_Char, _Root, "SourceGeneration", 1);
+PROC_AMER_Summoning_AddExtendedStatToNext(_Char, _Root, "SourceGen_AddTurns", "", "", "", 3.0, 1);
+
+
+//==========================================================================================================================================
+
+
+PROC PROC_AMER_Source_Infusion_Incarnate_Init((CHARACTERGUID)_Char, (STRING)_Root, (STRING)_Type, (STRING)_Surface, (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_Source_Infusion_Incarnate_2(_Char, _Root, _Type);
+
+PROC PROC_AMER_Source_Infusion_Incarnate_2((CHARACTERGUID)_Char, (STRING)_Root, "Blood")
+THEN
+PROC_AMER_Summoning_AddFlexStatToNext(_Char, _Root, "Spell", "Target_EnemyBlackShroud_NormalAP", 1.0, 1);
+PROC_AMER_Summoning_AddFlexStatToNext(_Char, _Root, "Spell", "Target_IncarnateCorpseExplosion", 1.0, 1);
+
+PROC PROC_AMER_Source_Infusion_Incarnate_2((CHARACTERGUID)_Char, (STRING)_Root, "Fire")
+THEN
+PROC_AMER_Summoning_AddFlexStatToNext(_Char, _Root, "Spell", "Shout_Supernova", 1.0, 1);
+PROC_AMER_Summoning_AddFlexStatToNext(_Char, _Root, "Spell", "Target_SpontaneousCombustion", 1.0, 1);
+
+PROC PROC_AMER_Source_Infusion_Incarnate_2((CHARACTERGUID)_Char, (STRING)_Root, "Water")
+THEN
+PROC_AMER_Summoning_AddFlexStatToNext(_Char, _Root, "Spell", "Target_WinterBlast", 1.0, 1);
+PROC_AMER_Summoning_AddFlexStatToNext(_Char, _Root, "Spell", "Projectile_IncarnateChainHeal", 1.0, 1);
+
+PROC PROC_AMER_Source_Infusion_Incarnate_2((CHARACTERGUID)_Char, (STRING)_Root, "Oil")
+THEN
+PROC_AMER_Summoning_AddFlexStatToNext(_Char, _Root, "Spell", "Projectile_IncarnateThrowDust", 1.0, 1);
+PROC_AMER_Summoning_AddFlexStatToNext(_Char, _Root, "Spell", "Target_WormTremor", 1.0, 1);
+
+PROC PROC_AMER_Source_Infusion_Incarnate_2((CHARACTERGUID)_Char, (STRING)_Root, "Poison")
+THEN
+PROC_AMER_Summoning_AddFlexStatToNext(_Char, _Root, "Spell", "Shout_Contamination", 1.0, 1);
+PROC_AMER_Summoning_AddFlexStatToNext(_Char, _Root, "Spell", "Shout_PoisonWave", 1.0, 1);
+
+PROC PROC_AMER_Source_Infusion_Incarnate_2((CHARACTERGUID)_Char, (STRING)_Root, "Air")
+THEN
+PROC_AMER_Summoning_AddFlexStatToNext(_Char, _Root, "Spell", "Shout_BlindingRadiance", 1.0, 1);
+PROC_AMER_Summoning_AddFlexStatToNext(_Char, _Root, "Spell", "Shout_IncarnateElectricFence", 1.0, 1);
+
+PROC PROC_AMER_Source_Infusion_Incarnate_2((CHARACTERGUID)_Char, (STRING)_Root, (STRING)_Type)
+AND
+DB_AMER_GEN_Abilities(_Ability, "Skill")
+AND
+CharacterGetAbility(_Char, _Ability, _Amount)
+AND
+_Amount > 0
+AND
+Real(_Amount, _AmountReal)
+THEN
+PROC_AMER_Summoning_AddFlexStatToNext(_Char, _Root, "Ability", _Ability, _AmountReal, 1);
+
+
+PROC PROC_AMER_Source_Infusion_Incarnate_Init((CHARACTERGUID)_Char, (STRING)_Root, (STRING)_Type, (STRING)_Surface, 2)
+THEN
+PROC_AMER_Summoning_AddExtendedStatToNext(_Char, _Root, "InstantEffect", "AddSP", "", "", 2.0, 1);
+
+
+//==========================================================================================================================================
+
+
+PROC PROC_AMER_Source_Infusion_Incarnate_Init((CHARACTERGUID)_Char, (STRING)_Root, (STRING)_Type, (STRING)_Surface, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_Summoning_AddFlexStatToNext(_Char, _Root, "Spell", "Target_SourceVampirism", 1.0, 1);
+PROC_AMER_Summoning_AddSizeOverrideToNext(_Char, _Root, 0, 1);
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+
+PROC PROC_AMER_Source_Infusion_Incarnate_Init((CHARACTERGUID)_Char, (STRING)_Root, (STRING)_Type, (STRING)_Surface, 3)
+THEN
+PROC_AMER_Summoning_AddExtendedStatToNext(_Char, _Root, "InstantEffect", "AddSP", "", "", 2.0, 1);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Summoning"

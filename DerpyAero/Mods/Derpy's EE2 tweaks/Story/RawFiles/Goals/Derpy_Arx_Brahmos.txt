@@ -1,0 +1,117 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_GLO_Brahmos_d4064352-33f9-49df-b208-09fd822d2270);
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_ARX_HorrorSleep_WarZone_LizardDreamer_4_d1aa71d7-4d75-4c47-baec-b7077426b627);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_ARX_HorrorSleep_WarZone_LizardDreamer_2_cb0fd13b-6719-47ea-b660-8b858940eb1b);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_ARX_HorrorSleep_WarZone_LizardDreamer_3_cf0cf358-d803-44e0-a742-922152950472);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_ARX_HorrorSleep_WarZone_LizardDreamer_5_90e70559-d9de-465c-9a07-86009e6f6a21);
+
+KBSECTION
+
+IF
+RegionStarted(_)
+AND
+QueryOnlyOnce("Derpy_BrahmosSetup")
+AND
+CharacterGetEquippedItem(CHARACTERGUID_S_GLO_Brahmos_d4064352-33f9-49df-b208-09fd822d2270,"Weapon",(ITEMGUID)_Weapon)
+THEN
+DB_Derpy_BrahmosWeapon(_Weapon);
+ItemToInventory(ITEMGUID_WPN_Brahmos_Bow_000_74e1c121-999f-4da5-9894-21e48d491185,CHARACTERGUID_S_GLO_Brahmos_d4064352-33f9-49df-b208-09fd822d2270,1);
+
+
+//Wtf Larian?
+IF
+RegionStarted(_)
+AND
+DB_ARX_HorrorSleep_Warzone_Dreamer(_NPC)
+AND
+CharacterIsInCombat(_NPC, 1)
+AND
+HasAppliedStatus(_NPC,"SLEEPING",1)
+THEN
+RemoveStatus(_NPC,"SLEEPING");
+
+
+PROC PROC_AMER_Combat_TurnStarted(CHARACTERGUID_S_GLO_Brahmos_d4064352-33f9-49df-b208-09fd822d2270, _)
+AND
+CombatGetIDForCharacter(CHARACTERGUID_S_GLO_Brahmos_d4064352-33f9-49df-b208-09fd822d2270, _Combat)
+AND
+CharacterGetEquippedItem(CHARACTERGUID_S_GLO_Brahmos_d4064352-33f9-49df-b208-09fd822d2270,"Weapon",(ITEMGUID)_Weapon)
+AND
+DB_AMER_Combat_Round(_Combat, _Round)
+THEN
+PROC_Derpy_AIFix(_Weapon);
+PROC_Derpy_BrahmosMech(_Round);
+
+
+PROC PROC_Derpy_AIFix((ITEMGUID)_Weapon)
+AND
+NOT DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_GLO_Brahmos_d4064352-33f9-49df-b208-09fd822d2270, "Target_EnemyFlurry")
+AND
+DB_Derpy_BrahmosWeapon(_Weapon)
+THEN
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_GLO_Brahmos_d4064352-33f9-49df-b208-09fd822d2270, "Target_EnemyFlurry");
+
+
+PROC PROC_Derpy_AIFix((ITEMGUID)_Weapon)
+AND
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_GLO_Brahmos_d4064352-33f9-49df-b208-09fd822d2270, "Target_EnemyFlurry")
+AND
+NOT DB_Derpy_BrahmosWeapon(_Weapon)
+THEN
+NOT DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_GLO_Brahmos_d4064352-33f9-49df-b208-09fd822d2270, "Target_EnemyFlurry");
+
+
+PROC PROC_Derpy_BrahmosMech(3)
+AND
+DB_Derpy_BrahmosWeapon(_Weapon)
+THEN
+PROC_AMER_CharacterAddSourcePoints(CHARACTERGUID_S_GLO_Brahmos_d4064352-33f9-49df-b208-09fd822d2270, 3);
+PlayEffect(CHARACTERGUID_S_GLO_Brahmos_d4064352-33f9-49df-b208-09fd822d2270, "RS3_FX_Skills_Warrior_BlinkStrike_Reappear_01");
+CharacterUnequipItem(CHARACTERGUID_S_GLO_Brahmos_d4064352-33f9-49df-b208-09fd822d2270,_Weapon);
+CharacterEquipItem(CHARACTERGUID_S_GLO_Brahmos_d4064352-33f9-49df-b208-09fd822d2270,ITEMGUID_WPN_Brahmos_Bow_000_74e1c121-999f-4da5-9894-21e48d491185);
+
+
+PROC PROC_Derpy_BrahmosMech(5)
+AND
+DB_Derpy_BrahmosWeapon(_Weapon)
+THEN
+PlayEffect(CHARACTERGUID_S_GLO_Brahmos_d4064352-33f9-49df-b208-09fd822d2270, "RS3_FX_Skills_Warrior_BlinkStrike_Reappear_01");
+CharacterUnequipItem(CHARACTERGUID_S_GLO_Brahmos_d4064352-33f9-49df-b208-09fd822d2270,ITEMGUID_WPN_Brahmos_Bow_000_74e1c121-999f-4da5-9894-21e48d491185);
+CharacterEquipItem(CHARACTERGUID_S_GLO_Brahmos_d4064352-33f9-49df-b208-09fd822d2270,_Weapon);
+
+
+PROC PROC_Derpy_BrahmosMech(7)
+AND
+DB_Derpy_BrahmosWeapon(_Weapon)
+THEN
+PlayEffect(CHARACTERGUID_S_GLO_Brahmos_d4064352-33f9-49df-b208-09fd822d2270, "RS3_FX_Skills_Warrior_BlinkStrike_Reappear_01");
+CharacterUnequipItem(CHARACTERGUID_S_GLO_Brahmos_d4064352-33f9-49df-b208-09fd822d2270,_Weapon);
+CharacterEquipItem(CHARACTERGUID_S_GLO_Brahmos_d4064352-33f9-49df-b208-09fd822d2270,ITEMGUID_WPN_Brahmos_Bow_000_74e1c121-999f-4da5-9894-21e48d491185);
+
+
+PROC PROC_Derpy_BrahmosMech(9)
+AND
+DB_Derpy_BrahmosWeapon(_Weapon)
+AND
+DB_IsPlayer(_Player)
+THEN
+CharacterStatusText(CHARACTERGUID_S_GLO_Brahmos_d4064352-33f9-49df-b208-09fd822d2270, "It's time to end this!");
+PROC_AMER_CharacterAddSourcePoints(CHARACTERGUID_S_GLO_Brahmos_d4064352-33f9-49df-b208-09fd822d2270, 3);
+PlayEffect(CHARACTERGUID_S_GLO_Brahmos_d4064352-33f9-49df-b208-09fd822d2270, "RS3_FX_Skills_Warrior_BlinkStrike_Reappear_01");
+CharacterUnequipItem(CHARACTERGUID_S_GLO_Brahmos_d4064352-33f9-49df-b208-09fd822d2270,ITEMGUID_WPN_Brahmos_Bow_000_74e1c121-999f-4da5-9894-21e48d491185);
+CharacterEquipItem(CHARACTERGUID_S_GLO_Brahmos_d4064352-33f9-49df-b208-09fd822d2270,_Weapon);
+CharacterAddSkill(CHARACTERGUID_S_GLO_Brahmos_d4064352-33f9-49df-b208-09fd822d2270, "ProjectileStrike_EnemyMeteorShower");
+CharacterAddSkill(CHARACTERGUID_S_GLO_Brahmos_d4064352-33f9-49df-b208-09fd822d2270, "Projectile_EnemyFireball_Cursed");
+CharacterAddSkill(CHARACTERGUID_S_GLO_Brahmos_d4064352-33f9-49df-b208-09fd822d2270, "Target_EnemySpontCombustion");
+
+
+
+EXITSECTION
+
+
+ENDEXITSECTION
+ParentTargetEdge "ARX"

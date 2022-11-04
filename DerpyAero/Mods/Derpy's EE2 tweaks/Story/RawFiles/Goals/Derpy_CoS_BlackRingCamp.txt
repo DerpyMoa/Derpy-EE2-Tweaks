@@ -1,0 +1,52 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_CoS_Temples_BlackRingHub_Captain_7d32e545-6c6c-4a95-90dd-3ed14d3a20de);
+
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_CoS_Temples_BlackRingHub_Captain_7d32e545-6c6c-4a95-90dd-3ed14d3a20de, "Target_EnemyFlurry");
+
+
+DB_Derpy_WordlessCamp(CHARACTERGUID_S_CoS_Temples_BlackRingHub_Captain_7d32e545-6c6c-4a95-90dd-3ed14d3a20de);
+DB_Derpy_WordlessCamp(CHARACTERGUID_S_CoS_Temples_BlackRingHub_Alchemist_9ba43a01-adb5-418f-8f66-da36657bc402);
+DB_Derpy_WordlessCamp(CHARACTERGUID_S_CoS_Temples_BlackRingHub_Quartermaster_a652a830-6202-4589-a5c5-a49154d2a87e);
+DB_Derpy_WordlessCamp(CHARACTERGUID_S_CoS_Temples_BlackRingHub_Grunt_001_22e17bb5-887b-49b9-a435-fa3565a2fb43);
+DB_Derpy_WordlessCamp(CHARACTERGUID_S_CoS_Temples_BlackRingHub_Grunt_002_bd6234b0-7ecc-4c2d-a07c-4d196f1a0958);
+DB_Derpy_WordlessCamp(CHARACTERGUID_S_CoS_Temples_BlackRingHub_Dreamer_001_3307d7f7-b2fe-448e-828d-3cd3cde1cb8c);
+DB_Derpy_WordlessCamp(CHARACTERGUID_S_CoS_Temples_BlackRingHub_Dreamer_002_25bf2b1b-0d49-4be1-946d-837dfd1ccf54);
+
+
+KBSECTION
+
+IF
+RegionStarted(_)
+AND
+QueryOnlyOnce("Derpy_CoS_WorldlessSetup")
+THEN
+SetIsBoss(CHARACTERGUID_S_CoS_Temples_BlackRingHub_Captain_7d32e545-6c6c-4a95-90dd-3ed14d3a20de, 1);
+RemoveStatus(CHARACTERGUID_S_CoS_Temples_BlackRingHub_Captain_7d32e545-6c6c-4a95-90dd-3ed14d3a20de,"QUEST_SILENCE_AURA");
+
+
+IF
+ObjectEnteredCombat((CHARACTERGUID)_Char, _)
+AND
+DB_Derpy_WordlessCamp(_Char)
+THEN
+PROC_Derpy_WordLessCombatPull(_Char);
+
+PROC PROC_Derpy_WordLessCombatPull((CHARACTERGUID)_Char)
+AND
+DB_Derpy_WordlessCamp(_OtherChar)
+THEN
+EnterCombat(_OtherChar,_Char);
+
+
+PROC
+ProcRegionEnded("CoS_Main")
+THEN
+GoalCompleted;
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "CouncilOfSeven"

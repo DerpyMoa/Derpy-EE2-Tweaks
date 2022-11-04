@@ -1,0 +1,16 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+
+PROC PROC_AMER_Spells_SkillCast_PerTarget((CHARACTERGUID)_Char, "ProjectileStrike_EnemyPunisherMeteorShower", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_GEN_Shoot_Delayed("ProjectileStrike", _Char, NULL_00000000-0000-0000-0000-000000000000, _X, _Y, _Z, "Projectile_Fireball", 5.0, 29, 80);	//30 total strikes within 5m, 80ms interval.
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Pyrokinetic"

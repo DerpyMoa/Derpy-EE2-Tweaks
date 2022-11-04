@@ -1,0 +1,21 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//If you have a free off hand at the end of your turn, perform a free Occultist reaction on the nearest non-totem enemy you can see.
+
+PROC PROC_AMER_Combat_TurnEnded(_, _Char, 0)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Occultist_ACT_EndOfTurnFreeOffHand", _)
+AND
+QRY_AMER_GEN_GetNearestInCombat(_Char, _Char, _Char, 30.0, 170) //Living non-totem enemies that _Char can see.
+AND
+DB_AMER_GEN_OUTPUT_NearestInCombat(_Nearest, _)
+THEN
+PROC_AMER_Reaction_Request(_Char, _Nearest, "AMER_Occultist", "Ascension_Occultist_ACT_EndOfTurnFreeOffHand", "skill_cast_target_voodoo_01_cast", 1);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

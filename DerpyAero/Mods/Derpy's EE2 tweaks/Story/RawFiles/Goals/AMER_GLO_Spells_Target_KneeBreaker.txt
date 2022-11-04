@@ -1,0 +1,59 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_KneeBreaker", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "ACCURACYBOOST", "Ability", "RogueLore", 5.0, 1.0, 2000, "SkillCast");
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "RogueLore", 25.0, 4.0);
+
+
+//===========================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_KneeBreaker", 2)
+THEN
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "Status_AddDuration", "DAMAGE_ON_MOVE", "", "", 1.0);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Target_KneeBreaker", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+AND
+DB_AMER_Spells_CastWhileSneaking(_Char, "Target_KneeBreaker", 1)
+THEN
+PROC_AMER_GEN_DoFreeSneak(_Char);
+
+
+//===========================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_KneeBreaker", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+DB_AMER_IterateCharsAroundObject_Exclusion(_Target);	//Don't apply to target twice.
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 5.0, _Char, 10, "AMER_SourceInfusion_KneeBreaker_3");	//Only living enemies.
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "AMER_SourceInfusion_KneeBreaker_3", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Voodoo_KneeBreaker_TargetEffect_01", "Dummy_BodyFX");
+ApplyStatus(_Char, "DAMAGE_ON_MOVE_INFUS_3", 24.0, 0, _SourceChar);	//4 turns: base of 2, +1 from SI2, +1 from SI3.
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_KneeBreaker", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+ApplyStatus(_Target, "DAMAGE_ON_MOVE_INFUS_3", 24.0, 0, _Char);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Scoundrel"

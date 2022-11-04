@@ -1,0 +1,22 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_ARX_Neighborhood_TheFence_973d85be-5756-4bf1-aae3-a2b06fcb2b31);
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_ARX_Neighborhood_TheFence_Demon_01_f7a9e3e9-1d24-41e2-9c7b-86feae69b012);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_ARX_Neighborhood_TheFence_Demon_02_3d0566de-786e-4ff9-ab1a-5c7a279c1580);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_ARX_Neighborhood_TheFence_Demon_03_0fc21242-8f25-4091-a42b-e7614199a243);
+
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_ARX_Neighborhood_TheFence_Demon_01_f7a9e3e9-1d24-41e2-9c7b-86feae69b012, "Target_EnemyDaggersDrawn");
+
+
+KBSECTION
+
+
+EXITSECTION
+
+
+ENDEXITSECTION
+ParentTargetEdge "ARX"

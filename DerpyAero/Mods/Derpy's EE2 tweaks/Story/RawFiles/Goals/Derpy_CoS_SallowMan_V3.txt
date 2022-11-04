@@ -1,0 +1,35 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_CoS_Temples_SallowMan_d07e0f6b-c473-47f2-9d1c-e1f6f0ef61af);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_CoS_Temples_SallowManMinion_001_a092534c-ec79-46db-af07-d852313eb1d6);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_CoS_Temples_SallowManMinion_002_f5307c31-f32a-44ee-85fa-7b413c2957f3);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_CoS_Temples_SallowManMinion_003_7c282499-a74d-4ae6-aee7-0e210a6695b4);
+
+KBSECTION
+
+IF
+ObjectTurnStarted(CHARACTERGUID_S_CoS_Temples_SallowMan_d07e0f6b-c473-47f2-9d1c-e1f6f0ef61af)
+AND
+GlobalGetFlag("CoS_SallowMan_KilledOnce",1)
+AND
+GetPosition(CHARACTERGUID_S_CoS_Temples_SallowMan_d07e0f6b-c473-47f2-9d1c-e1f6f0ef61af,_X,_Y,_Z)
+THEN
+ApplyStatus(CHARACTERGUID_S_CoS_Temples_SallowMan_d07e0f6b-c473-47f2-9d1c-e1f6f0ef61af,"LIVINGONTHEEDGE",-1.0,1);
+ApplyStatus(CHARACTERGUID_S_CoS_Temples_SallowMan_d07e0f6b-c473-47f2-9d1c-e1f6f0ef61af,"DEATH_WISH",-1.0,1);
+PROC_AMER_GEN_InitializeBossStatus(CHARACTERGUID_S_CoS_Temples_SallowMan_d07e0f6b-c473-47f2-9d1c-e1f6f0ef61af);
+RemoveStatus(CHARACTERGUID_S_CoS_Temples_SallowMan_d07e0f6b-c473-47f2-9d1c-e1f6f0ef61af,"POISON_SKIN");
+RemoveStatus(CHARACTERGUID_S_CoS_Temples_SallowMan_d07e0f6b-c473-47f2-9d1c-e1f6f0ef61af,"ENRAGED");
+PROC_AMER_GEN_CharacterCauseExplosionAtPos(CHARACTERGUID_S_CoS_Temples_SallowMan_d07e0f6b-c473-47f2-9d1c-e1f6f0ef61af, _X, _Y, _Z, "Projectile_AMER_SCRIPT_Earthquake_Earth");
+GoalCompleted;
+
+PROC
+ProcRegionEnded("CoS_Main")
+THEN
+GoalCompleted;
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "CouncilOfSeven"

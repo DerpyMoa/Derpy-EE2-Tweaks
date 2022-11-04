@@ -1,0 +1,19 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillPreCast(_Char, _Skill, _, _, _)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Char, "SiphonPoison_SI0", _, _, _, _)
+AND
+NRD_StatGetString(_Skill, "UseWeaponDamage", "Yes")
+THEN
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "SiphonPoison_SI0_Internal", "", "", "Derpy_SiphonPoison_SI0_Internal", 1.0, 2000, "SkillCast");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GEN_Stats_ExtendedStats"

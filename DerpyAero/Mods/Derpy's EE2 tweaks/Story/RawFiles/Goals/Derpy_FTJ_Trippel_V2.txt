@@ -1,0 +1,150 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_FTJ_ChapelMagister_Captain_c4d751d4-20ff-4281-baf4-8ddeb1383e7e);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_FTJ_PaladinEmissary_c01e16ca-ce9a-48c8-ac36-90ef7de12404);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_Derpy_FTJ_ChapelReinforcement_Knight_004_02afe6d1-8de8-4806-a97c-20c3d6097745);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_Derpy_FTJ_ChapelReinforcement_Ranger_002_8bf88e3d-1fe1-4d42-a2e1-5af571759b09);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_Derpy_FTJ_ChapelReinforcement_Rogue_002_bd11bb31-959b-4154-9bdf-fc44e605925b);
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_FTJ_ChapelMagister_001_068d4518-9b23-4e2c-a160-8d978d1f78ff);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_FTJ_ChapelMagister_003_b5cb12b2-f347-4415-95ac-8d5ac4fc464b);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_FTJ_ChapelMagister_005_d5ea5e99-2406-4bb9-b2df-5fd975f1b63e);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_FTJ_ChapelMagister_004_8f330be0-a442-408f-850e-c7fd94e74ada);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_FTJ_ChapelMagister_002_090d7104-97f7-4603-a114-47dceaf021e5);
+
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_FTJ_ChapelMagister_Captain_c4d751d4-20ff-4281-baf4-8ddeb1383e7e, "Shout_EnemyFireBrand_0AP1DUR");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_FTJ_ChapelMagister_Captain_c4d751d4-20ff-4281-baf4-8ddeb1383e7e, "Shout_EnemyIgnition");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_FTJ_ChapelMagister_Captain_c4d751d4-20ff-4281-baf4-8ddeb1383e7e, "Shout_Ignition_Empowered");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_FTJ_ChapelMagister_Captain_c4d751d4-20ff-4281-baf4-8ddeb1383e7e, "Shout_EnemyGlobalCooling_Trippel");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_FTJ_ChapelMagister_Captain_c4d751d4-20ff-4281-baf4-8ddeb1383e7e, "Target_EnemyFireWhip");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_FTJ_ChapelMagister_Captain_c4d751d4-20ff-4281-baf4-8ddeb1383e7e, "Target_EnemyFireblood");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_FTJ_ChapelMagister_Captain_c4d751d4-20ff-4281-baf4-8ddeb1383e7e, "Target_EnemyWinterBlast");
+
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_Derpy_FTJ_ChapelReinforcement_Knight_004_02afe6d1-8de8-4806-a97c-20c3d6097745, "Shout_EnemyGuardianAngel");
+
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_Derpy_FTJ_ChapelReinforcement_Rogue_002_bd11bb31-959b-4154-9bdf-fc44e605925b, "Target_EnemyDaggersDrawn");
+
+DB_Derpy_TrippelCombat(CHARACTERGUID_S_FTJ_ChapelMagister_Captain_c4d751d4-20ff-4281-baf4-8ddeb1383e7e);
+DB_Derpy_TrippelCombat(CHARACTERGUID_S_FTJ_ChapelMagister_004_8f330be0-a442-408f-850e-c7fd94e74ada);
+DB_Derpy_TrippelCombat(CHARACTERGUID_S_FTJ_ChapelMagister_005_d5ea5e99-2406-4bb9-b2df-5fd975f1b63e);
+DB_Derpy_TrippelCombat(CHARACTERGUID_S_FTJ_ChapelMagister_002_090d7104-97f7-4603-a114-47dceaf021e5);
+DB_Derpy_TrippelCombat(CHARACTERGUID_S_FTJ_ChapelMagister_001_068d4518-9b23-4e2c-a160-8d978d1f78ff);
+DB_Derpy_TrippelCombat(CHARACTERGUID_S_FTJ_ChapelMagister_003_b5cb12b2-f347-4415-95ac-8d5ac4fc464b);
+DB_Derpy_TrippelCombat(CHARACTERGUID_Derpy_FTJ_ChapelReinforcement_Knight_004_02afe6d1-8de8-4806-a97c-20c3d6097745);
+DB_Derpy_TrippelCombat(CHARACTERGUID_Derpy_FTJ_ChapelReinforcement_Ranger_002_8bf88e3d-1fe1-4d42-a2e1-5af571759b09);
+DB_Derpy_TrippelCombat(CHARACTERGUID_Derpy_FTJ_ChapelReinforcement_Rogue_002_bd11bb31-959b-4154-9bdf-fc44e605925b);
+
+
+KBSECTION
+
+IF
+RegionStarted(_)
+AND
+QueryOnlyOnce("Derpy_TrippelSetup_V2")
+THEN
+SetOnStage(CHARACTERGUID_Derpy_FTJ_ChapelReinforcement_Knight_004_02afe6d1-8de8-4806-a97c-20c3d6097745, 0);
+SetOnStage(CHARACTERGUID_Derpy_FTJ_ChapelReinforcement_Ranger_002_8bf88e3d-1fe1-4d42-a2e1-5af571759b09, 0);
+SetOnStage(CHARACTERGUID_Derpy_FTJ_ChapelReinforcement_Rogue_002_bd11bb31-959b-4154-9bdf-fc44e605925b, 0);
+ApplyStatus(CHARACTERGUID_S_FTJ_ChapelMagister_Captain_c4d751d4-20ff-4281-baf4-8ddeb1383e7e, "FTJEnrageBuff", -1.0, 0, NULL_00000000-0000-0000-0000-000000000000);
+SetIsBoss(CHARACTERGUID_S_FTJ_ChapelMagister_Captain_c4d751d4-20ff-4281-baf4-8ddeb1383e7e, 1);
+
+
+IF
+ObjectEnteredCombat((CHARACTERGUID)_Char, _)
+AND
+DB_Derpy_TrippelCombat(_Char)
+THEN
+PROC_Derpy_TrippelCombatPull(_Char);
+
+PROC PROC_Derpy_TrippelCombatPull((CHARACTERGUID)_Char)
+AND
+DB_Derpy_TrippelCombat(_OtherChar)
+THEN
+EnterCombat(_OtherChar,_Char);
+
+
+PROC ProcBlockUseOfItem((CHARACTERGUID)_Char, ITEMGUID_S_FTJ_StairsDownToPrisonMain_869a7d39-dcc1-4bd6-bef1-24ae63adb2ac)
+AND
+DB_Derpy_TrippelCombat(_TrippelFight)
+AND
+CharacterIsInCombat((CHARACTERGUID)_TrippelFight, 1)
+THEN
+DB_CustomUseItemResponse(_Char,ITEMGUID_S_FTJ_StairsDownToPrisonMain_869a7d39-dcc1-4bd6-bef1-24ae63adb2ac, 0);
+OpenMessageBox(_Char, "Closed until the Magister Captain Trippel encounter is over.");
+
+IF
+CombatRoundStarted(_Combat, _Round)
+AND
+CombatGetIDForCharacter(CHARACTERGUID_S_FTJ_ChapelMagister_Captain_c4d751d4-20ff-4281-baf4-8ddeb1383e7e, _Combat)
+THEN
+PROC_Derpy_ChapelEnrage(_Round);
+
+PROC PROC_Derpy_ChapelEnrage(2)
+THEN
+Foop(CHARACTERGUID_Derpy_FTJ_ChapelReinforcement_Knight_004_02afe6d1-8de8-4806-a97c-20c3d6097745);
+EnterCombat(CHARACTERGUID_Derpy_FTJ_ChapelReinforcement_Knight_004_02afe6d1-8de8-4806-a97c-20c3d6097745,CHARACTERGUID_S_FTJ_ChapelMagister_Captain_c4d751d4-20ff-4281-baf4-8ddeb1383e7e);
+CharacterSetArmorPercentage(CHARACTERGUID_Derpy_FTJ_ChapelReinforcement_Knight_004_02afe6d1-8de8-4806-a97c-20c3d6097745, 100.0);
+CharacterSetMagicArmorPercentage(CHARACTERGUID_Derpy_FTJ_ChapelReinforcement_Knight_004_02afe6d1-8de8-4806-a97c-20c3d6097745, 100.0);
+RemoveStatus(CHARACTERGUID_S_FTJ_ChapelMagister_Captain_c4d751d4-20ff-4281-baf4-8ddeb1383e7e,"Derpy_BLESSED_SI1");
+PlayEffect(CHARACTERGUID_S_FTJ_ChapelMagister_Captain_c4d751d4-20ff-4281-baf4-8ddeb1383e7e, "RS3_FX_Skills_Divine_Bless_Impact_01");
+ApplyStatus(CHARACTERGUID_S_FTJ_ChapelMagister_Captain_c4d751d4-20ff-4281-baf4-8ddeb1383e7e, "Derpy_BLESSED_SI1", -1.0, 1, CHARACTERGUID_S_FTJ_ChapelMagister_Captain_c4d751d4-20ff-4281-baf4-8ddeb1383e7e);
+
+PROC PROC_Derpy_ChapelEnrage(3)
+THEN
+Foop(CHARACTERGUID_Derpy_FTJ_ChapelReinforcement_Ranger_002_8bf88e3d-1fe1-4d42-a2e1-5af571759b09);
+EnterCombat(CHARACTERGUID_Derpy_FTJ_ChapelReinforcement_Ranger_002_8bf88e3d-1fe1-4d42-a2e1-5af571759b09,CHARACTERGUID_S_FTJ_ChapelMagister_Captain_c4d751d4-20ff-4281-baf4-8ddeb1383e7e);
+RemoveStatus(CHARACTERGUID_S_FTJ_ChapelMagister_Captain_c4d751d4-20ff-4281-baf4-8ddeb1383e7e,"BREATHING_BUBBLE");
+PlayEffect(CHARACTERGUID_S_FTJ_ChapelMagister_Captain_c4d751d4-20ff-4281-baf4-8ddeb1383e7e, "RS3_FX_Skills_Air_BearthingBubble_Impact_01");
+ApplyStatus(CHARACTERGUID_S_FTJ_ChapelMagister_Captain_c4d751d4-20ff-4281-baf4-8ddeb1383e7e, "BREATHING_BUBBLE", -1.0, 1, CHARACTERGUID_S_FTJ_ChapelMagister_Captain_c4d751d4-20ff-4281-baf4-8ddeb1383e7e);
+
+PROC PROC_Derpy_ChapelEnrage(4)
+THEN
+SetOnStage(CHARACTERGUID_Derpy_FTJ_ChapelReinforcement_Rogue_002_bd11bb31-959b-4154-9bdf-fc44e605925b, 1);
+SetIsBoss(CHARACTERGUID_Derpy_FTJ_ChapelReinforcement_Rogue_002_bd11bb31-959b-4154-9bdf-fc44e605925b, 1);
+EnterCombat(CHARACTERGUID_Derpy_FTJ_ChapelReinforcement_Rogue_002_bd11bb31-959b-4154-9bdf-fc44e605925b,CHARACTERGUID_S_FTJ_ChapelMagister_Captain_c4d751d4-20ff-4281-baf4-8ddeb1383e7e);
+RemoveStatus(CHARACTERGUID_S_FTJ_ChapelMagister_Captain_c4d751d4-20ff-4281-baf4-8ddeb1383e7e,"LIVINGONTHEEDGE");
+PlayEffect(CHARACTERGUID_S_FTJ_ChapelMagister_Captain_c4d751d4-20ff-4281-baf4-8ddeb1383e7e, "RS3_FX_Skills_Soul_LivingEdge_Impact_01");
+ApplyStatus(CHARACTERGUID_S_FTJ_ChapelMagister_Captain_c4d751d4-20ff-4281-baf4-8ddeb1383e7e, "LIVINGONTHEEDGE", -1.0, 1, CHARACTERGUID_S_FTJ_ChapelMagister_Captain_c4d751d4-20ff-4281-baf4-8ddeb1383e7e);
+RemoveStatus(CHARACTERGUID_S_FTJ_ChapelMagister_Captain_c4d751d4-20ff-4281-baf4-8ddeb1383e7e,"DEATH_WISH");
+PlayEffect(CHARACTERGUID_S_FTJ_ChapelMagister_Captain_c4d751d4-20ff-4281-baf4-8ddeb1383e7e, "RS3_FX_Skills_Soul_Cast_Soul_Impact_Root_01");
+ApplyStatus(CHARACTERGUID_S_FTJ_ChapelMagister_Captain_c4d751d4-20ff-4281-baf4-8ddeb1383e7e, "DEATH_WISH", -1.0, 1, CHARACTERGUID_S_FTJ_ChapelMagister_Captain_c4d751d4-20ff-4281-baf4-8ddeb1383e7e);
+
+IF
+CharacterPrecogDying(CHARACTERGUID_S_FTJ_ChapelMagister_Captain_c4d751d4-20ff-4281-baf4-8ddeb1383e7e)
+AND
+GetPosition(CHARACTERGUID_S_FTJ_ChapelMagister_Captain_c4d751d4-20ff-4281-baf4-8ddeb1383e7e,_X,_Y,_Z)
+AND
+CreateItemTemplateAtPosition("LOOT_BackPack_A_6c70c298-aa29-418f-a659-f8e0b5f5fa60", _X, _Y, _Z, _Backpack)
+THEN
+GenerateTreasure(_Backpack, "MiniBoss_ProteanAlways", 6, NULL_00000000-0000-0000-0000-000000000000);
+MoveAllItemsTo(_Backpack, CHARACTERGUID_S_FTJ_ChapelMagister_Captain_c4d751d4-20ff-4281-baf4-8ddeb1383e7e, 0, 0, 1);
+PlaySound(_Backpack,"GP_ScriptedEvent_HOE_Channel_Spell_Final");
+PlayEffect(_Backpack, "AMER_RS3_FX_LootShine_Unique", "");
+ItemDestroy(_Backpack);
+SetOnStage(_Backpack, 0);
+
+IF
+CharacterPrecogDying(CHARACTERGUID_Derpy_FTJ_ChapelReinforcement_Rogue_002_bd11bb31-959b-4154-9bdf-fc44e605925b)
+AND
+GetPosition(CHARACTERGUID_Derpy_FTJ_ChapelReinforcement_Rogue_002_bd11bb31-959b-4154-9bdf-fc44e605925b,_X,_Y,_Z)
+AND
+CreateItemTemplateAtPosition("LOOT_BackPack_A_6c70c298-aa29-418f-a659-f8e0b5f5fa60", _X, _Y, _Z, _Backpack)
+THEN
+GenerateTreasure(_Backpack, "MegaBoss", 6, NULL_00000000-0000-0000-0000-000000000000);
+MoveAllItemsTo(_Backpack, CHARACTERGUID_Derpy_FTJ_ChapelReinforcement_Rogue_002_bd11bb31-959b-4154-9bdf-fc44e605925b, 0, 0, 1);
+PlaySound(_Backpack,"GP_ScriptedEvent_HOE_Channel_Spell_Final");
+PlayEffect(_Backpack, "AMER_RS3_FX_LootShine_Unique", "");
+ItemDestroy(_Backpack);
+SetOnStage(_Backpack, 0);
+
+PROC
+ProcRegionEnded("FJ_FortJoy_Main")
+THEN
+GoalCompleted;
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "FortJoy"

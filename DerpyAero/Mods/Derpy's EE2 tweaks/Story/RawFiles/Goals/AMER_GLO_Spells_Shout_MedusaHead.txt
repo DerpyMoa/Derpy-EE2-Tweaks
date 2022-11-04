@@ -1,0 +1,46 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_MedusaHead", 1)
+THEN
+PROC_AMER_GEN_SimulatedExplosion(_Char, 13.0, _Char, 266, "Projectile_Derpy_SCRIPT_PetrifyingVisage_SingleHit", "RS3_FX_Skills_Totem_Cast_Shout_Root_01", ""); //Living enemies LoS.
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_MedusaHead", 2)
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+PROC_AMER_GEN_SimulatedExplosion(_Char, 13.0, _Char, 266, "Projectile_Derpy_SCRIPT_PetrifyingVisage_SingleHit", "RS3_FX_Skills_Totem_Cast_Shout_Root_01", ""); //Living enemies LoS.
+ApplyStatus(_Char, "MEDUSA_HEAD_INFUS_2", 24.0, 0, _Char);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_MedusaHead", 3)
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 2, 1);
+PROC_AMER_GEN_SimulatedExplosion(_Char, 13.0, _Char, 266, "Projectile_Derpy_SCRIPT_PetrifyingVisage_SingleHit", "RS3_FX_Skills_Totem_Cast_Shout_Root_01", ""); //Living enemies LoS.
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "MEDUSA_HEAD_INFUS_3", "MedusaHead_Explosion", "", "", "", 1.0, "MedusaHead_Infus", 0, 2000, "SkillCast");
+ApplyStatus(_Char, "MEDUSA_HEAD_INFUS_3", 24.0, 0, _Char);
+
+
+
+//Prevent failed to return errors in the case that we replace an equip while it is being handled by other systems.
+IF
+ItemUnEquipped(_Item, _Char)
+AND
+GetTemplate(_Item, "EQ_Avatar_MedusaHair_00868f19-d443-4d26-8029-808112dd9b7f")
+THEN
+PROC_AMER_GEN_ItemBeingRemoved(_Item);
+
+IF
+ItemUnEquipped(_Item, _Char)
+AND
+NOT GetTemplate(_Item, _)
+THEN
+PROC_AMER_GEN_ItemBeingRemoved(_Item);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Polymorph"

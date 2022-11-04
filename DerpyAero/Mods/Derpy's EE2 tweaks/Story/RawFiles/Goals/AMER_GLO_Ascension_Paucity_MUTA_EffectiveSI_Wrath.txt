@@ -1,0 +1,56 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//If you have Paucity, your Assassinate, Fireball, Impalement, Onslaught, and Terrifying Cruelty skills are performed at +1 effective Source Infusion, even if uninfused.
+
+PROC PROC_AMER_Source_Infusion_GetUnlockedTier_Manipulate((CHARACTERGUID)_Char, "Projectile_ArrowSpray", (STRING)_Element, (INTEGER)_InfusCount)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Paucity_MUTA_EffectiveSI_Wrath", _)
+THEN
+PROC_Ascension_Paucity_MUTA_EffectiveSI_Wrath(_Char);
+
+PROC PROC_AMER_Source_Infusion_GetUnlockedTier_Manipulate((CHARACTERGUID)_Char, "Zone_LaserRay", (STRING)_Element, (INTEGER)_InfusCount)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Paucity_MUTA_EffectiveSI_Wrath", _)
+THEN
+PROC_Ascension_Paucity_MUTA_EffectiveSI_Wrath(_Char);
+
+PROC PROC_AMER_Source_Infusion_GetUnlockedTier_Manipulate((CHARACTERGUID)_Char, "Target_RockSpikes", (STRING)_Element, (INTEGER)_InfusCount)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Paucity_MUTA_EffectiveSI_Wrath", _)
+THEN
+PROC_Ascension_Paucity_MUTA_EffectiveSI_Wrath(_Char);
+
+PROC PROC_AMER_Source_Infusion_GetUnlockedTier_Manipulate((CHARACTERGUID)_Char, "Target_Flurry", (STRING)_Element, (INTEGER)_InfusCount)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Paucity_MUTA_EffectiveSI_Wrath", _)
+THEN
+PROC_Ascension_Paucity_MUTA_EffectiveSI_Wrath(_Char);
+
+PROC PROC_AMER_Source_Infusion_GetUnlockedTier_Manipulate((CHARACTERGUID)_Char, "Projectile_ThrowingKnife", (STRING)_Element, (INTEGER)_InfusCount)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Paucity_MUTA_EffectiveSI_Wrath", _)
+THEN
+PROC_Ascension_Paucity_MUTA_EffectiveSI_Wrath(_Char);
+
+
+
+PROC PROC_Ascension_Paucity_MUTA_EffectiveSI_Wrath((CHARACTERGUID)_Char)
+AND
+HasActiveStatus(_Char, "AMER_PAUCITY", 1)
+AND
+DB_AMER_Source_Infusion_OUTPUT_InfusCountBounded(_Char, _OutputSpent, _OutputEffective)
+AND
+_OutputEffective < 3    //Don't bother if we're already infusing at SI3.
+AND
+IntegerSum(_OutputEffective, 1, _NewOutputEffective)
+THEN
+NOT DB_AMER_Source_Infusion_OUTPUT_InfusCountBounded(_Char, _OutputSpent, _OutputEffective);
+DB_AMER_Source_Infusion_OUTPUT_InfusCountBounded(_Char, _OutputSpent, _NewOutputEffective);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

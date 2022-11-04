@@ -1,0 +1,59 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//If you have the Demolitionist talent and at least one stack of Adaptation when you throw a grenade, lose a stack of Adaptation to gain +1 effective Source Infusion for the throw, even if normally uninfused.
+
+PROC PROC_AMER_Spells_SkillPreCast(_Char, _Skill, 0, _Type, _Element)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Demolitionist_AdaptSpenderSIBoost", _)
+AND
+CharacterHasTalent(_Char, "WarriorLoreGrenadeRange", 1)
+AND
+DB_AMER_KeywordStat_Adaptation_CurrentStack(_Char, _StackCount)
+AND
+_StackCount >= 1
+AND
+StringContains(_Skill, "Grenade", 1)
+AND
+_Skill != "ProjectileStrike_Grenade_ClusterBomb"
+AND
+_Skill != "ProjectileStrike_Grenade_ClusterBomb_Cursed"
+THEN
+PROC_AMER_GEN_Goal_Activate("AMER_GLO_Talents_WarriorLoreGrenadeRange_Internal");   //Need to activate internal goal since usual logic didn't do it (because this throw was not already infused).
+PROC_AMER_Ascension_Demolitionist_AdaptSpenderSIBoost(_Char, _Skill);
+
+
+PROC PROC_AMER_Talents_Demolitionist_InfusExpected_Manip((CHARACTERGUID)_Char, (STRING)_Skill, (INTEGER)_InfusCount)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Demolitionist_AdaptSpenderSIBoost", _)
+AND
+DB_AMER_KeywordStat_Adaptation_CurrentStack(_Char, _StackCount)
+AND
+_StackCount >= 1
+THEN
+PROC_AMER_Ascension_Demolitionist_AdaptSpenderSIBoost(_Char, _Skill);
+
+
+PROC PROC_AMER_Ascension_Demolitionist_AdaptSpenderSIBoost((CHARACTERGUID)_Char, (STRING)_Skill)
+AND
+NOT DB_AMER_Talents_Demolitionist_InfusExpected(_Char, _Skill, _)
+THEN
+DB_AMER_Talents_Demolitionist_InfusExpected(_Char, _Skill, 0);
+
+PROC PROC_AMER_Ascension_Demolitionist_AdaptSpenderSIBoost((CHARACTERGUID)_Char, (STRING)_Skill)
+AND
+DB_AMER_Talents_Demolitionist_InfusExpected(_Char, _Skill, _OldInfusCount)
+AND
+IntegerSum(_OldInfusCount, 1, _NewInfusCount)
+THEN
+PROC_AMER_KeywordStat_Adaptation_AddStack(_Char, _Char, -1);
+NOT DB_AMER_Talents_Demolitionist_InfusExpected(_Char, _Skill, _OldInfusCount);
+DB_AMER_Talents_Demolitionist_InfusExpected(_Char, _Skill, _NewInfusCount);
+PROC_AMER_GEN_CharacterCombatLogText(_Char, "AMER_Ascension_Demolitionist_AdaptSpenderSIBoost");
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

@@ -1,0 +1,43 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+PROC_Derpy_PerseveranceCCcheck();
+
+KBSECTION
+
+PROC PROC_Derpy_PerseveranceCCcheck()
+AND
+DB_CurrentLevel(_Level)
+AND
+IsCharacterCreationLevel(_level, 1)
+THEN
+GoalCompleted;
+
+
+IF
+SavegameLoaded(_, _, _, _)
+AND
+DB_IsPlayer(_Char)
+AND
+DB_AMER_ScalingStat_ExtendedStat_Volatile(_Char, "Ability", "Perseverance", "BattHarr_Threshold_Mult_Self", "Both", "Perseverance", "", _AmountThres)
+AND
+DB_AMER_ScalingStat_FlexStat_Volatile(_Char, "Ability", "Perseverance", "Stat_SpecialCase", "AllResistance", _AmountRes)
+AND
+RealProduct(_AmountThres, 1.0, _NewThresh)
+AND
+RealProduct(_AmountRes, 1.0, _NewRes)
+THEN
+PROC_AMER_ScalingStat_FlexStat_Add_Volatile(_Char, "Ability", "Perseverance", "Stat_SpecialCase", "AllResistance", _NewRes);
+PROC_AMER_ScalingStat_ExtendedStat_Add_Volatile(_Char, "Ability", "Perseverance", "BattHarr_Threshold_Mult_Self", "Both", "Perseverance", "", _NewThresh);
+
+
+IF
+SavegameLoaded(_, _, _, _)
+THEN
+GoalCompleted;
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

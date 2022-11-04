@@ -1,0 +1,38 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_Humans_Male_Skeleton_NecromancerDog_000_e5c2a5a0-7dd3-446b-b05a-6bdaddc1b49f);
+
+KBSECTION
+
+IF
+RegionStarted(_)
+AND
+QueryOnlyOnce("Derpy_WindegoAddSetup")
+THEN
+SetOnStage(CHARACTERGUID_Humans_Male_Skeleton_NecromancerDog_000_e5c2a5a0-7dd3-446b-b05a-6bdaddc1b49f, 0);
+
+
+IF
+ObjectEnteredCombat(CHARACTERGUID_S_GLO_Windego_d783285f-d3be-4cba-8333-db8976cef182, _)
+AND
+QueryOnlyOnce("Derpy_WindegoAddAppear")
+THEN
+CharacterAppearCustom(CHARACTERGUID_Humans_Male_Skeleton_NecromancerDog_000_e5c2a5a0-7dd3-446b-b05a-6bdaddc1b49f,"Teleport_In_01","");
+ProcObjectTimer(CHARACTERGUID_Derpy_Punisher_000_5381360b-2b64-4743-b022-b9b8cbd6e46b, "DerpyFTJWindegoAddAggro", 1000);
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "DerpyFTJWindegoAddAggro")
+THEN
+EnterCombat(CHARACTERGUID_Humans_Male_Skeleton_NecromancerDog_000_e5c2a5a0-7dd3-446b-b05a-6bdaddc1b49f,CHARACTERGUID_S_GLO_Windego_d783285f-d3be-4cba-8333-db8976cef182);
+
+
+PROC
+ProcRegionEnded("FJ_FortJoy_Main")
+THEN
+GoalCompleted;
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "FortJoy"

@@ -1,0 +1,40 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+
+KBSECTION
+
+
+PROC
+ProcBlockMoveOfItem((CHARACTERGUID)_Char,(ITEMGUID)_Item)
+AND
+GetTemplate(_Item, _Template)
+THEN
+PROC_Derpy_FuckBulbs(_Char, _Item, _Template);
+
+
+
+
+PROC PROC_Derpy_FuckBulbs((CHARACTERGUID)_Char, (ITEMGUID)_Item, "PUZ_Trap_NoxiousBulb_Flower_A_Blue_e706f4f5-d7ec-4701-8566-032df4a5b9a9")
+THEN
+DB_CustomMoveItemResponse(_Char, _Item, 0);
+
+PROC PROC_Derpy_FuckBulbs((CHARACTERGUID)_Char, (ITEMGUID)_Item, "PUZ_Trap_NoxiousBulb_Flower_A_Green_ec860f0a-64a8-4ce6-a0d2-e3c7eac8a410")
+THEN
+DB_CustomMoveItemResponse(_Char, _Item, 0);
+
+PROC PROC_Derpy_FuckBulbs((CHARACTERGUID)_Char, (ITEMGUID)_Item, "PUZ_Trap_NoxiousBulb_Flower_A_Red_e1ecb300-ffe1-42a2-8bd2-a80aded10a99")
+THEN
+DB_CustomMoveItemResponse(_Char, _Item, 0);
+
+PROC PROC_Derpy_FuckBulbs((CHARACTERGUID)_Char, (ITEMGUID)_Item, "PUZ_Trap_NoxiousBulb_Flower_A_Yellow_fbab25a1-6eef-4e05-a010-5fc3bb136c4d")
+THEN
+DB_CustomMoveItemResponse(_Char, _Item, 0);
+
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

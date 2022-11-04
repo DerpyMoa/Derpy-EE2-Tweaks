@@ -1,0 +1,30 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_RC_DW_RingVoidwoken_01_28cab511-8239-4d94-b0ec-84ad7ae3a46d);
+
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_RC_DW_RingVoidwoken_01_28cab511-8239-4d94-b0ec-84ad7ae3a46d, "Rain_EnemyBlood");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_RC_DW_RingVoidwoken_01_28cab511-8239-4d94-b0ec-84ad7ae3a46d, "Cone_EnemyShatter");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_RC_DW_RingVoidwoken_01_28cab511-8239-4d94-b0ec-84ad7ae3a46d, "Shout_EnemyGlobalCooling");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_RC_DW_RingVoidwoken_01_28cab511-8239-4d94-b0ec-84ad7ae3a46d, "Target_EnemyGraspOfTheStarved");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_RC_DW_RingVoidwoken_01_28cab511-8239-4d94-b0ec-84ad7ae3a46d, "Rain_EnemyWater");
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_RC_DW_RingVoidwoken_02_e7ee6c94-eaa1-4d7c-86a3-f1224ee2d5d5);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_RC_DW_RingVoidwoken_03_65c457b5-9842-49a3-b177-bf6d125cc84c);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_RC_DW_RingVoidwoken_04_ae5bf582-3eb9-47a2-af35-858e5a22f9fe);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_RC_DW_RingVoidwoken_05_e88b7dce-d88c-48a0-b584-410b8c4a3f48);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_RC_DW_RingVoidwoken_06_cb9ed186-97aa-47d3-9de0-bba4ceef5363);
+
+KBSECTION
+
+IF
+RegionStarted(_)
+THEN
+SetIsBoss(CHARACTERGUID_S_RC_DW_RingVoidwoken_01_28cab511-8239-4d94-b0ec-84ad7ae3a46d, 1);
+GoalCompleted;
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "ReapersCoast"

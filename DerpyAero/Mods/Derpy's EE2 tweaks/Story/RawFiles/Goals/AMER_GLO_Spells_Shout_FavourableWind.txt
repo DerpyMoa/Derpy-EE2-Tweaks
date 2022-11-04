@@ -1,0 +1,41 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillCast((CHARACTERGUID)_Char, "Shout_FavourableWind", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+DB_AMER_IterateCharsAroundObject_Exclusion(_Char);
+PROC_AMER_GEN_IterateCharsAroundObject_2D(_Char, 10.0, _Char, 12, "Derpy_Favourable_SlowedCleanse");
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Derpy_Favourable_SlowedCleanse", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Air_Wind_Cast_Ground_01");
+PROC_AMER_GEN_RemoveStatusFamily(_Char, "Slowed");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_FavourableWind", 1)
+THEN
+ApplyStatus(_Char, "FAVOURABLE_WIND_AURA_INFUS1", 24.0, 0, _Char);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_FavourableWind", 2)
+AND
+QRY_AMER_Source_Infusion_KickerCost(_Char, 1)
+THEN
+ApplyStatus(_Char, "FAVOURABLE_WIND_AURA_INFUS2", 24.0, 0, _Char);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_FavourableWind", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+AND
+QRY_AMER_Source_Infusion_KickerCost(_Char, 2)
+THEN
+ApplyStatus(_Char, "FAVOURABLE_WIND_AURA_INFUS3", 36.0, 0, _Char);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Aerotheurge"

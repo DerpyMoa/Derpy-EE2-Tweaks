@@ -1,0 +1,15 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillCast((CHARACTERGUID)_Char, "Target_Squall", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "Status_BatteredHarriedRequirements", "", "", "SI_ImplicitBonus", -2.0, 2000, "SkillCast"); 
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Special"

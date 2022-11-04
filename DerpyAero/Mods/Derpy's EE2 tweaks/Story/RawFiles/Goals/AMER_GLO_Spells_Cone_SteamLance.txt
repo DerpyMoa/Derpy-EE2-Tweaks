@@ -1,0 +1,110 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+//Scripted base-effect to cause damage to enemies and healing to allies
+PROC PROC_AMER_Spells_SkillCast_PerTarget((CHARACTERGUID)_Char, "Cone_SteamLance", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+ProcObjectTimer(_Char, "SteamLance_SI0", 100);
+DB_Derpy_SteamLance_SI0(_Char, _X, _Y, _Z); 
+PROC_AMER_GEN_ShootConeAtPos(_Char, _X, _Y, _Z, "Cone_AMER_SCRIPT_SteamLance_Damage");
+PROC_AMER_GEN_ShootConeAtPos(_Char, _X, _Y, _Z, "Cone_AMER_SCRIPT_SteamLance_Cleanse");
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "SteamLance_SI0")
+AND
+DB_Derpy_SteamLance_SI0(_Char, _X, _Y, _Z)
+THEN
+NOT DB_Derpy_SteamLance_SI0(_Char, _X, _Y, _Z); 
+PROC_AMER_GEN_ShootConeAtPos(_Char, _X, _Y, _Z, "Cone_AMER_SCRIPT_SteamLance_Heal");
+
+
+//==========================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Cone_SteamLance", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "WaterSpecialist", 15.0, 2.0, 3000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddExtendedStat_Scaling(_Char, "Derpy_SteamLance_Damage", "InstantEffect", "ApplyBattered", "", "", "SteamLance_Infus", 0, "Ability", "WaterSpecialist", 2.0, 0.2, 3000, "SkillCast");
+
+
+//==========================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Cone_SteamLance", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_TempStat_StatusMod_AddStatus(_Char, "STEAM_LANCE_CLEANSE", "MAGIC_SHELL", 18.0, 0, 0, 1, 3000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddStatus(_Char, "STEAM_LANCE_CLEANSE", "FORTIFIED", 18.0, 0, 0, 1, 3000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddStatus(_Char, "STEAM_LANCE_CLEANSE", "HASTED", 18.0, 0, 0, 1, 3000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "STEAM_LANCE_CLEANSE", "InstantEffect", "ApplyBatteredAndHarried", "", "", -3.0, "SteamLance_Infus", 0);
+PROC_AMER_TempStat_StatusMod_AddExtendedStat_Scaling(_Char, "Derpy_SteamLance_Damage", "InstantEffect", "ApplyBattered", "", "", "SteamLance_Infus", 0, "Ability", "WaterSpecialist", 2.0, 0.2, 3000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Cone_SteamLance", 2)
+THEN
+ApplyStatus(_Char, "AMER_STEAMLANCE_INFUS_2", 6.0, 0, _Char);
+
+
+//==========================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Cone_SteamLance", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+ApplyStatus(_Char, "AMER_STEAMLANCE_INFUS_2", 24.0, 0, _Char);
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Cone_SteamLance", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "WaterSpecialist", 40.0, 4.0, 3000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Cone_SteamLance", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_Source_Infusion_RitualRequest(_Char, _X, _Y, _Z, _X, _Y, _Z, 13.0, "InfusionRitual_SteamLance_3_SteamLance", "", "WaterSpecialist", 1, "skill_cast_beam_fire_01_cast", 0, 1);
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Cone_SteamLance", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+AND
+QRY_AMER_Reaction_CountHeldReactions("InfusionRitual_SteamLance_3_SteamLance")
+AND
+DB_AMER_GEN_OUTPUT_Integer(_RitualSize)
+AND
+Real(_RitualSize, _RitualSizeReal)
+AND
+RealProduct(_RitualSizeReal, 3.0, _Bonus)
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "WaterSpecialist", 0.0, _Bonus);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Cone_SteamLance", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_Reaction_ApproveHeldReactions("InfusionRitual_SteamLance_3_SteamLance");
+
+PROC PROC_AMER_Reaction_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, "InfusionRitual_SteamLance_3_SteamLance", (STRING)_RequestID, (INTEGER)_RitualBool)
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Water_Cast_Beam_Fire_Dummy_01", "Dummy_CastFX");
+PROC_AMER_GEN_ShootConeAtPos(_Char, _X, _Y, _Z, "Cone_SteamLance");
+PROC_AMER_GEN_ShootConeAtPos(_Char, _X, _Y, _Z, "Cone_AMER_SCRIPT_SteamLance_Damage");
+PROC_AMER_GEN_ShootConeAtPos(_Char, _X, _Y, _Z, "Cone_AMER_SCRIPT_SteamLance_Heal");
+PROC_AMER_GEN_ShootConeAtPos(_Char, _X, _Y, _Z, "Cone_AMER_SCRIPT_SteamLance_Cleanse");
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Hydrosophist"

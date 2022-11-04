@@ -1,0 +1,45 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+
+IF
+NRD_OnStatusAttempt((CHARACTERGUID)_Char, "AMER_CHARGED", _StatusHandle, (CHARACTERGUID)_Attacker)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Char, "Superconductor_SI3", _, _, _, _)
+AND
+QRY_AMER_GEN_OncePerRound(_Char, "Superconductor_SI3_OncePerRound")
+THEN
+DB_AMER_GEN_OncePerRound(_Char, "Superconductor_SI3_OncePerRound");
+NRD_StatusPreventApply(_Char, _StatusHandle, 1);
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 13.0, _Char, 10, "Derpy_Superconductor_SI3_Iterator"); //Enemies, not dead.
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Derpy_Superconductor_SI3_Iterator", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+PROC_AMER_GEN_ShootProjectileAt(_SourceChar, _Char, "Projectile_Superconductor");
+
+
+//==================================================================================================================
+
+
+PROC PROC_AMER_Combat_TurnEnded(_, _Char, 0)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Char, "Superconductor_SI3", _, _, _, _)
+THEN
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 13.0, _Char, 10, "Derpy_Superconductor_SI3_ChargedIterator");	//Enemies, not dead.
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Derpy_Superconductor_SI3_ChargedIterator", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+AND
+HasActiveStatus(_Char, "AMER_CHARGED", 1)
+THEN
+PROC_AMER_GEN_ShootProjectileAt(_SourceChar, _Char, "Projectile_Superconductor");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GEN_Stats_ExtendedStats"

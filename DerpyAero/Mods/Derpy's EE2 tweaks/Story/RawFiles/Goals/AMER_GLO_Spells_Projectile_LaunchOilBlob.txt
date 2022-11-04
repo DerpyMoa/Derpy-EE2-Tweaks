@@ -1,0 +1,38 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_Derpy_ProjectileLanded("5b390063-d203-4ce7-9a7a-7263257f1f62", (CHARACTERGUID)_Char, (REAL)_X, (REAL)_Y, (REAL)_Z)
+THEN
+PROC_AMER_GEN_CharacterCauseExplosionAtPos(_Char, _X, _Y, _Z, "Projectile_Derpy_SCRIPT_Summon_OilBlob");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Projectile_LaunchOilBlob", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, 15.0, 3.0, 0.0, "Ability", "Summoning")
+AND
+DB_AMER_GEN_OUTPUT_Real(_Scaling)
+THEN
+PROC_AMER_Summoning_AddFlexStatToNext(_Char, "Summons_OilBlob_e61da3a2-6dfd-4f2e-8f62-6bfbddb5a7f9", "Stat", "DAMAGEBOOST", _Scaling, 1);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Projectile_LaunchOilBlob", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 2)
+THEN
+PROC_AMER_Summoning_AddExtendedStatToNext(_Char, "Summons_OilBlob_e61da3a2-6dfd-4f2e-8f62-6bfbddb5a7f9", "OilyBlob_Split", "", "", "", 1.0, 1);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Projectile_LaunchOilBlob", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_Summoning_AddFlexStatToNext(_Char, "Summons_OilBlob_e61da3a2-6dfd-4f2e-8f62-6bfbddb5a7f9", "Spell", "Shout_VileBurst_OilyBlob", 1.0, 1);
+PROC_AMER_Summoning_AddExtendedStatToNext(_Char, "Summons_OilBlob_e61da3a2-6dfd-4f2e-8f62-6bfbddb5a7f9", "OilyBlob_Split", "", "", "", 2.0, 1);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Summoning"

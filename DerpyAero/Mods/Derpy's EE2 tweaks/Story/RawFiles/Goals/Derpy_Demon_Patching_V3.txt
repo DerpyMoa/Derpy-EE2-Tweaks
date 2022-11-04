@@ -1,0 +1,37 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+PROC_Derpy_DemonCCcheck_V3();
+
+KBSECTION
+
+PROC PROC_Derpy_DemonCCcheck_V3()
+AND
+DB_CurrentLevel(_Level)
+AND
+IsCharacterCreationLevel(_level, 1)
+THEN
+GoalCompleted;
+
+
+IF
+SavegameLoaded(_, _, _, _)
+AND
+DB_IsPlayer(_Char)
+AND
+CharacterHasTalent(_Char, "Demon", 1)
+THEN
+PROC_AMER_StatusMod_Add_ExtendedStat(_Char, "AMER_SCORCHED", "CustomDoTTick", "RemoteImpact", "Projectile_AMER_SCRIPT_StatusDamage_Burning", "CustomDoTTick_Scorched_Tort", 1.0, "CustomDoTTick_Scorched_Tort", 0);
+
+
+
+IF
+SavegameLoaded(_, _, _, _)
+THEN
+GoalCompleted;
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

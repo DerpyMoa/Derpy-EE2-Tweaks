@@ -1,0 +1,16 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+PROC_AMER_ModSetting_AlwaysInfuse_Specific(CHARACTERGUID_S_FTJ_SW_Lucian_TowerShrine_011c4afd-38a9-4412-b6b5-e497ed7704cc, 0);
+PROC_AMER_ModSetting_AlwaysInfuse_Specific(CHARACTERGUID_S_FTJ_SW_Lucian_ShelterShrine_7555e91b-7184-4fb5-98a5-cc02fa6a235b, 0);
+PROC_AMER_ModSetting_AlwaysInfuse_Specific(CHARACTERGUID_S_FTJ_SW_Lucian_VoidwokenShrine_c99ea947-1920-4c3c-8253-858796869544, 0);
+PROC_AMER_ModSetting_AlwaysInfuse_Specific(CHARACTERGUID_S_FTJ_SW_Lucian_GarethStatue_295b92ad-fd83-4e50-b1d5-f6fbf76e4a04, 0);
+GoalCompleted;
+
+KBSECTION
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "FortJoy"

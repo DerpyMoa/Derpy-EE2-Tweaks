@@ -1,0 +1,5 @@
+USING melee
+
+
+// Beserker doesn't save action points, he goes for it as far as he can!
+ENABLE_SAVING_ACTION_POINTS					0	//Derpy on 25/11/2021: From 1 to 0.

@@ -1,0 +1,69 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Predator reactions can be performed, once per round, when an enemy you can see is damaged to zero Physical or Magic Armor, or while under 50% Vitality.
+
+PROC PROC_AMER_CharacterReceivedDamage((CHARACTERGUID)_Char, (GUIDSTRING)_Source, (REAL)_DamageTotal, (REAL)_DamageVit, (REAL)_DamagePhys, (REAL)_DamageMagic)
+AND
+DB_AMER_Ascension_SpecialLogic(_Reactor, "Ascension_Predator_ACT_AllyAoO", _)
+AND
+CharacterIsEnemy(_Char, _Reactor, 1)
+AND
+NOT DB_AMER_Reaction_InProgress(_Reactor, _, _)
+AND
+NOT DB_AMER_Combat_ActiveChar(_, _, _, _Reactor)
+AND
+QRY_AMER_GEN_OncePerRound(_Reactor, "Ascension_Predator_ACT_AllyAoO")
+AND
+NOT QRY_AMER_GEN_IsDeadOrDying(_Char)
+AND
+DB_AMER_CharVitals_Max(_Char, _, _PArmorMax, _MArmorMax)
+THEN
+PROC_Derpy_Ascension_Predator_ACT_AllyAoO_DamageCheck(_Char, _Reactor, _DamagePhys, _PArmorMax, _DamageMagic, _MArmorMax, _DamageTotal);
+
+
+PROC PROC_Derpy_Ascension_Predator_ACT_AllyAoO_DamageCheck((CHARACTERGUID)_Char, (CHARACTERGUID)_Reactor, (REAL)_DamagePhys, (REAL)_PArmorMax, (REAL)_DamageMagic, (REAL)_MArmorMax, (REAL)_DamageTotal)
+AND
+_DamageMagic > 0
+AND
+_MArmorMax > 0
+AND
+CharacterGetMagicArmorPercentage(_Char, 0.0)
+THEN
+PROC_Derpy_Ascension_Predator_ACT_AllyAoO(_Char, _Reactor);
+
+
+PROC PROC_Derpy_Ascension_Predator_ACT_AllyAoO_DamageCheck((CHARACTERGUID)_Char, (CHARACTERGUID)_Reactor, (REAL)_DamagePhys, (REAL)_PArmorMax, (REAL)_DamageMagic, (REAL)_MArmorMax, (REAL)_DamageTotal)
+AND
+_DamagePhys > 0
+AND
+_PArmorMax > 0
+AND
+CharacterGetArmorPercentage(_Char, 0.0)
+THEN
+PROC_Derpy_Ascension_Predator_ACT_AllyAoO(_Char, _Reactor);
+
+
+PROC PROC_Derpy_Ascension_Predator_ACT_AllyAoO_DamageCheck((CHARACTERGUID)_Char, (CHARACTERGUID)_Reactor, (REAL)_DamagePhys, (REAL)_PArmorMax, (REAL)_DamageMagic, (REAL)_MArmorMax, (REAL)_DamageTotal)
+AND
+_DamageTotal > 0
+AND
+CharacterGetHitpointsPercentage(_Char, _Perc)
+AND
+_Perc <= 50.0
+THEN
+PROC_Derpy_Ascension_Predator_ACT_AllyAoO(_Char, _Reactor);
+
+
+PROC PROC_Derpy_Ascension_Predator_ACT_AllyAoO((CHARACTERGUID)_Char, (CHARACTERGUID)_Reactor)
+THEN
+DB_AMER_GEN_OncePerRound(_Reactor, "Ascension_Predator_ACT_AllyAoO");
+PROC_AMER_Reaction_Request(_Reactor, _Char, "AMER_Predator", "Ascension_Predator_ACT_AllyAoO", "", 1);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

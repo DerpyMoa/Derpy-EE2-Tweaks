@@ -1,0 +1,54 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+NRD_OnHeal((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, _Amount, _StatusHandle)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Char, "HealingTears_SI2", _, _, _, _)
+AND
+NOT QRY_AMER_GEN_NotDamagedByHeal(_Target)
+AND
+NRD_StatusGetString(_Target, _StatusHandle, "HealType", "Vitality")
+AND
+Real(_Amount, _AmountReal)
+AND
+RealProduct(_AmountReal, 0.75, _AmountRealReduced)
+AND
+Integer(_AmountRealReduced, _Dmg)
+THEN
+ApplyStatus(_Target, "AMER_BRITTLE_APPLY", 12.0, 0, _Char);
+PROC_AMER_GEN_ApplyDamage(_Target, _Dmg, "Physical", _Char, 0);
+PROC_AMER_GEN_ApplyDamage(_Target, _Dmg, "Water", _Char, 0);
+ApplyStatus(_Target, "AMER_TERRIFIED_APPLY", 12.0, 0, _Char);
+
+
+//==========================================================================
+
+
+IF
+NRD_OnStatusAttempt((CHARACTERGUID)_Char, "HEALING_HEALINGTEAR", _Handle, (CHARACTERGUID)_Source)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Source, "HealingTears_SI2", _, _, _, _)
+AND
+CharacterIsEnemy(_Char, _Source, _IsEnemy)
+THEN
+PROC_Derpy_HealingTears_SI2(_Char, _Source, _IsEnemy);
+
+
+PROC PROC_Derpy_HealingTears_SI2((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, 0)
+THEN
+PROC_AMER_BatteredHarried_DirectManip(_Char, 2, -2, _Source);
+
+
+PROC PROC_Derpy_HealingTears_SI2((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, 1)
+THEN
+PROC_AMER_BatteredHarried_DirectManip(_Char, 2, 2, _Source);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GEN_Stats_ExtendedStats"

@@ -1,0 +1,44 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+//=============================================//
+//            T R A P   S P E L L S            //
+//                                             //
+//   Written by Matteo "Ameranth" T. (2018)    //
+//=============================================//
+//Scripting for spells specifically dealing with trap generation.
+KBSECTION
+//=============================================//
+//            T R A P   S P E L L S            //
+//                                             //
+//   Written by Matteo "Ameranth" T. (2018)    //
+//=============================================//
+
+//Provide a way for deployed traps to remember their caster.
+//Also snap them to a valid position, so they can't float in the
+//air when thrown against something's face.
+IF
+StoryEvent((ITEMGUID)_Trap, "AMER_ProximityMine_GetOwner")
+AND
+QRY_AMER_Spells_OwnerQueue_Get()
+AND
+DB_AMER_GEN_OUTPUT_Char(_Owner)
+AND
+GetPosition(_Trap, _X, _Y, _Z)
+AND
+FindValidPosition(_X, _Y, _Z, 3.0, _Trap, _XValid, _YValid, _ZValid)
+THEN
+SetVarObject(_Trap, "MineOwner", _Owner);
+TeleportToPosition(_Trap, _XValid, _YValid, _ZValid, "", 0, 1);
+ProcSetInvulnerable(_Trap, 1);
+
+
+//=============================================//
+//            T R A P   S P E L L S            //
+//                                             //
+//   Written by Matteo "Ameranth" T. (2018)    //
+//=============================================//
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

@@ -1,0 +1,43 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+PROC_AMER_ModSetting_AlwaysInfuse_Specific(CHARACTERGUID_S_GLO_Dallis_69b951dc-55a4-44b8-a2d5-5efedbd7d572, 0);
+PROC_AMER_ModSetting_AlwaysInfuse_Specific(CHARACTERGUID_S_GLO_Alexandar_03e6345f-1bd3-403c-80e2-a443a74f6349, 0);
+PROC_AMER_ModSetting_AlwaysInfuse_Specific(S_FTJ_DallisGheist_001_fa573f6f-7af3-40da-bc9a-e7d984711b09, 0);
+PROC_AMER_ModSetting_AlwaysInfuse_Specific(S_FTJ_DallisGheist_002_5aff71df-ec52-41cc-9b28-fb6b491a15c4, 0);
+
+KBSECTION
+
+IF
+RegionStarted(_)
+THEN
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_GLO_Dallis_69b951dc-55a4-44b8-a2d5-5efedbd7d572);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_GLO_Alexandar_03e6345f-1bd3-403c-80e2-a443a74f6349);
+ApplyStatus(CHARACTERGUID_S_GLO_Dallis_69b951dc-55a4-44b8-a2d5-5efedbd7d572, "DallisNerf", -1.0, 0, NULL_00000000-0000-0000-0000-000000000000);
+ApplyStatus(CHARACTERGUID_S_GLO_Alexandar_03e6345f-1bd3-403c-80e2-a443a74f6349, "AlexanderNerf", -1.0, 0, NULL_00000000-0000-0000-0000-000000000000);
+ApplyStatus(CHARACTERGUID_S_FTJ_DallisGheist_001_fa573f6f-7af3-40da-bc9a-e7d984711b09, "GheistNerf", -1.0, 0, NULL_00000000-0000-0000-0000-000000000000);
+ApplyStatus(CHARACTERGUID_S_FTJ_DallisGheist_002_5aff71df-ec52-41cc-9b28-fb6b491a15c4, "GheistNerf", -1.0, 0, NULL_00000000-0000-0000-0000-000000000000);
+SetTag(CHARACTERGUID_S_GLO_Alexandar_03e6345f-1bd3-403c-80e2-a443a74f6349, "DEATHFOG_IMMUNE");
+SetTag(CHARACTERGUID_S_FTJ_DallisGheist_001_fa573f6f-7af3-40da-bc9a-e7d984711b09, "DEATHFOG_IMMUNE");
+SetTag(CHARACTERGUID_S_FTJ_DallisGheist_002_5aff71df-ec52-41cc-9b28-fb6b491a15c4, "DEATHFOG_IMMUNE");
+
+PROC Proc_FTJ_EscapedFortJoy((CHARACTERGUID)_Player)
+THEN
+NOT DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_GLO_Dallis_69b951dc-55a4-44b8-a2d5-5efedbd7d572);
+NOT DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_GLO_Alexandar_03e6345f-1bd3-403c-80e2-a443a74f6349);
+RemoveStatus(CHARACTERGUID_S_GLO_Dallis_69b951dc-55a4-44b8-a2d5-5efedbd7d572, "DallisNerf");
+RemoveStatus(CHARACTERGUID_S_GLO_Alexandar_03e6345f-1bd3-403c-80e2-a443a74f6349, "AlexanderNerf");
+RemoveStatus(CHARACTERGUID_S_FTJ_DallisGheist_001_fa573f6f-7af3-40da-bc9a-e7d984711b09, "GheistNerf");
+RemoveStatus(CHARACTERGUID_S_FTJ_DallisGheist_002_5aff71df-ec52-41cc-9b28-fb6b491a15c4, "GheistNerf");
+PROC_AMER_ModSetting_AlwaysInfuse_Specific_Remove(CHARACTERGUID_GLO_Dallis_69b951dc-55a4-44b8-a2d5-5efedbd7d572);
+PROC_AMER_ModSetting_AlwaysInfuse_Specific_Remove(CHARACTERGUID_GLO_Alexandar_03e6345f-1bd3-403c-80e2-a443a74f6349);
+PROC_AMER_ModSetting_AlwaysInfuse_Specific_Remove(CHARACTERGUID_S_FTJ_DallisGheist_001_fa573f6f-7af3-40da-bc9a-e7d984711b09);
+PROC_AMER_ModSetting_AlwaysInfuse_Specific_Remove(CHARACTERGUID_S_FTJ_DallisGheist_002_5aff71df-ec52-41cc-9b28-fb6b491a15c4);
+GoalCompleted;
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "FortJoy"

@@ -1,0 +1,94 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, "Shout_ElectricFence", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+ProcObjectTimer(_Char, "Derpy_ClosedCircuit_CoopFix", 900);
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "Derpy_ClosedCircuit_CoopFix")
+AND
+DB_AMER_ExtendedStat_AddedStat(_Char, "SpellRecoverAP_Oneshot", _, _, _, _)
+THEN
+DB_Derpy_ClosedCircuitCoopFix(_Char);
+PROC_AMER_ActionPoints_Add(_Char, 1);
+
+
+PROC PROC_AMER_Spells_SkillCast((CHARACTERGUID)_Char, "Shout_ElectricFence", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+AND
+DB_Derpy_ClosedCircuitCoopFix(_Char)
+THEN
+NOT DB_Derpy_ClosedCircuitCoopFix(_Char);
+PROC_AMER_ActionPoints_Add(_Char, -1);
+
+
+//=======================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_ElectricFence", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "AirSpecialist", 25.0, 4.0, 2000, "SkillCast");
+
+
+//=======================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_ElectricFence", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+DB_AMER_Source_Infusion_ClosedCircuit_ChargedCount(_Char, 0);
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 5.0, _Char, 10, "AMER_Spells_ClosedCircuit_ChargedIterator");
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestCount, "AMER_Spells_ClosedCircuit_ChargedIterator", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+AND
+HasActiveStatus(_Char, "AMER_CHARGED", 1)
+AND
+DB_AMER_Source_Infusion_ClosedCircuit_ChargedCount(_SourceChar, _OldCount)
+AND
+IntegerSum(_OldCount, 1, _NewCount)
+THEN
+NOT DB_AMER_Source_Infusion_ClosedCircuit_ChargedCount(_SourceChar, _OldCount);
+DB_AMER_Source_Infusion_ClosedCircuit_ChargedCount(_SourceChar, _NewCount);
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Finished((INTEGER)_RequestCount, "AMER_Spells_ClosedCircuit_ChargedIterator", (CHARACTERGUID)_SourceChar)
+AND
+DB_AMER_Source_Infusion_ClosedCircuit_ChargedCount(_SourceChar, _Count)
+AND
+Real(_Count, _CountReal)
+AND
+RealProduct(_CountReal, 30.0, _Flat)
+AND
+RealProduct(_CountReal, 6.0, _Scaling)
+THEN
+NOT DB_AMER_Source_Infusion_ClosedCircuit_ChargedCount(_SourceChar, _Count);
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_SourceChar, "Stat", "DAMAGEBOOST", "Ability", "AirSpecialist", _Flat, _Scaling, 2000, "SkillCast");
+
+
+//=======================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_ElectricFence", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_GEN_Shoot_Delayed("Explosion", _Char, _Char, "Projectile_Derpy_SCRIPT_ClosedCircuit", 1, 100);
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 5.0, _Char, 10, "Derpy_ClosedCircuit_SI3");    //Living enemies.
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Derpy_ClosedCircuit_SI3", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+PROC_AMER_Status_Charged_Detonate(_Char);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Aerotheurge"

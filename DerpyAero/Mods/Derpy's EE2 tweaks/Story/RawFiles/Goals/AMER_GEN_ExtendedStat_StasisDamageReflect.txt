@@ -1,0 +1,41 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Take no damage and redirect 50% of incoming damage back to its source.
+
+IF
+NRD_OnHit((CHARACTERGUID)_Defender, (CHARACTERGUID)_Attacker, _Damage, _HitHandle)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Defender, "StasisDamageReflect", _, _, _, _)
+AND
+DB_AMER_GEN_DamageTypeEnum(_TypeIndex, _DamageType)
+AND
+NRD_HitStatusGetDamage(_Defender, _HitHandle, _DamageType, _Amount)
+AND
+_Amount != 0
+AND
+Real(_Amount, _AmountReal)
+AND
+RealProduct(_AmountReal, 0.50, _Reflect)
+AND
+Integer(_Reflect, _ReflectInt)
+THEN
+NRD_HitStatusClearAllDamage(_Defender, _HitHandle);
+PROC_AMER_GEN_ApplyDamage(_Attacker, _ReflectInt, _DamageType, _Defender, 1);
+PlayBeamEffect(_Defender, _Attacker, "RS3_FX_GP_Status_Retaliation_Beam_01", "Dummy_BodyFX", "Dummy_BodyFX");
+PlayEffect(_Attacker, "RS3_FX_GP_Status_Retaliation_01");
+
+
+PROC PROC_AMER_Combat_TurnStarted((CHARACTERGUID)_Char, 0)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Char, "StasisDamageReflect", _, _, _, _)
+THEN
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "StasisDamageImmune_TurnStart", "", "", "StasisTurnStartProtection", 1.0, 1000, "");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GEN_Stats_ExtendedStats"

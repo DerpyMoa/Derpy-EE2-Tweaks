@@ -1,0 +1,44 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+CharacterItemEvent(_Char, _Item, "AMER_GEN_GrenadeDetonated")
+AND
+DB_AMER_Talents_Demolitionist_InfusExpected(_Char, _Skill, _InfusCount)
+AND
+GetPosition(_Item, _X, _Y, _Z)
+THEN
+NOT DB_AMER_Talents_Demolitionist_InfusExpected(_Char, _Skill, _InfusCount);
+PROC_AMER_Talents_Demolitionist_Infusion(_Char, _Skill, _X, _Y, _Z, _InfusCount);
+
+
+PROC PROC_AMER_Talents_Demolitionist_Infusion((CHARACTERGUID)_Char, (STRING)_Skill, (REAL)_X, (REAL)_Y, (REAL)_Z, 1)
+THEN
+PROC_AMER_GEN_Shoot_Delayed("Explosion", _Char, NULL_00000000-0000-0000-0000-000000000000, _X, _Y, _Z, _Skill, 2.0, 0, 100);
+
+
+PROC PROC_AMER_Talents_Demolitionist_Infusion((CHARACTERGUID)_Char, (STRING)_Skill, (REAL)_X, (REAL)_Y, (REAL)_Z, 2)
+THEN
+PROC_AMER_GEN_Shoot_Delayed("Explosion", _Char, NULL_00000000-0000-0000-0000-000000000000, _X, _Y, _Z, _Skill, 2.0, 3, 100);
+
+
+PROC PROC_AMER_Talents_Demolitionist_Infusion((CHARACTERGUID)_Char, (STRING)_Skill, (REAL)_X, (REAL)_Y, (REAL)_Z, 3)
+THEN
+PROC_AMER_GEN_Shoot_Delayed("Explosion", _Char, NULL_00000000-0000-0000-0000-000000000000, _X, _Y, _Z, _Skill, 2.0, 5, 100);
+CharacterAddSourcePoints(_Char, 1);
+
+
+
+PROC PROC_AMER_Talents_Demolitionist_Infusion((CHARACTERGUID)_Char, (STRING)_Skill, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+NOT DB_AMER_Talents_Demolitionist_InfusExpected(_, _, _)    //Logic is no longer needed, deactivate the goal.
+THEN
+PROC_AMER_GEN_Goal_TimedCompletion("AMER_GLO_Talents_WarriorLoreGrenadeRange_Internal", 5000);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Talents_WarriorLoreGrenadeRange"

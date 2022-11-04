@@ -1,0 +1,55 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_GEN_FilteredStatus_Applied((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, "FLANKED", (INTEGER)_Turns)
+AND
+DB_AMER_KeywordStat_Added(_Char, "Defiance", _)
+AND
+QRY_AMER_GEN_OncePerRound(_Char, "AMER_Defiance_BaseActivation")
+THEN
+PROC_AMER_KeywordStat_Defiance_Activate(_Char);
+
+
+PROC PROC_AMER_Combat_TurnEnded(_, _Char, 0)
+AND
+DB_AMER_KeywordStat_Added(_Char, "Defiance", _)
+THEN
+PROC_AMER_GEN_CountCharsAroundObject(_Char, 5.0, _Char, 10, "Defiance_BaseActivation");	//Count only living enemies within 5m.
+
+
+PROC PROC_AMER_Combat_TurnStarted((CHARACTERGUID)_Char, 0)
+AND
+DB_AMER_KeywordStat_Added(_Char, "Defiance", _)
+THEN
+PROC_AMER_GEN_CountCharsAroundObject(_Char, 5.0, _Char, 10, "Defiance_BaseActivation");	//Count only living enemies within 5m.
+
+
+PROC PROC_AMER_GEN_CountCharsAroundObject_Returned((INTEGER)_RequestIndex, "Defiance_BaseActivation", (CHARACTERGUID)_Char, (INTEGER)_Count)
+AND
+_Count >= 2
+THEN
+PROC_AMER_KeywordStat_Defiance_Activate(_Char);
+
+
+PROC PROC_AMER_KeywordStat_Defiance_Activate((CHARACTERGUID)_Char)
+THEN
+DB_AMER_GEN_OncePerRound(_Char, "AMER_Defiance_BaseActivation");
+PlayEffect(_Char, "RS3_FX_Skills_Divine_Shout_Cast_01", "Dummy_Root");
+ApplyStatus(_Char, "AMER_DEFIANCE", 12.0, 0, _Char);
+PROC_AMER_GEN_CharacterCombatLogText(_Char, "AMER_Defiance_Activated");
+
+
+PROC PROC_AMER_KeywordStat_Defiance_Activate((CHARACTERGUID)_Char)
+AND
+NOT DB_AMER_KeywordStat_Added(_, "Defiance", _)   //This keyword's logic is no longer needed, complete its goal. This can be possible if its activation occurred with no characters owning the keyword.
+THEN
+PROC_AMER_GEN_Goal_TimedCompletion("AMER_GEN_Keywords_Defiance", 2500);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GEN_Stats_Keywords"

@@ -1,0 +1,52 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_GEN_BasicAttackObjectStarted((GUIDSTRING)_Defender, (REAL)_X, (REAL)_Y, (REAL)_Z, (CHARACTERGUID)_Owner, (CHARACTERGUID)_Attacker, (STRING)_AttackID)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Attacker, "Artifact_GramSwordOfGrief", _)
+THEN
+PROC_AMER_TempStat_HitStatus_ThrowProc(_Attacker, "Artifact_GramSwordOfGrief", 2000, "");
+
+
+PROC PROC_AMER_HitStatus_Event((CHARACTERGUID)_Defender, (CHARACTERGUID)_Attacker, "Artifact_GramSwordOfGrief")
+AND
+HasActiveStatus(_Defender, "POISONED", 1)
+AND
+QRY_AMER_GEN_OncePerRound_PerChar(_Attacker, "Artifact_GramSwordOfGrief", _Defender)
+AND
+GetStatusTurns(_Defender, "POISONED", _Turns)
+AND
+IntegerMin(_Turns, 5, _TurnsBounded)
+AND
+IntegertoString(_TurnsBounded, _TurnsStr)
+AND
+StringConcatenate("Projectile_AMER_SCRIPT_Artifact_Gram_", _TurnsStr, _Projectile)
+AND
+StringConcatenate(_Projectile, "_Piercing", _ProjectilePiercing)
+AND
+GetPosition(_Defender, _X, _Y, _Z)
+AND
+QRY_AMER_GEN_CharacterGetDisplayName(_Defender)
+AND
+DB_AMER_GEN_OUTPUT_String(_Name)
+AND
+QRY_AMER_GEN_TSK_Get("AMER_Artifact_GramSwordOfGrief_LogText")
+AND
+DB_AMER_GEN_OUTPUT_String(_LogText)
+THEN
+DB_AMER_GEN_OncePerRound_PerChar(_Attacker, "Artifact_GramSwordOfGrief", _Defender);
+PROC_AMER_TempStat_HitStatus_ThrowProc_Clear(_Attacker, "Artifact_GramSwordOfGrief");
+RemoveStatus(_Defender, "POISONED");
+PlayEffectAtPosition("RS3_FX_Skills_Earth_Cast_Aoe_Voodoo_Root_01_Poison_Texkey", _X, _Y, _Z);
+CharacterStatusText(_Attacker, "Artifact_GramSwordOfGrief");
+PROC_AMER_GEN_CharacterCombatLogText_Param_Str(_Attacker, _LogText, _Name);
+PROC_AMER_GEN_CharacterCauseExplosion(_Attacker, _Defender, _Projectile);
+PROC_AMER_GEN_CharacterCauseExplosion(_Attacker, _Defender, _ProjectilePiercing);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"

@@ -1,0 +1,35 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Heal 5% of total Vitality and remove 1 stack of Battered or Harried, whichever is higher, when activating Ward.
+
+PROC PROC_AMER_KeywordStat_Ward_Activate((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, (CHARACTERGUID)_WardSource)
+AND
+DB_AMER_Ascension_SpecialLogic(_WardSource, "Ascension_Ward_MUTA_HealAndRemoveBHStacks", _)
+AND
+QRY_AMER_BatteredHarried_GetCurrentStacks(_Char)
+AND
+DB_AMER_BatteredHarried_OUTPUT_CurrentStacks(_Battered, _Harried, _TotalStacks)
+THEN
+PROC_AMER_GEN_Heal_Percentage(_Char, 5.0, "Vitality", _Char, 0, 2, 1);
+PROC_AMER_AscensionReward_Hippo_BHRemoval(_Char, _Battered, _Harried);
+
+
+PROC PROC_AMER_AscensionReward_Hippo_BHRemoval((CHARACTERGUID)_Char, (INTEGER)_Battered, (INTEGER)_Harried)
+AND
+_Battered > _Harried
+THEN
+PROC_AMER_BatteredHarried_DirectManip(_Char, 0, -1, _Char);
+
+PROC PROC_AMER_AscensionReward_Hippo_BHRemoval((CHARACTERGUID)_Char, (INTEGER)_Battered, (INTEGER)_Harried)
+AND
+_Battered <= _Harried
+THEN
+PROC_AMER_BatteredHarried_DirectManip(_Char, 1, -1, _Char);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<save>
+    <header version="2" time="1387205254" />
+    <version major="1" minor="3" revision="0" build="0" />
+    <region id="CharacterCreationClass">
+        <node id="root">
+            <attribute id="ClassDescription" value="Heals allies or smashes skulls, depending on the direction of the winds" handle="hcde7e3fbg59c3g4694gab2dg047d338fd8d9" type="28" />
+			<attribute id="ClassLongDescription" value="The Seven Gods may be almighty, but they hardly expect to fight their own wars. Thus an order of ascetics devoted to the Seven Gods and practiced in the arts of war and healing carries out the will of the divine.<br><br>These men and women are trained to transform a spartan diet of crickets and snow into the raw strength necessary to turn the tide in any holy war. They restore and regenerate their allies as thoroughly as they annihilate their foes.<br><br>Enemies of Source and all unrighteous magic, Clerics are the cleansing hand of the gods made manifest. For centuries, Clerics have worked alongside the Order of the Source Hunters to purify the land of evil magic." handle="h653b69d2gef16g42deg9d9fg5e2b82f8124d" type="28" />
+            <attribute id="ClassName" value="Cleric" handle="h3121194ag06c9g4d5fga279g5d6fb2852e7a" type="28" />
+            <attribute id="ClassType" value="Cleric" type="22" />
+            <attribute id="SkillSet" value="Class_Cleric" type="22" />
+            <attribute id="Voice" value="2" type="5" />
+			<attribute id="Icon" value="2" type="5" />
+
+            <attribute id="NumStartingCombatAbilityPoints" value="2" type="4" />
+            <attribute id="NumStartingCivilAbilityPoints" value="1" type="4" />
+            <attribute id="NumStartingAttributePoints" value="3" type="4" />
+            <attribute id="NumStartingTalentPoints" value="1" type="4" />
+
+			<attribute id="AreStatsWeighted" value="1" type="19" />
+            <children>
+            <node id="EquipmentProperties">
+                    <children>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Human" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Cleric_Humans" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Cleric_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Dwarf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Cleric_Dwarves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Cleric_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Elf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Cleric_Elves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Cleric_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Lizard" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Cleric_Lizards" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Cleric_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Human" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Cleric_Humans" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Cleric_Start_Undead" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Dwarf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Cleric_Dwarves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Cleric_Start_Undead" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Elf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Cleric_Elves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Cleric_Start_Undead" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Lizard" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Cleric_Lizards" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Cleric_Start_Undead" type="22" />
+                        </node>
+                    </children>
+                </node>
+                <node id="AbilityChanges">
+                    <children>
+                        <node id="AbilityChange">
+                            <attribute id="Ability" value="FireSpecialist" type="23" />
+                            <attribute id="AmountIncreased" value="1" type="4" />
+                        </node>
+                        <node id="AbilityChange">
+                            <attribute id="Ability" value="WaterSpecialist" type="23" />
+                            <attribute id="AmountIncreased" value="1" type="4" />
+                        </node>
+                        <node id="AbilityChange">
+                            <attribute id="Ability" value="Barter" type="23" />
+                            <attribute id="AmountIncreased" value="1" type="4" />
+                        </node>
+                    </children>
+                </node>
+                <node id="AttributeChanges">
+                    <children>
+                        <node id="AttributeChange">
+                            <attribute id="AmountIncreased" value="3" type="4" />
+                            <attribute id="Attribute" value="CON" type="23" />
+                        </node>
+                    </children>
+                </node>
+                <node id="TalentsAdded">
+                    <children>
+                        <node id="TalentAdded">
+                            <attribute id="Talent" value="WarriorLoreGrenadeRange" type="23" />
+                        </node>
+                    </children>
+                </node>
+            </children>
+        </node>
+    </region>
+</save>

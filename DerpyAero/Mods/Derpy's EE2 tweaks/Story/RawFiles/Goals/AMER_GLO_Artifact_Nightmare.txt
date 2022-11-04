@@ -1,0 +1,117 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+CharacterDying(_Char)
+AND
+CharacterIsInCombat(_Char, 1)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Reactor, "Artifact_Nightmare", _)
+AND
+CombatGetIDForCharacter(_Char, _Combat)
+AND
+CombatGetIDForCharacter(_Reactor, _Combat)	//In the same combat.
+AND
+CharacterCanSee(_Reactor, _Char, 1)
+AND
+IsTagged(_Char, "TOTEM", 0)
+THEN
+PROC_AMER_Reaction_Request(_Reactor, _Char, "Artifact_Nightmare", "", "skill_cast_target_voodoo_01_cast", 0);
+
+
+PROC PROC_AMER_Reaction_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, "Artifact_Nightmare", (STRING)_RequestID, (INTEGER)_RitualBool)
+AND
+CharacterIsSummon(_Target, _Bool)
+AND
+QRY_AMER_Artifacts_Nightmare_GetDesiredStatus(_Bool)
+AND
+DB_AMER_GEN_OUTPUT_String(_Status)
+AND
+QRY_AMER_GEN_IterateCharsAroundObject_GetRequestIndex()
+AND
+DB_AMER_GEN_OUTPUT_Integer(_IteratorRequestIndex)
+THEN
+DB_AMER_Artifacts_Nightmare_Data(_IteratorRequestIndex, _Status);
+PlayEffectAtPosition("RS3_FX_GP_Impacts_Grenade_Terror_01", _X, _Y, _Z);
+PROC_AMER_GEN_IterateCharsAroundObject(_Target, 5.0, _Char, 10, "Artifact_Nightmare_FearIterator");	//Living enemies within 5.0m.
+
+
+QRY QRY_AMER_Artifacts_Nightmare_GetDesiredStatus((INTEGER)_Bool)
+AND
+DB_AMER_GEN_OUTPUT_String(_OldOutput)
+THEN
+NOT DB_AMER_GEN_OUTPUT_String(_OldOutput);
+
+QRY QRY_AMER_Artifacts_Nightmare_GetDesiredStatus(0)
+THEN
+DB_AMER_GEN_OUTPUT_String("AMER_TERRIFIED_APPLY");
+
+QRY QRY_AMER_Artifacts_Nightmare_GetDesiredStatus(1)
+THEN
+DB_AMER_GEN_OUTPUT_String("AMER_TERRIFIED_2");
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Artifact_Nightmare_FearIterator", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+AND
+DB_AMER_Artifacts_Nightmare_Data(_RequestID, _Status)
+THEN
+ApplyStatus(_Char, _Status, 12.0, 0, _SourceChar);
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Finished((INTEGER)_RequestID, "Artifact_Nightmare_FearIterator", (CHARACTERGUID)_SourceChar)
+AND
+DB_AMER_Artifacts_Nightmare_Data(_RequestID, _Status)
+THEN
+NOT DB_AMER_Artifacts_Nightmare_Data(_RequestID, _Status);
+//PROC_AMER_Artifacts_Nightmare_ApplyBuff(_SourceChar);
+
+
+PROC PROC_AMER_Reaction_Completed((CHARACTERGUID)_Char, "Artifact_Nightmare", _)
+THEN
+DB_AMER_Artifacts_Nightmare_Power(_Char, 0.0);
+PROC_AMER_Artifacts_Nightmare_ApplyBuff(_Char);
+
+PROC PROC_AMER_Artifacts_Nightmare_ApplyBuff((CHARACTERGUID)_Char)
+AND
+CombatGetIDForCharacter(_Char, _Combat)
+AND
+DB_CombatCharacters(_Enemy, _Combat)
+AND
+CharacterIsEnemy(_Enemy, _Char, 1)
+AND
+QRY_AMER_GEN_HasStatusFamily(_Enemy, "Terrified")
+AND
+DB_AMER_GEN_HasStatusFamily_OUTPUT(_, _Tier)
+AND
+Real(_Tier, _TierReal)
+AND
+DB_AMER_Artifacts_Nightmare_Power(_Char, _OldPower)
+AND
+RealSum(_OldPower, _TierReal, _NewPower)
+THEN
+NOT DB_AMER_Artifacts_Nightmare_Power(_Char, _OldPower);
+DB_AMER_Artifacts_Nightmare_Power(_Char, _NewPower);
+
+PROC PROC_AMER_Artifacts_Nightmare_ApplyBuff((CHARACTERGUID)_Char)
+AND
+DB_AMER_Artifacts_Nightmare_Power(_Char, _Power)
+AND
+_Power > 0.0
+AND
+RealProduct(_Power, 5.0, _Bonus)
+THEN
+PROC_AMER_GEN_RemoveAndApplyStatus(_Char, "AMER_NIGHTMARE", 12.0, _Char);
+PROC_AMER_StatusMod_ExtendedStat_TryApplyModForStatus(_Char, _Char, "AMER_NIGHTMARE", "PercAttributeIncrease", "Intelligence", "", "", _Bonus, "Artifact_Nightmare");
+
+PROC PROC_AMER_Artifacts_Nightmare_ApplyBuff((CHARACTERGUID)_Char)
+AND
+DB_AMER_Artifacts_Nightmare_Power(_Char, _Power)
+THEN
+NOT DB_AMER_Artifacts_Nightmare_Power(_Char, _Power);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"

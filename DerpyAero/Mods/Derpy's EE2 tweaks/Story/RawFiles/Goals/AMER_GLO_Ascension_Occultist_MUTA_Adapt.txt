@@ -1,0 +1,23 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//When you perform an Occultist reaction, gain 2 stacks of Adaptation.
+
+PROC PROC_AMER_Reaction_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, "AMER_Occultist", (STRING)_RequestID, (INTEGER)_RitualBool)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Occultist_MUTA_Adapt", _)
+THEN
+ProcObjectTimer(_Char, "Derpy_Ascension_Demilich", 150);
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "Derpy_Ascension_Demilich")
+THEN
+PROC_AMER_KeywordStat_Adaptation_Activate(_Char, _Char, 2);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

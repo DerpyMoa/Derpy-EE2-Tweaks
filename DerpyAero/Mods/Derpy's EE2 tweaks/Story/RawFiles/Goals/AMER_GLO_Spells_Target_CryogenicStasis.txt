@@ -1,0 +1,60 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, "Target_CryogenicStasis", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+AND
+_InfusCount < 2
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "PERMAFROST", "StasisDamageImmune", "", "", "", 1.0, "StasisDamageImmunity", 0, 2000, "SkillCast");
+
+
+//========================================================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_CryogenicStasis", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_GEN_CharacterCauseExplosion(_Target, _Target, "Projectile_Derpy_SCRIPT_DeflectiveTaunt");
+PlayEffect(_Target, "RS3_FX_Skills_Voodoo_Cast_Taunt_Icon_01", "Dummy_OverheadFX");
+PlayEffect(_Target, "RS3_FX_Skills_Voodoo_Cast_Curse_Shout_Root_01", "root");
+
+
+//========================================================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_CryogenicStasis", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "PERMAFROST", "StasisDamageReflect", "", "", "", 1.0, "StasisDamageReflect", 0, 2000, "SkillCast");
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+
+
+//========================================================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_CryogenicStasis", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+AND
+CharacterHasTalent(_Target, "WalkItOff", _HasTalent)
+AND
+Real(_HasTalent, _HasTalentReal)
+AND
+RealProduct(_HasTalentReal, 6.0, _HasTalentAdjusted)
+AND
+RealSum(12.0, _HasTalentAdjusted, _CorrectDuration)
+THEN
+ApplyStatus(_Target, "Derpy_CryoStasis_MaxAP", _CorrectDuration, 0, _Char);
+
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Hydrosophist"

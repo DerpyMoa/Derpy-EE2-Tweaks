@@ -1,0 +1,44 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_KeywordStat_Paucity_Activate((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, (GUIDSTRING)_Attacker, (REAL)_Duration)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Char, "Artifact_Famine", _)
+AND
+QRY_AMER_GEN_OncePerRound(_Char, "Artifact_Famine")
+THEN
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 5.0, _Char, 10, "Artifact_Famine_MosquitoSwarm");	//Living enemies within 5m.
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Artifact_Famine_MosquitoSwarm", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+DB_AMER_Artifacts_Famine_Targets(_RequestID, _Char);
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Finished((INTEGER)_RequestID, "Artifact_Famine_MosquitoSwarm", (CHARACTERGUID)_SourceChar)
+THEN
+PROC_AMER_Artifacts_Famine_Fire(_RequestID, _SourceChar);
+
+
+
+PROC PROC_AMER_Artifacts_Famine_Fire((INTEGER)_RequestID, (CHARACTERGUID)_SourceChar)
+THEN
+PlayEffect(_SourceChar, "RS3_FX_Skills_Voodoo_Cast_Aoe_Voodoo_Blood_Swarm_Root_01", "Dummy_Root");
+DB_AMER_GEN_OncePerRound(_SourceChar, "Artifact_Famine");
+CharacterStatusText(_SourceChar, "Artifact_Famine");
+PROC_AMER_GEN_CharacterCombatLogText(_SourceChar, "AMER_Artifact_Famine_Activated");
+
+PROC PROC_AMER_Artifacts_Famine_Fire((INTEGER)_RequestID, (CHARACTERGUID)_SourceChar)
+AND
+DB_AMER_Artifacts_Famine_Targets(_RequestID, _Target)
+THEN
+NOT DB_AMER_Artifacts_Famine_Targets(_RequestID, _Target);
+PlayEffect(_Target, "RS3_FX_Skills_Voodoo_Blood_Swarm_Target_01", "");
+PROC_AMER_GEN_CharacterCauseRemoteProjectileDamage(_SourceChar, _Target, "Projectile_AMER_SCRIPT_MosquitoSwarm");
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"

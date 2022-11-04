@@ -1,0 +1,23 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Predator activates on the target of an allied Predator reaction, if it was an enemy.
+
+PROC PROC_AMER_KeywordStat_Predator_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z)
+AND
+DB_AMER_Ascension_SpecialLogic(_Reactor, "Ascension_Predator_ACT_AllyPredator", _)
+AND
+_Char != _Reactor
+AND
+CharacterIsAlly(_Char, _Reactor, 1)
+AND
+CharacterIsEnemy(_Reactor, _Target, 1)
+THEN
+PROC_AMER_Reaction_Request(_Reactor, _Target, "AMER_Predator", "Ascension_Predator_ACT_AllyPredator", "", 1);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

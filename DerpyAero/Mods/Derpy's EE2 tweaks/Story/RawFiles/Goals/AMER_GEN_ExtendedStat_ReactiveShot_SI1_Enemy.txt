@@ -1,0 +1,21 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Combat_TurnStarted((CHARACTERGUID)_Char, 0)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Char, "ReactiveShot_SI1_Enemy", _, _, _, _Amount)
+AND
+QRY_AMER_ExtendedStat_GetModSources(_Char, "ReactiveShot_SI1_Enemy", "", "", "", _Amount)
+AND
+DB_AMER_ExtendedStat_GetModSources_OUTPUT(_Source, _)
+THEN
+PROC_AMER_Reaction_Request(_Source, _Char, "AMER_Predator", "Derpy_ReactiveShot_SI1", "", 1);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GEN_Stats_ExtendedStats"

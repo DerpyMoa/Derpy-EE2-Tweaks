@@ -1,0 +1,33 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+NRD_OnHit((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, _Damage, _Handle)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Char, "FakeMeleeHit", _, _, _, _)
+AND
+NOT DB_Derpy_FakeMeleeHit_OncePerTarget(_Target, _Char)
+AND
+_Target != _Char
+AND
+NRD_StatusGetInt(_Target, _Handle, "Missed", 0)
+THEN
+NRD_StatusSetInt(_Target, _Handle, "HitWithWeapon", 1);
+DB_Derpy_FakeMeleeHit_OncePerTarget(_Target, _Char);
+ProcObjectTimer(_Char, "Derpy_FakeMeleeHit_OncePerTarget_Cleanup", 2000);
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "Derpy_FakeMeleeHit_OncePerTarget_Cleanup")
+AND
+DB_Derpy_FakeMeleeHit_OncePerTarget(_Target, _Char)
+THEN
+NOT DB_Derpy_FakeMeleeHit_OncePerTarget(_Target, _Char);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GEN_Stats_ExtendedStats"

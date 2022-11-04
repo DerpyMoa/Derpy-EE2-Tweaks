@@ -1,0 +1,43 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_FTJ_SW_Witch_4014aee0-56f1-47e0-a8eb-89c4b5a1da83);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_FTJ_SW_Witch_Zombie_daa5de44-d3b9-47c3-aed5-9969ca29ce61);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_FTJ_SW_Witch_BloodZombie_02_9d512d08-5e51-45ec-b06e-ff90fea7f6de);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_FTJ_SW_Witch_BloodZombie_03_5549433c-5dec-4701-9733-8fb06009dfff);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_FTJ_SW_Witch_BloodZombie_04_b714cbca-6c44-4d4d-918c-50269f773584);
+
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_FTJ_SW_Witch_4014aee0-56f1-47e0-a8eb-89c4b5a1da83, "Target_EnemyMosquitoSwarm");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_FTJ_SW_Witch_4014aee0-56f1-47e0-a8eb-89c4b5a1da83, "Target_EnemyInfect");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_FTJ_SW_Witch_4014aee0-56f1-47e0-a8eb-89c4b5a1da83, "Rain_EnemyBlood");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_FTJ_SW_Witch_4014aee0-56f1-47e0-a8eb-89c4b5a1da83, "Shout_EnemyElectricFence");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_FTJ_SW_Witch_4014aee0-56f1-47e0-a8eb-89c4b5a1da83, "Shout_EnemyVacuumAura");
+
+KBSECTION
+
+IF
+CharacterPrecogDying(CHARACTERGUID_S_FTJ_SW_Witch_4014aee0-56f1-47e0-a8eb-89c4b5a1da83)
+AND
+GetPosition(CHARACTERGUID_S_FTJ_SW_Witch_4014aee0-56f1-47e0-a8eb-89c4b5a1da83,_X,_Y,_Z)
+AND
+CreateItemTemplateAtPosition("LOOT_BackPack_A_6c70c298-aa29-418f-a659-f8e0b5f5fa60", _X, _Y, _Z, _Backpack)
+THEN
+GenerateTreasure(_Backpack, "MiniBoss_ProteanAlways", 8, NULL_00000000-0000-0000-0000-000000000000);
+MoveAllItemsTo(_Backpack, CHARACTERGUID_S_FTJ_SW_Witch_4014aee0-56f1-47e0-a8eb-89c4b5a1da83, 0, 0, 1);
+PlaySound(_Backpack,"GP_ScriptedEvent_HOE_Channel_Spell_Final");
+PlayEffect(_Backpack, "AMER_RS3_FX_LootShine_Unique", "");
+ItemDestroy(_Backpack);
+SetOnStage(_Backpack, 0);
+GoalCompleted;
+
+
+PROC
+ProcRegionEnded("FJ_FortJoy_Main")
+THEN
+GoalCompleted;
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "FortJoy"

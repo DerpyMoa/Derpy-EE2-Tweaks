@@ -1,0 +1,77 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Summoning_Totem_DoNotApplyLifetimeStatus(_Summon, _Owner, _Summoning)
+AND
+GetTemplate(_Summon, "Summons_Ward_Conductor_e6e4943d-c922-4881-b5b0-670580c15bf8")
+THEN
+DB_NOOP();
+
+
+PROC PROC_AMER_Summoning_InitSummon((CHARACTERGUID)_Summon, (CHARACTERGUID)_Owner, "Summons_Ward_Conductor_e6e4943d-c922-4881-b5b0-670580c15bf8", (INTEGER)_BossBool)
+THEN
+PROC_Derpy_TeslaCoil_Init(_Summon, _Owner);
+PROC_AMER_GEN_CharacterCauseExplosion(_Owner, _Summon, "Projectile_Derpy_SCRIPT_TeslaCoilSurface");
+
+
+PROC PROC_Derpy_TeslaCoil_Init((CHARACTERGUID)_Summon, (CHARACTERGUID)_Owner)
+AND
+NOT DB_AMER_Source_Infusion_Pending(_Owner, _)
+THEN
+PROC_AMER_ExtendedStat_CharacterAddStat(_Summon, "TeslaCoil_SI0", "", "", "", 1.0);
+ApplyStatus(_Summon, "AMER_SUMMONLIFE", 12.0, 1, _Summon);
+
+
+PROC PROC_Derpy_TeslaCoil_Init((CHARACTERGUID)_Summon, (CHARACTERGUID)_Owner)
+AND
+DB_AMER_Source_Infusion_Pending(_Owner, _InfusCount)
+AND
+_InfusCount == 1
+THEN
+PROC_AMER_ExtendedStat_CharacterAddStat(_Summon, "TeslaCoil_SI1", "", "", "", 1.0);
+ApplyStatus(_Summon, "AMER_SUMMONLIFE", 18.0, 1, _Summon);
+
+
+PROC PROC_Derpy_TeslaCoil_Init((CHARACTERGUID)_Summon, (CHARACTERGUID)_Owner)
+AND
+DB_AMER_Source_Infusion_Pending(_Owner, _InfusCount)
+AND
+_InfusCount == 2
+THEN
+PROC_AMER_ExtendedStat_CharacterAddStat(_Summon, "TeslaCoil_SI2", "", "", "", 1.0);
+ApplyStatus(_Summon, "AMER_SUMMONLIFE", 18.0, 1, _Summon);
+ApplyStatus(_Summon, "Derpy_TeslaCoil_Conductor_1", 6.0, 1, _Summon);
+
+
+PROC PROC_Derpy_TeslaCoil_Init((CHARACTERGUID)_Summon, (CHARACTERGUID)_Owner)
+AND
+DB_AMER_Source_Infusion_Pending(_Owner, _InfusCount)
+AND
+_InfusCount == 3
+THEN
+PROC_AMER_ExtendedStat_CharacterAddStat(_Summon, "TeslaCoil_SI3", "", "", "", 1.0);
+ApplyStatus(_Summon, "AMER_SUMMONLIFE", 24.0, 1, _Summon);
+ApplyStatus(_Summon, "Derpy_TeslaCoil_Conductor_2", 6.0, 1, _Summon);
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_Apportation", 1)
+THEN
+DB_NOOP();
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_Apportation", 2)
+THEN
+DB_NOOP();
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_Apportation", 3)
+THEN
+DB_NOOP();
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Aerotheurge"

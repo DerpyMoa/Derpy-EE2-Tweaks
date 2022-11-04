@@ -1,0 +1,66 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Projectile_EnemyChainLightning", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "AirSpecialist", 25.0, 4.0, 2000, "SkillCast");
+
+
+//=======================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Projectile_EnemyChainLightning", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "AirSpecialist", 40.0, 8.0, 2000, "SkillCast");
+
+
+//=======================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Projectile_EnemyChainLightning", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_Source_Infusion_RitualRequest(_Char, _X, _Y, _Z, _X, _Y, _Z, 13.0, "InfusionRitual_ChainLightning_ChainLightning", "", "AirSpecialist", 1, "skill_cast_beam_air_01_cast", 0, 1);
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Projectile_EnemyChainLightning", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+AND
+QRY_AMER_Reaction_CountHeldReactions("InfusionRitual_ChainLightning_ChainLightning")
+AND
+DB_AMER_GEN_OUTPUT_Integer(_RitualSize)
+AND
+Real(_RitualSize, _RitualSizeReal)
+AND
+RealProduct(_RitualSizeReal, 3.0, _Bonus)
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "AirSpecialist", 0.0, _Bonus);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Projectile_EnemyChainLightning", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+ApplyStatus(_Char, "AMER_CHAINLIGHTNING_INFUS_3", 6.0, 0, _Char);
+PROC_AMER_Reaction_ApproveHeldReactions("InfusionRitual_ChainLightning_ChainLightning");
+
+
+PROC PROC_AMER_Reaction_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, "InfusionRitual_ChainLightning_ChainLightning", (STRING)_RequestID, (INTEGER)_RitualBool)
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Air_Lightning_Cast_Hand_Horizontal_01", "Dummy_CastFX");
+PROC_AMER_GEN_ShootProjectileAtPos(_Char, _X, _Y, _Z, "Projectile_ChainLightning");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Aerotheurge"

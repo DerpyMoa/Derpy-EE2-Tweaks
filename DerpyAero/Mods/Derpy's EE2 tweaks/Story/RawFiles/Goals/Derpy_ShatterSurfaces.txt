@@ -1,0 +1,18 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_Derpy_ShatterSurfaces("SurfaceWaterFrozen");
+DB_Derpy_ShatterSurfaces("SurfaceWaterFrozenBlessed");
+DB_Derpy_ShatterSurfaces("SurfaceWaterFrozenCursed");
+DB_Derpy_ShatterSurfaces("SurfaceBloodFrozen");
+DB_Derpy_ShatterSurfaces("SurfaceBloodFrozenBlessed");
+DB_Derpy_ShatterSurfaces("SurfaceBloodFrozenCursed");
+
+KBSECTION
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

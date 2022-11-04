@@ -1,0 +1,36 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Combat_TurnStarted((CHARACTERGUID)_Char, 0)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Char, "TeslaCoil_SI1", _, _, _, _)
+AND
+QRY_AMER_GEN_GetOwner(_Char)
+AND
+DB_AMER_GEN_OUTPUT_Char(_Owner)
+THEN
+PROC_AMER_GEN_Shoot_Delayed("Explosion", _Owner, _Char, "Projectile_Derpy_SCRIPT_TeslaCoil_SI1", 0, 200);
+ApplyStatus(_Char, "AMER_CHARGED", 12.0, 1, _Owner);
+
+
+PROC PROC_AMER_GEN_FilteredStatus_Removed((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, "AMER_SUMMONLIFE")
+AND
+DB_AMER_ExtendedStat_AddedStat(_Char, "TeslaCoil_SI1", _, _, _, _)
+AND
+GetTemplate(_Char, "Summons_Ward_Conductor_e6e4943d-c922-4881-b5b0-670580c15bf8")
+THEN
+ProcObjectTimer(_Char, "TeslaCoil_DelayedDeath_SI1", 500);
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "TeslaCoil_DelayedDeath_SI1")
+THEN
+PROC_AMER_GEN_CharacterDie(_Char, 0, "Electrocution", NULL_00000000-0000-0000-0000-000000000000);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GEN_Stats_ExtendedStats"

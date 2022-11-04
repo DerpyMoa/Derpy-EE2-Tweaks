@@ -1,0 +1,36 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_GEN_FilteredStatus_Applied(_Victim, _Caster, "SHACKLES_OF_PAIN", _Turns)
+THEN
+DB_Derpy_Shackles(_Caster, _Victim);
+
+PROC PROC_AMER_GEN_FilteredStatus_Removed((CHARACTERGUID)_Victim, _, "SHACKLES_OF_PAIN")
+AND
+DB_Derpy_Shackles(_Caster, _Victim)
+THEN
+NOT DB_Derpy_Shackles(_Caster, _Victim);
+
+
+PROC PROC_AMER_Combat_TurnEnded(_, _Victim, _)
+AND
+DB_Derpy_Shackles(_Caster, _Victim)
+AND
+HasActiveStatus(_Victim, "SHACKLES_OF_PAIN", 1)
+AND
+GetDistanceTo(_Victim, _Caster, _Distance)
+AND
+_Distance >= 13.0
+THEN
+RemoveStatus(_Victim, "SHACKLES_OF_PAIN");
+ApplyStatus(_Victim, "AMER_ENTHRALLED_APPLY", 12.0, 1, _Caster);
+PlayEffect(_Victim, "RS3_FX_Skills_Divine_Cast_Shout_BreakTheShackles_01");
+PlayEffect(_Victim, "RS3_FX_Skills_Voodoo_DominateMind_Impact_Root_01");
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

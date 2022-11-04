@@ -1,0 +1,49 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Shout_EnemyContamination", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 1)
+THEN
+PROC_AMER_GEN_SimulatedExplosion_Delayed(_Char, 13.0, _Char, 266, "Projectile_AMER_SCRIPT_Contamination_SingleHit", "RS3_FX_Skills_Earth_Cast_Aoe_Voodoo_Root_01_Poison_Texkey", "", "Contamination_SI", 0, 300); //Living enemies LoS.
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Shout_EnemyContamination", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 2)
+THEN
+PROC_AMER_GEN_SimulatedExplosion_Delayed(_Char, 13.0, _Char, 266, "Projectile_AMER_SCRIPT_Contamination_Infusion_2_SingleHit", "RS3_FX_Skills_Earth_Cast_Aoe_Voodoo_Root_01_Poison_Texkey", "", "Contamination_SI", 1, 300); //Living enemies LoS.
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_EnemyContamination", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_Source_Infusion_RitualRequest(_Char, _Char, _Char, 15.0, "InfusionRitual_Contamination_3", "", "EarthSpecialist", 1, "skill_cast_aoe_voodoo_01_cast", 0, 1);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Shout_EnemyContamination", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+AND
+QRY_AMER_Reaction_CountHeldReactions("InfusionRitual_Contamination_3")
+AND
+DB_AMER_GEN_OUTPUT_Integer(_Participants)
+AND
+IntegerSum(3, _Participants, _Repeats)
+THEN
+PROC_AMER_GEN_SimulatedExplosion_Delayed(_Char, 13.0, _Char, 266, "Projectile_AMER_SCRIPT_Contamination_Infusion_2_SingleHit", "RS3_FX_Skills_Earth_Cast_Aoe_Voodoo_Root_01_Poison_Texkey", "", "Contamination_SI", _Repeats, 250); //Living enemies LoS.
+PROC_AMER_Reaction_ApproveHeldReactions("InfusionRitual_Contamination_3");
+
+
+PROC PROC_AMER_Reaction_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, "InfusionRitual_Contamination_3", (STRING)_RequestID, (INTEGER)_RitualBool)
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Earth_Cast_Aoe_Voodoo_Root_01","");
+PlayEffect(_Char, "RS3_FX_Skills_Earth_Cast_Aoe_Voodoo_Hand_01","Dummy_R_HandFX");
+PlayEffect(_Char, "RS3_FX_Skills_Earth_Cast_Aoe_Voodoo_Hand_01","Dummy_L_HandFX");
+PROC_AMER_GEN_SimulatedExplosion(_Char, 13.0, _Char, 266, "Projectile_AMER_SCRIPT_Contamination_SingleHit", "RS3_FX_Skills_Earth_Cast_Aoe_Voodoo_Root_01_Poison_Texkey", ""); //Living enemies LoS.
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Geomancer"

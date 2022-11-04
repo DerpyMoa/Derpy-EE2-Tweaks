@@ -1,0 +1,80 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+PROC_Derpy_TryDeltamodPatching();
+
+KBSECTION
+
+PROC PROC_AMER_Deltamods_InitDeclarations()
+THEN
+PROC_Derpy_DeltamodPatching();
+
+
+PROC PROC_Derpy_TryDeltamodPatching()
+AND
+DB_CurrentLevel(_Level)
+AND
+IsCharacterCreationLevel(_level, 0)
+THEN
+PROC_Derpy_DeltamodPatching();
+
+
+PROC PROC_Derpy_DeltamodPatching()
+THEN
+PROC_AMER_Deltamods_PatchMod_AddPrefixToBatch("InfusEffect_DeepFreeze");
+PROC_AMER_Deltamods_PatchMod_AddPrefixToBatch("InfusEffect_PressureSpike");
+PROC_AMER_Deltamods_PatchMod_AddPrefixToBatch("InfusEffect_Vaporize");
+PROC_AMER_Deltamods_PatchMod_AddPrefixToBatch("InfusEffect_TurnToOil");
+PROC_AMER_Deltamods_PatchMod_AddPrefixToBatch("InfusEffect_DominateMind");
+PROC_AMER_Deltamods_PatchMod_AddPrefixToBatch("InfusEffect_HailStrike");
+PROC_AMER_Deltamods_PatchMod_AddPrefixToBatch("InfusEffect_BloodSucker");
+PROC_AMER_Deltamods_PatchMod_AddPrefixToBatch("InfusEffect_AspectOfTheSpider");
+
+
+PROC_AMER_Deltamods_ExtendedStat_Add_FromValue("InfusEffect_DeepFreeze", "SourceInfus_Effect", "Shout_BoneCage", "", "");
+
+PROC_AMER_Deltamods_ExtendedStat_Add_FromValue("InfusEffect_PressureSpike", "SourceInfus_Effect", "Summon_BonePile", "", "");
+
+PROC_AMER_Deltamods_ExtendedStat_Add_FromValue("InfusEffect_Vaporize", "SourceInfus_Effect", "Projectile_InfectiousFlame", "", "");
+
+PROC_AMER_Deltamods_ExtendedStat_Add_FromValue("InfusEffect_TurnToOil", "SourceInfus_Effect", "Projectile_SkyShot", "", "");
+
+PROC_AMER_Deltamods_ExtendedStat_Add_FromValue("InfusEffect_DominateMind", "SourceInfus_Effect", "Shout_Whirlwind", "", "");
+
+PROC_AMER_Deltamods_ExtendedStat_Add_FromValue("InfusEffect_HailStrike", "SourceInfus_Effect", "Target_Cannibalize", "", "");
+
+PROC_AMER_Deltamods_ExtendedStat_Add_FromValue("InfusEffect_BloodSucker", "SourceInfus_Effect", "Target_DecayingTouch", "", "");
+
+PROC_AMER_Deltamods_ExtendedStat_Add_FromValue("InfusEffect_AspectOfTheSpider", "SourceInfus_Effect", "Shout_BlindingRadiance", "", "");
+
+// Thanks Amer
+
+PROC_AMER_Deltamods_PatchMod_InitBatch();
+
+NOT DB_AMER_Deltamods_Mod_ExtendedStat("Boost_Armor_InfusEffect_DeepFreeze_1", "SourceInfus_Effect", "Cone_Shatter", "", "", 1.0);
+NOT DB_AMER_Deltamods_Mod_ExtendedStat("Boost_Armor_InfusEffect_DeepFreeze_1", "SourceInfus_Effect", "Target_MosquitoSwarm", "", "", 1.0);
+
+NOT DB_AMER_Deltamods_Mod_ExtendedStat("Boost_Armor_InfusEffect_PressureSpike_1", "SourceInfus_Effect", "Target_PressureSpike", "", "", 1.0);
+
+NOT DB_AMER_Deltamods_Mod_ExtendedStat("Boost_Armor_InfusEffect_Vaporize_1", "SourceInfus_Effect", "Target_Vaporize", "", "", 1.0);
+NOT DB_AMER_Deltamods_Mod_ExtendedStat("Boost_Armor_InfusEffect_Vaporize_1", "SourceInfus_Effect", "Zone_LaserRay", "", "", 1.0);
+
+NOT DB_AMER_Deltamods_Mod_ExtendedStat("Boost_Armor_InfusEffect_TurnToOil_1", "SourceInfus_Effect", "Target_Condense", "", "", 1.0);
+NOT DB_AMER_Deltamods_Mod_ExtendedStat("Boost_Armor_InfusEffect_TurnToOil_1", "SourceInfus_Effect", "Target_ElementalArrowheads", "", "", 1.0);
+
+NOT DB_AMER_Deltamods_Mod_ExtendedStat("Boost_Armor_InfusEffect_DominateMind_1", "SourceInfus_Effect", "Target_Charm", "", "", 1.0);
+NOT DB_AMER_Deltamods_Mod_ExtendedStat("Boost_Armor_InfusEffect_DominateMind_1", "SourceInfus_Effect", "Shout_AMER_Enrage", "", "", 1.0);
+
+NOT DB_AMER_Deltamods_Mod_ExtendedStat("Boost_Armor_InfusEffect_HailStrike_1", "SourceInfus_Effect", "ProjectileStrike_HailStrike", "", "", 1.0);
+
+NOT DB_AMER_Deltamods_Mod_ExtendedStat("Boost_Armor_InfusEffect_BloodSucker_1", "SourceInfus_Effect", "Target_BloodBubble", "", "", 1.0);
+
+NOT DB_AMER_Deltamods_Mod_ExtendedStat("Boost_Armor_InfusEffect_AspectOfTheSpider_1", "SourceInfus_Effect", "Shout_SpiderLegs", "", "", 1.0);
+
+PROC_AMER_Deltamods_PatchMod_ExecBatch();
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

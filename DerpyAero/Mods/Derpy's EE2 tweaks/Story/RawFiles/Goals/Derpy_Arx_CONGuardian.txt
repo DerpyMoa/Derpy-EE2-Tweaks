@@ -1,0 +1,14 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CON03_ContaminationGuardian_93b0ac12-4884-4902-9b03-cedcb4f8a179);
+
+KBSECTION
+
+
+EXITSECTION
+
+
+ENDEXITSECTION
+ParentTargetEdge "ARX"

@@ -1,0 +1,77 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, "Target_Supercharge", 0, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_Spells_BatteredHarried_PayAP(_Char, 3, 0, 1);
+
+
+//=========================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_Supercharge", 1)
+THEN
+PROC_AMER_Spells_BatteredHarried_PayAP(_Char, 3, 1, 1);
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_Supercharge", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_StatusMod_AddFlexStat_Scaling(_Char, "SUPERCHARGE", "Stat", "CRITICALCHANCE", "Supercharge_Infus", 0, "Ability", "Summoning", 15.0, 3.0, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddFlexStat_Scaling(_Char, "SUPERCHARGE", "Stat", "ACCURACYBOOST", "Supercharge_Infus", 0, "Ability", "Summoning", 15.0, 3.0);
+
+
+//=========================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_Supercharge", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_Spells_BatteredHarried_PayAP(_Char, 3, 1, 0);
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "Status_AddDuration", "SUPERCHARGE", "", "", 1.0);
+PROC_AMER_TempStat_StatusMod_AddFlexStat_Scaling(_Char, "SUPERCHARGE", "Stat", "CRITICALCHANCE", "Supercharge_Infus", 0, "Ability", "Summoning", 15.0, 3.0);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Target_Supercharge", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+
+
+//=========================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_Supercharge", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "Status_AddDuration", "SUPERCHARGE", "", "", 1.0);
+PROC_AMER_TempStat_StatusMod_AddFlexStat_Scaling(_Char, "SUPERCHARGE", "Stat", "DAMAGEBOOST", "Supercharge_Infus", 0, "Ability", "Summoning", 25.0, 4.0);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_Supercharge", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+DB_AMER_IterateCharsAroundObject_Exclusion(_Target);    //Don't double-cast on target.
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 13.0, _Char, 12, "AMER_SourceInfusion_Supercharge_3");	//Living allies.
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "AMER_SourceInfusion_Supercharge_3", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+AND
+CharacterIsSummon(_Char, 1)
+THEN
+PlayEffect(_Char, "RS3_FX_GP_Impacts_Air_LightningBolt_Vertical_01", "root");
+ApplyStatus(_Char, "SUPERCHARGE", 12.0, 0, _SourceChar);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Summoning"

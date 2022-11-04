@@ -1,0 +1,45 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Quake_Earthquake", 1)
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, 1.0, 0.15, 0.0, "Ability", "EarthSpecialist")
+AND
+DB_AMER_GEN_OUTPUT_Real(_Scaling)
+AND
+Integer(_Scaling, _ScalingInt)
+THEN
+PROC_AMER_BatteredHarried_ManipAroundObject(_Char, 13.0, 1, _ScalingInt, _Char, 10);	//Only living enemies.
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Quake_Earthquake", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, 2.0, 0.30, 0.0, "Ability", "EarthSpecialist")
+AND
+DB_AMER_GEN_OUTPUT_Real(_Scaling)
+AND
+Integer(_Scaling, _ScalingInt)
+THEN
+PROC_AMER_BatteredHarried_ManipAroundObject(_Char, 13.0, 1, _ScalingInt, _Char, 10);	//2 Harried, Only living enemies.
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Quake_Earthquake", 2)
+THEN
+PROC_AMER_GEN_SimulatedExplosion_Delayed(_Char, 13.0, _Char, 266, "Projectile_Derpy_SCRIPT_Earthquake_Earth_SingleHit", "RS3_FX_Skills_Earth_Cast_Shout_Earthquake_Root_01", "", "Earthquake_SI", 0, 450); //Living enemies LoS.
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Quake_Earthquake", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_GEN_SimulatedExplosion_Delayed(_Char, 13.0, _Char, 266, "Projectile_Derpy_SCRIPT_Earthquake_Earth_SingleHit", "RS3_FX_Skills_Earth_Cast_Shout_Earthquake_Root_01", "", "Earthquake_SI", 2, 450); //Living enemies LoS.
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Geomancer"

@@ -1,0 +1,40 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_EnemyWhirlwind", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "ACCURACYBOOST", "Ability", "WarriorLore", 5.0, 1.0, 2000, "SkillCast");
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "WarriorLore", 25.0, 4.0, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_EnemyWhirlwind", 2)
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "WarriorLore", 20.0, 4.0, 2000, "SkillCast");
+PROC_AMER_GEN_ApplyStatusUntilEndOfTurn(_Char, "Derpy_EnemyWhirlwind_SI2");
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_EnemyWhirlwind", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "WarriorLore", 40.0, 8.0);
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_EnemyWhirlwind", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_GEN_Shoot_Delayed("Explosion", _Char, _Char, "Projectile_AMER_SCRIPT_Whirlwind", 100);
+ApplyStatus(_Char, "Derpy_EnemyWhirlwind_SI2", 18.0, 0, _Char);
+PlayEffect(_Char, "RS3_FX_Skills_Fire_Cast_Attack_Round_Hand_01", "Dummy_L_Hand");
+PlayEffect(_Char, "RS3_FX_Skills_Fire_Cast_Attack_Round_Hand_01", "Dummy_R_Hand");
+PlayEffect(_Char, "RS3_FX_Skills_Fire_Cast_Attack_Round_Root_01", "Dummy_Root");
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Warfare"

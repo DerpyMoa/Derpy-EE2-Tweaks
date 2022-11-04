@@ -1,0 +1,71 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_CharacterReceivedDamage((CHARACTERGUID)_CharHurt, (CHARACTERGUID)_Source, (REAL)_DamageTotal, (REAL)_DamageVit, (REAL)_DamagePhys, (REAL)_DamageMagic)
+AND
+DB_AMER_Artifacts_EquippedEffects(_CharHurt, "Artifact_Zeal", _)
+AND
+CharacterIsInCombat(_CharHurt, 1)
+AND
+QRY_Derpy_Zeal_CanUse(_CharHurt)
+AND
+RealProduct(_DamageVit, 0.5, _HealVit)
+AND
+RealProduct(_DamagePhys, 0.5, _HealPhys)
+AND
+RealProduct(_DamageMagic, 0.5, _HealMagic)
+AND
+QRY_AMER_GEN_OncePerTurn(_CharHurt, "Derpy_Artifact_Zeal")
+THEN
+PROC_Derpy_Zeal_Efx(_CharHurt);
+ProcObjectTimerCheckLaunch(_CharHurt, "Derpy_Artifact_Zeal_HealingWindow", 2000);
+PROC_AMER_GEN_Heal(_CharHurt, _HealVit, "Vitality", _CharHurt, 2, 1);
+PROC_AMER_GEN_Heal(_CharHurt, _HealPhys, "Armor", _CharHurt, 2, 1);
+PROC_AMER_GEN_Heal(_CharHurt, _HealMagic, "MagicArmor", _CharHurt, 2, 1);
+
+
+PROC PROC_Derpy_Zeal_Efx((CHARACTERGUID)_CharHurt)
+AND
+NOT DB_ObjectTimer(_CharHurt, _, "Derpy_Artifact_Zeal_HealingWindow")
+THEN
+PlayEffect(_CharHurt, "RS3_FX_GP_Status_Heal_Impact_01");
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_CharHurt, "Derpy_Artifact_Zeal_HealingWindow")
+THEN
+PROC_AMER_GEN_OncePerTurn_Store(_CharHurt, "Derpy_Artifact_Zeal");
+
+
+//=======================================================================================================================
+
+
+QRY QRY_Derpy_Zeal_CanUse((CHARACTERGUID)_CharHurt)
+AND
+QRY_AMER_GEN_PlayerGetWeaponStyle(_CharHurt)
+AND
+DB_AMER_GEN_OUTPUT_String("TwoHanded")
+THEN
+DB_NOOP();
+
+QRY QRY_Derpy_Zeal_CanUse((CHARACTERGUID)_CharHurt)
+AND
+CharacterHasSkill(_CharHurt, "Target_SingleHandedAttack", 1)
+THEN
+DB_NOOP();
+
+
+//=======================================================================================================================
+
+
+PROC PROC_AMER_ActionPoints_BasicAttackCost_PostManipulation((CHARACTERGUID)_Char, (INTEGER)_Cost)
+THEN
+DB_NOOP(1);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"

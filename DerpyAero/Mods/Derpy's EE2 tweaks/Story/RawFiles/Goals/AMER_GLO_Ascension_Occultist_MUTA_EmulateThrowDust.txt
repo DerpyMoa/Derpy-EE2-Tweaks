@@ -1,0 +1,28 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//If you have 3 or more stacks of Adaptation when you perform an Occultist reaction, lose 1 stack of Adaptation and emulate the effects of Throw Dust.
+
+PROC PROC_AMER_Reaction_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, "AMER_Occultist", (STRING)_RequestID, (INTEGER)_RitualBool)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Occultist_MUTA_EmulateThrowDust", _)
+AND
+DB_AMER_KeywordStat_Adaptation_CurrentStack(_Char, _StackCount)
+AND
+_StackCount >= 5
+THEN
+PROC_AMER_GEN_CharacterCauseExplosion(_Char, _Target, "Projectile_Derpy_SCRIPT_ThrowDust_Doppelganger");
+PROC_AMER_GEN_CharacterCombatLogText(_Char, "AMER_Ascension_Occultist_MUTA_EmulateThrowDust");
+ProcObjectTimer(_Char, "Derpy_Ascension_Doppelganger", 100);
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "Derpy_Ascension_Doppelganger")
+THEN
+PROC_AMER_KeywordStat_Adaptation_AddStack(_Char, _Char, -2);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

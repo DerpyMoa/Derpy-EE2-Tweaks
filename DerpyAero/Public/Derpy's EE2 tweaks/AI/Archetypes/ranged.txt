@@ -1,0 +1,3 @@
+// Ranged characters don't like enemies nearby.
+MULTIPLIER_ENDPOS_ENEMIES_NEARBY				0.00	//Original: 0.10. To 0.009 on 8-31-2020, results in only running if >=2 enemies in melee. // Derpy on 25/11/2021: from 0.009 to 0.00	
+

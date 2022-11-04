@@ -1,0 +1,59 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_RC_OIL_Tomb_Ataraxian_b844294c-62c2-4ff8-82f1-f874b9e4352d);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_Derpy_AtaraxianAgent_000_0f2ed084-e5ef-49ed-a4ee-b6c4e6e48b71);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_Derpy_AtaraxianAgent_001_a79d65f2-cc40-4be3-adab-3d97f1be6278);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_Derpy_AtaraxianAgent_002_14fd9ae0-6405-4cd5-9570-7feb0923367f);
+
+DB_RC_OIL_TombEternal(CHARACTERGUID_Derpy_AtaraxianAgent_000_0f2ed084-e5ef-49ed-a4ee-b6c4e6e48b71);
+DB_RC_OIL_TombEternal(CHARACTERGUID_Derpy_AtaraxianAgent_001_a79d65f2-cc40-4be3-adab-3d97f1be6278);
+DB_RC_OIL_TombEternal(CHARACTERGUID_Derpy_AtaraxianAgent_002_14fd9ae0-6405-4cd5-9570-7feb0923367f);
+
+KBSECTION
+
+IF
+RegionStarted(_)
+AND
+QueryOnlyOnce("Derpy_AeteraStart")
+THEN
+SetOnStage(CHARACTERGUID_Derpy_AtaraxianAgent_000_0f2ed084-e5ef-49ed-a4ee-b6c4e6e48b71, 0);
+SetOnStage(CHARACTERGUID_Derpy_AtaraxianAgent_001_a79d65f2-cc40-4be3-adab-3d97f1be6278, 0);
+SetOnStage(CHARACTERGUID_Derpy_AtaraxianAgent_002_14fd9ae0-6405-4cd5-9570-7feb0923367f, 0);
+
+IF
+TimerFinished("RC_OIL_Tomb_SecondHoundAppears")
+THEN
+CharacterAppear(CHARACTERGUID_Derpy_AtaraxianAgent_000_0f2ed084-e5ef-49ed-a4ee-b6c4e6e48b71,1,"");
+CharacterAppear(CHARACTERGUID_Derpy_AtaraxianAgent_001_a79d65f2-cc40-4be3-adab-3d97f1be6278,1,"");
+CharacterAppear(CHARACTERGUID_Derpy_AtaraxianAgent_002_14fd9ae0-6405-4cd5-9570-7feb0923367f,1,"");
+
+IF
+CharacterReceivedDamage(CHARACTERGUID_S_RC_OIL_Tomb_Ataraxian_b844294c-62c2-4ff8-82f1-f874b9e4352d, _, _)
+AND
+QueryOnlyOnce("Derpy_Aetera_FailSafe")
+THEN
+SetFaction(CHARACTERGUID_Derpy_AtaraxianAgent_000_0f2ed084-e5ef-49ed-a4ee-b6c4e6e48b71,"Evil NPC");
+SetFaction(CHARACTERGUID_Derpy_AtaraxianAgent_001_a79d65f2-cc40-4be3-adab-3d97f1be6278,"Evil NPC");
+SetFaction(CHARACTERGUID_Derpy_AtaraxianAgent_002_14fd9ae0-6405-4cd5-9570-7feb0923367f,"Evil NPC");
+
+PROC
+Proc_RC_OIL_AtaraxianDialogEnded((CHARACTERGUID)_Player)
+AND
+QueryOnlyOnce("Derpy_Aetera_JoinCombat")
+THEN
+SetFaction(CHARACTERGUID_Derpy_AtaraxianAgent_000_0f2ed084-e5ef-49ed-a4ee-b6c4e6e48b71,"Evil NPC");
+SetFaction(CHARACTERGUID_Derpy_AtaraxianAgent_001_a79d65f2-cc40-4be3-adab-3d97f1be6278,"Evil NPC");
+SetFaction(CHARACTERGUID_Derpy_AtaraxianAgent_002_14fd9ae0-6405-4cd5-9570-7feb0923367f,"Evil NPC");
+
+PROC
+ProcRegionEnded("RC_Main")
+THEN
+GoalCompleted;
+
+EXITSECTION
+
+
+ENDEXITSECTION
+ParentTargetEdge "ReapersCoast"

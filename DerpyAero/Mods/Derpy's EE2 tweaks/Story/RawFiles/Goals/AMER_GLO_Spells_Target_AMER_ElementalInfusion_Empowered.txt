@@ -1,0 +1,61 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+//REGION Base Logic.
+
+PROC PROC_AMER_Spells_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_AMER_ElementalInfusion_Empowered", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 0, (STRING)_Type, (STRING)_Element)
+AND
+QRY_AMER_GEN_GetSurfaceAtPos(_X, _Y, _Z)
+AND
+DB_AMER_GEN_OUTPUT_String(_Surface)
+AND
+QRY_AMER_GEN_GetSurfaceKeyword(_Surface, "", "INF_CURSED_BLOOD_SI2", "INF_NECROFIRE_SI2", "INF_BLESSED_ICE_SI2", "INF_CURSED_OIL_SI2", "INF_ACID_SI2", "INF_CURSED_ELECTRIC_SI2", "INF_BLESSED_ICE_SI2", "", "", "INF_NECROFIRE_SI2")
+AND
+DB_AMER_GEN_OUTPUT_String(_Status)
+AND
+_Status != ""
+AND
+QRY_AMER_GEN_GetSurfaceKeyword(_Surface, "", "", "FIRERESISTANCE", "WATERRESISTANCE", "EARTHRESISTANCE", "POISONRESISTANCE", "AIRRESISTANCE", "WATERRESISTANCE", "", "", "FIRERESISTANCE")
+AND
+DB_AMER_GEN_OUTPUT_String(_FlexStat)
+AND
+QRY_AMER_GEN_GetSurfaceKeyword(_Surface, "", "", "Fire", "Ice", "Oil", "Poison", "Lightning", "Ice", "", "", "Fire")
+AND
+DB_AMER_GEN_OUTPUT_String(_SFXSuffix)
+AND
+DB_AMER_Summoning_ActiveSummon(_Char, _Summon)	//Applies to all Incarnates.
+AND
+QRY_AMER_GEN_GetIncarnateTag(_Summon)
+AND
+DB_AMER_GEN_OUTPUT_String(_Tag)
+THEN
+PROC_AMER_Spells_ElementalInfusion_ApplyInfusion_Empowered(_Char, _Summon, _Tag, _Status, _FlexStat, _SFXSuffix);
+
+
+
+PROC PROC_AMER_Spells_ElementalInfusion_ApplyInfusion_Empowered((CHARACTERGUID)_Char, (CHARACTERGUID)_Summon, "INCARNATE_S", (STRING)_Status, (STRING)_FlexStat, (STRING)_SFXSuffix)
+THEN
+ApplyStatus(_Summon, _Status, -1.0, 0, _Char);
+
+PROC PROC_AMER_Spells_ElementalInfusion_ApplyInfusion_Empowered((CHARACTERGUID)_Char, (CHARACTERGUID)_Summon, "INCARNATE_G", (STRING)_Status, (STRING)_FlexStat, (STRING)_SFXSuffix)
+THEN
+ApplyStatus(_Summon, _Status, -1.0, 0, _Char);
+
+PROC PROC_AMER_Spells_ElementalInfusion_ApplyInfusion_Empowered((CHARACTERGUID)_Char, (CHARACTERGUID)_Summon, (STRING)_Tag, (STRING)_Status, (STRING)_FlexStat, (STRING)_SFXSuffix)
+AND
+StringConcatenate("RS3_FX_Skills_Totem_Impact_Target_Root_", _SFXSuffix, _Str)
+AND
+StringConcatenate(_Str, "_01", _FX)
+THEN
+PlayEffect(_Summon, _FX, "Dummy_BodyFX");
+PROC_AMER_ExtendedStat_CharacterAddStat(_Summon, "MaxRes", _FlexStat, "IncarnateMaxRes", "", 200.0);    //Raise incarnates' max res to their element.
+
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Summoning"

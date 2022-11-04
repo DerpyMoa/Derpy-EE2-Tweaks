@@ -1,0 +1,16 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Combat_TurnStarted((CHARACTERGUID)_Char, 0)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Char, "MedusaHead_Explosion", _Extraprop1, _Extraprop2, _Extraprop3, _Amount)
+THEN
+PROC_AMER_GEN_SimulatedExplosion(_Char, 13.0, _Char, 266, "Projectile_Derpy_SCRIPT_PetrifyingVisage_SingleHit", "RS3_FX_Skills_Totem_Cast_Shout_Root_01", ""); //Living enemies LoS.
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GEN_Stats_ExtendedStats"

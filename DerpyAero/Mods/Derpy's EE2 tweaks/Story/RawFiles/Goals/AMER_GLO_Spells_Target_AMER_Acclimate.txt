@@ -1,0 +1,127 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Target_AMER_Acclimate", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+AND
+QRY_AMER_GEN_GetSurfaceAtPos(_X, _Y, _Z)
+AND
+DB_AMER_GEN_OUTPUT_String(_Surface)
+AND
+QRY_AMER_GEN_GetSurfaceKeyword(_Surface, "", "", "FIRE_SKIN", "ICE_SKIN", "POISON_SKIN", "POISON_SKIN", "ELECTRIC_SKIN", "ICE_SKIN", "", "", "FIRE_SKIN")
+AND
+DB_AMER_GEN_OUTPUT_String(_SkinType)
+AND
+_SkinType != ""
+AND
+QRY_AMER_GEN_GetSurfaceKeyword(_Surface, "", "", "FIRERESISTANCE", "WATERRESISTANCE", "POISONRESISTANCE", "POISONRESISTANCE", "AIRRESISTANCE", "WATERRESISTANCE", "", "", "FIRERESISTANCE")
+AND
+DB_AMER_GEN_OUTPUT_String(_Resistance)
+THEN
+PROC_AMER_Source_Infusion_Acclimate_PreCast(_Char, _SkinType, _Resistance, _InfusCount);
+
+
+PROC PROC_AMER_Source_Infusion_Acclimate_PreCast((CHARACTERGUID)_Char, (STRING)_Status, (STRING)_Resist, (INTEGER)_InfusCount)
+THEN
+PROC_AMER_TempStat_StatusMod_AddFlexStat_Scaling(_Char, _Status, "Stat", _Resist, "Acclimate_Infus", 0, "Ability", "Polymorph", 10.0, 3.0, 2000, "SkillCast");
+
+
+//Special case for poison skin because it affects both earth and poison resistance, so logic above will handle poison, while this handles earth.
+PROC PROC_AMER_Source_Infusion_Acclimate_PreCast((CHARACTERGUID)_Char, "POISON_SKIN", (STRING)_Resist, (INTEGER)_InfusCount)
+THEN
+PROC_AMER_TempStat_StatusMod_AddFlexStat_Scaling(_Char, "POISON_SKIN", "Stat", "EARTHRESISTANCE", "Acclimate_Infus", 0, "Ability", "Polymorph", 10.0, 3.0, 2000, "SkillCast");
+
+//===============================================================================================================================================================
+
+PROC PROC_AMER_Source_Infusion_Acclimate_PreCast((CHARACTERGUID)_Char, "FIRE_SKIN", (STRING)_Resist, (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_StatusMod_AddFlexStat(_Char, "FIRE_SKIN", "Spell", "Target_AcclimateFireWhip", 1.0, "AcclimateSI1", 0, 2000, "SkillCast");
+
+
+PROC PROC_AMER_Source_Infusion_Acclimate_PreCast((CHARACTERGUID)_Char, "ICE_SKIN", (STRING)_Resist, (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_StatusMod_AddFlexStat(_Char, "ICE_SKIN", "Spell", "Cone_AcclimateShatter", 1.0, "AcclimateSI1", 0, 2000, "SkillCast");
+
+
+PROC PROC_AMER_Source_Infusion_Acclimate_PreCast((CHARACTERGUID)_Char, "ELECTRIC_SKIN", (STRING)_Resist, (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_StatusMod_AddFlexStat(_Char, "ELECTRIC_SKIN", "Spell", "Shout_AcclimateElectricFence", 1.0, "AcclimateSI1", 0, 2000, "SkillCast");
+
+
+PROC PROC_AMER_Source_Infusion_Acclimate_PreCast((CHARACTERGUID)_Char, "POISON_SKIN", (STRING)_Resist, (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_StatusMod_AddFlexStat(_Char, "POISON_SKIN", "Spell", "Target_AcclimateWormTremor", 1.0, "AcclimateSI1", 0, 2000, "SkillCast");
+
+//===============================================================================================================================================================
+
+PROC PROC_AMER_Source_Infusion_Acclimate_PreCast((CHARACTERGUID)_Char, (STRING)_Status, (STRING)_Resist, (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 1, 1);
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "Status_AddDuration", _Status, "", "", 1.0, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddFlexStat(_Char, _Status, "Ability", "Perseverance", 5.0, "AcclimateSI2", 0, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddExtendedStat_Scaling(_Char, _Status, "MaxRes", _Resist, "Skill_Acclimate", "", "Acclimate_Infus", 0, "Ability", "Polymorph", 10.0, 1.0, 2000, "SkillCast");
+
+//Special case for poison skin because it affects both earth and poison resistance, so logic above will handle poison, while this handles earth.
+PROC PROC_AMER_Source_Infusion_Acclimate_PreCast((CHARACTERGUID)_Char, "POISON_SKIN", (STRING)_Resist, (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat_Scaling(_Char, "POISON_SKIN", "MaxRes", "EARTHRESISTANCE", "Skill_Acclimate", "", "Acclimate_Infus", 0, "Ability", "Polymorph", 10.0, 1.0, 2000, "SkillCast");
+
+//===============================================================================================================================================================
+
+PROC PROC_AMER_Source_Infusion_Acclimate_PreCast((CHARACTERGUID)_Char, (STRING)_Status, (STRING)_Resist, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 1, 1);
+
+
+PROC PROC_AMER_Source_Infusion_Acclimate_PreCast((CHARACTERGUID)_Char, "FIRE_SKIN", (STRING)_Resist, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_TempStat_StatusMod_AddFlexStat(_Char, "FIRE_SKIN", "Ability", "FireSpecialist", 4.0, "AcclimateSI3", 0, 2000, "SkillCast");
+
+
+PROC PROC_AMER_Source_Infusion_Acclimate_PreCast((CHARACTERGUID)_Char, "ICE_SKIN", (STRING)_Resist, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_TempStat_StatusMod_AddFlexStat(_Char, "ICE_SKIN", "Ability", "WaterSpecialist", 4.0, "AcclimateSI3", 0, 2000, "SkillCast");
+
+
+PROC PROC_AMER_Source_Infusion_Acclimate_PreCast((CHARACTERGUID)_Char, "ELECTRIC_SKIN", (STRING)_Resist, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_TempStat_StatusMod_AddFlexStat(_Char, "ELECTRIC_SKIN", "Ability", "AirSpecialist", 4.0, "AcclimateSI3", 0, 2000, "SkillCast");
+
+
+PROC PROC_AMER_Source_Infusion_Acclimate_PreCast((CHARACTERGUID)_Char, "POISON_SKIN", (STRING)_Resist, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_TempStat_StatusMod_AddFlexStat(_Char, "POISON_SKIN", "Ability", "EarthSpecialist", 4.0, "AcclimateSI3", 0, 2000, "SkillCast");
+
+
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Polymorph"

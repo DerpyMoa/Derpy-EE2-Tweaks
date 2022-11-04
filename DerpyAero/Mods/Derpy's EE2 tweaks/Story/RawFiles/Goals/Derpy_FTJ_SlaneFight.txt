@@ -1,0 +1,41 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_FTJ_SW_PurgedDragon_c099caa6-1938-4b4f-9365-d0881c611e71);
+
+KBSECTION
+
+IF
+TimerFinished("Timer_FTJ_SW_PurgedDragonTransform")
+THEN
+DB_Derpy_SlaneTransformed(1);
+ApplyStatus(CHARACTERGUID_S_FTJ_SW_PurgedDragon_c099caa6-1938-4b4f-9365-d0881c611e71, "HASTED", 30.0, 0, NULL_00000000-0000-0000-0000-000000000000);
+CharacterAddSkill(CHARACTERGUID_S_FTJ_SW_PurgedDragon_c099caa6-1938-4b4f-9365-d0881c611e71, "Cone_EnemyShatter");
+CharacterAddSkill(CHARACTERGUID_S_FTJ_SW_PurgedDragon_c099caa6-1938-4b4f-9365-d0881c611e71, "Target_EnemyWinterBlast");
+CharacterAddSkill(CHARACTERGUID_S_FTJ_SW_PurgedDragon_c099caa6-1938-4b4f-9365-d0881c611e71, "Projectile_EnemyIceFan");
+CharacterAddSkill(CHARACTERGUID_S_FTJ_SW_PurgedDragon_c099caa6-1938-4b4f-9365-d0881c611e71, "Shout_EnemyGlobalCooling_Trippel");
+CharacterAddSkill(CHARACTERGUID_S_FTJ_SW_PurgedDragon_c099caa6-1938-4b4f-9365-d0881c611e71, "Target_EnemyOverpower");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_FTJ_SW_PurgedDragon_c099caa6-1938-4b4f-9365-d0881c611e71, "Cone_EnemyShatter");
+
+PROC PROC_AMER_Combat_TurnStarted(CHARACTERGUID_S_FTJ_SW_PurgedDragon_c099caa6-1938-4b4f-9365-d0881c611e71, _)
+AND
+NOT DB_Derpy_SlaneTransformed(1)
+AND
+CombatGetIDForCharacter(CHARACTERGUID_S_FTJ_SW_PurgedDragon_c099caa6-1938-4b4f-9365-d0881c611e71, _Combat)
+AND
+DB_AMER_Combat_Round(_Combat, 2)
+THEN
+TimerLaunch("Timer_FTJ_SW_PurgedDragonTransform",100);
+TimerLaunch("Timer_FTJ_SW_PurgedDragonTransformFX",200);
+
+PROC
+ProcRegionEnded("FJ_FortJoy_Main")
+THEN
+NOT DB_Derpy_SlaneTransformed(1);
+GoalCompleted;
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "FortJoy"

@@ -1,0 +1,19 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+
+PROC PROC_AMER_KeywordStat_Elementalist_Feedback_GetMultiplier_Manip((CHARACTERGUID)_Char)
+AND
+DB_AMER_GEN_OUTPUT_Real(_Value)
+THEN
+NOT DB_AMER_GEN_OUTPUT_Real(_Value);
+DB_AMER_GEN_OUTPUT_Real(0.0);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

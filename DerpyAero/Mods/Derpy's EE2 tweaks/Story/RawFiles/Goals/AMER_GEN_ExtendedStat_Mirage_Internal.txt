@@ -1,0 +1,44 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+NRD_OnHit((CHARACTERGUID)_Defender, (CHARACTERGUID)_Attacker, _Damage, _Handle)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Defender, "Mirage_Internal", _, _, _, _)
+AND
+NRD_StatusGetString(_Defender, _Handle, "SkillId", _Skill)
+AND
+QRY_AMER_GetRootSkillID(_Skill)
+AND
+DB_AMER_GEN_OUTPUT_String(_SkillReal)
+AND
+NRD_StatGetString(_SkillReal, "UseWeaponDamage", "No")
+AND
+StringContains(_SkillReal, "StatusDamage", 0)
+THEN
+ProcObjectTimer(_Defender, "Mirage_Internal_StatusRemoval", 2000);
+NRD_HitStatusClearAllDamage(_Defender, _Handle);
+NRD_StatusSetInt(_Defender,_Handle,"Hit",0);
+NRD_StatusSetInt(_Defender,_Handle,"Missed",0);
+NRD_StatusSetInt(_Defender,_Handle,"Blocked",0);
+NRD_StatusSetInt(_Defender,_Handle,"Dodged",1);
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Defender, "Mirage_Internal_StatusRemoval")
+THEN
+RemoveStatus(_Defender, "Derpy_Mirage");
+
+
+PROC PROC_AMER_GEN_FilteredStatus_Removed((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, "Derpy_Mirage")
+THEN
+PROC_AMER_GEN_Heal_Percentage(_Char, 40.0, "All", _Char, 1, 2, 1);	//Triage heal. Counts as Necromantic. Ability scaling enabled (if any).
+PROC_AMER_Dodge_RemovePenalty(_Char);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GEN_Stats_ExtendedStats"

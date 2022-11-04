@@ -1,0 +1,51 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Target_SingleHandedAttack", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+AND
+QRY_Derpy_CanResetCD(_Char)
+THEN
+NRD_SkillSetCooldown(_Char, "Target_SingleHandedAttack", 0.0);
+
+
+QRY QRY_Derpy_CanResetCD((CHARACTERGUID)_Char)
+AND
+DB_Derpy_CanResetCD_Count(_Char, _Count)
+AND
+CharacterGetAbility(_Char, "SingleHanded", _SingleHanded)
+AND
+IntegerDivide(_SingleHanded, 10, _SingleHandedDivide)
+AND
+IntegerSum(_SingleHandedDivide, 1, _SingleHandedSum)
+AND
+IntegerMin(_SingleHandedSum, 2, _SingleHandedMin)
+AND
+_Count < _SingleHandedMin
+AND
+IntegerSum(_Count, 1, _NewCount)
+THEN
+NOT DB_Derpy_CanResetCD_Count(_Char, _Count);
+DB_Derpy_CanResetCD_Count(_Char, _NewCount);
+
+
+QRY QRY_Derpy_CanResetCD((CHARACTERGUID)_Char)
+AND
+NOT DB_Derpy_CanResetCD_Count(_Char, _)
+THEN
+DB_Derpy_CanResetCD_Count(_Char, 1);
+
+
+PROC PROC_AMER_GEN_OncePerRound_Clear((CHARACTERGUID)_Char)
+AND
+DB_Derpy_CanResetCD_Count(_Char, _Count)
+THEN
+NOT DB_Derpy_CanResetCD_Count(_Char, _Count);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

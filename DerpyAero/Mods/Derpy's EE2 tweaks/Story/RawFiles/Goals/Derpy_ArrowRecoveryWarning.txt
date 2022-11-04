@@ -1,0 +1,41 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+CanUseItem(_Char, _Item, _)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Char, "ArrowRecovery", _, _, _, _Charges)
+AND
+DB_IsPlayer(_Char)
+AND
+QRY_AMER_GEN_PlayerGetWeaponStyle(_Char)
+AND
+DB_AMER_GEN_OUTPUT_String("Ranged")
+AND
+HasActiveStatus(_Char, "DISARMED", 0)
+AND
+IsTagged(_Item, "ARROWS", 1)
+AND
+GetTemplate(_Item, _Template)
+AND
+NOT DB_AMER_ExtendedStat_ArrowRecovery_BlacklistArrowRecovery(_Template)
+AND
+DB_AMER_GEN_NPerRound(_Char, "ExtendedStat_ArrowRecovery", _Used)
+AND
+Integer(_Charges, _ChargesInt)
+AND
+IntegerSubtract(_ChargesInt, _Used, _Remain)
+AND
+_Remain <= 0
+THEN
+CharacterStatusText(_Char, "Arrow Recovery Depleted");
+
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

@@ -1,0 +1,33 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+ItemDestroyed(ITEMGUID_RC_WH_RuinsCliff_Totem_e607062b-d56e-4832-b414-b2a6899d60fe)
+AND
+GetPosition(ITEMGUID_RC_WH_RuinsCliff_Totem_e607062b-d56e-4832-b414-b2a6899d60fe,_X,_Y,_Z)
+AND
+QRY_AMER_GEN_GetRandomPointInRadius_2D(_X, _Y, _Z, 2.0)
+AND
+DB_AMER_GEN_OUTPUT_Point(_RandX, _RandY, _RandZ)
+AND
+CreateItemTemplateAtPosition("LOOT_BackPack_A_6c70c298-aa29-418f-a659-f8e0b5f5fa60", _RandX, _RandY, _RandZ, _Backpack)
+THEN
+GenerateTreasure(_Backpack, "MiniBoss", 12, NULL_00000000-0000-0000-0000-000000000000);
+PlaySound(_Backpack,"GP_ScriptedEvent_HOE_Channel_Spell_Final");
+PlayEffect(_Backpack, "AMER_RS3_FX_LootShine_Unique", "");
+PlayEffect(_Backpack, "RS3_FX_SubEffects_MapPing_01", "");
+GoalCompleted;
+
+PROC
+ProcRegionEnded("RC_Main")
+THEN
+GoalCompleted;
+
+EXITSECTION
+
+
+ENDEXITSECTION
+ParentTargetEdge "ReapersCoast"

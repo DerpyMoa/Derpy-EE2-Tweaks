@@ -1,0 +1,28 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+CharacterRemoveSkill(CHARACTERGUID_S_RC_DW_WC_BossFight_Skeleton_Mordus_d46ade3f-f786-4fcc-975c-361a106f2853, "Target_EnemySourceVampirism_Mordus");
+
+KBSECTION
+
+IF
+CombatRoundStarted(_Combat, _Round)
+AND
+CombatGetIDForCharacter(CHARACTERGUID_S_RC_DW_WC_BossFight_Skeleton_Mordus_d46ade3f-f786-4fcc-975c-361a106f2853, _Combat)
+AND
+_Round == 2
+THEN
+CharacterSetReactionPriority(CHARACTERGUID_S_RC_DW_WC_BossFight_Skeleton_Mordus_d46ade3f-f786-4fcc-975c-361a106f2853, "SourceVampMogrificationStart", 1000);
+ApplyStatus(CHARACTERGUID_S_RC_DW_WC_BossFight_GiantInsect_Boss_5362d05e-1cb2-451f-9f5a-69078100a01b, "HASTED", 30.0, 1, CHARACTERGUID_S_RC_DW_WC_BossFight_GiantInsect_Boss_5362d05e-1cb2-451f-9f5a-69078100a01b);
+GoalCompleted;
+
+
+PROC ProcRegionEnded("RC_Main")
+THEN
+GoalCompleted;
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "RC_DW_WreckersCaveBase"

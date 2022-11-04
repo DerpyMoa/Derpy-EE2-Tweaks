@@ -1,0 +1,157 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_GLO_BurnishedOne_dc614e64-d6ef-4b45-8864-73f2a92a1980);
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_GLO_BurnishedOne_dc614e64-d6ef-4b45-8864-73f2a92a1980, "Rain_EnemyBlood");
+
+DB_Derpy_ArenaCombatants(CHARACTERGUID_S_GLO_BurnishedOne_dc614e64-d6ef-4b45-8864-73f2a92a1980);
+DB_Derpy_ArenaCombatants(CHARACTERGUID_S_FTJ_ArenaFan_001_bbffcfab-50b8-4200-afb8-514e5c2a64eb);
+DB_Derpy_ArenaCombatants(CHARACTERGUID_S_FTJ_ArenaFan_002_b4e2cd45-b391-48e0-8c6f-edb57cbc5eae);
+DB_Derpy_ArenaCombatants(CHARACTERGUID_S_FTJ_ArenaDwarf_7f9740f2-84c2-4858-82b1-579c969f559e);
+DB_Derpy_ArenaCombatants(CHARACTERGUID_S_FTJ_ArenaMaster_4eadc6c7-f934-43ad-bb74-c59358106114);
+
+KBSECTION
+
+IF
+RegionStarted(_)
+AND
+QueryOnlyOnce("Derpy_SeppSetup")
+THEN
+SetIsBoss(CHARACTERGUID_S_GLO_BurnishedOne_dc614e64-d6ef-4b45-8864-73f2a92a1980, 1);
+
+
+IF
+AttackedByObject((CHARACTERGUID)_NPC,(CHARACTERGUID)_Player,_,_,_)
+AND
+DB_Derpy_ArenaCombatants(_NPC)
+AND
+DB_IsPlayer(_Player)
+THEN
+ProcMakeNPCHostile(_NPC,_Player);
+
+
+IF
+ObjectEnteredCombat((CHARACTERGUID)_Char, _)
+AND
+DB_Derpy_ArenaCombatants(_Char)
+THEN
+PROC_Derpy_SeppCombatPull(_Char);
+
+PROC PROC_Derpy_SeppCombatPull((CHARACTERGUID)_Char)
+AND
+DB_Derpy_ArenaCombatants(_OtherChar)
+THEN
+EnterCombat(_OtherChar,_Char);
+
+
+IF
+ObjectEnteredCombat(CHARACTERGUID_S_GLO_BurnishedOne_dc614e64-d6ef-4b45-8864-73f2a92a1980, _)
+AND
+GetPosition(TRIGGERGUID_SeppZombie1_2ed26a97-318f-4107-9ee9-cc1ef7c15727,_X1,_Y1,_Z1)
+AND
+GetPosition(TRIGGERGUID_SeppZombie2_d025fa6a-fb05-429a-b730-98e20e4e8d1a,_X2,_Y2,_Z2)
+AND
+GetPosition(TRIGGERGUID_SeppZombie3_d8d2fffe-086c-49ee-97e9-dd318e3c0357,_X3,_Y3,_Z3)
+AND
+GetPosition(TRIGGERGUID_SeppZombie4_dc1f6ad5-ab6d-45cf-8205-081cfb6bbba6,_X4,_Y4,_Z4)
+AND
+GetPosition(ITEMGUID_TOOL_Ladder_9H_B_002_801e83be-fc87-4ccc-9a91-6956b0f20156,_X5,_Y5,_Z5)
+THEN
+Proc_GLO_SourceCollars_UnequipNPCCollar(CHARACTERGUID_S_GLO_BurnishedOne_dc614e64-d6ef-4b45-8864-73f2a92a1980);
+PROC_AMER_Source_EnemyGen_Init(CHARACTERGUID_S_GLO_BurnishedOne_dc614e64-d6ef-4b45-8864-73f2a92a1980);
+PlayEffect(CHARACTERGUID_S_GLO_BurnishedOne_dc614e64-d6ef-4b45-8864-73f2a92a1980, "RS3_FX_Skills_Divine_Cast_Shout_BreakTheShackles_01");
+
+Proc_GLO_SourceCollars_UnequipNPCCollar(CHARACTERGUID_S_FTJ_ArenaFan_001_bbffcfab-50b8-4200-afb8-514e5c2a64eb);
+PROC_AMER_Source_EnemyGen_Init(CHARACTERGUID_S_FTJ_ArenaFan_001_bbffcfab-50b8-4200-afb8-514e5c2a64eb);
+PlayEffect(CHARACTERGUID_S_FTJ_ArenaFan_001_bbffcfab-50b8-4200-afb8-514e5c2a64eb, "RS3_FX_Skills_Divine_Cast_Shout_BreakTheShackles_01");
+
+Proc_GLO_SourceCollars_UnequipNPCCollar(CHARACTERGUID_S_FTJ_ArenaFan_002_b4e2cd45-b391-48e0-8c6f-edb57cbc5eae);
+PROC_AMER_Source_EnemyGen_Init(CHARACTERGUID_S_FTJ_ArenaFan_002_b4e2cd45-b391-48e0-8c6f-edb57cbc5eae);
+PlayEffect(CHARACTERGUID_S_FTJ_ArenaFan_002_b4e2cd45-b391-48e0-8c6f-edb57cbc5eae, "RS3_FX_Skills_Divine_Cast_Shout_BreakTheShackles_01");
+
+Proc_GLO_SourceCollars_UnequipNPCCollar(CHARACTERGUID_S_FTJ_ArenaDwarf_7f9740f2-84c2-4858-82b1-579c969f559e);
+PROC_AMER_Source_EnemyGen_Init(CHARACTERGUID_S_FTJ_ArenaDwarf_7f9740f2-84c2-4858-82b1-579c969f559e);
+PlayEffect(CHARACTERGUID_S_FTJ_ArenaDwarf_7f9740f2-84c2-4858-82b1-579c969f559e, "RS3_FX_Skills_Divine_Cast_Shout_BreakTheShackles_01");
+
+Proc_GLO_SourceCollars_UnequipNPCCollar(CHARACTERGUID_S_FTJ_ArenaMaster_4eadc6c7-f934-43ad-bb74-c59358106114);
+PROC_AMER_Source_EnemyGen_Init(CHARACTERGUID_S_FTJ_ArenaMaster_4eadc6c7-f934-43ad-bb74-c59358106114);
+PlayEffect(CHARACTERGUID_S_FTJ_ArenaMaster_4eadc6c7-f934-43ad-bb74-c59358106114, "RS3_FX_Skills_Divine_Cast_Shout_BreakTheShackles_01");
+
+RemoveStatus(ITEMGUID_LTS_Humans_Dungeon_Coalbasket_C_014_ff747446-e7de-4f88-bb15-b1c27a3ef2e2,"BURNING");
+RemoveStatus(ITEMGUID_LTS_Humans_Dungeon_Coalbasket_C_018_5129e183-007c-4673-867b-3bb7a76d30d4,"BURNING");
+RemoveStatus(ITEMGUID_LTS_Humans_Dungeon_Coalbasket_C_019_61d582f5-ab16-43f7-950f-91d48f6b8b50,"BURNING");
+RemoveStatus(ITEMGUID_LTS_Humans_Dungeon_Coalbasket_C_016_0cba61a0-62a0-4bd8-bd46-2a47a47ca90f,"BURNING");
+RemoveStatus(ITEMGUID_LTS_Humans_Dungeon_Coalbasket_A_032_bdf3eeb3-6b9c-4a5d-aefc-76e4cfb4c1f9,"BURNING");
+RemoveStatus(ITEMGUID_LTS_Humans_Dungeon_Coalbasket_A_031_06afdc26-c87b-4a8d-bb1b-7caf4bb2c93f,"BURNING");
+
+ProcObjectTimer(TRIGGERGUID_SeppZombie1_2ed26a97-318f-4107-9ee9-cc1ef7c15727, "SeppZombieEfx", 1000);
+ProcObjectTimer(TRIGGERGUID_SeppZombie2_d025fa6a-fb05-429a-b730-98e20e4e8d1a, "SeppZombieEfx", 1000);
+ProcObjectTimer(TRIGGERGUID_SeppZombie3_d8d2fffe-086c-49ee-97e9-dd318e3c0357, "SeppZombieEfx", 1000);
+ProcObjectTimer(TRIGGERGUID_SeppZombie4_dc1f6ad5-ab6d-45cf-8205-081cfb6bbba6, "SeppZombieEfx", 1000);
+
+ProcObjectTimer(TRIGGERGUID_SeppZombie1_2ed26a97-318f-4107-9ee9-cc1ef7c15727, "SeppZombieEfx2", 1500);
+ProcObjectTimer(TRIGGERGUID_SeppZombie2_d025fa6a-fb05-429a-b730-98e20e4e8d1a, "SeppZombieEfx2", 1500);
+ProcObjectTimer(TRIGGERGUID_SeppZombie3_d8d2fffe-086c-49ee-97e9-dd318e3c0357, "SeppZombieEfx2", 1500);
+ProcObjectTimer(TRIGGERGUID_SeppZombie4_dc1f6ad5-ab6d-45cf-8205-081cfb6bbba6, "SeppZombieEfx2", 1500);
+
+PlayEffectAtPosition("RS3_FX_GP_ScriptedEvent_Portal_04_End", _X5, _Y5, _Z5);
+SetOnStage(ITEMGUID_TOOL_Ladder_9H_B_002_801e83be-fc87-4ccc-9a91-6956b0f20156, 0);
+PROC_AMER_Summoning_MakeNextNPC(CHARACTERGUID_S_GLO_BurnishedOne_dc614e64-d6ef-4b45-8864-73f2a92a1980, "Derpy_FTJ_ArenaAd_bfc86f18-e191-4619-a89a-7b428444d725", 4);
+PROC_AMER_Summoning_SnapNextToValidPos(CHARACTERGUID_S_GLO_BurnishedOne_dc614e64-d6ef-4b45-8864-73f2a92a1980, "Derpy_FTJ_ArenaAd_bfc86f18-e191-4619-a89a-7b428444d725", 4);
+PROC_AMER_GEN_CharacterCauseExplosionAtPos(CHARACTERGUID_S_GLO_BurnishedOne_dc614e64-d6ef-4b45-8864-73f2a92a1980, _X1, _Y1, _Z1, "Projectile_Derpy_SCRIPT_Summon_FTJ_ArenaAd");
+PROC_AMER_GEN_CharacterCauseExplosionAtPos(CHARACTERGUID_S_GLO_BurnishedOne_dc614e64-d6ef-4b45-8864-73f2a92a1980, _X2, _Y2, _Z2, "Projectile_Derpy_SCRIPT_Summon_FTJ_ArenaAd");
+PROC_AMER_GEN_CharacterCauseExplosionAtPos(CHARACTERGUID_S_GLO_BurnishedOne_dc614e64-d6ef-4b45-8864-73f2a92a1980, _X3, _Y3, _Z3, "Projectile_Derpy_SCRIPT_Summon_FTJ_ArenaAd");
+PROC_AMER_GEN_CharacterCauseExplosionAtPos(CHARACTERGUID_S_GLO_BurnishedOne_dc614e64-d6ef-4b45-8864-73f2a92a1980, _X4, _Y4, _Z4, "Projectile_Derpy_SCRIPT_Summon_FTJ_ArenaAd");
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "SeppZombieEfx")
+AND
+GetPosition(_Char,_X,_Y,_Z)
+THEN
+PlayEffectAtPosition("RS3_FX_Items_Animated_Ghost_Spawn_Attachment_01", _X, _Y, _Z);
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "SeppZombieEfx2")
+AND
+GetPosition(_Char,_X,_Y,_Z)
+THEN
+PlayEffectAtPosition("RS3_FX_GP_ScriptedEvent_ARX_TheFence_DrawBlood_01", _X, _Y, _Z);
+
+
+IF
+CharacterPrecogDying(CHARACTERGUID_S_GLO_BurnishedOne_dc614e64-d6ef-4b45-8864-73f2a92a1980)
+AND
+GetPosition(CHARACTERGUID_S_GLO_BurnishedOne_dc614e64-d6ef-4b45-8864-73f2a92a1980,_X,_Y,_Z)
+AND
+CreateItemTemplateAtPosition("LOOT_BackPack_A_6c70c298-aa29-418f-a659-f8e0b5f5fa60", _X, _Y, _Z, _Backpack)
+THEN
+GenerateTreasure(_Backpack, "MegaBoss", 6, NULL_00000000-0000-0000-0000-000000000000);
+MoveAllItemsTo(_Backpack, CHARACTERGUID_S_GLO_BurnishedOne_dc614e64-d6ef-4b45-8864-73f2a92a1980, 0, 0, 1);
+PlaySound(_Backpack,"GP_ScriptedEvent_HOE_Channel_Spell_Final");
+PlayEffect(_Backpack, "AMER_RS3_FX_LootShine_Unique", "");
+ItemDestroy(_Backpack);
+SetOnStage(_Backpack, 0);
+
+
+IF
+ObjectLeftCombat(CHARACTERGUID_S_GLO_BurnishedOne_dc614e64-d6ef-4b45-8864-73f2a92a1980, _)
+THEN
+ApplyStatus(ITEMGUID_LTS_Humans_Dungeon_Coalbasket_C_014_ff747446-e7de-4f88-bb15-b1c27a3ef2e2,"BURNING",-1.0,1);
+ApplyStatus(ITEMGUID_LTS_Humans_Dungeon_Coalbasket_C_018_5129e183-007c-4673-867b-3bb7a76d30d4,"BURNING",-1.0,1);
+ApplyStatus(ITEMGUID_LTS_Humans_Dungeon_Coalbasket_C_019_61d582f5-ab16-43f7-950f-91d48f6b8b50,"BURNING",-1.0,1);
+ApplyStatus(ITEMGUID_LTS_Humans_Dungeon_Coalbasket_C_016_0cba61a0-62a0-4bd8-bd46-2a47a47ca90f,"BURNING",-1.0,1);
+ApplyStatus(ITEMGUID_LTS_Humans_Dungeon_Coalbasket_A_032_bdf3eeb3-6b9c-4a5d-aefc-76e4cfb4c1f9,"BURNING",-1.0,1);
+ApplyStatus(ITEMGUID_LTS_Humans_Dungeon_Coalbasket_A_031_06afdc26-c87b-4a8d-bb1b-7caf4bb2c93f,"BURNING",-1.0,1);
+SetOnStage(ITEMGUID_TOOL_Ladder_9H_B_002_801e83be-fc87-4ccc-9a91-6956b0f20156, 1);
+PlayEffect(ITEMGUID_TOOL_Ladder_9H_B_002_801e83be-fc87-4ccc-9a91-6956b0f20156, "RS3_FX_GP_ScriptedEvent_Portal_04_End");
+
+PROC
+ProcRegionEnded("FJ_FortJoy_Main")
+THEN
+GoalCompleted;
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "FortJoy"

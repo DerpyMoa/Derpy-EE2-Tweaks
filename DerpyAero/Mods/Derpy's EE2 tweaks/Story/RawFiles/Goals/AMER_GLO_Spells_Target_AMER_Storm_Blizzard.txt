@@ -1,0 +1,50 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+//Storms last 1 turn longer than the status because they strike at the end of the turn they are casted on, which reduced their duration by 1 turn.
+PROC PROC_AMER_Spells_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_AMER_Storm_Blizzard", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 0, (STRING)_Type, (STRING)_Element)
+AND
+QRY_AMER_Spells_Storm_CreateAtPos(_Char, "Storm_Blizzard", 18.0, "ProjectileStrike_AMER_SCRIPT_HailAttack", "AMER_RS3_FX_Storm_Blizzard_Atmos", "DefaultStorm", 10, 5, 225, 5.0, _X, _Y, _Z, 1)	//3 turn duration, hits any living enemies, strikes 5 times, 225ms strike interval, 5.0m radius.
+THEN
+ApplyStatus(_Char, "AMER_STORMCONTROL_WATER", 12.0, 1, _Char);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_AMER_Storm_Blizzard", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 1)
+AND
+QRY_AMER_Spells_Storm_CreateAtPos(_Char, "Storm_Blizzard", 24.0, "ProjectileStrike_AMER_SCRIPT_HailAttack", "AMER_RS3_FX_Storm_Blizzard_Atmos", "DefaultStorm", 10, 5, 225, 5.0, _X, _Y, _Z, 1)	//4 turn duration, hits any living enemies, strikes 5 times, 225ms strike interval, 5.0m radius.
+THEN
+ApplyStatus(_Char, "AMER_STORMCONTROL_WATER", 18.0, 1, _Char);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_AMER_Storm_Blizzard", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 2)
+AND
+QRY_AMER_Spells_Storm_CreateAtPos(_Char, "Storm_Blizzard", 24.0, "ProjectileStrike_AMER_SCRIPT_HailAttack_Infus2", "AMER_RS3_FX_Storm_Blizzard_Atmos", "DefaultStorm", 10, 5, 225, 5.0, _X, _Y, _Z, 1)	//4 turn duration, hits any living enemies, strikes 5 times, 225ms strike interval, 5.0m radius.
+THEN
+ApplyStatus(_Char, "AMER_STORMCONTROL_WATER", 18.0, 1, _Char);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_AMER_Storm_Blizzard", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+AND
+QRY_AMER_Spells_Storm_CreateAtPos(_Char, "Storm_Blizzard", 24.0, "ProjectileStrike_AMER_SCRIPT_HailAttack_Infus3", "AMER_RS3_FX_Storm_Blizzard_Atmos", "DefaultStorm", 10, 8, 225, 5.0, _X, _Y, _Z, 1)	//4 turn duration, hits any living enemies, strikes 8 times, 225ms strike interval, 5.0m radius.
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+ApplyStatus(_Char, "AMER_STORMCONTROL_WATER", 18.0, 1, _Char);
+
+
+//REGION Base Logic.
+
+PROC PROC_AMER_Spells_SkillCast((CHARACTERGUID)_Char, "Target_AMER_Storm_Blizzard", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_GEN_Goal_Activate("AMER_GLO_Spells_REMOTE_Blizzard");
+
+//END_REGION
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Hydrosophist"

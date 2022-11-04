@@ -1,0 +1,16 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_Derpy_SIPrepareRadius("Shout_MendMetal_-1", 2, 10);
+DB_Derpy_SIPrepareRadius("Shout_MendMetal_-1", 3, 10);
+
+DB_Derpy_SIPrepareRadius("Shout_FrostAura_-1", 2, 10);
+DB_Derpy_SIPrepareRadius("Shout_FrostAura_-1", 3, 10);
+
+KBSECTION
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

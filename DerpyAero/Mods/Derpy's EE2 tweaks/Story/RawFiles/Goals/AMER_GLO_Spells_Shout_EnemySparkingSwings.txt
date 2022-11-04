@@ -1,0 +1,26 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_EnemySparkingSwings", 1)
+THEN
+ApplyStatus(_Char, "SPARKING_SWINGS_AURA_INFUS_1", 12.0, 0, _Char);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_EnemySparkingSwings", 2)
+THEN
+ApplyStatus(_Char, "SPARKING_SWINGS_AURA_INFUS_2", 12.0, 0, _Char);
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_EnemySparkingSwings", 3)
+THEN
+ApplyStatus(_Char, "SPARKING_SWINGS_AURA_INFUS_3", 18.0, 0, _Char);
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Pyrokinetic"

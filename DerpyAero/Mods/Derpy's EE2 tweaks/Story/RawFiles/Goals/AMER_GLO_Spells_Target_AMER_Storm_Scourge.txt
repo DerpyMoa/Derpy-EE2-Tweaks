@@ -1,0 +1,96 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+//Storms last 1 turn longer than the status because they strike at the end of the turn they are casted on, which reduced their duration by 1 turn.
+PROC PROC_AMER_Spells_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_AMER_Storm_Scourge", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+AND
+QRY_AMER_Spells_Storm_CreateAtPos(_Char, "Storm_Scourge", 18.0, "ProjectileStrike_Stormbolt_Blood", "AMER_RS3_FX_Storm_Blood_Atmos", "DefaultStorm", 10, 8, 225, 5.0, _X, _Y, _Z, 1)	//3 turn duration, hits any living enemies, strikes 8 times, 225ms strike interval, 5.0m radius.
+THEN
+ApplyStatus(_Char, "AMER_STORMCONTROL_BLOOD", 12.0, 1, _Char);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_AMER_Storm_Scourge", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 1)
+AND
+CombatGetIDForCharacter(_Char, _Combat)
+AND
+QRY_AMER_GEN_GetRandomPointInRadius_2D(_X, _Y, _Z, 2.0)
+AND
+DB_AMER_GEN_OUTPUT_Point(_RandX, _RandY, _RandZ)
+THEN
+PROC_AMER_GEN_ShootProjectileStrikeAtPos(_Char, _RandX, _RandY, _RandZ, "ProjectileStrike_Stormbolt_Blood_Infus1");
+PROC_AMER_GEN_CreateCorpse(_RandX, _RandY, _RandZ, _Combat);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_AMER_Storm_Scourge", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 2)
+AND
+QRY_AMER_Spells_Storm_CreateAtPos(_Char, "Storm_Scourge", 18.0, "ProjectileStrike_Stormbolt_Blood_Infus2", "", "NoAutoTarget", 0, 1, 300, 2.0, _X, _Y, _Z, 1)	//3 turn duration, strikes 1 time, 300ms strike interval, 5.0m radius.
+AND
+DB_AMER_Spells_Storm_Index(_StormIndex)
+THEN
+DB_AMER_Source_Infusion_Scourge_StormCorpses(_StormIndex, _Char);
+PROC_AMER_GEN_Goal_Activate("AMER_GLO_Spells_REMOTE_Storm_Scourge");
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Target_AMER_Storm_Scourge", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_Source_Infusion_RitualRequest(_Char, _X, _Y, _Z, _X, _Y, _Z, 13.0, "InfusionRitual_Scourge_3_CorpseExplosion", "", "Necromancy", 1, "skill_cast_target_voodoo_01_cast", 0, 1);
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_AMER_Storm_Scourge", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+AND
+QRY_AMER_Reaction_CountHeldReactions("InfusionRitual_Scourge_3_CorpseExplosion")
+AND
+DB_AMER_GEN_OUTPUT_Integer(_Participants)
+AND
+IntegerDivide(_Participants, 2, _ExtraCorpseDrops)
+AND
+IntegerSum(2, _ExtraCorpseDrops, _CorpseDropsTotal)
+AND
+QRY_AMER_Spells_Storm_CreateAtPos(_Char, "Storm_Scourge", 18.0, "ProjectileStrike_Stormbolt_Blood_Infus2", "", "NoAutoTarget", 0, _CorpseDropsTotal, 225, 2.0, _X, _Y, _Z, 1)	//3 turn duration, strikes 2+(Participants/2) times, 225ms strike interval, 5.0m radius.
+AND
+DB_AMER_Spells_Storm_Index(_StormIndex)
+THEN
+DB_AMER_Source_Infusion_Scourge_StormCorpses(_StormIndex, _Char);
+PROC_AMER_GEN_Goal_Activate("AMER_GLO_Spells_REMOTE_Storm_Scourge");
+ProcObjectTimer(_Char, "AMER_Source_Infusion_Scourge_3_ReactionApprove", 800);	//Delayed to allow time for corpse drops before triggering corpse explosion reactions.
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "AMER_Source_Infusion_Scourge_3_ReactionApprove")
+THEN
+PROC_AMER_Reaction_ApproveHeldReactions("InfusionRitual_Scourge_3_CorpseExplosion");
+
+PROC PROC_AMER_Reaction_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, "InfusionRitual_Scourge_3_CorpseExplosion", (STRING)_RequestID, (INTEGER)_RitualBool)
+THEN
+DB_AMER_Source_Infusion_Scourge_Ritual_CanFire(_Char);
+PROC_AMER_GEN_IterateCharsAroundPoint(_X, _Y, _Z, 5.0, _Char, 16, "InfusionRitual_Scourge_3_CorpseExplosion_Target");	//Only dead.
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "InfusionRitual_Scourge_3_CorpseExplosion_Target", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+AND
+DB_AMER_Source_Infusion_Scourge_Ritual_CanFire(_SourceChar)
+AND
+NOT DB_AMER_IsExploded(_Char)
+AND
+GetPosition(_Char, _X, _Y, _Z)
+THEN
+NOT DB_AMER_Source_Infusion_Scourge_Ritual_CanFire(_SourceChar);
+DB_AMER_IsExploded(_Char);
+PlayEffect(_SourceChar, "RS3_FX_Skills_Fire_Cast_Aoe_Voodoo_Root_01", "");
+PlayEffectAtPosition("RS3_FX_Skills_Fire_Impact_CorpseExplosion_01", _X, _Y, _Z);	//At position instead of on _Char because the FX doesn't seem to work when created at this time.
+ApplyStatus(_Char, "EXPLODE", 0.0, 0, _SourceChar);
+PROC_AMER_GEN_CharacterCauseExplosion(_SourceChar, _Char, "Projectile_CorpseExplosion_Explosion_Infus3");
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Finished((INTEGER)_RequestID, "InfusionRitual_Scourge_3_CorpseExplosion_Target", (CHARACTERGUID)_SourceChar)
+AND
+DB_AMER_Source_Infusion_Scourge_Ritual_CanFire(_SourceChar)
+THEN
+NOT DB_AMER_Source_Infusion_Scourge_Ritual_CanFire(_SourceChar);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Necromancer"

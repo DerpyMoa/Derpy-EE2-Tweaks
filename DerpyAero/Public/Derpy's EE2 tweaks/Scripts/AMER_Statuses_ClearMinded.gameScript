@@ -1,0 +1,35 @@
+INIT
+
+EVENTS
+	
+EVENT CharacterSetClearMinded
+VARS
+	CHARACTER:_Character
+	LIST<STATUS>:_RemoveList
+	STATUS:_Result
+ON 
+	FetchCharacterApplyStatusData(_Character, CLEAR_MINDED)
+ACTIONS	
+	Set(_Result,CLEAR_MINDED)
+	ListClear(_RemoveList)
+	ListAdd(_RemoveList, FEAR)
+	ListAdd(_RemoveList, AMER_TERRIFIED_1)
+	ListAdd(_RemoveList, AMER_TERRIFIED_2)
+	ListAdd(_RemoveList, AMER_TERRIFIED_3)
+	ListAdd(_RemoveList, CHARMED)
+	ListAdd(_RemoveList, AMER_ENTHRALLED_1)
+	ListAdd(_RemoveList, AMER_ENTHRALLED_2)
+	ListAdd(_RemoveList, AMER_ENTHRALLED_3)
+	ListAdd(_RemoveList, TAUNTED)
+	ListAdd(_RemoveList, SLEEPING)
+	ListAdd(_RemoveList, AMER_WEAKENED_1)
+	ListAdd(_RemoveList, AMER_WEAKENED_2)
+	ListAdd(_RemoveList, AMER_WEAKENED_3)
+	ListAdd(_RemoveList, ENRAGED)
+	ListAdd(_RemoveList, AMER_BERSERK)
+	ListAdd(_RemoveList, BLIND)
+	ListAdd(_RemoveList, AMER_BLIND_1)
+	ListAdd(_RemoveList, AMER_BLIND_2)
+	ListAdd(_RemoveList, AMER_BLIND_3)
+	ListAdd(_RemoveList, MADNESS)
+	RETURN(_RemoveList,_Result,null)

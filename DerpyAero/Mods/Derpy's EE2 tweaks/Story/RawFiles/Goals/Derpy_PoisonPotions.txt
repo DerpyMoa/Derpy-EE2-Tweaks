@@ -1,0 +1,48 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_Derpy_PoisonPotions("CON_Potion_Poison_A_8122de3c-a331-44a4-b51a-6767a778776f");
+DB_Derpy_PoisonPotions("CON_Potion_Poison_Medium_A_3b5c5a91-00ab-4a86-bc30-b59e14951163");
+DB_Derpy_PoisonPotions("CON_Potion_Poison_Large_A_6d9420d8-cbf6-444f-ac42-c535a7df99f7");
+DB_Derpy_PoisonPotions("CON_Potion_Poison_Huge_A_5b31c4c8-88cd-4d86-9c23-f762126ee7f0");
+DB_Derpy_PoisonPotions("CON_Potion_Poison_Giant_A_f7d43db4-96b4-4db1-b83c-b21987b63a65");
+DB_Derpy_PoisonPotions("CON_Potion_Poison_Elixir_6a49fb10-6f0b-4caf-9caf-9e74901dbc72");
+
+KBSECTION
+
+IF
+CharacterUsedItem((CHARACTERGUID)_Char,_Item)
+AND
+GetTemplate(_Item, _Template)
+AND
+DB_Derpy_PoisonPotions(_Template)
+AND
+CharacterHasTalent(_Char, "FiveStarRestaurant", _HasTalent)
+AND
+GetVarFloat(_Char, "AMER_GEN_MaximumVitality", _MaxVit)
+AND
+IntegerSum(1, _HasTalent, _EffectMultiplier)
+AND
+Real(_EffectMultiplier, _EffectMultiplierReal)
+AND
+RealProduct(_MaxVit, 0.30, _DamageBase)
+AND
+RealProduct(_DamageBase, _EffectMultiplierReal, _Damage)
+AND
+Integer(_Damage, _DamageInt)
+AND
+NRD_HitPrepare(_Char, _Char, _HitHandle)
+THEN
+NRD_HitAddDamage(_HitHandle, "Poison", _DamageInt);
+NRD_HitSetInt(_HitHandle, "SimulateHit", 1);
+NRD_HitSetInt(_HitHandle, "NoEvents", 1);
+NRD_HitSetInt(_HitHandle, "HitType", 1);
+NRD_HitSetInt(_HitHandle, "CriticalRoll", 2);
+NRD_HitExecute(_HitHandle);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

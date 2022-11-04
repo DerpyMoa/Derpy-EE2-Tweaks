@@ -1,0 +1,47 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+CharacterUsedSkill(_Char, "Teleportation_Netherswap", _, _)
+AND
+CharacterIsInCombat(_Char, 1)
+AND
+CombatGetIDForCharacter(_Char, _Combat)
+THEN
+DB_Derpy_NetherswapWasUsed(_Char, _Combat);
+
+
+PROC PROC_AMER_Combat_TurnStarted((CHARACTERGUID)_OtherChar, _)
+AND
+CombatGetIDForCharacter(_OtherChar, _Combat)
+AND
+DB_Derpy_NetherswapWasUsed(_, _Combat)
+AND
+NRD_SkillGetCooldown(_OtherChar, "Teleportation_Netherswap", _NetherswapCooldown)
+AND
+_NetherswapCooldown == 0.0
+THEN
+NRD_SkillSetCooldown(_OtherChar, "Teleportation_Netherswap", 0.0);
+ProcObjectTimer(_OtherChar, "Derpy_Netherswap_SI0_CD", 100);
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "Derpy_Netherswap_SI0_CD")
+THEN
+NRD_SkillSetCooldown(_Char, "Teleportation_Netherswap", 6.0);
+
+
+IF
+CombatRoundStarted(_Combat, _)
+AND
+DB_Derpy_NetherswapWasUsed(_Char, _Combat)
+THEN
+NOT DB_Derpy_NetherswapWasUsed(_Char, _Combat);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

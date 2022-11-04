@@ -1,0 +1,16 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+RegionStarted(_)
+THEN
+SetTag(CHARACTERGUID_S_FTJ_TeleporterNPC_4e291594-10ec-4c1f-a126-936e45ff875d, "Derpy_CanTP");
+GoalCompleted;
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "FortJoy"

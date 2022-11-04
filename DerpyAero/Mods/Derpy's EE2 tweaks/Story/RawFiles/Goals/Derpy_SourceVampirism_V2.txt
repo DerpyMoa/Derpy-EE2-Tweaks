@@ -1,0 +1,84 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_CharAddedToCombat(_Char, _)
+THEN
+PROC_AMER_Source_CurrentPoints_Update(_Char);
+
+PROC PROC_AMER_Source_CurrentPointsChanged((CHARACTERGUID)_Char, (INTEGER)_OldAmount, (INTEGER)_NewAmount, (INTEGER)_Diff)
+AND
+_NewAmount >= 1
+AND
+CharacterIsInCombat(_Char, 1)
+THEN
+SetTag(_Char, "Derpy_Vamp");
+
+
+PROC PROC_AMER_Source_CurrentPointsChanged((CHARACTERGUID)_Char, (INTEGER)_OldAmount, 0, (INTEGER)_Diff)
+AND
+CharacterIsInCombat(_Char, 1)
+AND
+CharacterIsDead(_Char, 0)
+THEN
+ClearTag(_Char, "Derpy_Vamp");
+
+
+IF
+NRD_OnActionStateEnter((CHARACTERGUID)_Char, "PrepareSkill")
+AND
+CharacterIsInCombat(_Char, 1)
+AND
+NRD_ActionStateGetString(_Char, "SkillId", _SkillBeingPrepared)
+AND
+_SkillBeingPrepared == "Target_SourceVampirism_-1"
+AND
+GetPosition(_Char, _X, _Y, _Z)
+THEN
+PROC_AMER_GEN_IterateCharsAroundPoint_2D(_X, _Y, _Z, 30.0, _Char, 16, "Derpy_PingCorpses");
+PROC_AMER_GEN_IterateCharsAroundPoint_2D(_X, _Y, _Z, 30.0, _Char, 8, "Derpy_PingCharacters");
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Derpy_PingCorpses", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+AND
+IsTagged(_Char, "Derpy_Vamp", 1)
+AND
+GetPosition(_Char, _X, _Y, _Z)
+THEN
+PlayEffectAtPosition("RS3_FX_SubEffects_MapPing_01", _X, _Y, _Z);
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Derpy_PingCharacters", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+AND
+QRY_AMER_CharacterGetSourcePoints(_Char)
+AND
+DB_AMER_GEN_OUTPUT_Integer(_SourcePoints)
+AND
+_SourcePoints >= 1
+AND
+QRY_Derpy_NotInvisChar(_SourceChar, _Char)
+AND
+_SourceChar != _Char
+AND
+GetPosition(_Char, _X, _Y, _Z)
+THEN
+PlayEffectAtPosition("RS3_FX_SubEffects_MapPing_01", _X, _Y, _Z);
+
+
+QRY QRY_Derpy_NotInvisChar((CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+AND
+CharacterIsAlly(_Char, _SourceChar, 1)
+THEN
+DB_NOOP();
+
+QRY QRY_Derpy_NotInvisChar((CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+AND
+HasActiveStatus(_Char, "INVISIBLE", 0)
+THEN
+DB_NOOP();
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

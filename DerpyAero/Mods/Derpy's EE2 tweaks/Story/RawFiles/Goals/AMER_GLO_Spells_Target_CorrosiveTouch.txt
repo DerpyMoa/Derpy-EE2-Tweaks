@@ -1,0 +1,64 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, "Target_CorrosiveTouch", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "BatteredHarried_DirectManipStatuses_Activate", "0", "2", "", 1.0, 2000, "SkillCast");   //Stats use B/H direct manip status, so need to enable it first.
+
+
+//Realtime removal until SI3.
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Target_CorrosiveTouch", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+AND
+_InfusCount < 2
+THEN
+PROC_AMER_StatusMod_ExtendedStat_TryApplyModForStatus(_Target, _Char, "AMER_DISINTEGRATING_PIERCING", "StatusRealtimeRemoval", "", "", "", 1.0, "Disintegrating");
+ProcObjectTimer(_Char, "AMER_StatusRealtimeRemoval", 2000);
+
+//Every SI level disintegrates.
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Target_CorrosiveTouch", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat_Scaling(_Char, "AMER_DISINTEGRATING_PIERCING", "Disintegrating", "Piercing", "", "", "CorrosiveTouchInfus", 0, "Ability", "EarthSpecialist", 0.25, 0.025, 2000, "SkillCast");
+ApplyStatus(_Target, "AMER_DISINTEGRATING_PIERCING", 6.0, 0, _Char);
+ApplyStatus(_Target, "AMER_CORRODING", 6.0, 0, _Char);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_CorrosiveTouch", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, 2.0, 0.20, 0.0, "Ability", "EarthSpecialist")
+AND
+DB_AMER_GEN_OUTPUT_Real(_Scaling)
+AND
+Integer(_Scaling, _ScalingInt)
+THEN
+PROC_AMER_BatteredHarried_DirectManip(_Char, 0, _ScalingInt, _Target);
+ApplyStatus(_Target, "AMER_DISINTEGRATING_PIERCING", 6.0, 0, _Char);
+ApplyStatus(_Target, "AMER_WITHER", 12.0, 0, _Char);
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_CorrosiveTouch", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "EarthSpecialist", 30.0, 5.0, 2000, "SkillCast");
+//PROC_AMER_TempStat_ExtendedStat_Add_StatScaling(_Char, "AttributeIntelligenceEffect_Multiplier", "", "", "", "Ability", "EarthSpecialist", 0.225, 0.045, 2000, "SkillCast");
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Target_CorrosiveTouch", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat_Scaling(_Char, "AMER_DISINTEGRATING_PIERCING", "Disintegrating", "Piercing", "", "", "CorrosiveTouchInfus", 0, "Ability", "EarthSpecialist", 0.0, 0.010, 2000, "SkillCast");
+ApplyStatus(_Target, "AMER_DISINTEGRATING_PIERCING", 12.0, 0, _Char);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Geomancer"

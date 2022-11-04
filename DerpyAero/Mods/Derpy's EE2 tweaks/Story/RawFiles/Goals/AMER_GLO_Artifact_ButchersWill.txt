@@ -1,0 +1,35 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+//A Violent Strike is occuring.
+PROC PROC_AMER_KeywordStat_ViolentStrikes_Fire((CHARACTERGUID)_Source, (CHARACTERGUID)_Target, (STRING)_Projectile)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Source, "Artifact_ButchersWill", _)
+AND
+GetVarFloat(_Target, "AMER_GEN_CurrentVitality", _Vit)
+AND
+RealProduct(_Vit, 0.05, _Damage)
+AND
+IsBoss(_Target, _BossBool)
+AND
+Real(_BossBool, _BossBoolReal)
+AND
+RealProduct(_BossBoolReal, 0.5, _BossBoolAdjust)
+AND
+RealSubtract(1.0, _BossBoolAdjust, _Adjust)
+AND
+RealProduct(_Damage, _Adjust, _DamageFinal)	//_Adjust is either 1.0 or 0.5, halving damage if it is a boss.
+AND
+Integer(_DamageFinal, _DamageFinalInt)
+AND
+_DamageFinalInt > 0
+THEN
+PROC_AMER_GEN_ApplyDamage(_Target, _DamageFinalInt, "Physical", _Source, 0);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"

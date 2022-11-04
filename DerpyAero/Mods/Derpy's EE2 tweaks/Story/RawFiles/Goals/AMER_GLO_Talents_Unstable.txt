@@ -1,0 +1,78 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+/*
+//Activate Vitality Void when suffering damage equal to 25% or more of total Vitality at once.
+PROC PROC_AMER_CharacterReceivedDamage((CHARACTERGUID)_CharHurt, (GUIDSTRING)_Source, (REAL)_DamageTotal, (REAL)_DamageVit, (REAL)_DamagePhys, (REAL)_DamageMagic)
+AND
+DB_AMER_Talents(_CharHurt, "Unstable")
+AND
+DB_AMER_CharVitals_DamageRelativeToVit(_DamageRelative)
+AND
+_DamageRelative > 0.245	//Very small margin of error allowed for rounding errors.
+THEN
+PROC_AMER_KeywordStat_VitalityVoid_Fire(_CharHurt, 1);
+PROC_AMER_GEN_CharacterCombatLogText(_CharHurt, "AMER_Talent_Unstable_Activated");
+*/
+
+
+//Once per turn, activate Vitality Void when suffering your 4th stack of Battered or Harried in that turn.
+PROC PROC_AMER_BatteredHarried_StacksChanged((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, (INTEGER)_WhichStack, (INTEGER)_AddedStacks, (INTEGER)_NewStacks)
+AND
+DB_AMER_Talents(_Char, "Unstable")
+AND
+QRY_AMER_GEN_OncePerTurn(_Char, "AMER_Talents_Unstable")
+AND
+_AddedStacks > 0
+THEN
+PROC_AMER_Talents_Unstable_StacksAdded(_Char, _AddedStacks);
+
+
+PROC PROC_AMER_Talents_Unstable_StacksAdded((CHARACTERGUID)_Char, (INTEGER)_AddedStacks)
+AND
+DB_AMER_Talents_Unstable_Stacks(_Char, _OldStacks)
+AND
+IntegerSum(_OldStacks, _AddedStacks, _NewStacks)
+THEN
+NOT DB_AMER_Talents_Unstable_Stacks(_Char, _OldStacks);
+DB_AMER_Talents_Unstable_Stacks(_Char, _NewStacks);
+
+PROC PROC_AMER_Talents_Unstable_StacksAdded((CHARACTERGUID)_Char, (INTEGER)_AddedStacks)
+AND
+NOT DB_AMER_Talents_Unstable_Stacks(_Char, _)
+THEN
+DB_AMER_Talents_Unstable_Stacks(_Char, _AddedStacks);
+
+PROC PROC_AMER_Talents_Unstable_StacksAdded((CHARACTERGUID)_Char, (INTEGER)_AddedStacks)
+AND
+DB_AMER_Talents_Unstable_Stacks(_Char, _Stacks)
+AND
+_Stacks > 3
+THEN
+NOT DB_AMER_Talents_Unstable_Stacks(_Char, _Stacks);
+PROC_AMER_GEN_OncePerTurn_Store(_Char, "AMER_Talents_Unstable");
+PROC_AMER_KeywordStat_VitalityVoid_Fire(_Char, 1);
+PROC_AMER_GEN_CharacterCombatLogText(_Char, "AMER_Talent_Unstable_Activated");
+
+
+
+PROC PROC_AMER_Combat_TurnEnded(_Combat, _, _)
+AND
+DB_AMER_Talents_Unstable_Stacks(_Char, _OldStacks)
+AND
+CombatGetIDForCharacter(_Char, _Combat)
+THEN
+NOT DB_AMER_Talents_Unstable_Stacks(_Char, _OldStacks);
+
+PROC PROC_AMER_Talents_Toggle((CHARACTERGUID)_Char, "Unstable", 1.0)
+AND
+DB_AMER_Talents_Unstable_Stacks(_Char, _OldStacks)
+THEN
+NOT DB_AMER_Talents_Unstable_Stacks(_Char, _OldStacks);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Talents"

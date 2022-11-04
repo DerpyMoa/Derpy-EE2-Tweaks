@@ -1,0 +1,24 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Once per round, Centurion emulates the effects of Superconductor.
+
+PROC PROC_AMER_Reaction_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, "AMER_Centurion", (STRING)_RequestID, (INTEGER)_RitualBool)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Centurion_ACT_MissedByAttack_MK2_OnAoO", _)
+AND
+QRY_AMER_GEN_NPerRound(_Char, "Ascension_Centurion_ACT_MissedByAttack_MK2_OnAoO", 1)
+THEN
+PROC_AMER_GEN_NPerRound_Add(_Char, "Ascension_Centurion_ACT_MissedByAttack_MK2_OnAoO", 1);
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 8.0, _Char, 10, "Derpy_Ascension_Gryphon");	//Enemies, not dead.
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Derpy_Ascension_Gryphon", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+PROC_AMER_GEN_ShootProjectileAt(_SourceChar, _Char, "Projectile_Superconductor");
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

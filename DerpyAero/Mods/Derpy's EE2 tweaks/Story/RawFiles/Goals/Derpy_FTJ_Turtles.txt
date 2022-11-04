@@ -1,0 +1,14 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_TurtleAmbush((CHARACTERGUID)CHARACTERGUID_Derpy_FTJ_SpikedTurtle_000_b4bf7cc7-66c4-48ef-a529-443cef2aeeea,"FTJ_SpikedTurtle_Small");
+DB_TurtleAmbush((CHARACTERGUID)CHARACTERGUID_Derpy_FTJ_SpikedTurtle_001_75ce2a5d-ae4d-4db4-9752-4c560132c3d3,"FTJ_SpikedTurtle_Small");
+GoalCompleted;
+
+KBSECTION
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "FortJoy"

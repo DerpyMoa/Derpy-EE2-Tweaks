@@ -1,0 +1,44 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+//Fix for https://www.reddit.com/r/DivinityOriginalSin/comments/cvdegn/a_way_to_exploit_elemental_arrows_to_gain/
+
+PROC PROC_AMER_GEN_UpdateWeaponData_Finished((CHARACTERGUID)_Char, (STRING)_OldType1, (STRING)_OldType2, (STRING)_Type1, (STRING)_Type2)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Char, "ArrowheadsRemoval", _, _, _, _)
+AND
+QRY_Derpy_ArrowheadsRemoval(_Char)
+THEN
+PROC_AMER_GEN_CheckRemoveStatus(_Char, "ARROWHEAD_BLOOD");
+PROC_AMER_GEN_CheckRemoveStatus(_Char, "ARROWHEAD_FIRE");
+PROC_AMER_GEN_CheckRemoveStatus(_Char, "ARROWHEAD_WATER");
+PROC_AMER_GEN_CheckRemoveStatus(_Char, "ARROWHEAD_OIL");
+PROC_AMER_GEN_CheckRemoveStatus(_Char, "ARROWHEAD_POISON");
+PROC_AMER_GEN_CheckRemoveStatus(_Char, "ARROWHEAD_ELECTRIC");
+
+
+//=======================================================================
+
+
+QRY QRY_Derpy_ArrowheadsRemoval((CHARACTERGUID)_Char)
+AND
+DB_AMER_GEN_PlayerWeaponData(_Char, _, _, _WeaponType1, _WeaponType2)
+AND
+_WeaponType1 != "Bow"
+AND
+_WeaponType1 != "Crossbow"
+AND
+_WeaponType1 != "Wand"
+AND
+_WeaponType2 != "Wand"
+THEN
+DB_NOOP();
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GEN_Stats_ExtendedStats"

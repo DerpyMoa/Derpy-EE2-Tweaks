@@ -1,0 +1,17 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+//A Violent Strike is occuring.
+PROC PROC_AMER_KeywordStat_ViolentStrikes_Fire((CHARACTERGUID)_Source, (CHARACTERGUID)_Target, (STRING)_Projectile)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Source, "Artifact_Abyss", _)
+THEN
+PROC_AMER_KeywordStat_Paucity_Activate(_Source, _Source, NULL_00000000-0000-0000-0000-000000000000);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"

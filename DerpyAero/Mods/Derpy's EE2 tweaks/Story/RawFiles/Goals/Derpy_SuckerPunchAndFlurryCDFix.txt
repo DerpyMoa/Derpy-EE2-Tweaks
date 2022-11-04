@@ -1,0 +1,68 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+//Sucker Punch
+
+IF
+CharacterUsedSkill(_Char, "Target_SingleHandedAttack", _, _)
+AND
+CharacterIsInCombat(_Char, 1)
+THEN
+DB_Derpy_SuckerPunchWasUsed(_Char);
+
+
+PROC PROC_AMER_Combat_TurnEnded(_Combat, _Char, 0)
+AND
+DB_Derpy_SuckerPunchWasUsed(_Char)
+THEN
+NOT DB_Derpy_SuckerPunchWasUsed(_Char);
+
+
+IF
+SkillAdded(_Char, "Target_SingleHandedAttack", _)
+AND
+CharacterIsInCombat(_Char, 1)
+AND
+DB_Derpy_SuckerPunchWasUsed(_Char)
+THEN
+NRD_SkillSetCooldown(_Char, "Target_SingleHandedAttack", 6.0);
+
+
+//==============================================================================
+
+
+//Flurry
+
+IF
+CharacterUsedSkill(_Char, "Target_DualWieldingAttack", _, _)
+AND
+CharacterIsInCombat(_Char, 1)
+THEN
+DB_Derpy_FlurryWasUsed(_Char);
+
+
+PROC PROC_AMER_Combat_TurnEnded(_Combat, _Char, 0)
+AND
+DB_Derpy_FlurryWasUsed(_Char)
+THEN
+NOT DB_Derpy_FlurryWasUsed(_Char);
+
+
+IF
+SkillAdded(_Char, "Target_DualWieldingAttack", _)
+AND
+CharacterIsInCombat(_Char, 1)
+AND
+DB_Derpy_FlurryWasUsed(_Char)
+THEN
+NRD_SkillSetCooldown(_Char, "Target_DualWieldingAttack", 6.0);
+
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

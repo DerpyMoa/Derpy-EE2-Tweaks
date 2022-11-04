@@ -1,0 +1,2 @@
+Mods["EpipEncounters"].Data.Game.DAMAGING_STATUS_SKILLS.Derpy_Frostbite = "Projectile_Derpy_StatusDamage_Brittle_Full"
+Mods["EpipEncounters"].Data.Game.DAMAGING_STATUS_SKILLS.SWARMED = "Projectile_AMER_SCRIPT_StatusDamage_Swarmed"

@@ -1,0 +1,31 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_GEN_FilteredStatus_Applied((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, "AMER_WITHER", (INTEGER)_Turns)
+AND
+DB_AMER_Artifacts_EquippedEffects(_ArtifactWielder, "Artifact_LocustCrown", _)
+AND
+QRY_AMER_GEN_OncePerRound_PerChar(_ArtifactWielder, "Artifact_LocustCrown", _Char)
+AND
+CharacterIsEnemy(_Char, _ArtifactWielder, 1)
+AND
+CharacterCanSee(_ArtifactWielder, _Char, 1)
+THEN
+DB_AMER_GEN_OncePerRound_PerChar(_ArtifactWielder, "Artifact_LocustCrown", _Char);
+PROC_AMER_Reaction_Request(_ArtifactWielder, _Char, "Artifact_LocustCrown", "", "skill_cast_target_voodoo_01_cast", 0);
+
+
+PROC PROC_AMER_Reaction_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, "Artifact_LocustCrown", (STRING)_RequestID, (INTEGER)_RitualBool)
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Earth_Cast_Throw_Line_Hand_01", "Dummy_L_HandFX");
+PlayEffect(_Char, "RS3_FX_Skills_Earth_Cast_Throw_Line_Hand_Cast_01", "Dummy_CastFX");
+PlayEffect(_Target, "RS3_FX_Skills_Arrow_Poison_Impact_01", "");
+ApplyStatus(_Target, "AMER_CORRODING", 6.0, 0, _Char);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"

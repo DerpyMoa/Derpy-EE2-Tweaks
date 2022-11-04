@@ -1,0 +1,20 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Any non-zero amount of damage you deal is sufficient to apply Battered or Harried.
+
+PROC PROC_AMER_CharacterReceivedDamage((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, (REAL)_DamageTotal, (REAL)_DamageVit, (REAL)_DamagePhys, (REAL)_DamageMagic)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_BHThreshold_AlwaysSufficient", _)
+AND
+QRY_AMER_GEN_OncePerRound_PerChar(_Char, "Derpy_Death", _Target)
+THEN
+DB_AMER_GEN_OncePerRound_PerChar(_Char, "Derpy_Death", _Target);
+PROC_AMER_BatteredHarried_DirectManip(_Target, 2, 2, _Char);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

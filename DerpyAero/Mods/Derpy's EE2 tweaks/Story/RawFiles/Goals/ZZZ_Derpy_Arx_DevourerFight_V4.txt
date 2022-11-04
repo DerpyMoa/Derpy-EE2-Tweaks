@@ -1,0 +1,44 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_DEV06_Devourer_63a6687e-d47d-4fed-b168-ac6eabe6bd05);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_DEV06_Manifestation_Cruelty_3ade0ca4-8b85-40a7-9b38-7520763a9975);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_DEV06_ForTransform_Fanatic_4935e351-f118-4a94-855b-99bc047da5f9);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_DEV06_Manifestation_Pride_d7cc4dc8-70a4-4576-bab8-05e86f8b9377);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_DEV06_ForTransform_Crafter_dbdb3ff1-a556-4994-87b7-09295d1f1dff);
+
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_DEV06_Devourer_63a6687e-d47d-4fed-b168-ac6eabe6bd05, "Cone_EnemyGroundSmash_Devourer");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_DEV06_Devourer_63a6687e-d47d-4fed-b168-ac6eabe6bd05, "Quake_EnemyEarthquake");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_DEV06_Devourer_63a6687e-d47d-4fed-b168-ac6eabe6bd05, "Rain_EnemyBlood");
+
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_DEV06_ForTransform_Fanatic_4935e351-f118-4a94-855b-99bc047da5f9, "Target_EnemyFlurry");
+
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_DEV06_Manifestation_Cruelty_3ade0ca4-8b85-40a7-9b38-7520763a9975, "Target_EnemyDaggersDrawn");
+
+KBSECTION
+
+IF
+RegionStarted(_)
+AND
+QueryOnlyOnce("Derpy_DevourerSetup")
+THEN
+SetIsBoss(CHARACTERGUID_DEV06_ForTransform_Crafter_dbdb3ff1-a556-4994-87b7-09295d1f1dff, 1);
+SetIsBoss(CHARACTERGUID_DEV06_Manifestation_Pride_d7cc4dc8-70a4-4576-bab8-05e86f8b9377, 1);
+SetIsBoss(CHARACTERGUID_DEV06_Manifestation_Cruelty_3ade0ca4-8b85-40a7-9b38-7520763a9975, 1);
+SetIsBoss(CHARACTERGUID_DEV06_ForTransform_Fanatic_4935e351-f118-4a94-855b-99bc047da5f9, 1);
+
+PROC PROC_DEV00_ARXSetup()
+AND
+QueryOnlyOnce("Derpy_DevourerCleanup")
+THEN
+RemoveStatus(CHARACTERGUID_DEV06_Devourer_63a6687e-d47d-4fed-b168-ac6eabe6bd05, "DEV06_DRAGON_ENDURANCE");
+CharacterRemoveSkill(CHARACTERGUID_DEV06_Devourer_63a6687e-d47d-4fed-b168-ac6eabe6bd05, "Shout_DEV06_EtherealPrison");
+CharacterRemoveSkill(CHARACTERGUID_DEV06_Devourer_63a6687e-d47d-4fed-b168-ac6eabe6bd05, "Shout_DEV06_RealityTear");
+
+
+EXITSECTION
+
+
+ENDEXITSECTION
+ParentTargetEdge "ARX"

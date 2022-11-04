@@ -1,0 +1,65 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "ProjectileStrike_HailStrike", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 1)
+THEN
+PROC_AMER_GEN_Shoot_Delayed("ProjectileStrike", _Char, NULL_00000000-0000-0000-0000-000000000000, _X, _Y, _Z, "ProjectileStrike_HailStrike", 1.0, 0, 400);	//1 total strikes within 2.5 of target, 400ms interval.
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "ProjectileStrike_HailStrike", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "CRITICALCHANCE", "Ability", "WaterSpecialist", 20.0, 4.0, 4000, "SkillCast");
+//PROC_AMER_TempStat_ExtendedStat_Add_StatScaling(_Char, "AttributeIntelligenceEffect_Multiplier", "", "", "", "Ability", "WaterSpecialist", 0.15, 0.03, 4000, "SkillCast");
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "ProjectileStrike_HailStrike", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 2)
+THEN
+PROC_AMER_GEN_Shoot_Delayed("ProjectileStrike", _Char, NULL_00000000-0000-0000-0000-000000000000, _X, _Y, _Z, "ProjectileStrike_HailStrike", 1.0, 3, 260);	//4 total strikes within 2.5 of target, 260ms interval.
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "ProjectileStrike_HailStrike", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_GEN_Shoot_Delayed("ProjectileStrike", _Char, NULL_00000000-0000-0000-0000-000000000000, _X, _Y, _Z, "ProjectileStrike_HailStrike", 1.0, 11, 125);	//12 total strikes within 2.5 of target, 125ms interval.
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "ProjectileStrike_HailStrike", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)	//Note that even though projectilestrikes have multiple projectiles, they only throw one target.
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_Source_Infusion_RitualRequest(_Char, _X, _Y, _Z, _X, _Y, _Z, 13.0, "InfusionRitual_Hailstrike_3_Hailstrike", "", "WaterSpecialist", 1, "skill_cast_aoe_air_01_cast", 0, 1);
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "ProjectileStrike_HailStrike", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+AND
+QRY_AMER_Reaction_CountHeldReactions("InfusionRitual_Hailstrike_3_Hailstrike")
+AND
+DB_AMER_GEN_OUTPUT_Integer(_RitualSize)
+AND
+Real(_RitualSize, _RitualSizeReal)
+AND
+RealProduct(_RitualSizeReal, 3.0, _Bonus)
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "WaterSpecialist", 0.0, _Bonus);
+//PROC_AMER_TempStat_ExtendedStat_Add_StatScaling(_Char, "AttributeIntelligenceEffect_Multiplier", "", "", "", "Ability", "WaterSpecialist", 0.0, _Bonus);
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "ProjectileStrike_HailStrike", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_Reaction_ApproveHeldReactions("InfusionRitual_Hailstrike_3_Hailstrike");
+
+PROC PROC_AMER_Reaction_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, "InfusionRitual_Hailstrike_3_Hailstrike", (STRING)_RequestID, (INTEGER)_RitualBool)
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Water_Cast_AoE_Air_Root_01_Snow", "");
+PROC_AMER_GEN_Shoot_Delayed("ProjectileStrike", _Char, NULL_00000000-0000-0000-0000-000000000000, _X, _Y, _Z, "ProjectileStrike_HailStrike", 1.0, 2, 250);	//3 total strikes within 2.5 of target, 250ms interval.
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Hydrosophist"

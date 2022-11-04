@@ -1,0 +1,16 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_RC_BF_Ferryman_6d4270d3-2f01-4674-8668-396ac0a4c703, "Cone_EnemyDeathFogBreath");
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_RC_BF_Ferryman_6d4270d3-2f01-4674-8668-396ac0a4c703);
+PROC_AMER_ModSetting_AlwaysInfuse_Specific(CHARACTERGUID_S_RC_BF_Ferryman_6d4270d3-2f01-4674-8668-396ac0a4c703, 3);
+GoalCompleted;
+
+KBSECTION
+
+EXITSECTION
+
+
+ENDEXITSECTION
+ParentTargetEdge "ReapersCoast"

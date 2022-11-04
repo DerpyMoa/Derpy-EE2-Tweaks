@@ -1,0 +1,48 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, "Target_Fortify", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "BatteredHarried_DirectManipStatuses_Activate", "0", "-3", "", 1.0, 2000, "SkillCast");   //Stats use B/H direct manip status, so need to enable it first.
+
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_Fortify", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+AND
+_InfusCount < 3
+THEN
+PROC_AMER_TempStat_StatusMod_AddFlexStat_Scaling(_Char, "FORTIFIED", "Stat", "PHYSICALRESISTANCE", "Fortify_Infus", 0, "Ability", "EarthSpecialist", 10.0, 1.0, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddFlexStat_Scaling(_Char, "FORTIFIED", "Stat", "PIERCINGRESISTANCE", "Fortify_Infus", 0, "Ability", "EarthSpecialist", 10.0, 1.0);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_Fortify", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+DB_AMER_IterateCharsAroundObject_Exclusion(_Target);	//Don't double-cast on target.
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 13.0, _Char, 12, "AMER_SourceInfusion_Fortify");	//Allies, not dead.
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "AMER_SourceInfusion_Fortify", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+ApplyStatus(_Char, "FORTIFIED", 18.0, 0, _SourceChar);
+PROC_AMER_BatteredHarried_DirectManip(_Char, 0, -3, _SourceChar);
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_Fortify", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_TempStat_StatusMod_AddFlexStat_Scaling(_Char, "FORTIFIED", "Stat", "PHYSICALRESISTANCE", "Fortify_Infus", 0, "Ability", "EarthSpecialist", 20.0, 2.0, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddFlexStat_Scaling(_Char, "FORTIFIED", "Stat", "PIERCINGRESISTANCE", "Fortify_Infus", 0, "Ability", "EarthSpecialist", 20.0, 2.0);
+PROC_AMER_TempStat_StatusMod_AddExtendedStat_Scaling(_Char, "FORTIFIED", "BattHarr_Threshold_Mult_Self", "Both", "", "", "Fortify_Infus", 0, "Ability", "EarthSpecialist", 1.0, 0.1);	//+100% threshold + 10% per point.
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Geomancer"

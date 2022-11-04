@@ -1,0 +1,101 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_BoneCage", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_GEN_CountCharsAroundObject(_Char, 13.0, _Char, 16, "AMER_SourceInfusion_BoneCage_CorpseCount");	//Count only dead characters within cast range.
+
+PROC PROC_AMER_GEN_CountCharsAroundObject_Returned((INTEGER)_RequestIndex, "AMER_SourceInfusion_BoneCage_CorpseCount", (CHARACTERGUID)_Caster, (INTEGER)_Corpses)
+AND
+DB_AMER_Source_Infusion_Current(_Caster, _InfusCount)
+AND
+Real(_Corpses, _CorpsesReal)
+THEN
+PROC_AMER_Source_Infusion_BoneCagePreCast(_Caster, _CorpsesReal, _InfusCount);
+
+
+PROC PROC_AMER_Source_Infusion_BoneCagePreCast((CHARACTERGUID)_Char, (REAL)_Corpses, (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, 0.0, -0.25, 0.0, "Ability", "Necromancy")
+AND
+DB_AMER_GEN_OUTPUT_Real(_NecroScaling)
+AND
+RealProduct(_NecroScaling, _Corpses, _Scaling)
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "BONE_CAGE", "InstantEffect", "ApplyBatteredAndHarried", "", "", _Scaling, "BoneCage_Infus", 0, 2000, "SkillCast");
+
+
+PROC PROC_AMER_Source_Infusion_BoneCagePreCast((CHARACTERGUID)_Char, (REAL)_Corpses, (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, 0.0, 0.25, 0.0, "Ability", "Necromancy")
+AND
+DB_AMER_GEN_OUTPUT_Real(_ResScaling)
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, 0.0, 1.0, 0.0, "Ability", "Necromancy")
+AND
+DB_AMER_GEN_OUTPUT_Real(_ArmorScaling)
+AND
+RealProduct(_ResScaling, _Corpses, _Res)
+AND
+RealProduct(_ArmorScaling, _Corpses, _Armor)
+THEN
+PROC_AMER_TempStat_StatusMod_AddFlexStat(_Char, "BONE_CAGE", "Stat", "PHYSICALRESISTANCE", _Res, "BoneCage_Infus", 0);
+PROC_AMER_TempStat_StatusMod_AddFlexStat(_Char, "BONE_CAGE", "Stat", "PHYSICALARMORBOOST", _Armor, "BoneCage_Infus", 0);
+
+
+PROC PROC_AMER_Source_Infusion_BoneCagePreCast((CHARACTERGUID)_Char, (REAL)_Corpses, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_Source_Infusion_RitualRequest(_Char, _Char, _Char, 15.0, "InfusionRitual_BoneCage_3_BoneCage", "", "Necromancy", 1, "skill_cast_target_voodoo_01_cast", 0, 1);
+
+PROC PROC_AMER_Reaction_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, "InfusionRitual_BoneCage_3_BoneCage", (STRING)_RequestID, (INTEGER)_RitualBool)
+AND
+CombatGetIDForCharacter(_Char, _Combat)
+AND
+QRY_AMER_GEN_GetRandomPointInRadius_2D(_X, _Y, _Z, 13.0)
+AND
+DB_AMER_GEN_OUTPUT_Point(_RandX, _RandY, _RandZ)
+THEN
+PROC_AMER_GEN_CreateCorpse(_RandX, _RandY, _RandZ, _Combat, "RS3_FX_Skills_Voodoo_Curse_Target_Ground_01");
+
+PROC PROC_AMER_Source_Infusion_BoneCagePreCast((CHARACTERGUID)_Char, (REAL)_Corpses, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+AND
+QRY_AMER_Reaction_CountHeldReactions("InfusionRitual_BoneCage_3_BoneCage")
+AND
+DB_AMER_GEN_OUTPUT_Integer(_Participants)
+AND
+Real(_Participants, _ParticipantsReal)
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, 0.0, 0.65, 0.0, "Ability", "Necromancy")
+AND
+DB_AMER_GEN_OUTPUT_Real(_ResScaling)
+AND
+RealProduct(_ResScaling, _Corpses, _Res)
+AND
+RealProduct(_Res, _ParticipantsReal, _ResFinal)
+THEN
+PROC_AMER_TempStat_StatusMod_AddFlexStat(_Char, "BONE_CAGE", "Stat", "PHYSICALRESISTANCE", _ResFinal, "BoneCage_Infus", 0);
+
+
+PROC PROC_AMER_Source_Infusion_BoneCagePreCast((CHARACTERGUID)_Char, (REAL)_Corpses, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_Reaction_ApproveHeldReactions("InfusionRitual_BoneCage_3_BoneCage");
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Necromancer"

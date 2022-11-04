@@ -1,0 +1,72 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Once per round, Vitality Void summons an Empowered Boneshaped Skitterer on up to 2 corpses within 8m.
+
+PROC PROC_AMER_KeywordStat_VitalityVoid_ExecDamage((INTEGER)_RequestIndex, (CHARACTERGUID)_SourceChar, _, (INTEGER)_DamageTotal, (INTEGER)_TargetCount)
+AND
+DB_AMER_Ascension_SpecialLogic(_SourceChar, "Ascension_VitalityVoid_MUTA_CorpseSkitterers", _)
+AND
+QRY_AMER_GEN_OncePerRound(_SourceChar, "Ascension_VitalityVoid_MUTA_CorpseSkitterers")
+THEN
+PROC_AMER_GEN_IterateCharsAroundObject(_SourceChar, 8.0, _SourceChar, 16, "Ascension_VitalityVoid_MUTA_CorpseSkitterers");
+
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated(_RequestIndex, "Ascension_VitalityVoid_MUTA_CorpseSkitterers", _SourceChar, _Char)
+THEN
+DB_AMER_Ascension_VitalityVoid_MUTA_CorpseSkitterers_Corpses(_RequestIndex, _Char);
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Finished(_RequestIndex, "Ascension_VitalityVoid_MUTA_CorpseSkitterers", _SourceChar)
+THEN
+DB_AMER_Ascension_VitalityVoid_MUTA_CorpseSkitterers_Count(_RequestIndex, 0);
+PROC_AMER_Ascension_VitalityVoid_MUTA_CorpseSkitterers_Spawn(_RequestIndex, _SourceChar);
+
+
+PROC PROC_AMER_Ascension_VitalityVoid_MUTA_CorpseSkitterers_Spawn((INTEGER)_RequestIndex, (CHARACTERGUID)_SourceChar)
+AND
+DB_AMER_Ascension_VitalityVoid_MUTA_CorpseSkitterers_Corpses(_RequestIndex, _Char)
+AND
+DB_AMER_Ascension_VitalityVoid_MUTA_CorpseSkitterers_Count(_RequestIndex, _Count)
+AND
+_Count < 2
+AND
+IntegerSum(_Count, 1, _NewCount)
+AND
+GetPosition(_Char, _X, _Y, _Z)
+THEN
+NOT DB_AMER_Ascension_VitalityVoid_MUTA_CorpseSkitterers_Count(_RequestIndex, _Count);
+DB_AMER_Ascension_VitalityVoid_MUTA_CorpseSkitterers_Count(_RequestIndex, _NewCount);
+NOT DB_AMER_Ascension_VitalityVoid_MUTA_CorpseSkitterers_Corpses(_RequestIndex, _Char);
+PlayEffectAtPosition("RS3_FX_Skills_Totem_Target_Nebula_01", _X, _Y, _Z);
+PROC_AMER_Summoning_MakeNextNPC(_SourceChar, "AMER_Extinction_BoneHand_B_4b27963b-4f95-471a-acb4-ba11fcedd033", 1);
+PROC_AMER_Summoning_SnapNextToValidPos(_SourceChar, "AMER_Extinction_BoneHand_B_4b27963b-4f95-471a-acb4-ba11fcedd033", 1);
+PROC_AMER_GEN_CharacterCauseExplosionAtPos(_SourceChar, _X, _Y, _Z, "Projectile_Derpy_SCRIPT_Summon_Death_EmpoweredSkitterer");
+
+PROC PROC_AMER_Ascension_VitalityVoid_MUTA_CorpseSkitterers_Spawn((INTEGER)_RequestIndex, (CHARACTERGUID)_SourceChar)
+AND
+DB_AMER_Ascension_VitalityVoid_MUTA_CorpseSkitterers_Count(_RequestIndex, _Count)
+AND
+_Count > 0
+THEN
+DB_AMER_GEN_OncePerRound(_SourceChar, "Ascension_VitalityVoid_MUTA_CorpseSkitterers");
+
+PROC PROC_AMER_Ascension_VitalityVoid_MUTA_CorpseSkitterers_Spawn((INTEGER)_RequestIndex, (CHARACTERGUID)_SourceChar)
+AND
+DB_AMER_Ascension_VitalityVoid_MUTA_CorpseSkitterers_Count(_RequestIndex, _Count)
+THEN
+NOT DB_AMER_Ascension_VitalityVoid_MUTA_CorpseSkitterers_Count(_RequestIndex, _Count);
+
+PROC PROC_AMER_Ascension_VitalityVoid_MUTA_CorpseSkitterers_Spawn((INTEGER)_RequestIndex, (CHARACTERGUID)_SourceChar)
+AND
+DB_AMER_Ascension_VitalityVoid_MUTA_CorpseSkitterers_Corpses(_RequestIndex, _Char)
+THEN
+NOT DB_AMER_Ascension_VitalityVoid_MUTA_CorpseSkitterers_Corpses(_RequestIndex, _Char);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

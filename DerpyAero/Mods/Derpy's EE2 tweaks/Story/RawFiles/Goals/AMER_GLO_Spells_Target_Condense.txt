@@ -1,0 +1,115 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+NRD_OnStatusAttempt((ITEMGUID)_Item, "Derpy_TurnToOil", _Handle, _Source)
+AND
+ItemIsTorch(_Item, 1)
+THEN
+ApplyStatus(_Item, "WET", 0.0, 0, _Source);
+
+
+IF
+NRD_OnStatusAttempt((CHARACTERGUID)_Char, "Derpy_TurnToOil", _Handle, (CHARACTERGUID)_Source)
+AND
+CharacterIsEnemy(_Char, _Source, _IsEnemy)
+THEN
+PROC_Derpy_TurnToOil_SI0(_Char, _Source, _IsEnemy);
+
+
+PROC PROC_Derpy_TurnToOil_SI0((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, 0)
+THEN
+RemoveStatus(_Char, "WET");
+RemoveStatus(_Char, "AMER_CHARGED");
+
+
+PROC PROC_Derpy_TurnToOil_SI0((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, 1)
+THEN
+ApplyStatus(_Char, "AMER_CALCIFYING", 12.0, 0, _Source);
+ApplyStatus(_Char, "AMER_SLOWED_2", 12.0, 0, _Source);
+
+
+PROC PROC_AMER_Spells_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_Condense", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+CreateSurfaceAtPosition(_X, _Y, _Z, "SurfaceOil", 2.0, 12.0);
+
+
+//==========================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_Condense", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 1)
+THEN
+PROC_AMER_GEN_IterateCharsAroundPoint(_X, _Y, _Z, 3.0, _Char, 10, "Derpy_TurnToOil_SI1");	//Living enemies.
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Derpy_TurnToOil_SI1", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+AND
+NRD_ApplyDamageOnMove(_Char, "Derpy_Petrifaction", _SourceChar, 12.0, 0.5, _TurnToOilSI)
+THEN
+ApplyStatus(_Char, "Derpy_Petrifaction_BleedOil", 12.0, 0, _SourceChar);
+
+
+//==========================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Target_Condense", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 2)
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, 2.0, 0.2, 0.0, "Ability", "EarthSpecialist")
+AND
+DB_AMER_GEN_OUTPUT_Real(_Scaling)
+AND
+Integer(_Scaling, _ScalingInt)
+THEN
+PROC_AMER_BatteredHarried_ManipAroundPoint(_X, _Y, _Z, 3.0, 0, _ScalingInt, _Char, 10);	//Living enemies.
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_Condense", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 2)
+THEN
+PROC_AMER_GEN_IterateCharsAroundPoint(_X, _Y, _Z, 3.0, _Char, 10, "Derpy_TurnToOil_SI2");	//Living enemies.
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Derpy_TurnToOil_SI2", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+AND
+NRD_ApplyDamageOnMove(_Char, "Derpy_Petrifaction", _SourceChar, 18.0, 0.5, _TurnToOilSI)
+THEN
+ApplyStatus(_Char, "Derpy_Petrifaction_BleedOil", 18.0, 0, _SourceChar);
+ApplyStatus(_Char, "AMER_ATAXIA_APPLY", 12.0, 0, _SourceChar);
+
+
+//==========================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Target_Condense", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 3)
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, 4.0, 0.4, 0.0, "Ability", "EarthSpecialist")
+AND
+DB_AMER_GEN_OUTPUT_Real(_Scaling)
+AND
+Integer(_Scaling, _ScalingInt)
+THEN
+PROC_AMER_BatteredHarried_ManipAroundPoint(_X, _Y, _Z, 3.0, 0, _ScalingInt, _Char, 10);	//Living enemies.
+PROC_AMER_TempStat_StatusMod_AddSpreading(_Char, "Derpy_Petrifaction", 5.0, 10, "RS3_FX_Skills_Earth_Condense_Target_01", "", "", 0, 2000, "SkillCast");	//Spread to living enemies within 5m.
+PROC_AMER_TempStat_StatusMod_AddSpreading(_Char, "Derpy_Petrifaction_BleedOil", 5.0, 10, "", "", "", 0, 2000, "SkillCast");	//Spread to living enemies within 5m.
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_Condense", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 3)
+THEN
+PROC_AMER_GEN_IterateCharsAroundPoint(_X, _Y, _Z, 3.0, _Char, 10, "Derpy_TurnToOil_SI3");	//Living enemies.
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Derpy_TurnToOil_SI3", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+AND
+NRD_ApplyDamageOnMove(_Char, "Derpy_Petrifaction", _SourceChar, 24.0, 0.5, _TurnToOilSI)
+THEN
+ApplyStatus(_Char, "Derpy_Petrifaction_BleedOil", 24.0, 0, _SourceChar);
+ApplyStatus(_Char, "AMER_ATAXIA_APPLY", 12.0, 0, _SourceChar);
+
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Geomancer"

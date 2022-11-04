@@ -1,0 +1,24 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+RegionStarted(_)
+AND
+DB_TUT_DeathFogBarrels(_Item)
+THEN
+ItemDestroy(_Item);
+
+IF
+RegionEnded(_)
+THEN
+GoalCompleted;
+
+
+EXITSECTION
+
+
+ENDEXITSECTION
+ParentTargetEdge "Tutorial_PrisonShip"

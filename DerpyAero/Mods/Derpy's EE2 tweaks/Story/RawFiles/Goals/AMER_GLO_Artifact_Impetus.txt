@@ -1,0 +1,55 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_GEN_FilteredStatus_Applied((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, "HASTED", (INTEGER)_Turns)
+AND
+DB_AMER_Artifacts_EquippedEffects(_ArtifactWielder, "Artifact_Impetus", _)
+AND
+CharacterIsEnemy(_Char, _ArtifactWielder, 1)
+AND
+NOT QRY_AMER_Artifacts_Impetus_SourceIsWielder(_Char, _Source, _ArtifactWielder)    //Directly activate if the artifact wielder is applying haste themselves.
+THEN
+PROC_AMER_Reaction_Request(_ArtifactWielder, _Char, "Artifact_Impetus", "", "skill_cast_target_voodoo_01_cast", 0);
+
+
+QRY QRY_AMER_Artifacts_Impetus_SourceIsWielder((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, (CHARACTERGUID)_ArtifactWielder)
+AND
+_Source == _ArtifactWielder
+THEN
+PROC_AMER_Artifacts_Impetus_Activate(_Source, _Char);
+
+
+PROC PROC_AMER_Reaction_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, "Artifact_Impetus", (STRING)_RequestID, (INTEGER)_RitualBool)
+THEN
+PROC_AMER_Artifacts_Impetus_Activate(_Char, _Target);
+
+
+PROC PROC_AMER_Artifacts_Impetus_Activate((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+AND
+QRY_AMER_GEN_CharacterGetDisplayName(_Target)
+AND
+DB_AMER_GEN_OUTPUT_String(_TargetName)
+AND
+GetStatusTurns(_Target, "HASTED", _Turns)
+AND
+Real(_Turns, _TurnsReal)
+AND
+RealProduct(_TurnsReal, 6.0, _Duration)
+AND
+QRY_AMER_GEN_TSK_Get("AMER_Artifact_Impetus_LogText")
+AND
+DB_AMER_GEN_OUTPUT_String(_LogText)
+AND
+NRD_ApplyDamageOnMove(_Target, "AMER_IMPETUS", _Char, _Duration, 0.5, _DerpyImpetus)
+THEN
+PlayEffect(_Target, "RS3_FX_GP_Impacts_Quest_HannagLightningBolt_01", "");
+CharacterStatusText(_Target, "Impetus");
+PROC_AMER_GEN_CharacterCombatLogText_Param_Str(_Char, _LogText, _TargetName);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"

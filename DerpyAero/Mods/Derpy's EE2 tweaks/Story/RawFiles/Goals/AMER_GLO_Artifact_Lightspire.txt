@@ -1,0 +1,32 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Source_SourceSpent((CHARACTERGUID)_Char, (INTEGER)_Amount)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Char, "Artifact_Lightspire", _)
+AND
+IntegerSubtract(_Amount, 1, _ActualAmount)
+THEN
+DB_Derpy_LightspireStoredAmount(_Char, _ActualAmount);
+CharacterStatusText(_Char, "Artifact_Lightspire");
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 5.0, _Char, 42, "Artifact_Lightspire_BoltIterator");    //Living enemies that _Char can see within 5.0m.
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Artifact_Lightspire_BoltIterator", (CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+AND
+DB_Derpy_LightspireStoredAmount(_Char, _ActualAmount)
+THEN
+PROC_AMER_GEN_Shoot_Delayed("Projectile", _Char, _Target, "Projectile_LightningBolt", _ActualAmount, 100);
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Finished((INTEGER)_RequestID, "Artifact_Lightspire_BoltIterator", (CHARACTERGUID)_Char)
+AND
+DB_Derpy_LightspireStoredAmount(_Char, _ActualAmount)
+THEN
+NOT DB_Derpy_LightspireStoredAmount(_Char, _ActualAmount);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"

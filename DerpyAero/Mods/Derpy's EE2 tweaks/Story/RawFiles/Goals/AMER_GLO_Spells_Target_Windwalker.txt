@@ -1,0 +1,58 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, "Target_Windwalker", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "WIND_WALKER", "SurfaceImmunity", "", "", "", 1.0, "ErraticWispSurfaceImmunity", 0, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_Windwalker", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_StatusMod_AddFlexStat(_Char, "WIND_WALKER", "Stat", "MOVEMENT", 100.0, "WindwalkerInfus", 0, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_Windwalker", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "Status_AddDuration", "WIND_WALKER", "", "", 1.0);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Target_Windwalker", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+ApplyStatus(_Char, "WIND_WALKER", 12.0, 0, _Char);
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_Windwalker", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "WIND_WALKER", "Harried_StackInfluence_Self", "", "", "", -1.0, "WindwalkerInfus", 0);
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "WIND_WALKER", "Battered_StackInfluence_Self", "", "", "", -1.0, "WindwalkerInfus", 0);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_Windwalker", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+DB_AMER_IterateCharsAroundObject_Exclusion(_Target);	//Don't bother buffing target twice.
+DB_AMER_IterateCharsAroundObject_Exclusion(_Char);		//Don't bother buffing self twice.
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 13.0, _Char, 12, "AMER_SourceInfusion_ErraticWisp");	//Living allies within 13m of _Char.
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "AMER_SourceInfusion_ErraticWisp", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+ApplyStatus(_Char, "WIND_WALKER", 12.0, 0, _SourceChar);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Aerotheurge"

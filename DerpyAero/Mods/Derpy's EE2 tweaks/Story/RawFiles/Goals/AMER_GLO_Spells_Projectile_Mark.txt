@@ -1,0 +1,67 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, "Projectile_Mark", 0, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat_Scaling(_Char, "MARKED", "ResBreach_Amplifier", "", "", "", "Glitterdust_Infus", 0, "Ability", "RangerLore", -20.0, -2.0, 3000, "SkillCast");
+
+
+//=====================================================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Projectile_Mark", 1)
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat_Scaling(_Char, "MARKED", "ResBreach_Amplifier", "", "", "", "Glitterdust_Infus", 0, "Ability", "RangerLore", -30.0, -3.0, 3000, "SkillCast");
+
+
+//=====================================================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Projectile_Mark", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "Status_AddDuration", "MARKED", "", "", 1.0);
+PROC_AMER_TempStat_StatusMod_AddExtendedStat_Scaling(_Char, "MARKED", "ResBreach_Amplifier", "", "", "", "Glitterdust_Infus", 0, "Ability", "RangerLore", -30.0, -6.0, 3000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Projectile_Mark", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 2)
+THEN
+DB_AMER_IterateCharsAroundObject_Exclusion(_Target);
+PROC_AMER_GEN_IterateCharsAroundObject(_Target, 3.0, _Char, 42, "AMER_SourceInfusion_Mark_2");	//Living visible enemies.
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "AMER_SourceInfusion_Mark_2", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+PROC_AMER_GEN_ShootProjectileAt(_SourceChar, _Char, "Projectile_Mark");
+
+
+//=====================================================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Projectile_Mark", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "Status_AddDuration", "MARKED", "", "", 1.0);
+PROC_AMER_TempStat_StatusMod_AddExtendedStat_Scaling(_Char, "MARKED", "InstantEffect", "ApplyHarried", "", "", "Glitterdust_Infus", 0, "Ability", "RangerLore", 2.0, 0.5);
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Projectile_Mark", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+DB_AMER_IterateCharsAroundObject_Exclusion(_Target);
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 13.0, _Char, 42, "AMER_SourceInfusion_Mark_3");	//Living visible enemies.
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "AMER_SourceInfusion_Mark_3", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+PROC_AMER_GEN_ShootProjectileAt(_SourceChar, _Char, "Projectile_Mark");
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Huntsman"

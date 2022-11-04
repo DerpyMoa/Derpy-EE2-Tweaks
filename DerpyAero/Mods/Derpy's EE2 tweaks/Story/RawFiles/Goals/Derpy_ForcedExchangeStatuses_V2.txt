@@ -1,0 +1,20 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_Derpy_ForcedExchangeStatuses("HASTED");
+DB_Derpy_ForcedExchangeStatuses("MAGIC_SHELL");
+DB_Derpy_ForcedExchangeStatuses("FORTIFIED");
+DB_Derpy_ForcedExchangeStatuses("EVADING");
+DB_Derpy_ForcedExchangeStatuses("LIVINGONTHEEDGE");
+DB_Derpy_ForcedExchangeStatuses("LIVINGONTHEEDGE_INFUS_1");
+DB_Derpy_ForcedExchangeStatuses("LIVINGONTHEEDGE_INFUS_3");
+
+
+KBSECTION
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

@@ -1,0 +1,37 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+
+KBSECTION
+
+IF
+ObjectLeftCombat((CHARACTERGUID)_Char, _)
+AND
+CharacterIsPlayer(_Char, 0)
+AND
+QRY_AMER_GEN_Mutex_Clear()
+AND
+DB_IsPlayer(_Player)
+AND
+CharacterIsEnemy(_Char, _Player, 0)
+AND
+QRY_AMER_GEN_Mutex()
+THEN
+PROC_AMER_GEN_Goal_Activate("Derpy_OocAggroFix_Internal");
+PROC_AMER_GEN_Goal_TimedCompletion("Derpy_OocAggroFix_Internal", 24000);
+ApplyStatus(_Char, "Derpy_OocAggroFix", 24.0, 1, _Char);
+
+
+IF
+ObjectEnteredCombat((CHARACTERGUID)_Char, _)
+AND
+HasActiveStatus(_Char, "Derpy_OocAggroFix", 1)
+THEN
+RemoveStatus(_Char, "Derpy_OocAggroFix");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

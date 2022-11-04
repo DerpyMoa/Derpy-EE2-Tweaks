@@ -1,0 +1,46 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_VampiricHunger", 1)
+THEN
+PROC_AMER_TempStat_StatusMod_AddFlexStat_Scaling(_Char, "VAMPIRISM", "Stat", "DAMAGEBOOST", "Vampirism_Infus", 0, "Ability", "WaterSpecialist", 20.0, 3.0, 2000, "SkillCast");
+//PROC_AMER_TempStat_StatusMod_AddExtendedStat_Scaling(_Char, "VAMPIRISM", "AttributeIntelligenceEffect_Multiplier", "", "", "", "Vampirism_Infus", 0, "Ability", "WaterSpecialist", 0.18, 0.03, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_VampiricHunger", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 2)
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, 20.0, 3.0, 0.0, "Ability", "WaterSpecialist")
+AND
+DB_AMER_GEN_OUTPUT_Real(_Damage)
+THEN
+PROC_AMER_TempStat_StatusMod_AddFlexStat(_Char, "VAMPIRISM_AURA", "Stat", "DAMAGEBOOST", _Damage, "Vampirism_Infus", 0, 2000, "SkillCast");
+//PROC_AMER_TempStat_StatusMod_AddExtendedStat_Scaling(_Char, "VAMPIRISM", "AttributeIntelligenceEffect_Multiplier", "", "", "", "Vampirism_Infus", 0, "Ability", "WaterSpecialist", 0.18, 0.03, 2000, "SkillCast");
+DB_AMER_StatusMod_BindToStatus("VAMPIRISM_AURA");
+PROC_AMER_StatusMod_Add_FlexStat(_Char, "VAMPIRISM", "Stat", "DAMAGEBOOST", _Damage, "Vampirism_Infus", 0);
+ApplyStatus(_Target, "VAMPIRISM_AURA", 24.0, 0, _Char);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_VampiricHunger", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, 20.0, 3.0, 0.0, "Ability", "WaterSpecialist")
+AND
+DB_AMER_GEN_OUTPUT_Real(_Damage)
+THEN
+PROC_AMER_TempStat_StatusMod_AddFlexStat(_Char, "VAMPIRISM_AURA_INFUS_2", "Stat", "DAMAGEBOOST", _Damage, "Vampirism_Infus", 0, 2000, "SkillCast");
+//PROC_AMER_TempStat_StatusMod_AddExtendedStat_Scaling(_Char, "VAMPIRISM", "AttributeIntelligenceEffect_Multiplier", "", "", "", "Vampirism_Infus", 0, "Ability", "WaterSpecialist", 0.18, 0.03, 2000, "SkillCast");
+DB_AMER_StatusMod_BindToStatus("VAMPIRISM_AURA_INFUS_2");
+PROC_AMER_StatusMod_Add_FlexStat(_Char, "VAMPIRISM", "Stat", "DAMAGEBOOST", _Damage, "Vampirism_Infus", 0);
+DB_AMER_StatusMod_BindToStatus("VAMPIRISM_AURA_INFUS_2");
+PROC_AMER_StatusMod_Add_FlexStat(_Char, "VAMPIRISM", "Stat", "LIFESTEAL", 40.0, "Vampirism_Infus", 0);
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+ApplyStatus(_Target, "VAMPIRISM_AURA_INFUS_2", 24.0, 0, _Char);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Hydrosophist"

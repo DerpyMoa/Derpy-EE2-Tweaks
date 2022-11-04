@@ -1,0 +1,15 @@
+key "DamageToThrownWeightRatio","0"
+
+key "TalentCivilAbilityPointsBonus","2"
+
+key "CharacterBaseMemoryCapacity","6"
+
+key "CharacterBaseMemoryCapacityGrowth","1"
+
+key "TalentMemoryBonus","5"
+
+key "TalentExecutionerActionPointBonus","0"
+
+key "TalentWhatARushThreshold","0"
+
+key "TalentSneakingAPCost","2"

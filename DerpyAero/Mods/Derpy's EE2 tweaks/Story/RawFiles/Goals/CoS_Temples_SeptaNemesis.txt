@@ -1,0 +1,64 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+DB_Dialogs(CHARACTERGUID_S_CoS_Temples_Animal_002_ab1ba23b-227b-4315-a096-b6c0b4bc8a5c,"CoS_Temples_Animal_002");
+KBSECTION
+
+IF
+ObjectFlagSet("CoS_Temples_SeptaNemesisReward",(CHARACTERGUID)_Player,_)
+THEN
+CharacterGiveReward(_Player,"COS_CrabShield");
+ObjectSetFlag(CHARACTERGUID_S_CoS_Temples_Animal_002_ab1ba23b-227b-4315-a096-b6c0b4bc8a5c,"CoS_Temples_SeptaNemesisLeave");
+
+IF
+DialogEnded("CoS_Temples_Animal_002",_)
+AND
+ObjectGetFlag(CHARACTERGUID_S_CoS_Temples_Animal_002_ab1ba23b-227b-4315-a096-b6c0b4bc8a5c,"CoS_Temples_SeptaNemesisLeave",1)
+THEN
+SetHasDialog(CHARACTERGUID_S_CoS_Temples_Animal_002_ab1ba23b-227b-4315-a096-b6c0b4bc8a5c,0);
+SetFaction(CHARACTERGUID_S_CoS_Temples_Animal_002_ab1ba23b-227b-4315-a096-b6c0b4bc8a5c,"Evil NPC");
+Proc_CoS_Temples_SeptaNemesis_Transformation();
+
+IF
+ObjectEnteredCombat(CHARACTERGUID_S_CoS_Temples_Animal_002_ab1ba23b-227b-4315-a096-b6c0b4bc8a5c,_)
+AND
+QueryOnlyOnce("CoS_Temples_SeptaNemesis_Transformation")
+THEN
+JumpToTurn(CHARACTERGUID_S_CoS_Temples_Animal_002_ab1ba23b-227b-4315-a096-b6c0b4bc8a5c);
+Proc_CoS_Temples_SeptaNemesis_Transformation();
+
+PROC
+Proc_CoS_Temples_SeptaNemesis_Transformation()
+THEN
+DB_Derpy_EmpyreoTransformed(1);
+PlayEffect(CHARACTERGUID_S_CoS_Temples_Animal_002_ab1ba23b-227b-4315-a096-b6c0b4bc8a5c,"RS3_FX_Skills_Water_Cast_Ground_01");
+PlayEffect(CHARACTERGUID_S_CoS_Temples_Animal_002_ab1ba23b-227b-4315-a096-b6c0b4bc8a5c,"RS3_FX_Skills_Water_Ice_Shout_Ground_01");
+PlayAnimation(CHARACTERGUID_S_CoS_Temples_Animal_002_ab1ba23b-227b-4315-a096-b6c0b4bc8a5c,"Animals_Crab_ABC_Attack_1H_03");
+CharacterTransform(CHARACTERGUID_S_CoS_Temples_Animal_002_ab1ba23b-227b-4315-a096-b6c0b4bc8a5c,"Quest_CoS_SeptaNemesis_Animals_Crab_A_Giant_a360f2c5-92e4-426e-8856-d42d7ec6467f",1,1,1,0,1,0,0);
+
+IF
+CharacterPrecogDying(CHARACTERGUID_S_CoS_Temples_Animal_002_ab1ba23b-227b-4315-a096-b6c0b4bc8a5c)
+AND
+DB_Derpy_EmpyreoTransformed(1)
+AND
+GetPosition(CHARACTERGUID_S_CoS_Temples_Animal_002_ab1ba23b-227b-4315-a096-b6c0b4bc8a5c,_X,_Y,_Z)
+AND
+CreateItemTemplateAtPosition("LOOT_BackPack_A_6c70c298-aa29-418f-a659-f8e0b5f5fa60", _X, _Y, _Z, _Backpack)
+THEN
+GenerateTreasure(_Backpack, "MegaBoss", 18, NULL_00000000-0000-0000-0000-000000000000);
+MoveAllItemsTo(_Backpack, CHARACTERGUID_S_CoS_Temples_Animal_002_ab1ba23b-227b-4315-a096-b6c0b4bc8a5c, 0, 0, 1);
+PlaySound(_Backpack,"GP_ScriptedEvent_HOE_Channel_Spell_Final");
+PlayEffect(_Backpack, "AMER_RS3_FX_LootShine_Unique", "");
+ItemDestroy(_Backpack);
+SetOnStage(_Backpack, 0);
+
+PROC
+ProcRegionEnded("CoS_Main")
+THEN
+NOT DB_Derpy_EmpyreoTransformed(1);
+GoalCompleted;
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "CoS_Temples"

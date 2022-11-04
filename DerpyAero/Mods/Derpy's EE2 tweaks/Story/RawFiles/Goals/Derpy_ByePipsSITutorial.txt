@@ -1,0 +1,13 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+PROC_AMER_GEN_Goal_Complete("PIP_GLO_TUT_InfusedReaction");
+GoalCompleted;
+
+KBSECTION
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

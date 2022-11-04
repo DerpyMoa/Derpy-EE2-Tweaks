@@ -1,0 +1,85 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Projectile_FlamingDaggers", 1)
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "FireSpecialist", 25.0, 4.0, 2000, "SkillCast");
+//PROC_AMER_TempStat_ExtendedStat_Add_StatScaling(_Char, "AttributeIntelligenceEffect_Multiplier", "", "", "", "Ability", "FireSpecialist", 0.18, 0.03, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Projectile_FlamingDaggers", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "FireSpecialist", 65.0, 12.0, 2000, "SkillCast");
+//PROC_AMER_TempStat_ExtendedStat_Add_StatScaling(_Char, "AttributeIntelligenceEffect_Multiplier", "", "", "", "Ability", "FireSpecialist", 0.30, 0.06, 2000, "SkillCast");
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Projectile_FlamingDaggers", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_GEN_ShootProjectileAtPos(_Char, _X, _Y, _Z, "Projectile_AMER_SCRIPT_FlamingDaggers_Infusion_2");
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Projectile_FlamingDaggers", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_Source_Infusion_RitualRequest(_Char, _Char, _Char, 13.0, "InfusionRitual_FlamingDaggers_3_ThrowingKnife", "", "RogueLore", 1, "skill_attack_projectile_02_cast", 0, 1);
+PROC_AMER_Source_Infusion_RitualRequest(_Char, _Char, _Char, 13.0, "InfusionRitual_FlamingDaggers_3_FlamingDaggers", "", "FireSpecialist", 1, "skill_cast_throw_line_01_cast", 0, 1);
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Projectile_FlamingDaggers", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+AND
+QRY_AMER_Reaction_CountHeldReactions("InfusionRitual_FlamingDaggers_3_ThrowingKnife")
+AND
+DB_AMER_GEN_OUTPUT_Integer(_ThrowingKnifeCount)
+AND
+QRY_AMER_Reaction_CountHeldReactions("InfusionRitual_FlamingDaggers_3_FlamingDaggers")
+AND
+DB_AMER_GEN_OUTPUT_Integer(_FlamingDaggersCount)
+AND
+IntegerSum(_ThrowingKnifeCount, _FlamingDaggersCount, _RitualSize)
+AND
+Real(_RitualSize, _RitualSizeReal)
+AND
+RealProduct(_RitualSizeReal, 3.0, _Bonus)
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "CRITICALCHANCE", "Ability", "FireSpecialist", 0.0, _Bonus, 2000, "SkillCast");
+//PROC_AMER_TempStat_ExtendedStat_Add_StatScaling(_Char, "AttributeIntelligenceEffect_Multiplier", "", "", "", "Ability", "FireSpecialist", 0.0, _Bonus);
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Projectile_FlamingDaggers", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_Reaction_ApproveHeldReactions("InfusionRitual_FlamingDaggers_3_ThrowingKnife");
+PROC_AMER_Reaction_ApproveHeldReactions("InfusionRitual_FlamingDaggers_3_FlamingDaggers");
+
+
+PROC PROC_AMER_Reaction_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, "InfusionRitual_FlamingDaggers_3_ThrowingKnife", (STRING)_RequestID, (INTEGER)_RitualBool)
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Void_Cast_Weapon_Hand_01", "Dummy_CastFX");
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 13.0, _Char, 42, "InfusionRitual_FlamingDaggers_ThrowingKnifeIterator");	//Living enemies _Char can see within 13m of _Char.
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "InfusionRitual_FlamingDaggers_ThrowingKnifeIterator", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+PROC_AMER_GEN_ShootProjectileAt(_SourceChar, _Char, "Projectile_ThrowingKnife");
+
+
+PROC PROC_AMER_Reaction_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, "InfusionRitual_FlamingDaggers_3_FlamingDaggers", (STRING)_RequestID, (INTEGER)_RitualBool)
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Fire_Cast_Throw_Line_Hand_01", "Dummy_L_HandFX");
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 13.0, _Char, 42, "InfusionRitual_FlamingDaggers_FlamingDaggersIterator");	//Living enemies _Char can see within 13m of _Char.
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "InfusionRitual_FlamingDaggers_FlamingDaggersIterator", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+PROC_AMER_GEN_ShootProjectileAt(_SourceChar, _Char, "Projectile_AMER_SCRIPT_FlamingDaggers_Infusion_2");
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Pyrokinetic"

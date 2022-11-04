@@ -1,0 +1,105 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Source Infusion 1: When you cast Cannibalize on a controllable summon that is within 13m of 2 of your own totems, sacrifice those totems, then apply Withered for 2 turns
+//to all enemies in combat with you, and emulate the effects of Horrid Wilting on all enemies you can see.
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_Cannibalize", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, _InfusCount)
+AND
+_InfusCount > 0
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Wither_ACT_TheRitual", _)
+AND
+DB_AMER_Summoning_ActiveSummon(_Char, _Target)
+THEN
+DB_AMER_Ascension_Wither_ACT_TheRitual_Totem_Count(_Char, 0);
+PROC_Ascension_Wither_ACT_TheRitual_SearchTotems(_Char, _Target);
+
+
+PROC PROC_Ascension_Wither_ACT_TheRitual_SearchTotems((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+AND
+DB_AMER_Summoning_ActiveSummon_Autonomous(_Char, _Totem)
+AND
+DB_AMER_Ascension_Wither_ACT_TheRitual_Totem_Count(_Char, _OldCount)
+AND
+_OldCount < 2
+AND
+IsTagged(_Totem, "TOTEM", 1)
+AND
+GetDistanceTo(_Target, _Totem, _Distance)
+AND
+_Distance <= 13.0
+AND
+IntegerSum(_OldCount, 1, _NewCount)
+THEN  
+NOT DB_AMER_Ascension_Wither_ACT_TheRitual_Totem_Count(_Char, _OldCount);
+DB_AMER_Ascension_Wither_ACT_TheRitual_Totem_Count(_Char, _NewCount);
+DB_AMER_Ascension_Wither_ACT_TheRitual_Totem(_Char, _Totem);
+
+
+PROC PROC_Ascension_Wither_ACT_TheRitual_SearchTotems((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+AND
+DB_AMER_Ascension_Wither_ACT_TheRitual_Totem_Count(_Char, _FinalCount)
+THEN
+NOT DB_AMER_Ascension_Wither_ACT_TheRitual_Totem_Count(_Char, _FinalCount);
+PROC_Ascension_Wither_ACT_TheRitual_TrySacrifice(_Char, _FinalCount);
+
+
+PROC PROC_Ascension_Wither_ACT_TheRitual_TrySacrifice((CHARACTERGUID)_Char, (INTEGER)_FinalCount)
+AND
+_FinalCount >= 2
+THEN
+PROC_Ascension_Wither_ACT_TheRitual_Sacrifice(_Char);
+
+
+PROC PROC_Ascension_Wither_ACT_TheRitual_TrySacrifice((CHARACTERGUID)_Char, (INTEGER)_FinalCount)
+AND
+DB_AMER_Ascension_Wither_ACT_TheRitual_Totem(_Char, _Totem) //Clear Totem Buffer if it wasn't already cleared by sacrifice (implying that sacrifice conditions were not met).
+THEN
+NOT DB_AMER_Ascension_Wither_ACT_TheRitual_Totem(_Char, _Totem);
+
+PROC PROC_Ascension_Wither_ACT_TheRitual_Sacrifice((CHARACTERGUID)_Char)
+AND
+DB_AMER_Ascension_Wither_ACT_TheRitual_Totem(_Char, _Totem)
+THEN
+NOT DB_AMER_Ascension_Wither_ACT_TheRitual_Totem(_Char, _Totem);
+PROC_AMER_GEN_CharacterDie((CHARACTERGUID)_Totem, 0, "DoT", _Char);
+
+
+PROC PROC_Ascension_Wither_ACT_TheRitual_Sacrifice((CHARACTERGUID)_Char)
+AND
+CombatGetIDForCharacter(_Char, _Combat)
+AND
+DB_CombatCharacters(_Enemy, _Combat)
+AND
+CharacterIsEnemy(_Char, _Enemy, 1)
+THEN
+PlayEffect(_Enemy, "RS3_FX_Skills_Voodoo_Impact_Target_Voodoo_Root_01");
+ApplyStatus(_Enemy, "AMER_WITHER", 6.0, 0, _Char);
+
+
+PROC PROC_Ascension_Wither_ACT_TheRitual_Sacrifice((CHARACTERGUID)_Char)
+THEN
+PROC_AMER_TempStat_TimerStart(_Char, 3000, "SkillCast");
+PlaySound(_Char, "Skill_DeathBreath_Impact");
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+PROC_AMER_TempStat_FlexStat_Add(_Char, "Stat", "DAMAGEBOOST", 50.0, 2000, "");
+DB_AMER_Spells_HorridWilting_CastPending(_Char, 0);
+PROC_AMER_GEN_Goal_Activate("AMER_GLO_Spells_Target_AMER_HorridWilting");
+PROC_AMER_GEN_Goal_TimedCompletion("AMER_GLO_Spells_Target_AMER_HorridWilting", 3000);
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 30.0, _Char, 42, "Ascension_Wither_ACT_TheRitual");
+PROC_AMER_GEN_CharacterCombatLogText(_Char, "AMER_Ascension_Wither_ACT_TheRitual");
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated(_RequestID, "Ascension_Wither_ACT_TheRitual", _SourceChar, _Char)
+AND
+GetPosition(_Char, _X, _Y, _Z)
+THEN
+PlayEffectAtPosition("AMER_RS3_FX_HorridWilting_Impact", _X, _Y, _Z);
+PROC_AMER_GEN_Shoot_Delayed("Explosion", _SourceChar, _Char, "Projectile_AMER_SCRIPT_HorridWilting", 2000);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

@@ -1,0 +1,13 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+PROC_AMER_UI_Ascension_NodeCluster_AddNode_Child("Inertia", "Inertia_TheRhinoceros", "Node_3");
+DB_AMER_UI_Ascension_Node_Reward_SpecialLogic("Inertia_TheRhinoceros", "Node_3.2", "Ascension_Centurion_MUTA_EmulateWhirlwind", 1.0);
+
+KBSECTION
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

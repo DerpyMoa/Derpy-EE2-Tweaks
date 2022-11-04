@@ -1,0 +1,7 @@
+USING ranged
+
+
+// Healer will prefer to heal and buff allies.
+MULTIPLIER_HEAL_ALLY_POS						2.0		// Derpy on 25/11/2021: from 1.2 to 2.0
+MULTIPLIER_ARMORBOOST							4.0		// Derpy on 25/11/2021: Added. From 0.50 base (adjusted) to 4.0 for Healers
+MULTIPLIER_ARMOR_ALLY_POS		 				2.0		// Derpy on 25/11/2021: from 1.0 to 2.0

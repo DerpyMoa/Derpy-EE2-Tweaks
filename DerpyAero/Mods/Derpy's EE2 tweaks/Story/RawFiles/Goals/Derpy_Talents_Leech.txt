@@ -1,0 +1,21 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Combat_TurnStarted(_Char, 0)
+AND
+CharacterHasTalent(_Char, "Leech", 1)
+THEN
+ProcObjectTimer(_Char, "Derpy_Leech_Delay", 500);
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "Derpy_Leech_Delay")
+THEN
+PROC_AMER_KeywordStat_Voracity_Activate(_Char, NULL_00000000-0000-0000-0000-000000000000, 0.5);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Talents"

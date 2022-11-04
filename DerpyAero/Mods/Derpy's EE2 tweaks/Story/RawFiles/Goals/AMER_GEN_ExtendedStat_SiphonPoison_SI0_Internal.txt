@@ -1,0 +1,35 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+NRD_OnHit((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, _Damage, _Handle)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Char, "SiphonPoison_SI0_Internal", _, _, _, _)
+AND
+NOT DB_Derpy_SiphonPoisonChoke(_Target, _Char)
+AND
+_Target != _Char
+AND
+DB_AMER_Combat_ActiveChar(_, _, _, _Char)
+AND
+NRD_StatusGetInt(_Target, _Handle, "Missed", 0)
+THEN
+DB_Derpy_SiphonPoisonChoke(_Target, _Char);
+ApplyStatus(_Target, "POISONED", 18.0, 0, _Char);
+ProcObjectTimer(_Char, "Derpy_SiphonPoison_ChokePrevention", 2000);
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "Derpy_SiphonPoison_ChokePrevention")
+AND
+DB_Derpy_SiphonPoisonChoke(_Target, _Char)
+THEN
+NOT DB_Derpy_SiphonPoisonChoke(_Target, _Char);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GEN_Stats_ExtendedStats"

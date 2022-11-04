@@ -1,0 +1,268 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+PROC_AMER_UI_ModSettings_Desc_SetOverride_TextAnchor("ORI_DifficultyPresets", "Hard", "TextAnchor_Body_C");
+PROC_AMER_UI_ModSettings_Desc_SetOverride_TextAnchor("ORI_DifficultyPresets", "Extreme", "TextAnchor_Body_B");
+PROC_AMER_UI_ModSettings_Desc_SetOverride_TextAnchor("ORI_DifficultyPresets", "Impossible", "TextAnchor_Body_B");
+PROC_AMER_UI_ModSettings_Desc_SetOverride_TextAnchor("ORI_DifficultyPresets", "DoNotPickThis", "TextAnchor_Body_B");
+
+KBSECTION
+
+IF
+SavegameLoaded(_, _, _, _)
+THEN
+PROC_AMER_UI_Ascension_PatchNode_Begin("Entropy_BloodApe", "Node_4.2");
+DB_AMER_UI_Ascension_Node_Reward_ExtendedStat("Entropy_BloodApe", "Node_4.2", "IncarnateAutoInfuse", "", "", "", 1.0);
+DB_AMER_UI_Ascension_Node_Reward_FlexStat("Entropy_BloodApe", "Node_4.2", "Attribute", "MEMORY", 4.0);
+PROC_AMER_UI_Ascension_PatchNode_End("Entropy_BloodApe", "Node_4.2");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Form_Doppelganger", "Node_4.2");
+DB_AMER_UI_Ascension_Node_Reward_ExtendedStat("Form_Doppelganger", "Node_4.2", "IncarnateAutoInfuse", "", "", "", 1.0);
+DB_AMER_UI_Ascension_Node_Reward_FlexStat("Form_Doppelganger", "Node_4.2", "Attribute", "MEMORY", 4.0);
+PROC_AMER_UI_Ascension_PatchNode_End("Form_Doppelganger", "Node_4.2");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Entropy_Death", "Node_4.2");
+NOT DB_AMER_UI_Ascension_Node_Reward_FlexStat("Entropy_Death", "Node_4.2", "Stat", "DAMAGEBOOST", -65.0);
+DB_AMER_UI_Ascension_Node_Reward_FlexStat("Entropy_Death", "Node_4.2", "Attribute", "WITS", 10.0);
+PROC_AMER_UI_Ascension_PatchNode_End("Entropy_Death", "Node_4.2");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Entropy_Death", "Node_4.2");
+NOT DB_AMER_UI_Ascension_Node_Reward_ExtendedStat("Entropy_Death", "Node_4.2", "Battered_StackInfluence_Enemy", "", "", "", 1.0);
+NOT DB_AMER_UI_Ascension_Node_Reward_ExtendedStat("Entropy_Death", "Node_4.2", "Harried_StackInfluence_Enemy", "", "", "", 1.0);
+PROC_AMER_UI_Ascension_PatchNode_End("Entropy_Death", "Node_4.2");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Life_Hope", "Node_3.2");
+NOT DB_AMER_UI_Ascension_Node_Reward_ExtendedStat("Life_Hope", "Node_3.2", "Purity_CooldownManip", "", "", "", -6.0);
+NOT DB_AMER_UI_Ascension_Node_Reward_ExtendedStat("Life_Hope", "Node_3.2", "Purity_CooldownManip", "", "", "", -12.0);
+DB_AMER_UI_Ascension_Node_Reward_ExtendedStat("Life_Hope", "Node_3.2", "Purity_CooldownManip", "", "", "", -6.0);
+PROC_AMER_UI_Ascension_PatchNode_End("Life_Hope", "Node_3.2");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Force_TheSerpent", "Node_2.2");
+NOT DB_AMER_UI_Ascension_Node_Reward_FlexStat("Force_TheSerpent", "Node_2.2", "Stat", "CRITICALCHANCE", 3.0);
+NOT DB_AMER_UI_Ascension_Node_Reward_FlexStat("Force_TheSerpent", "Node_2.2", "Stat", "DAMAGEBOOST", 5.0);
+DB_AMER_UI_Ascension_Node_Reward_FlexStat("Force_TheSerpent", "Node_2.2", "Stat", "CRITICALCHANCE", 6.0);
+DB_AMER_UI_Ascension_Node_Reward_FlexStat("Force_TheSerpent", "Node_2.2", "Stat", "DAMAGEBOOST", 10.0);
+PROC_AMER_UI_Ascension_PatchNode_End("Force_TheSerpent", "Node_2.2");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Force_TheHornet", "Node_2.2");
+NOT DB_AMER_UI_Ascension_Node_Reward_FlexStat("Force_TheHornet", "Node_2.2", "Stat", "ACCURACYBOOST", 7.0);
+DB_AMER_UI_Ascension_Node_Reward_FlexStat("Force_TheHornet", "Node_2.2", "Stat", "DODGEBOOST", 10.0);
+PROC_AMER_UI_Ascension_PatchNode_End("Force_TheHornet", "Node_2.2");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Entropy_TheWolf", "Node_2.2");
+NOT DB_AMER_UI_Ascension_Node_Reward_FlexStat("Entropy_TheWolf", "Node_2.2", "Stat", "LIFESTEAL", 3.0);
+NOT DB_AMER_UI_Ascension_Node_Reward_ExtendedStat("Entropy_TheWolf", "Node_2.2", "Voracity_Life", "", "", "", 6.0);
+DB_AMER_UI_Ascension_Node_Reward_FlexStat("Entropy_TheWolf", "Node_2.2", "Stat", "LIFESTEAL", 5.0);
+DB_AMER_UI_Ascension_Node_Reward_ExtendedStat("Entropy_TheWolf", "Node_2.2", "Voracity_Life", "", "", "", 10.0);
+PROC_AMER_UI_Ascension_PatchNode_End("Entropy_TheWolf", "Node_2.2");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Entropy_TheCrow", "Node_2.2");
+NOT DB_AMER_UI_Ascension_Node_Reward_ExtendedStat("Entropy_TheCrow", "Node_2.2", "SummonStat_FlexStat", "Stat", "LIFESTEAL", "", 7.0);
+DB_AMER_UI_Ascension_Node_Reward_ExtendedStat("Entropy_TheCrow", "Node_2.2", "SummonStat_FlexStat", "Stat", "LIFESTEAL", "", 14.0);
+PROC_AMER_UI_Ascension_PatchNode_End("Entropy_TheCrow", "Node_2.2");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Form_TheNautilus", "Node_2.2");
+NOT DB_AMER_UI_Ascension_Node_Reward_ExtendedStat("Form_TheNautilus", "Node_2.2", "SummonStat_FlexStat", "Stat", "PHYSICALRESISTANCE", "", 7.0);
+DB_AMER_UI_Ascension_Node_Reward_ExtendedStat("Form_TheNautilus", "Node_2.2", "SummonStat_FlexStat", "Stat", "PHYSICALRESISTANCE", "", 14.0);
+PROC_AMER_UI_Ascension_PatchNode_End("Form_TheNautilus", "Node_2.2");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Life_TheLizard", "Node_2.2");
+NOT DB_AMER_UI_Ascension_Node_Reward_ExtendedStat("Life_TheLizard", "Node_2.2", "Regen_Life", "", "", "", 2.0);
+DB_AMER_UI_Ascension_Node_Reward_ExtendedStat("Life_TheLizard", "Node_2.2", "Regen_Life", "", "", "", 7.5);
+PROC_AMER_UI_Ascension_PatchNode_End("Life_TheLizard", "Node_2.2");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Life_TheBeetle", "Node_2.2");
+NOT DB_AMER_UI_Ascension_Node_Reward_ExtendedStat("Life_TheBeetle", "Node_2.2", "BattHarr_Threshold_Sum_Self", "Both", "", "", 1.0);
+NOT DB_AMER_UI_Ascension_Node_Reward_ExtendedStat("Life_TheBeetle", "Node_2.2", "Regen_PhysicalArmor", "", "", "", 2.0);
+DB_AMER_UI_Ascension_Node_Reward_ExtendedStat("Life_TheBeetle", "Node_2.2", "BattHarr_Threshold_Sum_Self", "Both", "", "", 2.0);
+DB_AMER_UI_Ascension_Node_Reward_ExtendedStat("Life_TheBeetle", "Node_2.2", "Regen_PhysicalArmor", "", "", "", 5.0);
+PROC_AMER_UI_Ascension_PatchNode_End("Life_TheBeetle", "Node_2.2");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Life_TheRabbit", "Node_4.1");
+DB_AMER_UI_Ascension_Node_Reward_StatusMod_FlexStat("Life_TheRabbit", "Node_4.1", "AMER_PURITY", "Stat_SpecialCase", "EleResistance", 10.0, "Life_TheRabbit", 0);
+PROC_AMER_UI_Ascension_PatchNode_End("Life_TheRabbit", "Node_4.1");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Form_TheRitual", "Node_3.0");
+DB_AMER_UI_Ascension_Node_Reward_StatusMod_AddStatus("Form_TheRitual", "Node_3.0", "AMER_BANE", "BLEEDING", 12.0, 0, 0);
+PROC_AMER_UI_Ascension_PatchNode_End("Form_TheRitual", "Node_3.0");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Entropy_Extinction", "Node_2.2");
+NOT DB_AMER_UI_Ascension_Node_Reward_SpecialLogic("Entropy_Extinction", "Node_2.2", "Ascension_SummonsFloat", 1.0);
+DB_AMER_UI_Ascension_Node_Reward_SpecialLogic("Entropy_Extinction", "Node_2.2", "Ascension_Predator_ACT_OwnSkittererKilled", 1.0);
+PROC_AMER_UI_Ascension_PatchNode_End("Entropy_Extinction", "Node_2.2");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Entropy_TheVulture", "Node_4");
+DB_AMER_UI_Ascension_Node_Reward_ExtendedStat("Entropy_TheVulture", "Node_4", "FreeReactionCharge", "AMER_Predator", "", "", 1.0);
+PROC_AMER_UI_Ascension_PatchNode_End("Entropy_TheVulture", "Node_4");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Form_Sphinx", "Node_3.2");
+DB_AMER_UI_Ascension_Node_Reward_ExtendedStat("Form_Sphinx", "Node_3.2", "GrenadeRecovery", "", "", "", 1.0);
+PROC_AMER_UI_Ascension_PatchNode_End("Form_Sphinx", "Node_3.2");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Force_TheConqueror", "Node_4.2");
+DB_AMER_UI_Ascension_Node_Reward_ExtendedStat("Force_TheConqueror", "Node_4.2", "SourceInfus_Effect_Limit", "Any", "", "", 2.0);
+PROC_AMER_UI_Ascension_PatchNode_End("Force_TheConqueror", "Node_4.2");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Life_Hope", "Node_1.3");
+NOT DB_AMER_UI_Ascension_Node_Reward_ScalingStat_StatusMod_FlexStat("Life_Hope", "Node_1.3", "Ability", "Leadership", "LEADERSHIP", "Stat", "MOVEMENT", "Life_Hope", 0, 10.0);
+DB_AMER_UI_Ascension_Node_Reward_ScalingStat_StatusMod_FlexStat("Life_Hope", "Node_1.3", "Ability", "Leadership", "LEADERSHIP", "Stat", "DODGEBOOST", "Life_Hope", 0, 2.0);
+PROC_AMER_UI_Ascension_PatchNode_End("Life_Hope", "Node_1.3");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Entropy_Decay", "Node_4.1");
+NOT DB_AMER_UI_Ascension_Node_Reward_ScalingStat_StatusMod_ExtendedStat("Entropy_Decay", "Node_4.1", "Embodiment", "Entropy", "AMER_WITHER", "PercAttributeIncrease", "Constitution", "", "", "Entropy_Decay_Node5_WitherScaling", 0, -1.0);
+NOT DB_AMER_UI_Ascension_Node_Reward_ScalingStat_StatusMod_ExtendedStat("Entropy_Decay", "Node_4.1", "Embodiment", "Force", "AMER_WITHER", "PercAttributeIncrease", "Constitution", "", "", "Entropy_Decay_Node5_WitherScaling", 0, -1.0);
+NOT DB_AMER_UI_Ascension_Node_Reward_ScalingStat_StatusMod_ExtendedStat("Entropy_Decay", "Node_4.1", "Embodiment", "Form", "AMER_WITHER", "PercAttributeIncrease", "Constitution", "", "", "Entropy_Decay_Node5_WitherScaling", 0, -1.0);
+NOT DB_AMER_UI_Ascension_Node_Reward_StatusMod_ExtendedStat("Entropy_Decay", "Node_4.1", "AMER_WITHER", "PercAttributeIncrease", "Constitution", "", "", -10.0, "Entropy_Decay_Node5", 0);
+PROC_AMER_UI_Ascension_PatchNode_End("Entropy_Decay", "Node_4.1");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Inertia_TheCenturion", "Node_4.2");
+NOT DB_AMER_UI_Ascension_Node_Reward_StatusMod_ExtendedStat("Inertia_TheCenturion", "Node_4.2", "AMER_WARD", "VolatileArmor_Physical", "300", "Physical", "AMER_RS3_FX_VolatileArmor", 15.0, "Inertia_TheCenturion", 0);
+NOT DB_AMER_UI_Ascension_Node_Reward_StatusMod_ExtendedStat("Inertia_TheCenturion", "Node_4.2", "AMER_WARD", "VolatileArmor_Magic", "300", "Physical", "AMER_RS3_FX_VolatileArmor", 15.0, "Inertia_TheCenturion", 0);
+DB_AMER_UI_Ascension_Node_Reward_StatusMod_ExtendedStat("Inertia_TheCenturion", "Node_4.2", "AMER_WARD", "VolatileArmor_Physical", "300", "Physical", "AMER_RS3_FX_VolatileArmor", 25.0, "Inertia_TheCenturion", 0);
+DB_AMER_UI_Ascension_Node_Reward_StatusMod_ExtendedStat("Inertia_TheCenturion", "Node_4.2", "AMER_WARD", "VolatileArmor_Magic", "300", "Physical", "AMER_RS3_FX_VolatileArmor", 25.0, "Inertia_TheCenturion", 0);
+PROC_AMER_UI_Ascension_PatchNode_End("Inertia_TheCenturion", "Node_4.2");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Inertia_TheArena", "Node_4.2");
+DB_AMER_UI_Ascension_Node_Reward_FlexStat("Inertia_TheArena", "Node_4.2", "Attribute", "Intelligence", 10.0);
+PROC_AMER_UI_Ascension_PatchNode_End("Inertia_TheArena", "Node_4.2");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Force_TheConqueror", "Node_3.0");
+NOT DB_AMER_UI_Ascension_Node_Reward_StatusMod_FlexStat("Force_TheConqueror", "Node_3.0", "AMER_PURITY_AURA", "Stat", "APRECOVERY", 1.0, "Force_TheConqueror", 0);
+DB_AMER_UI_Ascension_Node_Reward_StatusMod_FlexStat("Force_TheConqueror", "Node_3.0", "AMER_PURITY_AURA", "Stat", "APRECOVERY", 2.0, "Force_TheConqueror", 0);
+PROC_AMER_UI_Ascension_PatchNode_End("Force_TheConqueror", "Node_3.0");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Force_TheConqueror", "Node_4.0");
+DB_AMER_UI_Ascension_Node_Reward_ExtendedStat("Force_TheConqueror", "Node_4.0", "Purity_CooldownManip", "", "", "", -6.0);
+PROC_AMER_UI_Ascension_PatchNode_End("Force_TheConqueror", "Node_4.0");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Force_TheTiger", "Node_3.2");
+NOT DB_AMER_UI_Ascension_Node_Reward_StatusMod_FlexStat("Force_TheTiger", "Node_3.2", "AMER_PURITY", "Stat", "ACCURACYBOOST", 10.0, "Force_TheTiger", 0);
+NOT DB_AMER_UI_Ascension_Node_Reward_StatusMod_FlexStat("Force_TheTiger", "Node_3.2", "AMER_PURITY", "Stat", "DAMAGEBOOST", 15.0, "Force_TheTiger", 0);
+NOT DB_AMER_UI_Ascension_Node_Reward_StatusMod_ExtendedStat("Force_TheTiger", "Node_3.2", "AMER_PURITY", "Voracity_Life", "", "", "", 15.0, "Force_TheTiger", 0);
+DB_AMER_UI_Ascension_Node_Reward_StatusMod_FlexStat("Force_TheTiger", "Node_3.2", "AMER_PURITY_AURA", "Stat", "ACCURACYBOOST", 20.0, "Force_TheTiger", 0);
+DB_AMER_UI_Ascension_Node_Reward_StatusMod_FlexStat("Force_TheTiger", "Node_3.2", "AMER_PURITY_AURA", "Stat", "DAMAGEBOOST", 30.0, "Force_TheTiger", 0);
+DB_AMER_UI_Ascension_Node_Reward_StatusMod_ExtendedStat("Force_TheTiger", "Node_3.2", "AMER_PURITY_AURA", "Voracity_Life", "", "", "", 30.0, "Force_TheTiger", 0);
+PROC_AMER_UI_Ascension_PatchNode_End("Force_TheTiger", "Node_3.2");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Form_TheDragon", "Node_2.3");
+NOT DB_AMER_UI_Ascension_Node_Reward_StatusMod_FlexStat("Form_TheDragon", "Node_2.3", "AMER_DEFIANCE", "Stat", "DAMAGEBOOST", 15.0, "Form_TheDragon", 0);
+DB_AMER_UI_Ascension_Node_Reward_StatusMod_FlexStat("Form_TheDragon", "Node_2.3", "AMER_DEFIANCE", "Stat", "DAMAGEBOOST", 30.0, "Form_TheDragon", 0);
+PROC_AMER_UI_Ascension_PatchNode_End("Form_TheDragon", "Node_2.3");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Inertia_TheArena", "Node_1.2");
+NOT DB_AMER_UI_Ascension_Node_Reward_StatusMod_FlexStat("Inertia_TheArena", "Node_1.2", "AMER_DEFIANCE", "Stat", "DODGEBOOST", 10.0, "Inertia_TheArena", 0);
+NOT DB_AMER_UI_Ascension_Node_Reward_StatusMod_ExtendedStat("Inertia_TheArena", "Node_1.2", "AMER_DEFIANCE", "BattHarr_Threshold_Sum_Self", "Both", "", "", 0.02, "Inertia_TheArena", 0);
+DB_AMER_UI_Ascension_Node_Reward_StatusMod_FlexStat("Inertia_TheArena", "Node_1.2", "AMER_DEFIANCE", "Stat", "DODGEBOOST", 20.0, "Inertia_TheArena", 0);
+DB_AMER_UI_Ascension_Node_Reward_StatusMod_FlexStat("Inertia_TheArena", "Node_1.2", "AMER_DEFIANCE", "Stat", "ACCURACYBOOST", 20.0, "Inertia_TheArena", 0);
+PROC_AMER_UI_Ascension_PatchNode_End("Inertia_TheArena", "Node_1.2");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Life_TheStag", "Node_3");
+NOT DB_AMER_UI_Ascension_NodeCluster_Node_Keyword("Life", "Life_TheStag", "Node_3", "Purity");
+PROC_AMER_UI_Ascension_PatchNode_End("Life_TheStag", "Node_3");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Life_TheStag", "Node_3.2");
+NOT DB_AMER_UI_Ascension_NodeCluster_Node_Keyword("Life", "Life_TheStag", "Node_3.2", "Purity");
+PROC_AMER_UI_Ascension_PatchNode_End("Life_TheStag", "Node_3.2");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Inertia_TheRhinoceros", "Node_3.2");
+DB_AMER_UI_Ascension_NodeCluster_Node_Keyword("Inertia", "Inertia_TheRhinoceros", "Node_3.2", "Centurion");
+PROC_AMER_UI_Ascension_PatchNode_End("Inertia_TheRhinoceros", "Node_3.2");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Force_Wrath", "Node_1.2");
+NOT DB_AMER_UI_Ascension_Node_Reward_StatusMod_FlexStat("Force_Wrath", "Node_1.2", "AMER_DEFIANCE", "Stat", "ACCURACYBOOST", 10.0, "Force_Wrath", 0);
+NOT DB_AMER_UI_Ascension_Node_Reward_StatusMod_FlexStat("Force_Wrath", "Node_1.2", "AMER_DEFIANCE", "Stat", "CRITICALCHANCE", 10.0, "Force_Wrath", 0);
+DB_AMER_UI_Ascension_Node_Reward_StatusMod_FlexStat("Force_Wrath", "Node_1.2", "AMER_DEFIANCE", "Stat", "ACCURACYBOOST", 20.0, "Force_Wrath", 0);
+DB_AMER_UI_Ascension_Node_Reward_StatusMod_FlexStat("Force_Wrath", "Node_1.2", "AMER_DEFIANCE", "Stat", "CRITICALCHANCE", 20.0, "Force_Wrath", 0);
+PROC_AMER_UI_Ascension_PatchNode_End("Force_Wrath", "Node_1.2");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Force_Wrath", "Node_2.2");
+NOT DB_AMER_UI_Ascension_Node_Reward_ExtendedStat("Force_Wrath", "Node_2.2", "PercAttributeIncrease", "Wits", "", "", 20.0);
+DB_AMER_UI_Ascension_Node_Reward_ExtendedStat("Force_Wrath", "Node_2.2", "PercAttributeIncrease", "Finesse", "", "", 20.0);
+PROC_AMER_UI_Ascension_PatchNode_End("Force_Wrath", "Node_2.2");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Entropy_TheVulture", "Node_2.2");
+NOT DB_AMER_UI_Ascension_Node_Reward_FlexStat("Entropy_TheVulture", "Node_2.2", "Ability", "PainReflection", 1.0);
+DB_AMER_UI_Ascension_Node_Reward_FlexStat("Entropy_TheVulture", "Node_2.2", "Ability", "Ranged", 1.0);
+PROC_AMER_UI_Ascension_PatchNode_End("Entropy_TheVulture", "Node_2.2");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Entropy_Decay", "Node_4.0");
+NOT DB_AMER_UI_Ascension_Node_Reward_ScalingStat_StatusMod_FlexStat("Entropy_Decay", "Node_4.0", "Ability", "Leadership", "AMER_DECAY_NEGALEADERSHIP", "Stat", "ACCURACYBOOST", "Entropy_Decay_Aura", 0, -1.0);
+NOT DB_AMER_UI_Ascension_Node_Reward_ScalingStat_StatusMod_FlexStat("Entropy_Decay", "Node_4.0", "Ability", "Leadership", "AMER_DECAY_NEGALEADERSHIP", "Stat", "MOVEMENTSPEEDBOOST", "Entropy_Decay_Aura", 0, -1.5);
+DB_AMER_UI_Ascension_Node_Reward_ScalingStat_StatusMod_FlexStat("Entropy_Decay", "Node_4.0", "Embodiment", "Entropy", "AMER_DECAY_NEGALEADERSHIP", "Stat", "ACCURACYBOOST", "Entropy_Decay_Aura", 0, -1.5);
+DB_AMER_UI_Ascension_Node_Reward_ScalingStat_StatusMod_FlexStat("Entropy_Decay", "Node_4.0", "Embodiment", "Force", "AMER_DECAY_NEGALEADERSHIP", "Stat", "ACCURACYBOOST", "Entropy_Decay_Aura", 0, -1.5);
+DB_AMER_UI_Ascension_Node_Reward_ScalingStat_StatusMod_FlexStat("Entropy_Decay", "Node_4.0", "Embodiment", "Form", "AMER_DECAY_NEGALEADERSHIP", "Stat", "ACCURACYBOOST", "Entropy_Decay_Aura", 0, -1.5);
+DB_AMER_UI_Ascension_Node_Reward_ScalingStat_StatusMod_FlexStat("Entropy_Decay", "Node_4.0", "Embodiment", "Entropy", "AMER_DECAY_NEGALEADERSHIP", "Stat", "MOVEMENTSPEEDBOOST", "Entropy_Decay_Aura", 0, -1.5);
+DB_AMER_UI_Ascension_Node_Reward_ScalingStat_StatusMod_FlexStat("Entropy_Decay", "Node_4.0", "Embodiment", "Force", "AMER_DECAY_NEGALEADERSHIP", "Stat", "MOVEMENTSPEEDBOOST", "Entropy_Decay_Aura", 0, -1.5);
+DB_AMER_UI_Ascension_Node_Reward_ScalingStat_StatusMod_FlexStat("Entropy_Decay", "Node_4.0", "Embodiment", "Form", "AMER_DECAY_NEGALEADERSHIP", "Stat", "MOVEMENTSPEEDBOOST", "Entropy_Decay_Aura", 0, -1.5);
+DB_AMER_UI_Ascension_Node_Reward_StatusMod_FlexStat("Entropy_Decay", "Node_4.0", "AMER_PAUCITY", "Stat", "APRECOVERY", 1.0, "Entropy_Decay", 0);
+PROC_AMER_UI_Ascension_PatchNode_End("Entropy_Decay", "Node_4.0");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Entropy_Decay", "Node_3.0");
+NOT DB_AMER_UI_Ascension_Node_Reward_ScalingStat_StatusMod_ExtendedStat("Entropy_Decay", "Node_3.0", "Embodiment", "Entropy", "AMER_PAUCITY", "PercAttributeIncrease", "Wits", "", "", "Entropy_Decay", 0, 2.5);
+NOT DB_AMER_UI_Ascension_Node_Reward_ScalingStat_StatusMod_ExtendedStat("Entropy_Decay", "Node_3.0", "Embodiment", "Force", "AMER_PAUCITY", "PercAttributeIncrease", "Wits", "", "", "Entropy_Decay", 0, 2.5);
+NOT DB_AMER_UI_Ascension_Node_Reward_ScalingStat_StatusMod_ExtendedStat("Entropy_Decay", "Node_3.0", "Embodiment", "Form", "AMER_PAUCITY", "PercAttributeIncrease", "Wits", "", "", "Entropy_Decay", 0, 2.5);
+DB_AMER_UI_Ascension_Node_Reward_ScalingStat_StatusMod_ExtendedStat("Entropy_Decay", "Node_3.0", "Embodiment", "Entropy", "AMER_PAUCITY", "PercAttributeIncrease", "Finesse", "", "", "Entropy_Decay", 0, 2.5);
+DB_AMER_UI_Ascension_Node_Reward_ScalingStat_StatusMod_ExtendedStat("Entropy_Decay", "Node_3.0", "Embodiment", "Force", "AMER_PAUCITY", "PercAttributeIncrease", "Finesse", "", "", "Entropy_Decay", 0, 2.5);
+DB_AMER_UI_Ascension_Node_Reward_ScalingStat_StatusMod_ExtendedStat("Entropy_Decay", "Node_3.0", "Embodiment", "Form", "AMER_PAUCITY", "PercAttributeIncrease", "Finesse", "", "", "Entropy_Decay", 0, 2.5);
+PROC_AMER_UI_Ascension_PatchNode_End("Entropy_Decay", "Node_3.0");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Entropy_Extinction", "Node_3.0");
+NOT DB_AMER_UI_Ascension_Node_Reward_StatusMod_FlexStat("Entropy_Extinction", "Node_3.0", "AMER_PAUCITY", "Stat", "ACCURACYBOOST", 10.0, "Entropy_Extinction", 0);
+NOT DB_AMER_UI_Ascension_Node_Reward_StatusMod_FlexStat("Entropy_Extinction", "Node_3.0", "AMER_PAUCITY", "Stat", "DAMAGEBOOST", 10.0, "Entropy_Extinction", 0);
+NOT DB_AMER_UI_Ascension_Node_Reward_StatusMod_FlexStat("Entropy_Extinction", "Node_3.0", "AMER_PAUCITY", "Stat", "INITIATIVE", 10.0, "Entropy_Extinction", 0);
+DB_AMER_UI_Ascension_Node_Reward_StatusMod_FlexStat("Entropy_Extinction", "Node_3.0", "AMER_PAUCITY", "Stat", "MOVEMENT", 100.0, "Entropy_Extinction", 0);
+DB_AMER_UI_Ascension_Node_Reward_StatusMod_FlexStat("Entropy_Extinction", "Node_3.0", "AMER_PAUCITY", "Stat", "DAMAGEBOOST", 15.0, "Entropy_Extinction", 0);
+DB_AMER_UI_Ascension_Node_Reward_StatusMod_FlexStat("Entropy_Extinction", "Node_3.0", "AMER_PAUCITY", "Stat", "CRITICALCHANCE", 20.0, "Entropy_Extinction", 0);
+PROC_AMER_UI_Ascension_PatchNode_End("Entropy_Extinction", "Node_3.0");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Inertia_TheArena", "Node_4.1");
+DB_AMER_UI_Ascension_Node_Reward_SpecialLogic("Inertia_TheArena", "Node_4.1", "Ascension_Prosperity_BouncingShieldCDFix", 1.0);
+PROC_AMER_UI_Ascension_PatchNode_End("Inertia_TheArena", "Node_4.1");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Life_Splendor", "Node_4.1");
+DB_AMER_UI_Ascension_Node_Reward_SpecialLogic("Life_Splendor", "Node_4.1", "Ascension_Prosperity_IgnitionCDFix", 1.0);
+PROC_AMER_UI_Ascension_PatchNode_End("Life_Splendor", "Node_4.1");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Life_Pegasus", "Node_3");
+NOT DB_AMER_UI_Ascension_NodeCluster_Node_Keyword("Life", "Life_Pegasus", "Node_3", "Celestial");
+PROC_AMER_UI_Ascension_PatchNode_End("Life_Pegasus", "Node_3");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Life_Pegasus", "Node_3.2");
+NOT DB_AMER_UI_Ascension_NodeCluster_Node_Keyword("Life", "Life_Pegasus", "Node_3.2", "Celestial");
+DB_AMER_UI_Ascension_NodeCluster_Node_Keyword("Life", "Life_Pegasus", "Node_3.2", "Purity");
+PROC_AMER_UI_Ascension_PatchNode_End("Life_Pegasus", "Node_3.2");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Form_TheGryphon", "Node_2.0");
+DB_AMER_UI_Ascension_Node_Reward_FlexStat("Form_TheGryphon", "Node_2.0", "Stat", "DODGEBOOST", 15.0);
+PROC_AMER_UI_Ascension_PatchNode_End("Form_TheGryphon", "Node_2.0");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Form_TheKey", "Node_3.0");
+DB_AMER_UI_Ascension_Node_Reward_FlexStat("Form_TheKey", "Node_3.0", "Stat", "DODGEBOOST", 10.0);
+PROC_AMER_UI_Ascension_PatchNode_End("Form_TheKey", "Node_3.0");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Inertia_TheGuardsman", "Node_4.1");
+NOT DB_AMER_UI_Ascension_Node_Reward_SpecialLogic("Inertia_TheGuardsman", "Node_4.1", "Ascension_Centurion_MUTA_Taunt", 1.0);
+NOT DB_AMER_UI_Ascension_NodeCluster_Node_Keyword("Inertia", "Inertia_TheGuardsman", "Node_4.1", "Centurion");
+DB_AMER_UI_Ascension_Node_Reward_SpecialLogic("Inertia_TheGuardsman", "Node_4.1", "Ascension_MageFin", 1.0);
+PROC_AMER_UI_Ascension_PatchNode_End("Inertia_TheGuardsman", "Node_4.1");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Inertia_Champion", "Node_1.2");
+NOT DB_AMER_UI_Ascension_Node_Reward_FlexStat("Inertia_Champion", "Node_1.2", "Stat", "PHYSICALRESISTANCE", 3.0);
+DB_AMER_UI_Ascension_Node_Reward_SpecialLogic("Inertia_Champion", "Node_1.2", "Ascension_MageFin", 1.0);
+PROC_AMER_UI_Ascension_PatchNode_End("Inertia_Champion", "Node_1.2");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Inertia_Champion", "Node_3.0");
+DB_AMER_UI_Ascension_Node_Reward_FlexStat("Inertia_Champion", "Node_3.0", "Attribute", "FINESSE", 10.0);
+PROC_AMER_UI_Ascension_PatchNode_End("Inertia_Champion", "Node_3.0");
+
+PROC_AMER_UI_Ascension_PatchNode_Begin("Entropy_TheImp", "Node_3.0");
+DB_AMER_UI_Ascension_Node_Reward_ExtendedStat("Entropy_TheImp", "Node_3.0", "FreeReactionCharge", "AMER_Occultist", "", "", 1.0);
+PROC_AMER_UI_Ascension_PatchNode_End("Entropy_TheImp", "Node_3.0");
+
+GoalCompleted;
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

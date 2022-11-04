@@ -1,0 +1,59 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Upon reaching 10 stacks of Elementalist, spend 5 stacks to activate Purity, or if it's on cooldowm, lower its remaining cooldown by 1.
+
+PROC PROC_AMER_KeywordStat_Elementalist_Feedback_ApplyStackBonuses((CHARACTERGUID)_Char, (INTEGER)_Stacks, 10, (STRING)_NewStatus)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Elementalist_MUTA_ElemStackMinusFromCelestial", _)
+AND
+HasActiveStatus(_Char, "AMER_PURITY_COOLDOWN", _HasPurity)
+THEN
+PROC_Derpy_Ascension_Pegasus_Elementalist(_Char, _HasPurity);
+
+
+PROC PROC_Derpy_Ascension_Pegasus_Elementalist((CHARACTERGUID)_Char, 0)
+THEN
+PROC_AMER_GEN_CharacterCombatLogText(_Char, "spent 5 Elementalist stacks to activate Purity.");
+ProcObjectTimer(_Char, "Derpy_Pegasus_Elementalist", 50);
+PROC_AMER_KeywordStat_Purity_Activate(_Char, _Char, _Char);
+
+
+PROC PROC_Derpy_Ascension_Pegasus_Elementalist((CHARACTERGUID)_Char, 1)
+AND
+GetStatusTurns(_Char, "AMER_PURITY_COOLDOWN", _Turns)
+AND
+IntegerSubtract(_Turns, 1, _NewTurns)
+THEN
+ProcObjectTimer(_Char, "Derpy_Pegasus_Elementalist", 50);
+PROC_Derpy_Ascension_Pegasus_Elementalist_CDReduc(_Char, _NewTurns);
+
+
+PROC PROC_Derpy_Ascension_Pegasus_Elementalist_CDReduc((CHARACTERGUID)_Char, (INTEGER)_NewTurns)
+THEN
+PROC_AMER_GEN_CharacterCombatLogText(_Char, "spent 5 Elementalist stacks to reduce the cooldown of Purity.");
+RemoveStatus(_Char, "AMER_PURITY_COOLDOWN");
+
+
+PROC PROC_Derpy_Ascension_Pegasus_Elementalist_CDReduc((CHARACTERGUID)_Char, (INTEGER)_NewTurns)
+AND
+_NewTurns > 0
+AND
+Real(_NewTurns, _TurnsReal)
+AND
+RealProduct(_TurnsReal, 6.0, _Duration)
+THEN
+ApplyStatus(_Char, "AMER_PURITY_COOLDOWN", _Duration, 0, _Char);
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "Derpy_Pegasus_Elementalist")
+THEN
+PROC_AMER_KeywordStat_Elementalist_Feedback_AddStacks(_Char, -5);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

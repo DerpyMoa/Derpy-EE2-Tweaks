@@ -1,0 +1,23 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+NRD_OnPrepareHit((CHARACTERGUID)_Defender, (CHARACTERGUID)_Attacker, _Damage, _HitHandle)
+AND
+NRD_HitGetInt(_HitHandle, "HitType", 1)
+AND
+NRD_HitGetDamage(_HitHandle, "Piercing", _Amount)
+AND
+_Amount != 0
+THEN
+NRD_HitClearDamage(_HitHandle, "Piercing");
+PROC_AMER_GEN_ApplyDamage(_Defender, _Amount, "Piercing", _Defender, 0);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Necromancer"

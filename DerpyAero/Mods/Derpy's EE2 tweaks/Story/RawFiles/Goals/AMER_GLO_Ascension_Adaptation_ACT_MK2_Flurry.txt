@@ -1,0 +1,38 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//If basic activation of Adaptation has more than 1 source, activate it when casting Flurry.
+
+PROC PROC_AMER_Spells_SkillCast(_Char, "Target_DualWieldingAttack", _, _, _)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Adaptation_ACT_MK2_Flurry", _)
+THEN
+PROC_AMER_KeywordStat_Adaptation_Activate(_Char, _Char, 3);
+
+
+PROC PROC_AMER_Spells_SkillCast(_Char, "Projectile_StaffOfMagus", _, _, _)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Adaptation_ACT_MK2_Flurry", _)
+THEN
+PROC_AMER_KeywordStat_Adaptation_Activate(_Char, _Char, 3);
+
+
+PROC PROC_AMER_Spells_SkillCast(_Char, "Target_HeavyAttack", _, _, _)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Adaptation_ACT_MK2_Flurry", _)
+THEN
+PROC_AMER_KeywordStat_Adaptation_Activate(_Char, _Char, 3);
+
+
+PROC PROC_AMER_Spells_SkillCast(_Char, "Target_SingleHandedAttack", _, _, _)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Adaptation_ACT_MK2_Flurry", _)
+THEN
+PROC_AMER_KeywordStat_Adaptation_Activate(_Char, _Char, 3);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

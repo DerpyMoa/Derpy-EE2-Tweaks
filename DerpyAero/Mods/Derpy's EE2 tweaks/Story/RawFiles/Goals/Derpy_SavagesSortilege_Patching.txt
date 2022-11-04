@@ -1,0 +1,49 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+PROC_Derpy_SavageSortilegeCCcheck();
+
+KBSECTION
+
+PROC PROC_Derpy_SavageSortilegeCCcheck()
+AND
+DB_CurrentLevel(_Level)
+AND
+IsCharacterCreationLevel(_level, 1)
+THEN
+GoalCompleted;
+
+
+IF
+SavegameLoaded(_, _, _, _)
+AND
+DB_IsPlayer(_Char)
+THEN
+PROC_Derpy_SavagesSortilege_Patching(_Char);
+
+
+PROC PROC_Derpy_SavagesSortilege_Patching((CHARACTERGUID)_Char)
+AND
+CharacterHasTalent(_Char, "ViolentMagic", 1)
+THEN
+CharacterAddTalentPoint(_Char, 1);
+OpenMessageBox(_Char, "Savage Sortilege is now innate, and as such, one Talent Point has been refunded to you.");
+
+
+PROC PROC_Derpy_SavagesSortilege_Patching((CHARACTERGUID)_Char)
+AND
+CharacterHasTalent(_Char, "ViolentMagic", 0)
+THEN
+CharacterAddTalent(_Char, "ViolentMagic");
+
+
+IF
+SavegameLoaded(_, _, _, _)
+THEN
+GoalCompleted;
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

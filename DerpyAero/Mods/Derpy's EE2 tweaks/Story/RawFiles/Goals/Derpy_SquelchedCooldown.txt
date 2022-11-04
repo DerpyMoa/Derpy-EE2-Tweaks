@@ -1,0 +1,45 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Status_ManipulateRequiredStacks((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, "AMER_SQUELCHED_3", (INTEGER)_WhichStack, (INTEGER)_StackAmount)
+AND
+HasActiveStatus(_Char, "SquelchedCD", 1)
+AND
+DB_AMER_Status_OUTPUT_Integer(_OldOutput)
+THEN
+NOT DB_AMER_Status_OUTPUT_Integer(_OldOutput);
+DB_AMER_Status_OUTPUT_Integer(69);
+
+
+IF
+NRD_OnStatusAttempt(_Char, "AMER_SQUELCHED_3", _Handle, _Source)
+AND
+HasActiveStatus(_Char, "AMER_SQUELCHED_3", 1)
+THEN
+DB_Derpy_BlockSquelchCD(_Char);
+
+
+PROC PROC_AMER_GEN_FilteredStatus_Removed((CHARACTERGUID)_Char, (CHARACTERGUID)NULL_00000000-0000-0000-0000-000000000000, "AMER_SQUELCHED_3")
+AND
+NOT QRY_Derpy_SquelchedDBCheck(_Char)
+AND
+HasActiveStatus(_Char, "SquelchedCD", 0)
+THEN
+ApplyStatus(_Char, "SquelchedCD", 12.0, 1, _Char);
+
+
+QRY QRY_Derpy_SquelchedDBCheck((CHARACTERGUID)_Char)
+AND
+DB_Derpy_BlockSquelchCD(_Char)
+THEN
+NOT DB_Derpy_BlockSquelchCD(_Char);
+
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

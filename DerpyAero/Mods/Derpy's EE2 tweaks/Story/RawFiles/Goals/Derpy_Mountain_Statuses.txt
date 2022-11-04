@@ -1,0 +1,17 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_Derpy_Mountain_Statuses("Derpy_Mountain_0");
+DB_Derpy_Mountain_Statuses("Derpy_Mountain_1");
+DB_Derpy_Mountain_Statuses("Derpy_Mountain_2");
+DB_Derpy_Mountain_Statuses("Derpy_Mountain_3");
+DB_Derpy_Mountain_Statuses("Derpy_Mountain_4");
+DB_Derpy_Mountain_Statuses("Derpy_Mountain_5");
+
+KBSECTION
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

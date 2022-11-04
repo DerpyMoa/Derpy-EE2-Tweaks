@@ -1,0 +1,572 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+PROC_AMER_UI_ModSettings_AddOption_Toggle("ORI_DifficultyPresets", "Hard", 0.0);
+DB_AMER_UI_ModSettings_OptionToggle_ConfirmationBox("ORI_DifficultyPresets", "Hard", "AMER_UI_ModSettings_ORI_DifficultyPresets_Hard_Confirmation");
+PROC_AMER_UI_ModSettings_Desc_SetOverride_TextAnchor("ORI_DifficultyPresets", "Hard", "TextAnchor_Body_C");
+PROC_AMER_UI_ModSettings_AddOption_Toggle("ORI_DifficultyPresets", "Extreme", 0.0);
+DB_AMER_UI_ModSettings_OptionToggle_ConfirmationBox("ORI_DifficultyPresets", "Extreme", "AMER_UI_ModSettings_ORI_DifficultyPresets_Extreme_Confirmation");
+PROC_AMER_UI_ModSettings_Desc_SetOverride_TextAnchor("ORI_DifficultyPresets", "Extreme", "TextAnchor_Body_B");
+PROC_AMER_UI_ModSettings_AddOption_Toggle("ORI_DifficultyPresets", "Impossible", 0.0);
+DB_AMER_UI_ModSettings_OptionToggle_ConfirmationBox("ORI_DifficultyPresets", "Impossible", "AMER_UI_ModSettings_ORI_DifficultyPresets_Impossible_Confirmation");
+PROC_AMER_UI_ModSettings_Desc_SetOverride_TextAnchor("ORI_DifficultyPresets", "Impossible", "TextAnchor_Body_B");
+PROC_AMER_UI_ModSettings_AddOption_Toggle("ORI_DifficultyPresets", "DoNotPickThis", 0.0);
+DB_AMER_UI_ModSettings_OptionToggle_ConfirmationBox("ORI_DifficultyPresets", "DoNotPickThis", "AMER_UI_ModSettings_ORI_DifficultyPresets_DoNotPickThis_Confirmation");
+PROC_AMER_UI_ModSettings_Desc_SetOverride_TextAnchor("ORI_DifficultyPresets", "DoNotPickThis", "TextAnchor_Body_B");
+
+PROC_AMER_UI_ModSettings_MoveCategoryToIndex("ORI_DifficultyPresets", 0);    //Ensure that presets appear on the first settings page.
+
+KBSECTION
+
+//REGION Presets are exclusive, and untoggle after changing a setting.
+
+//If a settings it changed after a difficulty preset is chosen, untoggle the preset.
+PROC PROC_AMER_UI_ModSettings_ModifiedValue((INTEGER)_Instance, (STRING)_Category, (STRING)_OptionName, (REAL)_ValueA, (REAL)_ValueB)
+AND
+DB_AMER_ModSettings_DiffPreset(_OldPreset)
+THEN
+NOT DB_AMER_ModSettings_DiffPreset(_OldPreset);
+
+PROC PROC_AMER_UI_ModSettings_ModifiedValue((INTEGER)_Instance, "ORI_DifficultyPresets", (STRING)_NewPreset, 1.0, (REAL)_ValueB)
+AND
+DB_AMER_ModSettings_Toggle("ORI_DifficultyPresets", _NewPreset, 1.0)
+THEN
+PROC_AMER_ORI_DiffPresetChosen(_Instance, _NewPreset);
+
+PROC PROC_AMER_UI_ModSettings_ModifiedValue((INTEGER)_Instance, (STRING)_Category, (STRING)_OptionName, (REAL)_ValueA, (REAL)_ValueB)
+AND
+DB_AMER_ModSettings_Toggle("ORI_DifficultyPresets", _Preset, 1.0)
+AND
+NOT DB_AMER_ModSettings_DiffPreset(_Preset) //If current preset DB exists here, it's because we're untoggling as a result of choosing a new preset. In all other cases, it won't exist.
+THEN
+PROC_AMER_UI_ModSettings_OptionToggle_Set("ORI_DifficultyPresets", _Preset, 0.0);
+PROC_AMER_UI_ModSettings_SessionValue_Update_NoReport(_Instance, "ORI_DifficultyPresets", _Preset, 0.0, -1.0);
+//PROC_AMER_DiffPreset_CheckResetVisuals(_Instance, _Preset);
+
+
+//Need to update the preset button visuals if we are modifying them while on their page.
+PROC PROC_AMER_UI_ModSettings_ModifiedValue((INTEGER)_Instance, (STRING)_Category, (STRING)_OptionName, (REAL)_ValueA, (REAL)_ValueB)
+AND
+DB_AMER_UI_ModSettings_Optionpage_Current(_Instance, _PageNum)
+AND
+DB_AMER_UI_ModSettings_Optionpage(_PageNum, _Page, "ORI_DifficultyPresets") //Reset FX on toggles if we're on their page.
+AND
+DB_AMER_UI_UsersInUI(_Instance, "AMER_UI_ModSettings", _Char)
+AND
+DB_AMER_ModSettings_Toggle("ORI_DifficultyPresets", _Preset, 0.0)
+AND
+StringConcatenate(_Preset, "_SliderFrame", _FrameName)
+AND
+DB_AMER_UI_ElementsOfInstance(_Instance, "AMER_UI_ModSettings", _Preset, _FrameName, _Element)
+THEN
+PROC_AMER_UI_ModSettings_OptionToggle_SetFXFromValue(_Char, _Element, 0);
+
+//END_REGION
+
+
+PROC PROC_AMER_ORI_DiffPresetChosen((INTEGER)_Instance, (STRING)_Preset)
+AND
+DB_AMER_ModSettings_DiffPreset(_OldPreset)
+THEN
+NOT DB_AMER_ModSettings_DiffPreset(_OldPreset);
+
+PROC PROC_AMER_ORI_DiffPresetChosen((INTEGER)_Instance, (STRING)_Preset)
+THEN
+DB_AMER_ModSettings_DiffPreset(_Preset);
+PROC_AMER_UI_ModSettings_RestoreDefaults(_Instance);
+PROC_AMER_UI_ModSettings_OptionToggle_Set("ORI_DifficultyPresets", _Preset, 1.0);   //Restore defaults set the preset value to 0.0, so we need to set it to 1.0 now.
+
+
+PROC PROC_AMER_ORI_DiffPresetChosen((INTEGER)_Instance, (STRING)_Preset)
+AND
+DB_Derpy_CelestialHeal(_Multiplier)
+THEN
+NOT DB_Derpy_CelestialHeal(_Multiplier);
+
+
+PROC PROC_AMER_KeywordStat_Celestial_GetHeal_Manip((CHARACTERGUID)_Char)
+AND
+DB_Derpy_CelestialHeal(_Multiplier)
+AND
+DB_AMER_GEN_OUTPUT_Real(_OldValue)
+AND
+RealProduct(_OldValue, _Multiplier, _NewValue)
+THEN
+NOT DB_AMER_GEN_OUTPUT_Real(_OldValue);
+DB_AMER_GEN_OUTPUT_Real(_NewValue);
+
+
+PROC PROC_AMER_ORI_DiffPresetChosen((INTEGER)_Instance, "Hard")
+THEN
+DB_Derpy_CelestialHeal(0.75);
+PROC_AMER_UI_ModSettings_OptionToggle_Set("Global", "FastEnemies", 1.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "SPStart", 0.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_SPStart", 1.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "Resist_Base", 20.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_Resist_Base", 20.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "Resist_PerLevel", 3.8);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_Resist_PerLevel", 3.8);
+PROC_AMER_UI_ModSettings_ValueSet("Global", "ResistanceRating", 100.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "Damage", 3.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_Damage", 3.5);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "Vitality", 64.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_Vitality", 64.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "Vitality_PerLevel", 9.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "Vitality_PerLevel_Start", 4.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_Vitality_PerLevel", 15.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_Vitality_PerLevel_Start", 4.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "Resist", 0.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_Resist", 0.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "MaxRes", 70.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_MaxRes", 70.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "Armor", 64.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_Armor", 64.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "Armor_PerLevel", 13.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "Armor_PerLevel_Start", 4.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_Armor_PerLevel", 26.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_Armor_PerLevel_Start", 4.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "AP", 2.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_AP", 2.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "AlwaysInfuse", 1.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_AlwaysInfuse", 1.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "BHThreshold", 0.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_BHThreshold", 0.0);
+//PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyWindwalker", 7.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyChainLightning", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "ProjectileStrike_EnemyDazingBolt", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyPressureSpike", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Shout_EnemyVacuumAura", 9.0, 5.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Shout_EnemyElectricFence", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyLightningBolt", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyPyroclasticRock", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyPoisonDart", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyThrowDust", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyPinDown", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemySnipe", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyRicochet", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemySkyShot", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "ProjectileStrike_EnemyHailStrike", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyInfect", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyGraspOfTheStarved", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyMosquitoSwarm", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyStripResistance", 9.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Cone_EnemySilencingStare", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyFireball", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyFlamingDaggers", 3.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyFireWhip", 3.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Shout_EnemyIgnition", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemySpontCombustion", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyFireblood", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Zone_EnemyLaserRay", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyIceFan", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_FirstAidEnemy", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyRestoration", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyEvasiveManeuver", 3.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyArcaneStitch", 9.0, 5.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemySuperconductor", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Teleportation_EnemyFreeFall", 3.0, 5.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyFortify", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyWormTremor", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyRockSpikes", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Cone_EnemyCorrosiveSpray", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyAcidSpores", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyMark", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "ProjectileStrike_EnemyRainOfArrows", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyArrowSpray", 9.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyBallisticShot", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyPiercingShot", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyFrostyShell", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyChainHeal", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyCharm", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyCleanseWounds", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Summon_EnemyTotemFromSurface", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Cone_EnemyShatter", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Shout_EnemyGlobalCooling", 3.0, 20.0);
+//PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Shout_EnemyFrostAura", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyAMER_HorridWilting", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyDeathsDoor", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyDeathWish", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyDecayingTouch", 3.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyAMER_FingerOfDeath", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyBloatedCorpse", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyShacklesOfPain", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyHaste", 9.0, 5.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyInfectiousFlame", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyFlamingCrescendo", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "ProjectileStrike_EnemyMeteorShower", 9.0, 3.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyFatality", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyTerrifyingCruelty", 9.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyDaggersDrawn", 9.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyGagOrder", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyCorruptedBlade", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyKneeBreaker", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemySerratedEdge", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "MultiStrike_EnemyVault", 3.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyFanOfKnives", 6.0, 20.0);
+//PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemySoulMate", 7.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyBouncingShield", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Shout_EnemyWhirlwind", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "MultiStrike_EnemyBlinkStrike", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Rush_EnemyBatteringRam", 3.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyCripplingBlow", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Cone_EnemyGroundSmash", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyOverpower", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Shout_EnemyThickOfTheFight", 3.0, 3.0);
+
+PROC PROC_AMER_ORI_DiffPresetChosen((INTEGER)_Instance, "Extreme")
+THEN
+DB_Derpy_CelestialHeal(0.65);
+PROC_AMER_UI_ModSettings_OptionToggle_Set("Global", "FastEnemies", 1.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "SPStart", 0.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_SPStart", 1.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "Resist_Base", 20.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_Resist_Base", 20.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "Resist_PerLevel", 4.8);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_Resist_PerLevel", 4.8);
+PROC_AMER_UI_ModSettings_ValueSet("Global", "ResistanceRating", 100.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "Damage", 3.5);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_Damage", 4.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "Vitality", 64.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_Vitality", 64.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "Vitality_PerLevel", 14.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "Vitality_PerLevel_Start", 4.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_Vitality_PerLevel", 20.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_Vitality_PerLevel_Start", 4.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "Resist", 0.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_Resist", 0.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "MaxRes", 70.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_MaxRes", 70.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "Armor", 64.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_Armor", 64.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "Armor_PerLevel", 23.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "Armor_PerLevel_Start", 4.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_Armor_PerLevel", 36.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_Armor_PerLevel_Start", 4.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "AP", 2.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_AP", 4.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "AlwaysInfuse", 1.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_AlwaysInfuse", 2.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "BHThreshold", 0.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_BHThreshold", 0.0);
+//PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyWindwalker", 7.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyChainLightning", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "ProjectileStrike_EnemyDazingBolt", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyPressureSpike", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Shout_EnemyVacuumAura", 9.0, 5.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Shout_EnemyElectricFence", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyLightningBolt", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyPyroclasticRock", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyPoisonDart", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyThrowDust", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyPinDown", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemySnipe", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyRicochet", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemySkyShot", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "ProjectileStrike_EnemyHailStrike", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyInfect", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyGraspOfTheStarved", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyMosquitoSwarm", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyStripResistance", 9.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Cone_EnemySilencingStare", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyFireball", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyFlamingDaggers", 3.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyFireWhip", 3.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Shout_EnemyIgnition", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemySpontCombustion", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyFireblood", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Zone_EnemyLaserRay", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyIceFan", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_FirstAidEnemy", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyRestoration", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyEvasiveManeuver", 3.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyArcaneStitch", 9.0, 5.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemySuperconductor", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Teleportation_EnemyFreeFall", 3.0, 5.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyFortify", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyWormTremor", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyRockSpikes", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Cone_EnemyCorrosiveSpray", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyAcidSpores", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyMark", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "ProjectileStrike_EnemyRainOfArrows", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyArrowSpray", 9.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyBallisticShot", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyPiercingShot", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyFrostyShell", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyChainHeal", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyCharm", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyCleanseWounds", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Summon_EnemyTotemFromSurface", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Cone_EnemyShatter", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Shout_EnemyGlobalCooling", 3.0, 20.0);
+//PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Shout_EnemyFrostAura", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyAMER_HorridWilting", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyDeathsDoor", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyDeathWish", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyDecayingTouch", 3.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyAMER_FingerOfDeath", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyBloatedCorpse", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyShacklesOfPain", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyHaste", 9.0, 5.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyInfectiousFlame", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyFlamingCrescendo", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "ProjectileStrike_EnemyMeteorShower", 9.0, 3.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyFatality", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyTerrifyingCruelty", 9.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyDaggersDrawn", 9.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyGagOrder", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyCorruptedBlade", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyKneeBreaker", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemySerratedEdge", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "MultiStrike_EnemyVault", 3.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyFanOfKnives", 6.0, 20.0);
+//PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemySoulMate", 7.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyBouncingShield", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Shout_EnemyWhirlwind", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "MultiStrike_EnemyBlinkStrike", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Rush_EnemyBatteringRam", 3.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyCripplingBlow", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Cone_EnemyGroundSmash", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyOverpower", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Shout_EnemyThickOfTheFight", 3.0, 3.0);
+
+
+PROC PROC_AMER_ORI_DiffPresetChosen((INTEGER)_Instance, "Impossible")
+THEN
+DB_Derpy_CelestialHeal(0.5);
+PROC_AMER_UI_ModSettings_OptionToggle_Set("Global", "FastEnemies", 1.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "SPStart", 0.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_SPStart", 1.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "Resist_Base", 20.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_Resist_Base", 20.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "Resist_PerLevel", 4.8);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_Resist_PerLevel", 4.8);
+PROC_AMER_UI_ModSettings_ValueSet("Global", "ResistanceRating", 100.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "Damage", 3.5);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_Damage", 4.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "Vitality", 64.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_Vitality", 64.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "Vitality_PerLevel", 20.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "Vitality_PerLevel_Start", 4.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_Vitality_PerLevel", 22.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_Vitality_PerLevel_Start", 4.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "Resist", 0.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_Resist", 0.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "MaxRes", 80.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_MaxRes", 80.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "Armor", 64.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_Armor", 64.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "Armor_PerLevel", 36.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "Armor_PerLevel_Start", 4.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_Armor_PerLevel", 40.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_Armor_PerLevel_Start", 4.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "AP", 2.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_AP", 4.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "AlwaysInfuse", 2.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_AlwaysInfuse", 2.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "BHThreshold", 0.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_BHThreshold", 0.0);
+//PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyWindwalker", 7.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyChainLightning", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "ProjectileStrike_EnemyDazingBolt", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyPressureSpike", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Shout_EnemyVacuumAura", 9.0, 5.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Shout_EnemyElectricFence", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyLightningBolt", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyPyroclasticRock", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyPoisonDart", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyThrowDust", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyPinDown", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemySnipe", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyRicochet", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemySkyShot", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "ProjectileStrike_EnemyHailStrike", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyInfect", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyGraspOfTheStarved", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyMosquitoSwarm", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyStripResistance", 9.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Cone_EnemySilencingStare", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyFireball", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyFlamingDaggers", 3.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyFireWhip", 3.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Shout_EnemyIgnition", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemySpontCombustion", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyFireblood", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Zone_EnemyLaserRay", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyIceFan", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_FirstAidEnemy", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyRestoration", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyEvasiveManeuver", 3.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyArcaneStitch", 9.0, 5.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemySuperconductor", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Teleportation_EnemyFreeFall", 3.0, 5.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyFortify", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyWormTremor", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyRockSpikes", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Cone_EnemyCorrosiveSpray", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyAcidSpores", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyMark", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "ProjectileStrike_EnemyRainOfArrows", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyArrowSpray", 9.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyBallisticShot", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyPiercingShot", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyFrostyShell", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyChainHeal", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyCharm", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyCleanseWounds", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Summon_EnemyTotemFromSurface", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Cone_EnemyShatter", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Shout_EnemyGlobalCooling", 3.0, 20.0);
+//PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Shout_EnemyFrostAura", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyAMER_HorridWilting", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyDeathsDoor", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyDeathWish", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyDecayingTouch", 3.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyAMER_FingerOfDeath", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyBloatedCorpse", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyShacklesOfPain", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyHaste", 9.0, 5.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyInfectiousFlame", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyFlamingCrescendo", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "ProjectileStrike_EnemyMeteorShower", 9.0, 3.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyFatality", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyTerrifyingCruelty", 9.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyDaggersDrawn", 9.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyGagOrder", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyCorruptedBlade", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyKneeBreaker", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemySerratedEdge", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "MultiStrike_EnemyVault", 3.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyFanOfKnives", 6.0, 20.0);
+//PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemySoulMate", 7.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyBouncingShield", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Shout_EnemyWhirlwind", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "MultiStrike_EnemyBlinkStrike", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Rush_EnemyBatteringRam", 3.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyCripplingBlow", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Cone_EnemyGroundSmash", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyOverpower", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Shout_EnemyThickOfTheFight", 3.0, 3.0);
+
+PROC PROC_AMER_ORI_DiffPresetChosen((INTEGER)_Instance, "DoNotPickThis")
+THEN
+DB_Derpy_CelestialHeal(0.5);
+PROC_AMER_UI_ModSettings_OptionToggle_Set("Global", "FastEnemies", 1.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "Resist_Base", 20.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_Resist_Base", 20.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "Resist_PerLevel", 4.8);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_Resist_PerLevel", 4.8);
+PROC_AMER_UI_ModSettings_ValueSet("Global", "ResistanceRating", 100.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "Damage", 4.5);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_Damage", 4.5);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "Vitality", 64.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_Vitality", 64.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "Vitality_PerLevel", 20.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "Vitality_PerLevel_Start", 4.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_Vitality_PerLevel", 22.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_Vitality_PerLevel_Start", 4.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "Resist", 0.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_Resist", 0.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "MaxRes", 90.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_MaxRes", 90.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "Armor", 64.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_Armor", 64.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "Armor_PerLevel", 36.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "Armor_PerLevel_Start", 4.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_Armor_PerLevel", 40.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_Armor_PerLevel_Start", 4.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "AP", 4.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_AP", 4.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "AlwaysInfuse", 3.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_AlwaysInfuse", 3.0);
+PROC_AMER_UI_ModSettings_ValueSet("NPCStats", "BHThreshold", 0.0);
+PROC_AMER_UI_ModSettings_ValueSet("BossStats", "BossStats_BHThreshold", 0.0);
+//PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyWindwalker", 7.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyChainLightning", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "ProjectileStrike_EnemyDazingBolt", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyPressureSpike", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Shout_EnemyVacuumAura", 9.0, 5.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Shout_EnemyElectricFence", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyLightningBolt", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyPyroclasticRock", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyPoisonDart", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyThrowDust", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyPinDown", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemySnipe", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyRicochet", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemySkyShot", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "ProjectileStrike_EnemyHailStrike", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyInfect", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyGraspOfTheStarved", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyMosquitoSwarm", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyStripResistance", 9.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Cone_EnemySilencingStare", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyFireball", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyFlamingDaggers", 3.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyFireWhip", 3.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Shout_EnemyIgnition", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemySpontCombustion", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyFireblood", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Zone_EnemyLaserRay", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyIceFan", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_FirstAidEnemy", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyRestoration", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyEvasiveManeuver", 3.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyArcaneStitch", 9.0, 5.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemySuperconductor", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Teleportation_EnemyFreeFall", 3.0, 5.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyFortify", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyWormTremor", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyRockSpikes", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Cone_EnemyCorrosiveSpray", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyAcidSpores", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyMark", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "ProjectileStrike_EnemyRainOfArrows", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyArrowSpray", 9.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyBallisticShot", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyPiercingShot", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyFrostyShell", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyChainHeal", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyCharm", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyCleanseWounds", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Summon_EnemyTotemFromSurface", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Cone_EnemyShatter", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Shout_EnemyGlobalCooling", 3.0, 20.0);
+//PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Shout_EnemyFrostAura", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyAMER_HorridWilting", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyDeathsDoor", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyDeathWish", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyDecayingTouch", 3.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyAMER_FingerOfDeath", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyBloatedCorpse", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyShacklesOfPain", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyHaste", 9.0, 5.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyInfectiousFlame", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyFlamingCrescendo", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "ProjectileStrike_EnemyMeteorShower", 9.0, 3.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyFatality", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyTerrifyingCruelty", 9.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyDaggersDrawn", 9.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyGagOrder", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyCorruptedBlade", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyKneeBreaker", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemySerratedEdge", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "MultiStrike_EnemyVault", 3.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyFanOfKnives", 6.0, 20.0);
+//PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemySoulMate", 7.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Projectile_EnemyBouncingShield", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Shout_EnemyWhirlwind", 6.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "MultiStrike_EnemyBlinkStrike", 6.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Rush_EnemyBatteringRam", 3.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyCripplingBlow", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Cone_EnemyGroundSmash", 3.0, 20.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Target_EnemyOverpower", 9.0, 10.0);
+PROC_AMER_UI_ModSettings_ListSet("NPCSkills", "Shout_EnemyThickOfTheFight", 3.0, 3.0);
+
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_NPCScaling"

@@ -1,0 +1,38 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Causes you to activate Benevolence on allies within its radius when they reach B/H 7 or higher (once per round per ally).
+
+PROC PROC_AMER_BatteredHarried_StacksChanged((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, (INTEGER)_WhichStack, (INTEGER)_AddedStacks, (INTEGER)_NewStacks)
+AND
+_NewStacks >= 7
+AND
+_AddedStacks > 0
+AND
+DB_AMER_Talents(_TalentWielder, "NoAttackOfOpportunity")
+AND
+CharacterIsAlly(_TalentWielder, _Char, 1)
+AND
+_TalentWielder != _Char
+AND
+QRY_AMER_GEN_OncePerRound_PerChar(_TalentWielder, "AMER_Talents_NoAttackOfOpportunity_Benevolence", _Char)
+AND
+NOT QRY_AMER_GEN_IsDeadOrDying(_TalentWielder)
+AND
+GetDistanceTo(_TalentWielder, _Char, _Distance)
+AND
+_Distance <= 8.0
+AND
+CharacterGetHitpointsPercentage(_Char, _VitPerc)
+AND
+_VitPerc < 100.0
+THEN
+DB_AMER_GEN_OncePerRound_PerChar(_TalentWielder, "AMER_Talents_NoAttackOfOpportunity_Benevolence", _Char);
+PROC_AMER_KeywordStat_Benevolence_Activate(_TalentWielder, _Char, 0);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Talents"

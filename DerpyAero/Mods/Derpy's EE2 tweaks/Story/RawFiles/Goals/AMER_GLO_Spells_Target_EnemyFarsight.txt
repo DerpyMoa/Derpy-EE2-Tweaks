@@ -1,0 +1,58 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, "Target_EnemyFarsight", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_TempStat_StatusMod_AddFlexStat_Scaling(_Char, "FARSIGHT", "Stat", "RANGEBOOST", "Farsight_Infus", 0, "Ability", "RangerLore", 0.0, 20.0, 2000, "SkillCast");
+
+
+//======================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_EnemyFarsight", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_StatusMod_AddFlexStat_Scaling(_Char, "FARSIGHT", "Stat", "RANGEBOOST", "Farsight_Infus", 0, "Ability", "RangerLore", 200.0, 20.0, 2000, "SkillCast");
+
+
+//======================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_EnemyFarsight", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_TempStat_StatusMod_AddFlexStat_Scaling(_Char, "FARSIGHT", "Stat", "ACCURACYBOOST", "Farsight_Infus", 0, "Ability", "RangerLore", 10.0, 2.0);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Target_EnemyFarsight", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 13.0, _Char, 12, "AMER_SourceInfusion_Farsight_2");	//Allies, not dead.
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "AMER_SourceInfusion_Farsight_2", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+ApplyStatus(_Char, "FARSIGHT", 12.0, 0, _SourceChar);
+
+
+//======================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_EnemyFarsight", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_TempStat_StatusMod_AddFlexStat_Scaling(_Char, "FARSIGHT", "Stat", "CRITICALCHANCE", "Farsight_Infus", 0, "Ability", "RangerLore", 15.0, 2.0);
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Huntsman"

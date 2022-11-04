@@ -1,0 +1,25 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Activate Paucity when you gain the Challenger status.
+
+PROC PROC_AMER_GEN_FilteredStatus_Applied(_Char, _Source, "AMER_CHALLENGE_CASTER", _)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Paucity_ACT_Berserk", _)
+THEN
+PROC_AMER_KeywordStat_Paucity_Activate(_Char, _Char, NULL_00000000-0000-0000-0000-000000000000);
+
+
+PROC PROC_AMER_GEN_FilteredStatus_Applied(_Char, _Source, "AMER_CHALLENGE_WIN", _)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Paucity_ACT_Berserk", _)
+THEN
+PROC_AMER_KeywordStat_Paucity_Activate(_Char, _Char, NULL_00000000-0000-0000-0000-000000000000);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

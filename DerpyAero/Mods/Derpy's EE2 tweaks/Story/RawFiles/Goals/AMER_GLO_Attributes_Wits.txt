@@ -1,0 +1,65 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Wits adds 5% of a stack of B or H upon striking a target during an attack or cast.
+
+PROC PROC_AMER_BatteredHarried_ManipIncomingDamage((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, (REAL)_Damage, (REAL)_Threshold)
+AND
+NOT DB_AMER_Attributes_Wits_StackBonusApplied(_Source, _Char)
+AND
+QRY_AMER_Attributes_Wits_CanAddBonus(_Source)
+AND
+QRY_AMER_GEN_GetOwner(_Source)
+AND
+DB_AMER_GEN_OUTPUT_Char(_Owner)
+AND
+DB_IsPlayer(_Owner)
+AND
+CharacterGetAttribute(_Source, "Wits", _Wit)
+AND
+_Wit != 10
+AND
+IntegerSubtract(_Wit, 10, _WitOverTen)
+AND
+Real(_WitOverTen, _Amount)
+AND
+RealProduct(_Amount, 0.05, _Mult)
+AND
+RealProduct(_Threshold, _Mult, _Add)
+AND
+DB_AMER_BatteredHarried_IncomingDamage_OUTPUT(_OldOutput)
+AND
+RealSum(_OldOutput, _Add, _NewOutput)
+THEN
+DB_AMER_Attributes_Wits_StackBonusApplied(_Source, _Char);
+NOT DB_AMER_BatteredHarried_IncomingDamage_OUTPUT(_OldOutput);
+DB_AMER_BatteredHarried_IncomingDamage_OUTPUT(_NewOutput);
+
+
+//Add Wits bonus if we have either a buffered or running tempstat cleanup timer (implies we are in an action that Wits bonus should apply to).
+QRY QRY_AMER_Attributes_Wits_CanAddBonus((CHARACTERGUID)_Source)
+AND
+DB_AMER_TempStat_TimerBuffer(_Source, _, _)
+THEN
+DB_NOOP(1);
+
+QRY QRY_AMER_Attributes_Wits_CanAddBonus((CHARACTERGUID)_Source)
+AND
+DB_AMER_TempStat_CleanupTimer(_Source, _)
+THEN
+DB_NOOP(1);
+
+
+
+PROC PROC_AMER_TempStat_Cleanup((CHARACTERGUID)_Source)
+AND
+DB_AMER_Attributes_Wits_StackBonusApplied(_Source, _Char)
+THEN
+NOT DB_AMER_Attributes_Wits_StackBonusApplied(_Source, _Char);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Attributes"

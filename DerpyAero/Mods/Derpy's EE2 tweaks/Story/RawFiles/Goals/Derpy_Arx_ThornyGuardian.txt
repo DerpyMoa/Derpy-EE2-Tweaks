@@ -1,0 +1,14 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_RC_ARX_KemmMansion_Garden_Shambl_Tank_01_0b0b9920-64e4-4b29-b465-0c578916a099);
+
+KBSECTION
+
+
+EXITSECTION
+
+
+ENDEXITSECTION
+ParentTargetEdge "ARX"

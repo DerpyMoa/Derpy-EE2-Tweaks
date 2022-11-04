@@ -1,0 +1,81 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+NRD_OnHit((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, _Damage, _Handle)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Char, "AssassinInstinct_SI0_Internal", _, _, _, _)
+AND
+NOT DB_Derpy_AssassinInstinct_ScoundrelChoke(_Char)
+AND
+_Target != _Char
+AND
+DB_AMER_Combat_ActiveChar(_, _, _, _Char)
+AND
+NRD_StatusGetInt(_Target, _Handle, "Missed", 0)
+THEN
+PROC_Derpy_AssassinInstinct_ThrowCount(_Char);
+DB_Derpy_AssassinInstinct_ScoundrelChoke(_Char);
+PROC_Derpy_AssassinInstinct_OverheadText(_Char);
+PROC_AMER_GEN_ShootProjectileAt(_Char, _Target, "Derpy_SCRIPT_AssassinInstinct_Knife");
+PROC_AMER_ActionPoints_Add(_Char, -1);
+ProcObjectTimer(_Char, "Derpy_AssassinInstinct_ChokePrevention", 2000);
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "Derpy_AssassinInstinct_ChokePrevention")
+AND
+DB_Derpy_AssassinInstinct_ScoundrelChoke(_Char)
+THEN
+NOT DB_Derpy_AssassinInstinct_ScoundrelChoke(_Char);
+
+
+//===================================================================================
+
+
+PROC PROC_Derpy_AssassinInstinct_OverheadText((CHARACTERGUID)_Char)
+AND
+DB_Derpy_AssassinInstinct_ThrowCount(_Char, _Count)
+AND
+IntegertoString(_Count, _CountStr)
+THEN
+CharacterStatusText(_Char, _CountStr);
+
+
+//===================================================================================
+
+
+PROC PROC_Derpy_AssassinInstinct_ThrowCount((CHARACTERGUID)_Char)
+AND
+DB_Derpy_AssassinInstinct_ThrowCount(_Char, _Count)
+AND
+IntegerSum(_Count, 1, _NewCount)
+THEN
+NOT DB_Derpy_AssassinInstinct_ThrowCount(_Char, _Count);
+DB_Derpy_AssassinInstinct_ThrowCount(_Char, _NewCount);
+
+
+PROC PROC_Derpy_AssassinInstinct_ThrowCount((CHARACTERGUID)_Char)
+AND
+NOT DB_Derpy_AssassinInstinct_ThrowCount(_Char, _)
+THEN
+DB_Derpy_AssassinInstinct_ThrowCount(_Char, 1);
+
+
+PROC PROC_Derpy_AssassinInstinct_ThrowCount((CHARACTERGUID)_Char)
+AND
+DB_Derpy_AssassinInstinct_ThrowCount(_Char, _Count)
+AND
+_Count == 3
+THEN
+NOT DB_Derpy_AssassinInstinct_ThrowCount(_Char, _Count);
+PROC_AMER_GEN_DoFreeSneak(_Char, 1);
+RemoveStatus(_Char, "Derpy_AssassinInstinct");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GEN_Stats_ExtendedStats"

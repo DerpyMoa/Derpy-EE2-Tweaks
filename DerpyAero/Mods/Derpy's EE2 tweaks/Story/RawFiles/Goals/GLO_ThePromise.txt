@@ -1,0 +1,554 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+//DB_GLO_Promise_RespawnPoints(_Level,_PointTri)
+DB_GLO_Promise_RespawnPoints("RC_Main",S_RC_DunesStatue_cbed0dfb-9c94-4d2e-8310-cf6118dc82d1);
+DB_GLO_Promise_RespawnPoints("LV_HoE_Main",S_LV_HoE_Promise_ResurrectionLocation_9017b1f7-cc28-4b63-9d52-512f20a138bf);
+//DB_GLO_Promise_RespawnPoints("ARX_Main",_PointTri);
+
+// If you change this, also update the dialogs that use the GLO_Promise_TimesResurrectedAtThisLevel_1/2 flags (in particular CoS_Promise_OfferWhenDead)
+DB_GLO_Promise_MaxResurrectionsBeforeZombieChicken(2);
+
+// Default dialog in which you can accept the Promise
+DB_GLO_Promise_AcceptPromiseDialog("CoS_Promise_OfferWhenDied");
+
+// Need 4 helpers because all players could theoretically take the promise and be offered resurrection at the same time
+DB_GLO_PromiseEighthInvisibleHelper((ITEMGUID)S_GLO_EighthPromiseHelper_000_9c8c6eb9-84bb-47a6-91cb-4ef33442df06);
+DB_GLO_PromiseEighthInvisibleHelper(S_GLO_EighthPromiseHelper_001_50b02c8d-cf15-448e-954c-e191710b88f2);
+DB_GLO_PromiseEighthInvisibleHelper(S_GLO_EighthPromiseHelper_002_462bcbe6-e420-4540-be99-0ef12ed0b52f);
+DB_GLO_PromiseEighthInvisibleHelper(S_GLO_EighthPromiseHelper_003_2a0b76e0-adf3-4033-928a-83f0ef96e65b);
+
+DB_GLO_DeadOrder_ID("GLO_ThePromise");
+
+DB_GLO_Promise_EquipmentSlot("Breast");
+DB_GLO_Promise_EquipmentSlot("Belt");
+DB_GLO_Promise_EquipmentSlot("Gloves");
+DB_GLO_Promise_EquipmentSlot("Leggings");
+DB_GLO_Promise_EquipmentSlot("Boots");
+DB_GLO_Promise_EquipmentSlot("Ring");
+DB_GLO_Promise_EquipmentSlot("Weapon");
+DB_GLO_Promise_EquipmentSlot("Shield");
+DB_GLO_Promise_EquipmentSlot("Helmet");
+DB_GLO_Promise_EquipmentSlot("Ring2");
+DB_GLO_Promise_EquipmentSlot("Amulet");
+
+DB_HasTemplateItem("WPN_Ataraxians_Scythe_2H_A_3b45c978-5a42-40b5-a7aa-183852616910","GLO_HasPromiseBreaker");
+DB_GiveTemplateFromPlayerDialogEvent("WPN_Ataraxians_Scythe_2H_A_3b45c978-5a42-40b5-a7aa-183852616910","GLO_GivePromiseBreaker","GLO_ReceivedPromiseBreaker");
+
+
+DB_OneTimeEventFlag("GLO_Promise_Effect_Prepare");
+DB_OneTimeEventFlag("GLO_Promise_Effect_Accept");
+DB_OneTimeEventFlag("GLO_Promise_Effect_Deny");
+DB_OneTimeEventFlag("GLO_PromiseBreak_Effect_Prepare");
+DB_OneTimeEventFlag("GLO_PromiseBreak_Effect_Accept");
+DB_OneTimeEventFlag("GLO_Promise_Effect_Stop");
+KBSECTION
+//REGION Character changes when accepting the Promise
+IF
+ObjectWasTagged((CHARACTERGUID)_Player,"PROMISED")
+THEN
+DB_GLO_Promise_HasBeenAccepted(_Player);
+ObjectSetFlag(_Player,"GLO_Promise_PromiseBound",0);
+GlobalSetFlag("GLO_Promise_Accepted");
+UserSetFlag(_Player,"QuestUpdate_FTJ_Hunted_AllySallowMan");
+UserSetFlag(_Player,"QuestUpdate_CORE_Covenant_Sworn");
+// Allow some time for all of the notifications to disappear
+ProcObjectTimer(_Player,"GLO_Promise_BlessToCurse",1000);
+
+PROC
+ProcObjectTimerFinished(_Player,"GLO_Promise_BlessToCurse")
+AND
+DB_IsPlayer((CHARACTERGUID)_Player)
+THEN
+// Tell player they lost Bless and gained Curse
+OpenMessageBox((CHARACTERGUID)_Player,"CoS_Acadamy_PromiseBlessCurse_MessageBox");
+
+IF
+ObjectWasTagged((CHARACTERGUID)_Player,"PROMISED")
+AND
+CharacterHasSkill(_Player,"Target_Bless",1)
+THEN
+CharacterRemoveSkill(_Player,"Target_Bless");
+
+IF
+ObjectWasTagged((CHARACTERGUID)_Player,"PROMISED")
+AND
+CharacterHasSkill(_Player,"Target_Curse",0)
+THEN
+CharacterAddSkill(_Player,"Target_Curse");
+
+//END_REGION //Common character changes when accepting/removing the Promise
+
+//REGION Notification that all characters of a user are dead
+PROC
+PROC_GLO_AllDead_Notification((CHARACTERGUID)_SignalChar)
+AND
+CharacterGetReservedUserID(_SignalChar,_UserID)
+THEN
+PROC_GLO_Promise_CheckUserForPromise(_UserID);
+//END_REGION //Start dialog timer after combat
+
+//REGION Get helper for the Eighth in a dialog
+// Use helper already reserved for this character
+QRY
+QRY_GLO_Promise_GetEighthHelperForDialog((CHARACTERGUID)_Char)
+AND
+DB_GLO_Promise_EighthInvisibleHelper_InUseForChar(_Helper,_Char)
+THEN
+// Just to make sure
+TeleportTo(_Helper,_Char);
+
+// Reserve Eighth helper for this character
+QRY
+QRY_GLO_Promise_GetEighthHelperForDialog((CHARACTERGUID)_Char)
+AND 
+DB_GLO_PromiseEighthInvisibleHelper(_Helper)
+AND
+NOT DB_GLO_Promise_EighthInvisibleHelper_InUseForChar(_Helper,_)
+AND
+NOT DB_GLO_Promise_EighthInvisibleHelper_InUseForChar(_,_Char)
+THEN
+TeleportTo(_Helper,_Char);
+DB_GLO_Promise_EighthInvisibleHelper_InUseForChar(_Helper,_Char);
+//END_REGION //Get helper for the Eighth in the dialog
+
+//REGION The dialog with the Eighth to accept The Promise or not
+// Nobody available for Promise -> check if it's game over because everyone is dead,
+// or whether there's another character controled by the current user that is eligible
+// (_Char is the character that just refused resurrection -> remove from eligible ones)
+PROC
+PROC_GLO_Promise_CheckQueuedCharsForPromise((CHARACTERGUID)_Char)
+THEN
+PROC_GLO_DeadOrder_CharacterReset(_Char,"GLO_ThePromise");
+
+PROC
+PROC_GLO_Promise_CheckQueuedCharsForPromise((CHARACTERGUID)_Char)
+AND
+CharacterGetReservedUserID(_Char,_UserID)
+THEN
+PROC_GLO_Promise_CheckUserCharForPromise(_UserID);
+
+PROC
+PROC_GLO_Promise_CheckUserCharForPromise((INTEGER)_UserID)
+AND
+NOT QRY_GLO_DeadOrder_LastStandingEligibleForUser(_UserID,"GLO_ThePromise")
+THEN
+DB_GLO_Promise_NoLastStandingElegibleForUser(1);
+ProcCheckGameOver();
+
+PROC
+PROC_GLO_Promise_CheckUserCharForPromise((INTEGER)_UserID)
+AND
+NOT DB_GLO_Promise_NoLastStandingElegibleForUser(1)
+THEN
+PROC_GLO_Promise_CheckUserForPromise(_UserID);
+
+PROC
+PROC_GLO_Promise_CheckUserCharForPromise((INTEGER)_UserID)
+THEN
+NOT DB_GLO_Promise_NoLastStandingElegibleForUser(1);
+
+PROC
+PROC_GLO_Promise_CheckUserForPromise((INTEGER)_UserID)
+AND
+QRY_GLO_DeadOrder_LastStandingEligibleForUser(_UserID,"GLO_ThePromise")
+AND
+DB_GLO_DeadOrder_LastStandingEligibleForUser(_UserID,_Char,"GLO_ThePromise")
+AND
+// This will allocate the helper for the Eighth dialog -> must reset!
+QRY_GLO_Promise_GetEighthHelperForDialog((CHARACTERGUID)_Char)
+AND
+DB_GLO_Promise_EighthInvisibleHelper_InUseForChar(_Helper,_Char)
+THEN
+PROC_GLO_Promise_StartPromiseDialogForUser(_UserID,_Char,_Helper);
+//END_REGION //The dialog with the Eighth to accept The Promise or not
+
+//REGION Accepting the promise
+PROC
+PROC_GLO_Promise_StartPromiseDialogForUser((INTEGER)_UserID,(CHARACTERGUID)_Char,(ITEMGUID)_Helper)
+AND
+StartDialog_Internal_NoDeadCheck("CoS_Promise_OfferWhenDied",1,_Helper,_Char,NULL_00000000-0000-0000-0000-000000000000,NULL_00000000-0000-0000-0000-000000000000,NULL_00000000-0000-0000-0000-000000000000,NULL_00000000-0000-0000-0000-000000000000,1)
+THEN
+DB_NOOP(1);
+
+IF
+DialogRequestFailed("CoS_PromiseOfferWhenDied",_Inst)
+AND
+DialogGetInvolvedPlayer(_Inst,1,(CHARACTERGUID)_Char)
+THEN
+DebugBreak("Failed to start CoS_PromiseOfferWhenDied, should not happen!");
+PROC_GLO_Promise_OfferDialogFinished(_Inst);
+// Dialog failed -> definitely not accepted -> check if others are queued
+PROC_GLO_Promise_CheckQueuedCharsForPromise(_Char);
+
+// Clean up
+PROC
+PROC_GLO_Promise_OfferDialogFinished((INTEGER)_Inst)
+AND
+DialogGetInvolvedNPC(_Inst,1,_Helper)
+AND
+DialogGetInvolvedPlayer(_Inst,1,_Player)
+THEN
+NOT DB_GLO_Promise_EighthInvisibleHelper_InUseForChar((ITEMGUID)_Helper,(CHARACTERGUID)_Player);
+
+IF
+DialogEnded(_Dialog,_Inst)
+AND
+DB_GLO_Promise_AcceptPromiseDialog((STRING)_Dialog)
+AND
+DialogGetInvolvedPlayer(_Inst,1,_Char)
+THEN
+PROC_GLO_Promise_HandleOfferReply((CHARACTERGUID)_Char);
+
+// Refused -> check if other users are waiting for the Promise
+PROC
+PROC_GLO_Promise_HandleOfferReply((CHARACTERGUID)_Char)
+AND
+ObjectGetFlag(_Char,"GLO_Promise_AcceptedPromise",0)
+THEN
+PROC_GLO_Promise_CheckQueuedCharsForPromise(_Char);
+
+// Accepted!
+PROC
+PROC_GLO_Promise_HandleOfferReply((CHARACTERGUID)_Char)
+AND
+ObjectGetFlag(_Char,"GLO_Promise_AcceptedPromise",1)
+THEN
+ObjectClearFlag(_Char,"GLO_Promise_AcceptedPromise",0);
+PROC_GLO_Promise_AcceptedPromise(_Char);
+
+PROC
+PROC_GLO_Promise_AcceptedPromise((CHARACTERGUID)_Char)
+AND
+IsTagged(_Char,"PROMISED",0)
+THEN
+ObjectSetFlag(_Char,"GLO_Promise_AcceptedFirstTime");
+
+PROC
+PROC_GLO_Promise_AcceptedPromise((CHARACTERGUID)_Char)
+THEN
+SetTag(_Char,"PROMISED");
+
+//REGION Resurrection (or not, if you were not dead) + post dialog with the Eighth
+PROC
+PROC_GLO_Promise_AcceptedPromise((CHARACTERGUID)_Char)
+AND
+NOT DB_Dead(_Char)
+AND
+QRY_GLO_Promise_GetEighthHelperForDialog(_Char)
+AND
+DB_GLO_Promise_EighthInvisibleHelper_InUseForChar(_Helper,_Char)
+THEN
+Proc_StartDialog(0,"CoS_Promise_Accepted",_Helper,_Char);
+
+PROC
+PROC_GLO_Promise_AcceptedPromise((CHARACTERGUID)_Char)
+AND
+DB_Dead(_Char)
+THEN
+DB_GLO_Promise_ResurrectedAfterPromise(_Char);
+CharacterDetachFromGroup(_Char);
+// Prevent them from joining combat immediately after resurrecting, as we have to start a dialog with them
+SetCanJoinCombat(_Char,0);
+CharacterResurrect(_Char);
+
+//REGION Teleport to waypoint if any for the current level
+PROC
+PROC_GLO_Promise_TransportToWaypoint((CHARACTERGUID)_Char)
+AND
+GetRegion(_Char,_Region)
+AND
+DB_GLO_Promise_RespawnPoints(_Region,_RespawnPoint)
+THEN
+TeleportTo(_Char,_RespawnPoint,"GLO_Promise_AtWaypointAfterResurrect",0);
+
+PROC
+PROC_GLO_Promise_TransportToWaypoint((CHARACTERGUID)_Char)
+AND
+GetRegion(_Char,_Region)
+AND
+NOT DB_GLO_Promise_RespawnPoints(_Region,_)
+THEN
+SetStoryEvent(_Char,"GLO_Promise_AtWaypointAfterResurrect");
+//END_REGION //Teleport to waypoint if any for the current level
+
+IF
+CharacterResurrected(_Char)
+AND
+DB_GLO_Promise_ResurrectedAfterPromise(_Char)
+AND
+QRY_GLO_Promise_GetEighthHelperForDialog(_Char)
+THEN
+PROC_GLO_Promise_TransportToWaypoint(_Char);
+
+IF
+StoryEvent((CHARACTERGUID)_Char,"GLO_Promise_AtWaypointAfterResurrect")
+AND
+DB_GLO_Promise_EighthInvisibleHelper_InUseForChar(_Helper,_Char)
+THEN
+NOT DB_GLO_Promise_ResurrectedAfterPromise(_Char); 
+PROC_GLO_Promise_AcceptedPromise_UpdateResurrectionsCounter(_Char);
+// Start after-resurrection-dialog with the Eighth
+Proc_StartDialog(0,"CoS_Promise_Accepted",_Helper,_Char);
+
+// Free eigth helper once finished
+IF
+DialogEnded("CoS_Promise_Accepted",_Inst)
+THEN
+PROC_GLO_Promise_AcceptedDialogFinished(_Inst);
+
+IF
+DialogRequestFailed("CoS_Promise_Accepted",_Inst)
+THEN
+PROC_GLO_Promise_AcceptedDialogFinished(_Inst);
+
+PROC
+PROC_GLO_Promise_AcceptedDialogFinished((INTEGER)_Inst)
+AND
+DB_DialogPlayers(_Inst,_Char,_)
+AND
+DB_GLO_Promise_EighthInvisibleHelper_InUseForChar(_Helper,(CHARACTERGUID)_Char)
+AND
+ObjectGetFlag(_Char,"GLO_Promise_AcceptedFirstTime",1)
+THEN
+SetCanJoinCombat(_Char,1);
+// Reward for accepting the promise! -- Todo: refine
+
+
+PROC
+PROC_GLO_Promise_AcceptedDialogFinished((INTEGER)_Inst)
+AND
+DB_DialogPlayers(_Inst,_Char,_)
+AND
+DB_GLO_Promise_EighthInvisibleHelper_InUseForChar(_Helper,(CHARACTERGUID)_Char)
+THEN
+SetCanJoinCombat(_Char,1);
+NOT DB_GLO_Promise_EighthInvisibleHelper_InUseForChar((ITEMGUID)_Helper,(CHARACTERGUID)_Char);
+ObjectClearFlag(_Char,"GLO_Promise_AcceptedFirstTime",0);
+// Can only be done after resurrecting, otherwise the status doesn't stick
+// (and the chicken won't have the flags of the player, so the
+//  checks in CoS_Promise_Accepted won't work)
+PROC_GLO_Promise_ZombieChickenCheck((CHARACTERGUID)_Char);
+
+//END_REGION //Resurrection (or not, if you were not dead) + post dialog with the Eighth
+
+//REGION Zombie chicken!
+// Character already respawned 2 times at this xp level -> become zombie chicken
+PROC
+PROC_GLO_Promise_AcceptedPromise_MaybeZombieChicken((CHARACTERGUID)_Char,(STRING)_CharResurrectionCounter)
+AND
+DB_GlobalCounter(_CharResurrectionCounter,_Count)
+AND
+DB_GLO_Promise_MaxResurrectionsBeforeZombieChicken(_Max)
+AND
+_Count > _Max
+THEN
+DB_GLO_Promise_ZombieChicken(_Char);
+ApplyStatus(_Char,"ZOMBIE_CHICKEN",-1.0,1);
+ObjectSetFlag(_Char,"GLO_Promise_BecameZombieChicken");
+
+// Character did not yet respawn this xp level -> remove zombie chicken status if it has it
+PROC
+PROC_GLO_Promise_AcceptedPromise_MaybeZombieChicken((CHARACTERGUID)_Char,(STRING)_CharResurrectionCounter)
+AND
+NOT DB_GlobalCounter(_CharResurrectionCounter,_)
+AND
+// Only remove if the player had zombie chicken status, not just any chicken status
+DB_GLO_Promise_ZombieChicken(_Char)
+THEN
+NOT DB_GLO_Promise_ZombieChicken(_Char);
+RemoveStatus(_Char,"ZOMBIE_CHICKEN");
+// Allow combat ADs again
+SetVarInteger(_Char,"CanSpeak",1);
+
+// Check if we should become a (zombie) chicken after resurrecting
+PROC
+PROC_GLO_Promise_ZombieChickenCheck((CHARACTERGUID)_Char)
+AND
+GetUUID(_Char,_CharUUID)
+AND
+StringConcatenate("GLO_Promise_ResurrectedAtCurrentLevel_",_CharUUID,_CharResurrectionCounter)
+THEN
+PROC_GLO_Promise_AcceptedPromise_MaybeZombieChicken(_Char,_CharResurrectionCounter);
+
+// Avoid asserts about chickens not having bones for weapons
+IF
+CharacterStatusAttempt(_Char,"ZOMBIE_CHICKEN",_)
+AND
+DB_GLO_Promise_EquipmentSlot(_Slot)
+AND
+CharacterGetEquippedItem(_Char,_Slot,(ITEMGUID)_Item)
+THEN
+CharacterUnequipItem(_Char,_Item);
+
+// Prevent combat ADs, as the zombie chicken model is not in any speaker groups
+IF
+CharacterStatusAttempt(_Char,"ZOMBIE_CHICKEN",_)
+THEN
+SetVarInteger(_Char,"CanSpeak",0);
+
+// If you kill someone with that status and resurrect them, apply the status again
+IF
+CharacterResurrected(_Char)
+AND
+DB_GLO_Promise_ZombieChicken(_Char)
+THEN
+ApplyStatus(_Char,"ZOMBIE_CHICKEN",-1.0,1);
+// Prevent combat ADs (probably still disabled, but can't hurt)
+SetVarInteger(_Char,"CanSpeak",0);
+
+//REGION Resurrection counter
+PROC
+PROC_GLO_Promise_AcceptedPromise_UpdateResurrectionsCounter((CHARACTERGUID)_Char)
+AND
+GetUUID(_Char,_CharUUID)
+AND
+StringConcatenate("GLO_Promise_ResurrectedAtCurrentLevel_",_CharUUID,_CharResurrectionCounter)
+THEN
+PROC_GLO_Promise_AcceptedPromise_CountResurrections((CHARACTERGUID)_Char,(STRING)_CharResurrectionCounter);
+
+PROC
+PROC_GLO_Promise_AcceptedPromise_CountResurrections((CHARACTERGUID)_Char,(STRING)_CharResurrectionCounter)
+AND
+NOT DB_GlobalCounter(_CharResurrectionCounter,_)
+THEN
+ProcDeclareCounter(_CharResurrectionCounter);
+
+PROC
+PROC_GLO_Promise_AcceptedPromise_CountResurrections((CHARACTERGUID)_Char,(STRING)_CharResurrectionCounter)
+AND
+DB_GlobalCounter(_CharResurrectionCounter,_OldCount)
+AND
+DB_GLO_Promise_MaxResurrectionsBeforeZombieChicken(_Max)
+AND
+_OldCount <= _Max
+THEN
+ProcIncreaseCounter(_CharResurrectionCounter);
+PROC_GLO_Promise_SetResurrectionCountFlag(_Char,_CharResurrectionCounter,_OldCount);
+
+PROC
+PROC_GLO_Promise_SetResurrectionCountFlag((CHARACTERGUID)_Char,(STRING)_CharResurrectionCounter,(INTEGER)_OldCount)
+AND
+DB_GLO_Promise_MaxResurrectionsBeforeZombieChicken(_Max)
+AND
+_OldCount <= _Max
+AND
+DB_GlobalCounter(_CharResurrectionCounter,_NewCount)
+AND
+IntegertoString(_OldCount,_OldString)
+AND
+IntegertoString(_NewCount,_NewString)
+AND
+StringConcatenate("GLO_Promise_TimesResurrectedAtThisLevel_",_OldString,_OldFlag)
+AND
+StringConcatenate("GLO_Promise_TimesResurrectedAtThisLevel_",_NewString,_NewFlag)
+THEN
+ObjectClearFlag(_Char,_OldFlag,0);
+ObjectSetFlag(_Char,_NewFlag,0);
+
+// Reset when levelling up
+IF
+CharacterLeveledUp(_Char)
+AND
+DB_IsPlayer(_Char)
+AND
+GetUUID(_Char,_CharUUID)
+AND
+StringConcatenate("GLO_Promise_ResurrectedAtCurrentLevel_",_CharUUID,_CharResurrectionCounter)
+AND
+DB_GlobalCounter(_CharResurrectionCounter,_Count)
+AND
+IntegertoString(_Count,_CountString)
+AND
+StringConcatenate("GLO_Promise_TimesResurrectedAtThisLevel_",_CountString,_CountFlag)
+THEN
+ProcRemoveCounter(_CharResurrectionCounter);
+ObjectClearFlag(_Char,_CountFlag,0);
+//END_REGION //Resurrection counter
+
+//END_REGION // Zombie chicken
+
+//END_REGION //Accepting the promise
+
+//REGION Define eligible characters for GLO_DeadOrder goal
+QRY
+QRY_GLO_Promise_ResurrectedAsChickenAtTheCurrentLevel((CHARACTERGUID)_Char)
+AND
+DB_GLO_Promise_ZombieChicken(_Char)
+AND
+GetUUID(_Char,_CharUUID)
+AND
+StringConcatenate("GLO_Promise_ResurrectedAtCurrentLevel_",_CharUUID,_CharResurrectionCounter)
+AND
+DB_GlobalCounter(_CharResurrectionCounter,_Counter)
+AND
+DB_GLO_Promise_MaxResurrectionsBeforeZombieChicken(_Max)
+AND
+_Counter > _Max
+THEN
+DB_NOOP(1);
+
+QRY
+QRY_GLO_DeadOrder_Eligible((CHARACTERGUID)_Char,"GLO_ThePromise")
+AND
+DB_GLO_Promise_HasBeenAccepted(_Char)
+AND
+NOT QRY_GLO_Promise_ResurrectedAsChickenAtTheCurrentLevel(_Char)
+THEN
+DB_NOOP(1);
+
+// No more Promise-based resurrections in the end game
+IF
+RegionStarted("ARX_Endgame")
+THEN
+PROC_GLO_DeadOrder_ResetEligibleDeadOrderDB("GLO_ThePromise");
+GoalCompleted;
+
+//END_REGION // Define eligible characters for GLO_DeadOrder goal
+
+
+//REGION Flag for Promise effects
+PROC
+Proc_OneTimeEventFlag(_Character,"GLO_Promise_Effect_Prepare",_)
+THEN
+Proc_GLO_Promise_Effect_Prepare(_Character);
+
+PROC
+Proc_OneTimeEventFlag(_Character,"GLO_Promise_Effect_Accept",_)
+THEN
+Proc_GLO_Promise_Effect_Accept(_Character);
+
+PROC
+Proc_OneTimeEventFlag(_Character,"GLO_Promise_Effect_Deny",_)
+THEN
+Proc_GLO_Promise_Effect_Stop(_Character);
+
+//END_REGION
+
+//REGION Effects of accepting promise
+PROC
+Proc_GLO_Promise_Effect_Prepare((GUIDSTRING)_Character)
+AND
+DB_CurrentLevel(_CurLevel)
+THEN
+PROC_LoopEffect("RS3_FX_GP_ScriptedEvent_Resurrection_01",_Character,"FX_GLO_Promise_Prepare",_CurLevel,"");
+
+PROC
+Proc_GLO_Promise_Effect_Accept((GUIDSTRING)_Character)
+AND
+DB_CurrentLevel(_CurLevel)
+THEN
+PlayAnimation(_Character,"skill_cast_shout_01_cast");
+Proc_GLO_Promise_Effect_Stop(_Character);
+
+PROC
+Proc_GLO_Promise_Effect_Stop((GUIDSTRING)_Character)
+THEN
+PROC_StopLoopEffect(_Character,"FX_GLO_Promise_Prepare");
+
+//END_REGION
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "GLO_ThePromise_Activation"

@@ -1,0 +1,28 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_ARX_HorrorSleep_Arena_RedPrince_bf40bd4b-4a6e-4e75-adcf-e2caaeba5178);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_ARX_HorrorSleep_Arena_Windego_fcfcb4b0-b3fd-48e9-8616-9cdbe89df185);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_ARX_HorrorSleep_Arena_Alexander_fc59c20c-cedd-45f3-8ac3-bbd5365977da);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_ARX_HorrorSleep_Arena_Malady_9518c754-1654-4e30-bd32-83f04786f4dd);
+
+
+KBSECTION
+
+
+PROC
+ProcBlockMoveOfItem((CHARACTERGUID)_Char,(ITEMGUID)_Item)
+AND
+DB_ARX_HorrorSleep_Arena_ResurrectMirrors(_Item)
+THEN
+DB_CustomMoveItemResponse(_Char, _Item, 0);
+
+
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "ARX"

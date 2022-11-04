@@ -1,0 +1,45 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Because sneaking drops when attacking/using a skill, add a tempstat for the damage bonus when sneaking drops.
+
+PROC PROC_AMER_Spells_SkillPreCast(_Char, _, _, _, _)
+AND
+CharacterHasTalent(_Char, "SurpriseAttack", 1)
+AND
+DB_AMER_Spells_CastWhileSneaking(_Char, _, 1)
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "RogueLore", 40.0, 3.0, 2000, "");
+
+/*
+PROC PROC_AMER_GEN_FilteredStatus_Removed(_Char, _Source, "SNEAKING")
+AND
+DB_AMER_Talents(_Char, "SurpriseAttack")
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "RogueLore", 40.0, 3.0, 2000, "");
+*/
+
+
+PROC PROC_AMER_Talents_Toggle((CHARACTERGUID)_Char, "SurpriseAttack", (REAL)_Toggle)
+AND
+RealProduct(_Toggle, 3.0, _Scaling)
+AND
+RealProduct(_Toggle, 40.0, _Flat)
+THEN
+PROC_AMER_StatusMod_Add_FlexStat(_Char, "SNEAKING", "Stat", "DAMAGEBOOST", _Flat, "SurpriseAttack", 1);
+PROC_AMER_ScalingStat_StatusMod_FlexStat_Add(_Char, "Ability", "RogueLore", "SNEAKING", "Stat", "DAMAGEBOOST", "SurpriseAttack_Scaling", 1, _Scaling);
+
+
+PROC PROC_AMER_Talents_Toggle((CHARACTERGUID)_Char, "SurpriseAttack", (REAL)_Toggle)
+AND
+RealProduct(_Toggle, 5.0, _Sneaking)
+THEN
+PROC_AMER_StatusMod_Add_FlexStat(_Char, "SNEAKING", "Stat", "Sneaking", _Sneaking, "Derpy_Guerilla", 1);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Talents"

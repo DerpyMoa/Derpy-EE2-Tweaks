@@ -1,0 +1,13 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_ARX_Sewers_Q_52f20922-7b22-4d47-90f7-83172f21fe3b);
+
+KBSECTION
+
+EXITSECTION
+
+
+ENDEXITSECTION
+ParentTargetEdge "ARX"

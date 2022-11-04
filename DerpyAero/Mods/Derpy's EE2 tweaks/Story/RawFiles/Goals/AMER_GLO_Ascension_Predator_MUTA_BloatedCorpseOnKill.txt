@@ -1,0 +1,46 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Predator reactions gain +20% Critical Chance, and twice per round, emulate the effects of Corpse Explosion that only harms enemies, and once per round create a corpse.
+
+PROC PROC_AMER_KeywordStat_Predator_PreFire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Predator_MUTA_BloatedCorpseOnKill", _)
+THEN
+PROC_AMER_TempStat_FlexStat_Add(_Char, "Stat", "CRITICALCHANCE", 20.0, 2500, "Attack");
+
+
+PROC PROC_AMER_KeywordStat_Predator_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Predator_MUTA_BloatedCorpseOnKill", _)
+AND
+CharacterIsEnemy(_Target, _Char, 1)
+THEN
+PROC_Derpy_Ascension_Predator_MUTA_BloatedCorpseOnKill(_Char, _X, _Y, _Z);
+
+
+PROC PROC_Derpy_Ascension_Predator_MUTA_BloatedCorpseOnKill((CHARACTERGUID)_Char, (REAL)_X, (REAL)_Y, (REAL)_Z)
+AND
+QRY_AMER_GEN_NPerRound(_Char, "Ascension_Predator_MUTA_BloatedCorpseOnKill_Explosion", 2)
+THEN
+PROC_AMER_GEN_NPerRound_Add(_Char, "Ascension_Predator_MUTA_BloatedCorpseOnKill_Explosion", 1);
+PlayEffectAtPosition("RS3_FX_Skills_Fire_Impact_CorpseExplosion_01", _X, _Y, _Z);
+PROC_AMER_GEN_CharacterCauseExplosionAtPos(_Char, _X, _Y, _Z, "Projectile_CorpseExplosion_Explosion_Death");
+
+
+PROC PROC_Derpy_Ascension_Predator_MUTA_BloatedCorpseOnKill((CHARACTERGUID)_Char, (REAL)_X, (REAL)_Y, (REAL)_Z)
+AND
+QRY_AMER_GEN_NPerRound(_Char, "Ascension_Predator_MUTA_BloatedCorpseOnKill_Corpse", 1)
+AND
+CombatGetIDForCharacter(_Char, _Combat)
+THEN
+PROC_AMER_GEN_NPerRound_Add(_Char, "Ascension_Predator_MUTA_BloatedCorpseOnKill_Corpse", 1);
+PROC_AMER_GEN_CreateCorpse(_X, _Y, _Z, _Combat);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

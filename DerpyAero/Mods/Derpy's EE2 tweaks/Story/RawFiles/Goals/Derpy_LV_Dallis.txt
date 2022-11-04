@@ -1,0 +1,108 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_Derpy_ScaryBallistas(ITEMGUID_BLD_Humans_Warmachine_Turret_E_Turret_Dynamic_001_4ea3b3f1-c7d3-46a1-93be-f9f7e249469f);
+DB_Derpy_ScaryBallistas(ITEMGUID_BLD_Humans_Warmachine_Turret_E_Turret_Dynamic_002_c567feb1-a6c5-4bcc-8e7d-6999499cbbe3);
+DB_Derpy_ScaryBallistas(ITEMGUID_BLD_Humans_Warmachine_Turret_E_Turret_Dynamic_003_75647729-1cbc-454c-9c90-e52f696d1600);
+DB_Derpy_ScaryBallistas(ITEMGUID_BLD_Humans_Warmachine_Turret_E_Turret_Dynamic_000_de7c19cc-b7a7-4830-9b41-f48b14787610);
+DB_Derpy_ScaryBallistas(ITEMGUID_BLD_Humans_Warmachine_Turret_E_Turret_Dynamic_006_716fa7b9-6b92-45e3-9329-1c26ca45755e);
+DB_Derpy_ScaryBallistas(ITEMGUID_BLD_Humans_Warmachine_Turret_E_Turret_Dynamic_004_293f003c-bb9a-4f79-ab45-8f1fe1be2e6a);
+
+KBSECTION
+
+IF
+MovieFinished("CS_LVtoRC_Dallis")
+THEN
+PROC_Derpy_DallisShipFightSetup();
+SetTag(CHARACTERGUID_S_GLO_Dallis_69b951dc-55a4-44b8-a2d5-5efedbd7d572,"AI_PREFERRED_TARGET");
+CharacterAddSkill(CHARACTERGUID_S_GLO_Dallis_69b951dc-55a4-44b8-a2d5-5efedbd7d572, "Jump_EnemyPhoenixDive");
+CharacterAddSkill(CHARACTERGUID_S_FTJ_SW_Warrior_SeekerCaptain_1329f018-23e4-4717-9bc8-074b28d04c54, "Target_AMER_Taunt");
+CharacterAddSkill(CHARACTERGUID_S_FTJ_SW_Warrior_SeekerCaptain_1329f018-23e4-4717-9bc8-074b28d04c54, "Target_VacuumTouch");
+CharacterAddSkill(CHARACTERGUID_S_FTJ_SW_Warrior_SeekerCaptain_1329f018-23e4-4717-9bc8-074b28d04c54, "Target_CorrosiveTouch");
+CharacterAddSkill(CHARACTERGUID_S_FTJ_SW_Warrior_SeekerCaptain_1329f018-23e4-4717-9bc8-074b28d04c54, "Projectile_ChainHeal");
+CharacterAddSkill(CHARACTERGUID_S_FTJ_SW_Warrior_SeekerCaptain_1329f018-23e4-4717-9bc8-074b28d04c54, "Target_EnemyRestoration");
+CharacterAddSkill(CHARACTERGUID_S_FTJ_SW_Warrior_SeekerCaptain_1329f018-23e4-4717-9bc8-074b28d04c54, "Target_EnemyFortify");
+CharacterAddSkill(CHARACTERGUID_S_FTJ_SW_Warrior_SeekerCaptain_1329f018-23e4-4717-9bc8-074b28d04c54, "Target_EnemyFrostyShell");
+
+
+PROC PROC_Derpy_DallisShipFightSetup()
+AND
+CharacterHasSkill(CHARACTERGUID_S_GLO_Dallis_69b951dc-55a4-44b8-a2d5-5efedbd7d572, "Shout_Quest_DallisDragonForm", 1)
+THEN
+CharacterRemoveSkill(CHARACTERGUID_S_GLO_Dallis_69b951dc-55a4-44b8-a2d5-5efedbd7d572, "Shout_Quest_DallisDragonForm");
+
+
+PROC PROC_Derpy_DallisShipFightSetup()
+AND
+DB_IsPlayer(_Player)
+THEN
+ApplyStatus(_Player, "HASTED", 24.0, 0, NULL_00000000-0000-0000-0000-000000000000);
+
+
+PROC ProcBlockUseOfItem((CHARACTERGUID)_Char, _Turret)
+AND
+DB_Derpy_ScaryBallistas(_Turret)
+THEN
+DB_CustomUseItemResponse(_Char, _Turret, 0);
+OpenMessageBox(_Char, "Damaged and unable to be used.");
+
+
+//=======================================================================================================================
+
+//Cleanup
+
+IF
+StoryEvent(CHARACTERGUID_S_GLO_River_f4931ebe-10b0-43c4-9182-640cf052717e,"LV_CastHoESpell")
+THEN
+PROC_Derpy_DallisShipCleanup();
+
+
+PROC
+Proc_LV_FinishAssaultEarly()
+THEN
+PROC_Derpy_DallisShipCleanup();
+
+
+IF
+CharacterReceivedDamage(CHARACTERGUID_S_GLO_Dallis_69b951dc-55a4-44b8-a2d5-5efedbd7d572, _, _)
+AND
+CharacterGetHitpointsPercentage(CHARACTERGUID_S_GLO_Dallis_69b951dc-55a4-44b8-a2d5-5efedbd7d572,_Per)
+AND
+_Per < 25.0
+THEN
+PROC_Derpy_DallisShipCleanup();
+
+
+IF
+CharacterReceivedDamage(CHARACTERGUID_S_LV_CloakedFigure_358ba541-0710-43be-8263-87afe1a8d9b5, _, _)
+AND
+CharacterGetHitpointsPercentage(CHARACTERGUID_S_LV_CloakedFigure_358ba541-0710-43be-8263-87afe1a8d9b5,_Per)
+AND
+_Per < 25.0
+THEN
+PROC_Derpy_DallisShipCleanup();
+
+
+PROC PROC_Derpy_DallisShipCleanup()
+THEN
+ClearTag(CHARACTERGUID_S_GLO_Dallis_69b951dc-55a4-44b8-a2d5-5efedbd7d572,"AI_PREFERRED_TARGET");
+CharacterRemoveSkill(CHARACTERGUID_S_GLO_Dallis_69b951dc-55a4-44b8-a2d5-5efedbd7d572, "Jump_EnemyPhoenixDive");
+CharacterRemoveSkill(CHARACTERGUID_S_FTJ_SW_Warrior_SeekerCaptain_1329f018-23e4-4717-9bc8-074b28d04c54, "Target_AMER_Taunt");
+CharacterRemoveSkill(CHARACTERGUID_S_FTJ_SW_Warrior_SeekerCaptain_1329f018-23e4-4717-9bc8-074b28d04c54, "Target_VacuumTouch");
+CharacterRemoveSkill(CHARACTERGUID_S_FTJ_SW_Warrior_SeekerCaptain_1329f018-23e4-4717-9bc8-074b28d04c54, "Target_CorrosiveTouch");
+CharacterRemoveSkill(CHARACTERGUID_S_FTJ_SW_Warrior_SeekerCaptain_1329f018-23e4-4717-9bc8-074b28d04c54, "Projectile_ChainHeal");
+CharacterRemoveSkill(CHARACTERGUID_S_FTJ_SW_Warrior_SeekerCaptain_1329f018-23e4-4717-9bc8-074b28d04c54, "Target_EnemyRestoration");
+CharacterRemoveSkill(CHARACTERGUID_S_FTJ_SW_Warrior_SeekerCaptain_1329f018-23e4-4717-9bc8-074b28d04c54, "Target_EnemyFortify");
+CharacterRemoveSkill(CHARACTERGUID_S_FTJ_SW_Warrior_SeekerCaptain_1329f018-23e4-4717-9bc8-074b28d04c54, "Target_EnemyFrostyShell");
+
+
+PROC
+ProcRegionEnded("LV_HoE_Main")
+THEN
+GoalCompleted;
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "LadyVengeance"

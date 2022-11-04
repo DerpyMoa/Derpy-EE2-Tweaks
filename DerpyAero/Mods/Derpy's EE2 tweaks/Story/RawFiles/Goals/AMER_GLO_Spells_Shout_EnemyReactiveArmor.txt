@@ -1,0 +1,54 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_EnemyReactiveArmor", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+ProcObjectTimer(_Char, "ReactiveArmorPhysSI", 100);
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "ReactiveArmorPhysSI")
+THEN
+PROC_AMER_GEN_ScaledHeal_Percentage(_Char, 35.0, "Armor", 4.0, "Ability", "EarthSpecialist", _Char);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_EnemyReactiveArmor", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, 20.0, 2.0, 0.0, "Ability", "EarthSpecialist")
+AND
+DB_AMER_GEN_OUTPUT_Real(_Scaling)
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "AMER_REACTIVEARMOR_INFUS3", "VolatileArmor_Physical", "300", "Physical", "AMER_RS3_FX_VolatileArmor", _Scaling, "ReactiveArmor_Infus", 0, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "AMER_REACTIVEARMOR_INFUS3", "VolatileArmor_Magic", "300", "Earth", "", _Scaling, "ReactiveArmor_Infus", 0);
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_EnemyReactiveArmor", 2)
+THEN
+ApplyStatus(_Char, "AMER_REACTIVEARMOR_INFUS3", 6.0, 0, _Char);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_EnemyReactiveArmor", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+ProcObjectTimer(_Char, "ReactiveArmorMagicSI", 100);
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "ReactiveArmorMagicSI")
+THEN
+PROC_AMER_GEN_ScaledHeal_Percentage(_Char, 35.0, "MagicArmor", 4.0, "Ability", "EarthSpecialist", _Char);
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_EnemyReactiveArmor", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+ApplyStatus(_Char, "AMER_REACTIVEARMOR_INFUS3", 24.0, 0, _Char);
+PROC_AMER_GEN_CharacterCauseExplosion(_Char, _Char, "Projectile_Derpy_SCRIPT_EnemyReactiveArmor_Infusion_2");
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Geomancer"

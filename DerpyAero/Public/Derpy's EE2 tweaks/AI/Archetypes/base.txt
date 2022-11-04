@@ -1,0 +1,15 @@
+//////////////////////////////////////////////////////////////////////////
+
+
+// Used for vitality/damage/armor boosts
+MULTIPLIER_ARMORBOOST							0.50	//From 0.5 to 0.1 on 8-31-2020. Hopefully helps AI in using Fortify/Magic Shell a bit better. //Derpy on 25/11/2021: from 0.1 to 0.5 since we have AI logic scripts now
+
+MULTIPLIER_DAMAGE_ALLY_NEG						5.0 // From 2.0 to 1.5 on 9-4-2019 by Larian	//From 1.5 to 3.0 on 10-1-2019. From 3.0 to 5.0 on 8/8/2022 by Derpy to prevent AI from attacking allies to heal.
+
+// End Position MULTIPLIERS
+MULTIPLIER_ENDPOS_FLANKED						0.00		//Derpy on 25/11/2021: 0.05 to 0.00
+MULTIPLIER_ENDPOS_HEIGHT_DIFFERENCE				0.00		//Derpy on 25/11/2021: 0.02 to 0.00	
+
+
+// If != 0 the character will try to save/optimize action points for the next turn, if his chosen action is not executable this turn. 
+ENABLE_SAVING_ACTION_POINTS						0		//Derpy on 25/11/2021: from 1 to 0 since AI can often skip turns thinking it's beneficial, when it really isn't.

@@ -1,0 +1,51 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_Fireblood", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat_Scaling(_Char, "FIREBLOOD", "ResBreach_Amplifier", "", "", "", "Fireblood_Infus", 0, "Ability", "FireSpecialist", -20.0, -1.0, 2000, "SkillCast");
+
+
+//=====================================================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_Fireblood", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat_Scaling(_Char, "FIREBLOOD", "ResBreach_Amplifier", "", "", "", "Fireblood_Infus", 0, "Ability", "FireSpecialist", 0.0, -2.0, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddExtendedStat_Scaling(_Char, "FIREBLOOD", "InstantEffect", "ApplyHarried", "", "", "Fireblood_Infus", 0, "Ability", "FireSpecialist", 2.0, 0.2);
+
+
+//=====================================================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_Fireblood", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "Status_AddDuration", "FIREBLOOD", "", "", 2.0, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddExtendedStat_Scaling(_Char, "FIREBLOOD", "ResBreach_Amplifier", "", "", "", "Fireblood_Infus", 0, "Ability", "FireSpecialist", 0.0, -3.0);
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_Fireblood", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_GEN_IterateCharsAroundPoint(_X, _Y, _Z, 4.0, _Char, 10, "AMER_SourceInfusion_Fireblood");	//Only living enemies.
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "AMER_SourceInfusion_Fireblood", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+AND
+NOT CharacterGetMagicArmorPercentage(_Char, 0.0)	//We don't want to double-apply because we would get multiple harried applications if we did. So only force-apply to those who would have resisted the effect.
+THEN
+ApplyStatus(_Char, "FIREBLOOD", 18.0, 1, _SourceChar);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Pyrokinetic"

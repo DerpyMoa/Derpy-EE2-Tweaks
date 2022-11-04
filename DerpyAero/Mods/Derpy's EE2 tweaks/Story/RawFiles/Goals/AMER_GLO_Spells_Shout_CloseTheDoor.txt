@@ -1,0 +1,53 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_CloseTheDoor", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "Status_AddDuration", "ETERNITY_DOOR", "", "", 1.0, 2000, "SkillCast");
+
+
+//=========================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_CloseTheDoor", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 13.0, _Char, 12, "Derpy_SourceInfusion_CloseTheDoor_2");	//Living allies.
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Derpy_SourceInfusion_CloseTheDoor_2", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+AND
+CharacterIsSummon(_Char, 1)	//Only summons.
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Soul_Cast_Soul_Impact_Root_01", "root");
+ApplyStatus(_Char, "DEATH_WISH", 18.0, 0, _SourceChar);
+
+
+//=========================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_CloseTheDoor", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 13.0, _Char, 12, "AMER_SourceInfusion_CloseTheDoor_3");	//Living allies.
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "AMER_SourceInfusion_CloseTheDoor_3", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+AND
+CharacterIsSummon(_Char, 1)	//Only summons.
+THEN
+PlayEffect(_Char, "RS3_FX_GP_Impacts_Air_LightningBolt_Vertical_01", "root");
+ApplyStatus(_Char, "SUPERCHARGE", 24.0, 0, _SourceChar);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Summoning"

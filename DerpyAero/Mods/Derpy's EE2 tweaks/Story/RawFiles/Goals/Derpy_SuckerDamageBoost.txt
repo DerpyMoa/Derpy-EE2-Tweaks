@@ -1,0 +1,20 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillPreCast(_Char, _Skill, _, _, _)
+AND
+_Skill != "Target_SingleHandedAttack"
+AND
+HasActiveStatus(_Char, "Derpy_SuckerPunchBoost", 1)
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "SingleHanded", 50.0, 4.0, 2000, "SkillCast");
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "FollowUpRemoval", "", "", "Derpy_FollowUpRemoval", 1.0, 2000, "SkillCast");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

@@ -1,0 +1,48 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, "Shout_SiphonPoison", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "SIPHON_POISON", "SiphonPoison_SI0", "", "", "", 1.0, "Derpy_SiphonPoison_SI0", 0, 2000, "SkillCast");
+
+
+//===========================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_SiphonPoison", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "Status_AddDuration", "SIPHON_POISON", "", "", 1.0, 2000, "SkillCast");
+
+
+//===========================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Shout_SiphonPoison", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Earth_Cast_Aoe_Voodoo_Root_01_Poison_Texkey", "");
+CreateSurfaceAtPosition(_X, _Y, _Z, "SurfacePoison", 8.0, 12.0);
+CreateSurfaceAtPosition(_X, _Y, _Z, "SurfacePoisonCloud", 8.0, 12.0);
+
+
+//===========================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_SiphonPoison", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "Status_AddDuration", "SIPHON_POISON", "", "", 2.0, 2000, "SkillCast");
+PROC_AMER_Source_Infusion_AddRefund(_Char, 2, 1);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Geomancer"

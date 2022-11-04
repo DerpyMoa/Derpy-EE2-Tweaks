@@ -1,0 +1,30 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, "Shout_Derpy_IncarnateEssenceTransfer", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+AND
+QRY_AMER_GEN_GetOwner(_Char)
+AND
+DB_AMER_GEN_OUTPUT_Char(_Owner)
+AND
+QRY_AMER_CharacterGetSourcePoints(_Owner)
+AND
+DB_AMER_GEN_OUTPUT_Integer(_SourcePoints)
+AND
+_SourcePoints >= 1
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Soul_Exchange_Aftercast_Root_01");
+PlayBeamEffect(_Char, _Owner, "RS3_FX_Skills_Soul_Cast_Soul_Touch_Hand_01", "Dummy_BodyFX", "Dummy_BodyFX");
+PlayEffect(_Char, "RS3_FX_GP_ScriptedEvent_Replenish_SourcePoint_01");
+PROC_AMER_CharacterAddSourcePoints(_Owner, -1);
+PROC_AMER_CharacterAddSourcePoints(_Char, 1);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Special"

@@ -1,0 +1,66 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+//Instant death mechanic reworked with scripted variant.
+PROC PROC_AMER_Spells_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Target_Fatality", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+//AND
+//NOT DB_AMER_Status_Assassinate(_Target, _Char, _)
+THEN
+PROC_AMER_Status_Assassinate_Init(_Char);
+//PROC_AMER_StatusMod_ExtendedStat_TryApplyModForStatus(_Target, _Char, "AMER_ASSASSINATE", "StatusRealtimeRemoval", "", "", "", 1.0, "Assassinate");
+PROC_AMER_Status_Assassinate_TryKill_Delayed(_Target, _Char, 1, 0, 1350);  //Custom kill delay because we're manually applying AMER_ASSASSINATE. We want the status to last long enough for our SI3 statusmods to persist throughout the skill.
+ApplyStatus(_Target, "AMER_ASSASSINATE", 6.0, 0, _Char);    //Auto handles insta kill logic after PROC_AMER_Status_Assassinate_Init is called.
+//ProcObjectTimerCheckLaunch(_Char, "AMER_StatusRealtimeRemoval", 1200);
+
+/*
+PROC PROC_AMER_Spells_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_Fatality", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_Status_Assassinate_TryKill_Delayed(_Target, _Char, 1, 500);
+*/
+
+
+PROC PROC_AMER_Spells_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_Fatality", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+AND
+DB_AMER_Spells_CastWhileSneaking(_Char, "Target_Fatality", 1)
+THEN
+ApplyStatus(_Target, "AMER_ATAXIA_APPLY", 12.0, 0, _Char);
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_Fatality", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "ACCURACYBOOST", "Ability", "RogueLore", 5.0, 1.0, 2000, "SkillCast");
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "RogueLore", 25.0, 4.0);
+//PROC_AMER_TempStat_ExtendedStat_Add_StatScaling(_Char, "AttributeIntelligenceEffect_Multiplier", "", "", "", "Ability", "RogueLore", 0.15, 0.03);
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_Fatality", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "RogueLore", 40.0, 8.0);
+//PROC_AMER_TempStat_ExtendedStat_Add_StatScaling(_Char, "AttributeIntelligenceEffect_Multiplier", "", "", "", "Ability", "RogueLore", 0.30, 0.06);
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_Fatality", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+//PROC_AMER_TempStat_ExtendedStat_Add(_Char, "ProcOnDeath", "AMER_Source_Infusion_MortalBlowDeath", "", "", 1.0);
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "AMER_ASSASSINATE", "ProcOnDeath", "AMER_Source_Infusion_MortalBlowDeath", "", "", 1.0, "MortalBlow_Infus", 0); //Happens before precast_perTarget. Must be done as a statusmod because ProcOnDeath needs the source char, which comes from this being a statusmod.
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_Fatality", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_GEN_Shoot_Delayed("RemoteImpact", _Char, _Target, "Projectile_AMER_SCRIPT_Fatality", 100);
+PROC_AMER_GEN_DoFreeSneak(_Char);
+PROC_AMER_GEN_DoFreeSneak_Delayed(_Char, 200);	//Repeated action breaks the first free sneak, we want the user to end this spell sneaking.
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Scoundrel"

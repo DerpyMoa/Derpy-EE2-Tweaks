@@ -1,0 +1,18 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+ObjectLeftCombat((CHARACTERGUID)_Char, _)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Char, "Apotheosis_CombatEnd", _, _, _, _)
+THEN
+RemoveStatus(_Char, "Derpy_Apotheosis");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GEN_Stats_ExtendedStats"

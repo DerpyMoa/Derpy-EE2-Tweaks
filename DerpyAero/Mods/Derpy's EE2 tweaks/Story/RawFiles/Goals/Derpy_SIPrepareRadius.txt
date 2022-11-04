@@ -1,0 +1,71 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+NRD_OnActionStateEnter((CHARACTERGUID)_Char, "PrepareSkill")
+AND
+NRD_ActionStateGetString(_Char, "SkillId", _SkillBeingPrepared)
+AND
+DB_Derpy_SIPrepareRadius((STRING)_SkillBeingPrepared, (INTEGER)_SI, (INTEGER)_Radius)
+AND
+DB_AMER_Source_Infusion_Current(_Char, _SI)
+AND
+IntegertoString(_Radius, _RadiusStr)
+AND
+StringConcatenate("Target", _RadiusStr, _FXPrefix)
+AND
+StringConcatenate(_FXPrefix, "m", _FX)
+AND
+DB_CurrentLevel(_Level)
+THEN
+PROC_Derpy_SIPrepareRadius_Stop(_Char);
+DB_Derpy_SIPrepareRadius_Stored(_Char, _SkillBeingPrepared, _SI);
+PROC_LoopEffect(_FX, _Char, "SIPrepareRadius", _Level, "");
+ProcObjectTimer(_Char, "SIPrepareRadius_KeepAlive", 100);
+
+
+PROC PROC_Derpy_SIPrepareRadius_Stop((CHARACTERGUID)_Char)
+AND
+DB_Derpy_SIPrepareRadius_Stored(_Char, _SkillBeingPrepared, _SI)
+THEN
+NOT DB_Derpy_SIPrepareRadius_Stored(_Char, _SkillBeingPrepared, _SI);
+
+PROC PROC_Derpy_SIPrepareRadius_Stop((CHARACTERGUID)_Char)
+THEN
+PROC_StopLoopEffect(_Char, "SIPrepareRadius");
+ProcObjectTimerCancel(_Char, "SIPrepareRadius_KeepAlive");
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "SIPrepareRadius_KeepAlive")
+AND
+NOT QRY_Derpy_SIPrepareRadius_Stop(_Char)
+THEN
+ProcObjectTimer(_Char, "SIPrepareRadius_KeepAlive", 100);
+
+QRY QRY_Derpy_SIPrepareRadius_Stop((CHARACTERGUID)_Char)
+AND
+NOT QRY_Derpy_SI_PrepareRadius_StateValid(_Char)
+THEN
+PROC_Derpy_SIPrepareRadius_Stop(_Char);
+
+
+QRY QRY_Derpy_SI_PrepareRadius_StateValid((CHARACTERGUID)_Char)
+AND
+NRD_CharacterGetCurrentAction(_Char, "PrepareSkill")
+AND
+NRD_ActionStateGetString(_Char, "SkillId", _SkillBeingPrepared)
+AND
+DB_Derpy_SIPrepareRadius_Stored(_Char, _SkillBeingPrepared, _SI)
+AND
+DB_AMER_Source_Infusion_Current(_Char, _SI)
+THEN
+DB_NOOP(1);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

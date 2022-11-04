@@ -1,0 +1,33 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Apply Wither when applying Subjugated or Terrified to an enemy.
+
+PROC PROC_AMER_Status_StatusFamily_Applied((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, (STRING)_Status, "Enthralled", (INTEGER)_Tier)
+AND
+DB_AMER_Ascension_SpecialLogic(_Source, "Ascension_Wither_ACT_SubjAndTerrified", _)
+AND
+QRY_AMER_GEN_OncePerRound_PerChar(_Source, "Ascension_Wither_ACT_Subj", _Char)
+AND
+CharacterIsEnemy(_Char, _Source, 1)
+THEN
+DB_AMER_GEN_OncePerRound_PerChar(_Source, "Ascension_Wither_ACT_Subj", _Char);
+ApplyStatus(_Char, "AMER_WITHER", 6.0, 0, _Source);
+
+PROC PROC_AMER_Status_StatusFamily_Applied((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, (STRING)_Status, "Terrified", (INTEGER)_Tier)
+AND
+DB_AMER_Ascension_SpecialLogic(_Source, "Ascension_Wither_ACT_SubjAndTerrified", _)
+AND
+QRY_AMER_GEN_OncePerRound_PerChar(_Source, "Ascension_Wither_ACT_Terrified", _Char)
+AND
+CharacterIsEnemy(_Char, _Source, 1)
+THEN
+DB_AMER_GEN_OncePerRound_PerChar(_Source, "Ascension_Wither_ACT_Terrified", _Char);
+ApplyStatus(_Char, "AMER_WITHER", 6.0, 0, _Source);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

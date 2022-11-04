@@ -1,0 +1,5 @@
+Ext.RegisterListener("ModuleLoading", function()
+    Ext.StatAddCustomDescription("Target_SourceVampirism", "SkillProperties", "Set Drain.")
+    Ext.StatAddCustomDescription("Projectile_Multishot", "SkillProperties", "Damage is based on your weapon.")
+    Ext.StatAddCustomDescription("Projectile_DimensionalBolt", "SkillProperties", "Set Dazzled III: 2 turn(s).<br>Base damage increases with your level.")
+end)

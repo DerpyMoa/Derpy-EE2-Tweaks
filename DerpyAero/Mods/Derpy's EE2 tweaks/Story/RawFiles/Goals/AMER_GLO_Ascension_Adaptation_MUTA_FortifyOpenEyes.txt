@@ -1,0 +1,52 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Fortify and Peace of Mind consume 3 stacks of Adaptation to extend the targets Source Generation duration by 1 turn and apply Hasted for 2 turns.
+
+PROC PROC_AMER_Spells_SkillCast_PerTarget(_Char, "Target_FrostyShell", (CHARACTERGUID)_Target, _, _, _, _, _, _)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Adaptation_MUTA_FortifyOpenEyes", _)
+THEN
+PROC_AMER_Ascension_Adaptation_MUTA_FortifyOpenEyes(_Char, _Target);
+
+
+PROC PROC_AMER_Spells_SkillCast_PerTarget(_Char, "Target_Fortify", (CHARACTERGUID)_Target, _, _, _, _, _, _)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Adaptation_MUTA_FortifyOpenEyes", _)
+THEN
+PROC_AMER_Ascension_Adaptation_MUTA_FortifyOpenEyes(_Char, _Target);
+
+PROC PROC_AMER_Spells_SkillCast_PerTarget(_Char, "Target_BurnMyEyes", (CHARACTERGUID)_Target, _, _, _, _, _, _)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Adaptation_MUTA_FortifyOpenEyes", _)
+THEN
+PROC_AMER_Ascension_Adaptation_MUTA_FortifyOpenEyes(_Char, _Target);
+
+
+PROC PROC_AMER_Ascension_Adaptation_MUTA_FortifyOpenEyes((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+AND
+DB_AMER_KeywordStat_Adaptation_CurrentStack(_Char, _StackCount)
+AND
+_StackCount >= 3
+AND
+CharacterIsAlly(_Char, _Target, 1)
+AND
+QRY_AMER_GEN_CharacterGetDisplayName(_Target)
+AND
+DB_AMER_GEN_OUTPUT_String(_TargetName)
+AND
+QRY_AMER_GEN_TSK_Get("AMER_Ascension_Adaptation_MUTA_FortifyOpenEyes")
+AND
+DB_AMER_GEN_OUTPUT_String(_LogText)
+THEN
+ApplyStatus(_Target, "HASTED", 12.0, 0, _Char);
+PROC_AMER_Source_SourceGen_AddMaxGen_ForCombat(_Target, 1);
+PROC_AMER_KeywordStat_Adaptation_AddStack(_Char, _Char, -2);
+PROC_AMER_GEN_CharacterCombatLogText_Param_Str(_Char, _LogText, _TargetName);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

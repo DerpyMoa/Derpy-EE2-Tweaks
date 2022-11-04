@@ -1,0 +1,86 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+NOT DB_AMER_Spells_IDOverride("Target_IncarnateCorruptedBlade", "Target_CorruptedBlade");
+NOT DB_AMER_Spells_IDOverride("Target_Flurry_Empowered", "Target_Flurry");
+
+//==============================================================================================================
+
+DB_AMER_Spells_IDOverride("Target_AcclimateFireWhip", "Target_FireWhip");
+DB_AMER_Spells_IDOverride("Cone_AcclimateShatter", "Cone_Shatter");
+DB_AMER_Spells_IDOverride("Shout_AcclimateElectricFence", "Shout_ElectricFence");
+DB_AMER_Spells_IDOverride("Target_AcclimateWormTremor", "Target_WormTremor");
+
+DB_AMER_Spells_IDOverride("Target_PlantWormTremor", "Target_WormTremor");
+DB_AMER_Spells_IDOverride("Shout_SlugFireBrand", "Shout_FireBrand");
+DB_AMER_Spells_IDOverride("Shout_PlantVenomCoating", "Shout_VenomCoating");
+
+DB_AMER_Spells_IDOverride("Projectile_ArrowSpray_Empowered_2", "Projectile_ArrowSpray");
+
+DB_AMER_Spells_IDOverride("Rain_Blood_Slayer", "Rain_Blood");
+
+DB_AMER_Spells_IDOverride("Projectile_BouncingShield_TheArena", "Projectile_BouncingShield_TheArena");
+
+DB_AMER_Spells_IDOverride("Projectile_FanOfKnives_Empowered", "Projectile_FanOfKnives");
+
+DB_AMER_Spells_IDOverride("Target_OilBlobRockSpikes", "Target_RockSpikes");
+
+DB_AMER_Spells_IDOverride("Jump_PhoenixDive_Empowered_3", "Jump_PhoenixDive_Empowered_3");
+
+DB_AMER_Spells_IDOverride("Teleportation_DerpyFreeFall", "Teleportation_FreeFall");
+DB_AMER_Spells_IDOverride("Teleportation_DerpyFreeFallScroll", "Teleportation_FreeFall");
+DB_AMER_Spells_IDOverride("Teleportation_DerpyFreeFallGloves", "Teleportation_FreeFall");
+
+DB_AMER_Spells_IDOverride("Teleportation_DerpyNetherswap", "Teleportation_Netherswap");
+DB_AMER_Spells_IDOverride("Teleportation_DerpyNetherswapScroll", "Teleportation_Netherswap");
+
+//============================================================================================================
+
+//Incarnate
+
+//Infusion
+NOT DB_AMER_Spells_IDOverride("Target_AMER_ElementalInfusion_Empowered", "Target_AMER_ElementalInfusion");
+DB_AMER_Spells_IDOverride("Target_AMER_ElementalInfusion_Empowered", "Target_AMER_ElementalInfusion_Empowered");
+
+//Air
+DB_AMER_Spells_IDOverride("Shout_IncarnateVacuumAura_SI2", "Shout_VacuumAura");
+
+//Water/Ice
+DB_AMER_Spells_IDOverride("Cone_IncarnateShatter_SI2", "Cone_Shatter");
+
+//Earth
+DB_AMER_Spells_IDOverride("Projectile_IncarnateThrowDust", "Projectile_ThrowDust");
+DB_AMER_Spells_IDOverride("Cone_IncarnateCorrosiveSpray_SI2", "Cone_CorrosiveSpray");
+
+//Blood
+DB_AMER_Spells_IDOverride("Target_IncarnateCorpseExplosion", "Target_CorpseExplosion");
+DB_AMER_Spells_IDOverride("Target_IncarnateInfect_SI2", "Target_Infect");
+
+//Poison
+DB_AMER_Spells_IDOverride("Projectile_IncarnateAcidSpores_SI2", "Projectile_AcidSpores");
+
+//Fire
+DB_AMER_Spells_IDOverride("Projectile_IncarnateInfectiousFlame_SI2", "Projectile_InfectiousFlame");
+
+//Rogue
+DB_AMER_Spells_IDOverride("Target_IncarnateCorruptedBlade", "Target_IncarnateCorruptedBlade");
+
+
+//============================================================================================================
+
+//Crusher
+DB_AMER_Spells_IDOverride("Target_CrusherDeathsDoor", "Target_DeathsDoor");
+DB_AMER_Spells_IDOverride("Shout_CrusherBoneCage", "Shout_BoneCage");
+DB_AMER_Spells_IDOverride("Rush_CrusherBatteringRam", "Rush_BatteringRam");
+
+
+
+
+KBSECTION
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

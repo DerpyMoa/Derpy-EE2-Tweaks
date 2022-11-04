@@ -1,0 +1,79 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, "Shout_EnemyBlindingRadiance", 0, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "AMER_BLINDINGRADIANCE", "Shoot_OnTurn", "Explosion", "Projectile_AMER_SCRIPT_BlindingRadiance_Aura", "BlindingRadiance", 1.0, "BlindingRadiance", 1, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "AMER_BLINDINGRADIANCE", "FakeAura_Status", "AMER_BLIND_2", "", "", 5.0, "BlindingRadiance", 1, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "AMER_BLINDINGRADIANCE", "FakeAura_Status", "AMER_CHARGED", "", "", 5.0, "BlindingRadiance", 1, 2000, "SkillCast");
+
+
+PROC PROC_AMER_Spells_SkillCast((CHARACTERGUID)_Char, "Shout_EnemyBlindingRadiance", 0, (STRING)_Type, (STRING)_Element)
+THEN
+ApplyStatus(_Char, "AMER_CHARGED_APPLY", 12.0, 0, _Char);
+
+
+//=======================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_EnemyBlindingRadiance", 1)
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "AMER_BLINDINGRADIANCE", "Shoot_OnTurn", "Explosion", "Projectile_AMER_SCRIPT_BlindingRadiance_Aura_Infusion_2", "BlindingRadiance", 1.0, "BlindingRadiance", 1, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "AMER_BLINDINGRADIANCE", "Shoot_OnTurn", "Explosion", "Projectile_Derpy_SCRIPT_BlindingRadiance_SelfCharge", "BlindingRadiance", 1.0, "BlindingRadiance", 1, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "AMER_BLINDINGRADIANCE", "FakeAura_Status", "AMER_BLIND_2", "", "", 5.0, "BlindingRadiance", 1, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "AMER_BLINDINGRADIANCE", "FakeAura_Status", "AMER_CHARGED", "", "", 5.0, "BlindingRadiance", 1, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_EnemyBlindingRadiance", 1)
+AND
+NRD_ApplyActiveDefense(_Char, "AMER_BLINDINGRADIANCE", 12.0, _Shout_BlindingRadiance_Infus)
+THEN
+ApplyStatus(_Char, "AMER_CHARGED_APPLY", 12.0, 0, _Char);
+
+
+//=======================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_EnemyBlindingRadiance", 2)
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "AMER_BLINDINGRADIANCE", "Shoot_OnTurn", "Explosion", "Projectile_AMER_SCRIPT_BlindingRadiance_Aura_Infusion_2", "BlindingRadiance", 2.0, "BlindingRadiance", 1, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "AMER_BLINDINGRADIANCE", "Shoot_OnTurn", "Explosion", "Projectile_Derpy_SCRIPT_BlindingRadiance_SelfCharge", "BlindingRadiance", 1.0, "BlindingRadiance", 1, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "AMER_BLINDINGRADIANCE", "FakeAura_Status", "AMER_BLIND_2", "", "", 5.0, "BlindingRadiance", 1, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "AMER_BLINDINGRADIANCE", "FakeAura_Status", "AMER_CHARGED", "", "", 5.0, "BlindingRadiance", 1, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_EnemyBlindingRadiance", 2)
+AND
+NRD_ApplyActiveDefense(_Char, "AMER_BLINDINGRADIANCE", 12.0, _Shout_BlindingRadiance_Infus)
+THEN
+ApplyStatus(_Char, "AMER_CHARGED_APPLY", 12.0, 0, _Char);
+
+
+//=======================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_EnemyBlindingRadiance", 3)
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "AMER_BLINDINGRADIANCE", "Shoot_OnTurn", "Explosion", "Projectile_AMER_SCRIPT_BlindingRadiance_Aura_Infusion_3", "BlindingRadiance", 3.0, "BlindingRadiance", 1, 2000, "SkillCast"); //_SelfBool param is 1 because stat's property of SELF: status application applies with source as NULL.
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "AMER_BLINDINGRADIANCE", "Shoot_OnTurn", "Explosion", "Projectile_Derpy_SCRIPT_BlindingRadiance_SelfCharge", "BlindingRadiance", 1.0, "BlindingRadiance", 1, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "AMER_BLINDINGRADIANCE", "FakeAura_Status", "AMER_BLIND_2", "", "", 5.0, "BlindingRadiance", 1, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "AMER_BLINDINGRADIANCE", "FakeAura_Status", "AMER_CHARGED", "", "", 5.0, "BlindingRadiance", 1, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "AMER_BLINDINGRADIANCE", "BatteredHarried_DirectManipStatuses_Activate", "1", "1", "", 1.0, "BlindingRadiance_BHInfus", 1);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_EnemyBlindingRadiance", 3)
+AND
+NRD_ApplyActiveDefense(_Char, "AMER_BLINDINGRADIANCE", 18.0, _Shout_BlindingRadiance_Infus)
+THEN
+ApplyStatus(_Char, "AMER_CHARGED_APPLY", 12.0, 0, _Char);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Aerotheurge"

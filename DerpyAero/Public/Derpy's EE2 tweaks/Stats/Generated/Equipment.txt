@@ -1,0 +1,847 @@
+new equipment "Bonefide_Slayer"
+add equipmentgroup
+add equipment entry "WPN_Bonefide_Slayer"
+
+new equipment "Apportation_Voidling_Worm"
+add equipmentgroup
+add equipment entry "Apportation_Voidling"
+
+new equipment "Apportation_Mighty_Gareth"
+add equipmentgroup
+add equipment entry "Apportation_Mighty_Gareth"
+
+new equipment "AtaraxianCaster"
+add equipmentgroup
+add equipment entry "_ARX_Humans_Ranged_Wand_Air"
+add equipmentgroup
+add equipment entry "_ARX_Humans_Ranged_Wand_Fire"
+
+new equipment "The_Punisher"
+add equipmentgroup
+add equipment entry "WPN_The_Punisher"
+add equipmentgroup
+add equipment entry "NoShield"
+
+new equipment "Windego_Bodyguard"
+add equipmentgroup
+add equipment entry "Windego_Bodyguard"
+add equipmentgroup
+add equipment entry "Windego_Bodyguard"
+
+new equipment "Empyreo"
+add equipmentgroup
+add equipment entry "Empyreo_Club"
+add equipmentgroup
+add equipment entry "NoShield"
+
+
+new equipment "Class_Battlemage_Start"
+add equipmentgroup
+add equipment entry "ARM_Purge_UpperBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_LowerBody"
+add equipmentgroup
+add equipment entry "WPN_CraftedAxe_1H"
+add equipmentgroup
+add equipment entry "WPN_CraftedAxe_1H"
+add equipmentgroup
+add equipment entry "POTION_Minor_Healing_Potion"
+add equipmentgroup
+add equipment entry "SCROLL_Resurrect"
+add equipmentgroup
+add equipment entry "SCROLL_Fireball"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Nailbomb_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_PoisonFlask_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Ice_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Molotov_A"
+add equipmentgroup
+add equipment entry "CONT_Backpack_A_SourceHunter"
+
+new equipment "Class_Cleric_Start"
+add equipmentgroup
+add equipment entry "ARM_Purge_UpperBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_LowerBody"
+add equipmentgroup
+add equipment entry "WPN_Common_Mace_1H_A"
+add equipmentgroup
+add equipment entry "WPN_CraftedShield"
+add equipmentgroup
+add equipment entry "POTION_Minor_Healing_Potion"
+add equipmentgroup
+add equipment entry "SCROLL_Resurrect"
+add equipmentgroup
+add equipment entry "CONT_Backpack_A_SourceHunter"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Nailbomb_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_PoisonFlask_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Molotov_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Ice_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Holy_A"
+add equipmentgroup
+add equipment entry "SCROLL_Fortify"
+add equipmentgroup
+add equipment entry "SCROLL_Target_FrostyShell"
+add equipmentgroup
+add equipment entry "SCROLL_RegenerateStart"
+
+new equipment "Class_Enchanter_Start"
+add equipmentgroup
+add equipment entry "ARM_Purge_UpperBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_LowerBody"
+add equipmentgroup
+add equipment entry "WPN_CraftedStaff_Air"
+add equipmentgroup
+add equipment entry "POTION_Minor_Healing_Potion"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Nailbomb_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_PoisonFlask_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Molotov_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Taser_A"
+add equipmentgroup
+add equipment entry "SCROLL_Resurrect"
+add equipmentgroup
+add equipment entry "SCROLL_Fortify"
+add equipmentgroup
+add equipment entry "SCROLL_Target_FrostyShell"
+add equipmentgroup
+add equipment entry "SCROLL_RegenerateStart"
+add equipmentgroup
+add equipment entry "SCROLL_LighningBolt"
+add equipmentgroup
+add equipment entry "CONT_Backpack_A_SourceHunter"
+
+new equipment "Class_Fighter_Start"
+add equipmentgroup
+add equipment entry "ARM_Purge_UpperBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_LowerBody"
+add equipmentgroup
+add equipment entry "WPN_CraftedSword_1H"
+add equipmentgroup
+add equipment entry "WPN_CraftedShield"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Nailbomb_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_PoisonFlask_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Molotov_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Ice_A"
+add equipmentgroup
+add equipment entry "POTION_Minor_Healing_Potion"
+add equipmentgroup
+add equipment entry "SCROLL_Resurrect"
+add equipmentgroup
+add equipment entry "CONT_Backpack_A_SourceHunter"
+
+new equipment "Class_Inquisitor_Start"
+add equipmentgroup
+add equipment entry "ARM_Purge_UpperBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_LowerBody"
+add equipmentgroup
+add equipment entry "WPN_CraftedMace_2H"
+add equipmentgroup
+add equipment entry "POTION_Minor_Healing_Potion"
+add equipmentgroup
+add equipment entry "SCROLL_Resurrect"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Nailbomb_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_PoisonFlask_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Molotov_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Taser_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Holy_A"
+add equipmentgroup
+add equipment entry "CONT_Backpack_A_SourceHunter"
+add equipmentgroup
+add equipment entry "SCROLL_LighningBolt"
+
+new equipment "Class_Knight_Start"
+add equipmentgroup
+add equipment entry "ARM_Purge_UpperBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_LowerBody"
+add equipmentgroup
+add equipment entry "WPN_CraftedSword_2H"
+add equipmentgroup
+add equipment entry "POTION_Minor_Healing_Potion"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Nailbomb_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_PoisonFlask_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Molotov_A"
+add equipmentgroup
+add equipment entry "SCROLL_Resurrect"
+add equipmentgroup
+add equipment entry "CONT_Backpack_A_SourceHunter"
+
+new equipment "Class_Metamorph_Start"
+add equipmentgroup
+add equipment entry "ARM_Purge_UpperBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_LowerBody"
+add equipmentgroup
+add equipment entry "WPN_Pitchfork"
+add equipmentgroup
+add equipment entry "POTION_Minor_Healing_Potion"
+add equipmentgroup
+add equipment entry "SCROLL_Resurrect"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Nailbomb_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_PoisonFlask_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Molotov_A"
+add equipmentgroup
+add equipment entry "CONT_Backpack_A_SourceHunter"
+
+new equipment "Class_Ranger_Start"
+add equipmentgroup
+add equipment entry "ARM_Purge_UpperBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_LowerBody"
+add equipmentgroup
+add equipment entry "WPN_CraftedBow"
+add equipmentgroup
+add equipment entry "POTION_Minor_Healing_Potion"
+add equipmentgroup
+add equipment entry "WPN_Arrow_Fire_A"
+add equipmentgroup
+add equipment entry "WPN_Arrow_Poison_A"
+add equipmentgroup
+add equipment entry "WPN_Arrow_Freezing_A"
+add equipmentgroup
+add equipment entry "WPN_Arrow_KO_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Nailbomb_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_PoisonFlask_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Molotov_A"
+add equipmentgroup
+add equipment entry "SCROLL_Resurrect"
+add equipmentgroup
+add equipment entry "CONT_Backpack_A_SourceHunter"
+
+new equipment "Class_Rogue_Start"
+add equipmentgroup
+add equipment entry "ARM_Purge_UpperBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_LowerBody"
+add equipmentgroup
+add equipment entry "WPN_CraftedDagger"
+add equipmentgroup
+add equipment entry "WPN_CraftedDagger"
+add equipmentgroup
+add equipment entry "POTION_Minor_Healing_Potion"
+add equipmentgroup
+add equipment entry "SCROLL_Resurrect"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Nailbomb_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_PoisonFlask_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Molotov_A"
+add equipmentgroup
+add equipment entry "CONT_Backpack_A_SourceHunter"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Love_A"
+
+new equipment "Class_Shadowblade_Start"
+add equipmentgroup
+add equipment entry "ARM_Purge_UpperBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_LowerBody"
+add equipmentgroup
+add equipment entry "WPN_CraftedDagger"
+add equipmentgroup
+add equipment entry "POTION_Minor_Healing_Potion"
+add equipmentgroup
+add equipment entry "SCROLL_Resurrect"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Nailbomb_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_PoisonFlask_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Molotov_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_ChemicalWarfare_A"
+add equipmentgroup
+add equipment entry "CONT_Backpack_A_SourceHunter"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Terror_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Love_A"
+
+new equipment "Class_Conjurer_Start"
+add equipmentgroup
+add equipment entry "ARM_Purge_UpperBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_LowerBody"
+add equipmentgroup
+add equipment entry "WPN_CraftedWand_Fire"
+add equipmentgroup
+add equipment entry "WPN_CraftedShield"
+add equipmentgroup
+add equipment entry "POTION_Minor_Healing_Potion"
+add equipmentgroup
+add equipment entry "SCROLL_Resurrect"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Nailbomb_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_PoisonFlask_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Molotov_A"
+add equipmentgroup
+add equipment entry "CONT_Backpack_A_SourceHunter"
+
+new equipment "Class_Wayfarer_Start"
+add equipmentgroup
+add equipment entry "ARM_Purge_UpperBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_LowerBody"
+add equipmentgroup
+add equipment entry "WPN_CraftedCrossbow"
+add equipmentgroup
+add equipment entry "POTION_Minor_Healing_Potion"
+add equipmentgroup
+add equipment entry "WPN_Arrow_Fire_A"
+add equipmentgroup
+add equipment entry "WPN_Arrow_Poison_A"
+add equipmentgroup
+add equipment entry "SCROLL_Resurrect"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Nailbomb_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Molotov_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Tremor_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Terror_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Love_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_MustardGas_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_PoisonFlask_A"
+add equipmentgroup
+add equipment entry "CONT_Backpack_A_SourceHunter"
+
+new equipment "Class_Witch_Start"
+add equipmentgroup
+add equipment entry "ARM_Purge_UpperBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_LowerBody"
+add equipmentgroup
+add equipment entry "WPN_CraftedDagger"
+add equipmentgroup
+add equipment entry "POTION_Minor_Healing_Potion"
+add equipmentgroup
+add equipment entry "SCROLL_Resurrect"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Nailbomb_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Molotov_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_ChemicalWarfare_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Tremor_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Love_A"
+add equipmentgroup
+add equipment entry "CONT_Backpack_A_SourceHunter"
+add equipmentgroup
+add equipment entry "GRN_Grenade_PoisonFlask_A"
+
+new equipment "Class_Wizard_Start"
+add equipmentgroup
+add equipment entry "ARM_Purge_UpperBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_LowerBody"
+add equipmentgroup
+add equipment entry "WPN_CraftedWand_Poison"
+add equipmentgroup
+add equipment entry "WPN_CraftedWand_Poison"
+add equipmentgroup
+add equipment entry "POTION_Minor_Healing_Potion"
+add equipmentgroup
+add equipment entry "SCROLL_Resurrect"
+add equipmentgroup
+add equipment entry "SCROLL_Fireball"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Nailbomb_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_PoisonFlask_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Molotov_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Love_A"
+add equipmentgroup
+add equipment entry "CONT_Backpack_A_SourceHunter"
+
+new equipment "Class_Battlemage_Start_Undead"
+add equipmentgroup
+add equipment entry "ARM_Purge_UpperBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_LowerBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_Helmet"
+add equipmentgroup
+add equipment entry "ARM_Purge_Boots"
+add equipmentgroup
+add equipment entry "ARM_Purge_Gloves"
+add equipmentgroup
+add equipment entry "WPN_CraftedAxe_1H"
+add equipmentgroup
+add equipment entry "WPN_CraftedAxe_1H"
+add equipmentgroup
+add equipment entry "CON_Potion_Poison_A"
+add equipmentgroup
+add equipment entry "SCROLL_Resurrect"
+add equipmentgroup
+add equipment entry "SCROLL_Fireball"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Nailbomb_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Molotov_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Ice_A"
+add equipmentgroup
+add equipment entry "CONT_Backpack_A_SourceHunter"
+add equipmentgroup
+add equipment entry "GRN_Grenade_PoisonFlask_A"
+
+new equipment "Class_Cleric_Start_Undead"
+add equipmentgroup
+add equipment entry "ARM_Purge_UpperBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_LowerBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_Helmet"
+add equipmentgroup
+add equipment entry "ARM_Purge_Boots"
+add equipmentgroup
+add equipment entry "ARM_Purge_Gloves"
+add equipmentgroup
+add equipment entry "WPN_Common_Mace_1H_A"
+add equipmentgroup
+add equipment entry "WPN_CraftedShield"
+add equipmentgroup
+add equipment entry "CON_Potion_Poison_A"
+add equipmentgroup
+add equipment entry "SCROLL_Resurrect"
+add equipmentgroup
+add equipment entry "CONT_Backpack_A_SourceHunter"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Nailbomb_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Molotov_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Ice_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Holy_A"
+add equipmentgroup
+add equipment entry "SCROLL_Fortify"
+add equipmentgroup
+add equipment entry "SCROLL_Target_FrostyShell"
+add equipmentgroup
+add equipment entry "SCROLL_RegenerateStart"
+add equipmentgroup
+add equipment entry "GRN_Grenade_PoisonFlask_A"
+
+new equipment "Class_Enchanter_Start_Undead"
+add equipmentgroup
+add equipment entry "ARM_Purge_UpperBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_LowerBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_Helmet"
+add equipmentgroup
+add equipment entry "ARM_Purge_Boots"
+add equipmentgroup
+add equipment entry "ARM_Purge_Gloves"
+add equipmentgroup
+add equipment entry "WPN_CraftedStaff_Air"
+add equipmentgroup
+add equipment entry "CON_Potion_Poison_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Nailbomb_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Molotov_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Taser_A"
+add equipmentgroup
+add equipment entry "SCROLL_Resurrect"
+add equipmentgroup
+add equipment entry "SCROLL_Fortify"
+add equipmentgroup
+add equipment entry "SCROLL_Target_FrostyShell"
+add equipmentgroup
+add equipment entry "SCROLL_RegenerateStart"
+add equipmentgroup
+add equipment entry "SCROLL_LighningBolt"
+add equipmentgroup
+add equipment entry "CONT_Backpack_A_SourceHunter"
+add equipmentgroup
+add equipment entry "GRN_Grenade_PoisonFlask_A"
+
+new equipment "Class_Fighter_Start_Undead"
+add equipmentgroup
+add equipment entry "ARM_Purge_UpperBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_LowerBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_Helmet"
+add equipmentgroup
+add equipment entry "ARM_Purge_Boots"
+add equipmentgroup
+add equipment entry "ARM_Purge_Gloves"
+add equipmentgroup
+add equipment entry "WPN_CraftedSword_1H"
+add equipmentgroup
+add equipment entry "WPN_CraftedShield"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Nailbomb_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Molotov_A"
+add equipmentgroup
+add equipment entry "CON_Potion_Poison_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Ice_A"
+add equipmentgroup
+add equipment entry "SCROLL_Resurrect"
+add equipmentgroup
+add equipment entry "CONT_Backpack_A_SourceHunter"
+add equipmentgroup
+add equipment entry "GRN_Grenade_PoisonFlask_A"
+
+new equipment "Class_Inquisitor_Start_Undead"
+add equipmentgroup
+add equipment entry "ARM_Purge_UpperBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_LowerBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_Helmet"
+add equipmentgroup
+add equipment entry "ARM_Purge_Boots"
+add equipmentgroup
+add equipment entry "ARM_Purge_Gloves"
+add equipmentgroup
+add equipment entry "WPN_CraftedMace_2H"
+add equipmentgroup
+add equipment entry "CON_Potion_Poison_A"
+add equipmentgroup
+add equipment entry "SCROLL_Resurrect"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Nailbomb_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Molotov_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Taser_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Holy_A"
+add equipmentgroup
+add equipment entry "CONT_Backpack_A_SourceHunter"
+add equipmentgroup
+add equipment entry "SCROLL_LighningBolt"
+add equipmentgroup
+add equipment entry "GRN_Grenade_PoisonFlask_A"
+
+new equipment "Class_Knight_Start_Undead"
+add equipmentgroup
+add equipment entry "ARM_Purge_UpperBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_LowerBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_Helmet"
+add equipmentgroup
+add equipment entry "ARM_Purge_Boots"
+add equipmentgroup
+add equipment entry "ARM_Purge_Gloves"
+add equipmentgroup
+add equipment entry "WPN_CraftedSword_2H"
+add equipmentgroup
+add equipment entry "CON_Potion_Poison_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Nailbomb_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Molotov_A"
+add equipmentgroup
+add equipment entry "SCROLL_Resurrect"
+add equipmentgroup
+add equipment entry "CONT_Backpack_A_SourceHunter"
+add equipmentgroup
+add equipment entry "GRN_Grenade_PoisonFlask_A"
+
+new equipment "Class_Metamorph_Start_Undead"
+add equipmentgroup
+add equipment entry "ARM_Purge_UpperBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_LowerBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_Helmet"
+add equipmentgroup
+add equipment entry "ARM_Purge_Boots"
+add equipmentgroup
+add equipment entry "ARM_Purge_Gloves"
+add equipmentgroup
+add equipment entry "WPN_Pitchfork"
+add equipmentgroup
+add equipment entry "CON_Potion_Poison_A"
+add equipmentgroup
+add equipment entry "SCROLL_Resurrect"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Nailbomb_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Molotov_A"
+add equipmentgroup
+add equipment entry "CONT_Backpack_A_SourceHunter"
+add equipmentgroup
+add equipment entry "GRN_Grenade_PoisonFlask_A"
+
+new equipment "Class_Ranger_Start_Undead"
+add equipmentgroup
+add equipment entry "ARM_Purge_UpperBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_LowerBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_Helmet"
+add equipmentgroup
+add equipment entry "ARM_Purge_Boots"
+add equipmentgroup
+add equipment entry "ARM_Purge_Gloves"
+add equipmentgroup
+add equipment entry "WPN_CraftedBow"
+add equipmentgroup
+add equipment entry "CON_Potion_Poison_A"
+add equipmentgroup
+add equipment entry "WPN_Arrow_Fire_A"
+add equipmentgroup
+add equipment entry "WPN_Arrow_Poison_A"
+add equipmentgroup
+add equipment entry "WPN_Arrow_Freezing_A"
+add equipmentgroup
+add equipment entry "WPN_Arrow_KO_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Nailbomb_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Molotov_A"
+add equipmentgroup
+add equipment entry "SCROLL_Resurrect"
+add equipmentgroup
+add equipment entry "CONT_Backpack_A_SourceHunter"
+add equipmentgroup
+add equipment entry "GRN_Grenade_PoisonFlask_A"
+
+new equipment "Class_Rogue_Start_Undead"
+add equipmentgroup
+add equipment entry "ARM_Purge_UpperBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_LowerBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_Helmet"
+add equipmentgroup
+add equipment entry "ARM_Purge_Boots"
+add equipmentgroup
+add equipment entry "ARM_Purge_Gloves"
+add equipmentgroup
+add equipment entry "WPN_CraftedDagger"
+add equipmentgroup
+add equipment entry "WPN_CraftedDagger"
+add equipmentgroup
+add equipment entry "CON_Potion_Poison_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Nailbomb_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Molotov_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Love_A"
+add equipmentgroup
+add equipment entry "SCROLL_Resurrect"
+add equipmentgroup
+add equipment entry "CONT_Backpack_A_SourceHunter"
+add equipmentgroup
+add equipment entry "GRN_Grenade_PoisonFlask_A"
+
+new equipment "Class_Shadowblade_Start_Undead"
+add equipmentgroup
+add equipment entry "ARM_Purge_UpperBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_LowerBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_Helmet"
+add equipmentgroup
+add equipment entry "ARM_Purge_Boots"
+add equipmentgroup
+add equipment entry "ARM_Purge_Gloves"
+add equipmentgroup
+add equipment entry "WPN_CraftedDagger"
+add equipmentgroup
+add equipment entry "CON_Potion_Poison_A"
+add equipmentgroup
+add equipment entry "SCROLL_Resurrect"
+add equipmentgroup
+add equipment entry "CONT_Backpack_A_SourceHunter"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Nailbomb_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Molotov_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Love_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_ChemicalWarfare_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Terror_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_PoisonFlask_A"
+
+new equipment "Class_Conjurer_Start_Undead"
+add equipmentgroup
+add equipment entry "ARM_Purge_UpperBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_LowerBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_Helmet"
+add equipmentgroup
+add equipment entry "ARM_Purge_Boots"
+add equipmentgroup
+add equipment entry "ARM_Purge_Gloves"
+add equipmentgroup
+add equipment entry "WPN_CraftedWand_Fire"
+add equipmentgroup
+add equipment entry "WPN_CraftedShield"
+add equipmentgroup
+add equipment entry "CON_Potion_Poison_A"
+add equipmentgroup
+add equipment entry "SCROLL_Resurrect"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Nailbomb_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Molotov_A"
+add equipmentgroup
+add equipment entry "CONT_Backpack_A_SourceHunter"
+add equipmentgroup
+add equipment entry "GRN_Grenade_PoisonFlask_A"
+
+new equipment "Class_Wayfarer_Start_Undead"
+add equipmentgroup
+add equipment entry "ARM_Purge_UpperBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_LowerBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_Helmet"
+add equipmentgroup
+add equipment entry "ARM_Purge_Boots"
+add equipmentgroup
+add equipment entry "ARM_Purge_Gloves"
+add equipmentgroup
+add equipment entry "WPN_CraftedCrossbow"
+add equipmentgroup
+add equipment entry "CON_Potion_Poison_A"
+add equipmentgroup
+add equipment entry "WPN_Arrow_Fire_A"
+add equipmentgroup
+add equipment entry "WPN_Arrow_Poison_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Nailbomb_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Tremor_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Molotov_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Terror_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Love_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_MustardGas_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_PoisonFlask_A"
+add equipmentgroup
+add equipment entry "SCROLL_Resurrect"
+add equipmentgroup
+add equipment entry "CONT_Backpack_A_SourceHunter"
+
+new equipment "Class_Witch_Start_Undead"
+add equipmentgroup
+add equipment entry "ARM_Purge_UpperBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_LowerBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_Helmet"
+add equipmentgroup
+add equipment entry "ARM_Purge_Boots"
+add equipmentgroup
+add equipment entry "ARM_Purge_Gloves"
+add equipmentgroup
+add equipment entry "WPN_CraftedDagger"
+add equipmentgroup
+add equipment entry "CON_Potion_Poison_A"
+add equipmentgroup
+add equipment entry "SCROLL_Resurrect"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Nailbomb_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Molotov_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_ChemicalWarfare_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Tremor_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Love_A"
+add equipmentgroup
+add equipment entry "CONT_Backpack_A_SourceHunter"
+add equipmentgroup
+add equipment entry "GRN_Grenade_PoisonFlask_A"
+
+new equipment "Class_Wizard_Start_Undead"
+add equipmentgroup
+add equipment entry "ARM_Purge_UpperBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_LowerBody"
+add equipmentgroup
+add equipment entry "ARM_Purge_Helmet"
+add equipmentgroup
+add equipment entry "ARM_Purge_Boots"
+add equipmentgroup
+add equipment entry "ARM_Purge_Gloves"
+add equipmentgroup
+add equipment entry "WPN_CraftedWand_Poison"
+add equipmentgroup
+add equipment entry "WPN_CraftedWand_Poison"
+add equipmentgroup
+add equipment entry "CON_Potion_Poison_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Nailbomb_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Molotov_A"
+add equipmentgroup
+add equipment entry "GRN_Grenade_Love_A"
+add equipmentgroup
+add equipment entry "SCROLL_Resurrect"
+add equipmentgroup
+add equipment entry "SCROLL_Fireball"
+add equipmentgroup
+add equipment entry "CONT_Backpack_A_SourceHunter"
+add equipmentgroup
+add equipment entry "GRN_Grenade_PoisonFlask_A"
+
+
+

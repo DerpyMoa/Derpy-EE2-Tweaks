@@ -1,0 +1,30 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+NRD_OnActionStateEnter((CHARACTERGUID)_Char, "PrepareSkill")
+AND
+DB_IsPlayer(_Char)
+AND
+CharacterIsInCombat(_Char, 1)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Char, "PayAP_OnCastMoveSkill", _, _, _, _)
+AND
+NRD_ActionStateGetString(_Char, "SkillId", _SkillBeingPrepared)
+AND
+NRD_RegexReplace(_SkillBeingPrepared, "_.*", "", _Type)
+AND
+QRY_AMER_GEN_SkillIsMoveSkill(_SkillBeingPrepared, _Type)
+THEN
+CharacterStatusText(_Char, "Squelched!");
+
+
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

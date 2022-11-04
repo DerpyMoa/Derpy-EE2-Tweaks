@@ -1,0 +1,21 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_RC_GY_LoyalDog_Necromancer_e11b3dc2-0297-4d53-9846-2df9ef665ebb);
+
+KBSECTION
+
+IF
+CharacterEnteredTrigger(_Player,TRIGGERGUID_S_RC_GY_LoyalDog_CryptBox_89124061-1d5f-43c3-af90-9a4393dc9829)
+AND
+QueryOnlyOnce("Derpy_QannaSetup")
+THEN
+PROC_AMER_GEN_Goal_Activate("Derpy_RC_Qanna_Internal");
+
+
+EXITSECTION
+
+
+ENDEXITSECTION
+ParentTargetEdge "ReapersCoast"

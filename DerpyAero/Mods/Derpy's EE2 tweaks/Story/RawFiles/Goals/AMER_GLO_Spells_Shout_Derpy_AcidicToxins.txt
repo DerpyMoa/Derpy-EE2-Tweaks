@@ -1,0 +1,55 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, "Shout_Derpy_AcidicToxins", 0, (STRING)_Type, (STRING)_Element)
+AND
+CharacterHasTalent(_Char, "Torturer", 1)
+THEN
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "Status_AddDuration", "Derpy_AcidicToxins", "", "", 1.0, 2000, "SkillCast");
+
+
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, "Shout_Derpy_AcidicToxins", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "Derpy_AcidicToxins", "AcidicToxins_SI0", "", "", "", 1.0, "AcidicToxins", 0, 2000, "SkillCast");
+
+
+//=====================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_Derpy_AcidicToxins", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "Status_AddDuration", "Derpy_AcidicToxins", "", "", 1.0, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "Derpy_AcidicToxins", "AcidicToxins_SI1", "", "", "", 1.0, "AcidicToxins", 0, 2000, "SkillCast");
+
+
+//=====================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_Derpy_AcidicToxins", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+AND
+_InfusCount < 3
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "Derpy_AcidicToxins", "AcidicToxins_SI2", "", "", "", 1.0, "AcidicToxins", 0, 2000, "SkillCast");
+
+
+//=====================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_Derpy_AcidicToxins", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "Derpy_AcidicToxins", "AcidicToxins_SI3", "", "", "", 1.0, "AcidicToxins", 0, 2000, "SkillCast");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Geomancer"

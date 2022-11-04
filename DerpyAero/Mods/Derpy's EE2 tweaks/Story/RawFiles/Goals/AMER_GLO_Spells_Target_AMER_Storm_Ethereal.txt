@@ -1,0 +1,69 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+//Storms last 1 turn longer than the status because they strike at the end of the turn they are casted on, which reduced their duration by 1 turn.
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_AMER_Storm_Ethereal", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 1)
+AND
+QRY_AMER_Spells_Storm_CreateAtPos(_Char, "Storm_Ethereal", 24.0, "", "AMER_RS3_FX_Storm_Ethereal_Atmos", "DefaultStorm", 8, 5, 225, 5.0, _X, _Y, _Z, 1)	//4 turn duration, hits any living char, strikes 5 times, 225ms strike interval, 5.0m radius. Projectile is "" because we want to script a special-case projectile.
+AND
+DB_AMER_Spells_Storm_Index(_StormIndex)
+THEN
+DB_AMER_Spells_Summoning_EtherealStorm(_StormIndex, "");
+ApplyStatus(_Char, "AMER_STORMCONTROL_CHAOS", 18.0, 1, _Char);
+PROC_AMER_GEN_Goal_Activate("AMER_GLO_Spells_REMOTE_EtherealStorm");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_AMER_Storm_Ethereal", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+AND
+QRY_AMER_Spells_Storm_CreateAtPos(_Char, "Storm_Ethereal", 24.0, "", "AMER_RS3_FX_Storm_Ethereal_Atmos", "DefaultStorm", 8, 8, 225, 5.0, _X, _Y, _Z, 1)	//4 turn duration, hits any living char, strikes 8 times, 225ms strike interval, 5.0m radius. Projectile is "" because we want to script a special-case projectile.
+AND
+DB_AMER_Spells_Storm_Index(_StormIndex)
+THEN
+DB_AMER_Spells_Summoning_EtherealStorm(_StormIndex, "_Infus2");	//"_Infus2" is appended to projectile strings.
+ApplyStatus(_Char, "AMER_STORMCONTROL_CHAOS", 18.0, 1, _Char);
+PROC_AMER_GEN_Goal_Activate("AMER_GLO_Spells_REMOTE_EtherealStorm");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_AMER_Storm_Ethereal", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+AND
+QRY_AMER_Summoning_GetIncarnateRoot(_Char)
+AND
+DB_AMER_GEN_OUTPUT_String(_Root)
+THEN
+PROC_AMER_Summoning_AddSizeOverrideToNext(_Char, _Root, 0, 1);
+PROC_AMER_Summoning_AddStatusToNext(_Char, _Root, "INF_POWER", -1.0, 1);
+PROC_AMER_Summoning_AddStatusToNext(_Char, _Root, "INF_RANGED", -1.0, 1);
+PROC_AMER_Summoning_AddStatusToNext(_Char, _Root, "INF_WARP", -1.0, 1);
+PROC_AMER_Summoning_AddStatusToNext(_Char, _Root, "INF_SHADOW", -1.0, 1);
+PROC_AMER_Summoning_CreateIncarnateAtPos_FromSurface(_Char, _X, _Y, _Z);
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+
+
+//REGION Basic Logic.
+//Ethereal Storm produces random strikes in place of "blank" storm projectiles, we need to script
+//this effect whenever the blank strikes occur.
+
+PROC PROC_AMER_Spells_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_AMER_Storm_Ethereal", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 0, (STRING)_Type, (STRING)_Element)
+AND
+QRY_AMER_Spells_Storm_CreateAtPos(_Char, "Storm_Ethereal", 18.0, "", "AMER_RS3_FX_Storm_Ethereal_Atmos", "DefaultStorm", 8, 5, 225, 5.0, _X, _Y, _Z, 1)	//3 turn duration, hits any living char, strikes 5 times, 225ms strike interval, 5.0m radius. Projectile is "" because we want to script a special-case projectile.
+AND
+DB_AMER_Spells_Storm_Index(_StormIndex)
+THEN
+DB_AMER_Spells_Summoning_EtherealStorm(_StormIndex, "");
+ApplyStatus(_Char, "AMER_STORMCONTROL_CHAOS", 12.0, 1, _Char);
+PROC_AMER_GEN_Goal_Activate("AMER_GLO_Spells_REMOTE_EtherealStorm");
+
+//END_REGION
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Summoning"

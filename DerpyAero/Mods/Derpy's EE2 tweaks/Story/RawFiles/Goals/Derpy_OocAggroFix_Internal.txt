@@ -1,0 +1,20 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+
+KBSECTION
+
+
+IF
+NRD_OnHit((CHARACTERGUID)_Defender, (CHARACTERGUID)_Attacker, _Damage, _Handle)
+AND
+HasActiveStatus(_Defender, "Derpy_OocAggroFix", 1)
+THEN
+NRD_HitStatusClearAllDamage(_Defender, _Handle);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Derpy_OocAggroFix"

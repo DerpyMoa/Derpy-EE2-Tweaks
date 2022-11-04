@@ -1,0 +1,29 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_Derpy_WeaponFinesse_Blacklist("Projectile_FireArrow");
+DB_Derpy_WeaponFinesse_Blacklist("Projectile_ExplosionArrow");
+DB_Derpy_WeaponFinesse_Blacklist("Projectile_FreezingArrow");
+DB_Derpy_WeaponFinesse_Blacklist("Projectile_WaterArrow");
+DB_Derpy_WeaponFinesse_Blacklist("Projectile_CursedFireArrow");
+DB_Derpy_WeaponFinesse_Blacklist("Projectile_BlessedWaterArrow");
+DB_Derpy_WeaponFinesse_Blacklist("Projectile_SlowDownArrow");
+DB_Derpy_WeaponFinesse_Blacklist("Projectile_StunningArrow");
+DB_Derpy_WeaponFinesse_Blacklist("Projectile_SteamCloudArrow");
+DB_Derpy_WeaponFinesse_Blacklist("Projectile_SmokescreenArrow");
+DB_Derpy_WeaponFinesse_Blacklist("Projectile_StaticCloudArrow");
+DB_Derpy_WeaponFinesse_Blacklist("Projectile_SilverArrow");
+DB_Derpy_WeaponFinesse_Blacklist("Projectile_BleedingArrow");
+DB_Derpy_WeaponFinesse_Blacklist("Projectile_KnockedOutArrow");
+DB_Derpy_WeaponFinesse_Blacklist("Projectile_PoisonedCloudArrow");
+DB_Derpy_WeaponFinesse_Blacklist("Projectile_CharmingArrow");
+DB_Derpy_WeaponFinesse_Blacklist("Projectile_PoisonArrow");
+DB_Derpy_WeaponFinesse_Blacklist("Projectile_DebuffAllArrow");
+
+KBSECTION
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

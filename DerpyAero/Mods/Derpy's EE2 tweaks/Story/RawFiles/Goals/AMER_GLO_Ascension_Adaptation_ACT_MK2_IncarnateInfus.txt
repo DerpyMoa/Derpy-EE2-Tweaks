@@ -1,0 +1,57 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Adaptation activates granting 3 stacks when casting any incarnate infusion.
+
+PROC PROC_AMER_Spells_SkillCast(_Char, "Target_AMER_ElementalInfusion", _, _, _)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Adaptation_ACT_MK2_IncarnateInfus", _)
+THEN
+PROC_AMER_Adaptation_ACT_MK2_IncarnateInfus(_Char);
+
+PROC PROC_AMER_Spells_SkillCast(_Char, "Target_AMER_ElementalInfusion_Empowered", _, _, _)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Adaptation_ACT_MK2_IncarnateInfus", _)
+THEN
+PROC_AMER_Adaptation_ACT_MK2_IncarnateInfus(_Char);
+
+PROC PROC_AMER_Spells_SkillCast(_Char, "Target_RangedInfusion", _, _, _)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Adaptation_ACT_MK2_IncarnateInfus", _)
+THEN
+PROC_AMER_Adaptation_ACT_MK2_IncarnateInfus(_Char);
+
+PROC PROC_AMER_Spells_SkillCast(_Char, "Target_PowerInfusion", _, _, _)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Adaptation_ACT_MK2_IncarnateInfus", _)
+THEN
+PROC_AMER_Adaptation_ACT_MK2_IncarnateInfus(_Char);
+
+PROC PROC_AMER_Spells_SkillCast(_Char, "Target_ShadowInfusion", _, _, _)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Adaptation_ACT_MK2_IncarnateInfus", _)
+THEN
+PROC_AMER_Adaptation_ACT_MK2_IncarnateInfus(_Char);
+
+PROC PROC_AMER_Spells_SkillCast(_Char, "Target_WarpInfusion", _, _, _)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Adaptation_ACT_MK2_IncarnateInfus", _)
+THEN
+PROC_AMER_Adaptation_ACT_MK2_IncarnateInfus(_Char);
+
+
+
+PROC PROC_AMER_Adaptation_ACT_MK2_IncarnateInfus((CHARACTERGUID)_Char)
+//AND
+//DB_AMER_KeywordStat_Added(_, "Adaptation", _MK1Count)
+//AND
+//_MK1Count > 1
+THEN
+PROC_AMER_KeywordStat_Adaptation_Activate(_Char, _Char, 3);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

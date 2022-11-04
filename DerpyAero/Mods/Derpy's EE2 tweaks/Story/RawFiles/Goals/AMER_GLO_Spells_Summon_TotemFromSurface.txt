@@ -1,0 +1,88 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Summon_TotemFromSurface", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+AND
+QRY_AMER_GEN_GetSurfaceAtPos(_X, _Y, _Z)
+AND
+DB_AMER_GEN_OUTPUT_String(_Surface)
+AND
+QRY_AMER_GEN_GetSurfaceKeyword(_Surface, "Wood", "Blood", "Fire", "Water", "Oil", "Poison", "Air", "Water", "Wood", "Wood", "Fire")
+AND
+DB_AMER_GEN_OUTPUT_String(_Type)
+AND
+DB_AMER_Summoning_TotemRootToSurfaceKeyword(_Root, _Type)
+THEN
+PROC_AMER_Summoning_MakeNextNPC(_Char, _Root, 1);
+PROC_AMER_Summoning_SnapNextToValidPos(_Char, _Root, 1);
+PROC_AMER_Summoning_CreateTotemAtPos_FromSurface(_Char, _X, _Y, _Z);
+
+
+//==================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Summon_TotemFromSurface", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "Summon_FlamingTongues", "", "", "", 1.0, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Summon_TotemFromSurface", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+AND
+QRY_AMER_GEN_GetSurfaceAtPos(_X, _Y, _Z)
+AND
+DB_AMER_GEN_OUTPUT_String(_Surface)
+AND
+QRY_AMER_GEN_GetSurfaceKeyword(_Surface, "Wood", "Blood", "Fire", "Water", "Oil", "Poison", "Air", "Water", "Wood", "Wood", "Fire")
+AND
+DB_AMER_GEN_OUTPUT_String(_Type)
+AND
+DB_AMER_Summoning_TotemRootToSurfaceKeyword(_Root, _Type)
+AND
+GetPosition(_Char, _Xb, _Yb, _Zb)
+THEN
+PROC_AMER_Summoning_SnapNextToValidPos(_Char, _Root, 2);
+PROC_AMER_Summoning_CreateTotemAtPos_FromSurface(_Char, _Xb, _Yb, _Zb);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Summon_TotemFromSurface", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+AND
+DB_AMER_Summoning_ActiveSummon(_Char, _Summon)
+AND
+GetPosition(_Summon, _Xb, _Yb, _Zb)
+THEN
+PROC_AMER_Summoning_CreateTotemAtPos_FromSurface(_Char, _Xb, _Yb, _Zb);
+
+
+//==================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Summon_TotemFromSurface", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "Summon_ApplyStatusOnSpawn", "SUPERCHARGE", "", "", 24.0, 2000, "SkillCast");
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "Summon_ApplyStatusOnSpawn", "ETERNITY_DOOR", "", "", 12.0, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Summon_TotemFromSurface", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+ApplyStatus(_Char, "AMER_ELEMENTALTOTEM_INFUS_3", 24.0, 0, _Char);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Summoning"

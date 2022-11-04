@@ -1,0 +1,29 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_ArmourSets_ApplyBuff("Contamination", (CHARACTERGUID)_Char)
+THEN
+DB_Derpy_ContamSetEquipped(_Char);
+PROC_AMER_GEN_Goal_Activate("Derpy_ContaminationSet");
+
+
+PROC PROC_ArmourSets_RemoveBuff("Contamination", (CHARACTERGUID)_Char)
+AND
+DB_Derpy_ContamSetEquipped(_Char)
+THEN
+NOT DB_Derpy_ContamSetEquipped(_Char);
+PROC_Derpy_ContamSetUnequipped(_Char);
+
+PROC PROC_Derpy_ContamSetUnequipped((CHARACTERGUID)_Char)
+AND
+NOT DB_Derpy_ContamSetEquipped(_)
+THEN
+PROC_AMER_GEN_Goal_Complete("Derpy_ContaminationSet");
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

@@ -1,0 +1,19 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Summoning_PostInit((CHARACTERGUID)_Summon, (CHARACTERGUID)_Owner, (INTEGER)_Summoning, (INTEGER)_IsTotem)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Owner, "Summon_FlamingTongues", _, _, _, _)
+AND
+NRD_ApplyActiveDefense(_Summon, "FLAMING_TONGUES", 18.0, _SummonActiveDefense)
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Summon, "FLAMING_TONGUES", "FlamingTongues_SI0", "", "", "", 1.0, "FlamingTongues", 1, 2000, "");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GEN_Stats_ExtendedStats"

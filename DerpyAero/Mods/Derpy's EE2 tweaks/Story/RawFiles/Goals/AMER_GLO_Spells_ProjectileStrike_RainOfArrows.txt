@@ -1,0 +1,39 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "ProjectileStrike_RainOfArrows", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "RangerLore", 20.0, 4.0, 3000, "SkillCast");
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "ACCURACYBOST", "Ability", "RangerLore", 5.0, 1.0);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "ProjectileStrike_RainOfArrows", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 2)
+AND
+QRY_AMER_Source_Infusion_KickerCost(_Char, 1)
+THEN
+PROC_AMER_GEN_Shoot_Delayed("ProjectileStrike", _Char, NULL_00000000-0000-0000-0000-000000000000, _X, _Y, _Z, "ProjectileStrike_RainOfArrows", 3.0, 5, 50);	//6 total strikes within 3m, 50ms interval.
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "ProjectileStrike_RainOfArrows", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "RangerLore", 20.0, 4.0);
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "ProjectileStrike_RainOfArrows", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+AND
+QRY_AMER_Source_Infusion_KickerCost(_Char, 3)
+THEN
+PROC_AMER_GEN_Shoot_Delayed("ProjectileStrike", _Char, NULL_00000000-0000-0000-0000-000000000000, _X, _Y, _Z, "ProjectileStrike_RainOfArrows", 3.0, 17, 50);	//18 total strikes within 3m, 50ms interval.
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Huntsman"

@@ -1,0 +1,16 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_GEN_RemoteProjectileDamage_TagOffset("CRAB", 2.0);
+DB_AMER_GEN_RemoteProjectileDamage_TagOffset("WOLF", 2.0);
+DB_AMER_GEN_RemoteProjectileDamage_TagOffset("SOURCE_PUPPET", 2.0);
+
+
+KBSECTION
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

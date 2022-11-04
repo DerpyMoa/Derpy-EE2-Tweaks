@@ -1,0 +1,10 @@
+requirement "ExtraStatPoints","Level 4"
+
+requirement "ExtraSkillPoints","Level 4"
+
+requirement "QuickStep",""
+
+requirement "Executioner","AirSpecialist 1"
+
+requirement "WhatARush","WarriorLore 1"
+

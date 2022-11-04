@@ -1,0 +1,35 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+CharacterEnteredTrigger((CHARACTERGUID)_Char, TRIGGERGUID_Derpy_PresetSelection_6422aaf4-66f1-4c38-bf22-6de93d96a4a7)
+AND
+CharacterGetHostCharacter(_Char)
+AND
+QueryOnlyOnce("Derpy_FTJ_PresetSelection")
+THEN
+PROC_AMER_GEN_OpenQueuedMessageBox(_Char, "Choice", "Welcome to EE2 and its add-ons. Would you like to play on the recommended (and harder) difficulty? This can be changed later.", "Yes, I'm familiar with EE2.", "No, I'm new to EE2.");
+
+
+IF
+MessageBoxChoiceClosed((CHARACTERGUID)_Char, (STRING)_Message, "Yes, I'm familiar with EE2.")
+THEN
+PROC_AMER_ORI_DiffPresetChosen(-1, "Impossible");
+PROC_AMER_UI_ModSettings_ValuesChanged();
+GoalCompleted;
+
+
+IF
+MessageBoxChoiceClosed((CHARACTERGUID)_Char, (STRING)_Message, "No, I'm new to EE2.")
+THEN
+PROC_AMER_ORI_DiffPresetChosen(-1, "Hard");
+PROC_AMER_UI_ModSettings_ValuesChanged();
+GoalCompleted;
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "FortJoy"

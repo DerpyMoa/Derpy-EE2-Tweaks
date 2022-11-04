@@ -1,0 +1,57 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Projectile_ChainHeal", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_StatusMod_AddHealing(_Char, "CHAIN_HEAL_SECONDARY", 10.0, "Vitality", 2.0, "Ability", "WaterSpecialist", 1, 0, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddHealing(_Char, "CHAIN_HEAL", 10.0, "Vitality", 2.0, "Ability", "WaterSpecialist", 1, 0);
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Projectile_ChainHeal", 2)
+THEN
+PROC_AMER_GEN_ScriptHit_Register(_Char, "CHAIN_HEAL", "AMER_ChainHeal_Infusion2", 5);
+
+PROC PROC_AMER_GEN_ScriptHit((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, "AMER_ChainHeal_Infusion2")
+THEN
+DB_AMER_IterateCharsAroundObject_Exclusion(_Char);
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 1.0, _Source, 8, "AMER_SourceInfusion_ChainHeal");	//Not dead.
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Projectile_ChainHeal", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+PROC_AMER_GEN_ScriptHit_Register(_Char, "CHAIN_HEAL", "AMER_ChainHeal_Infusion3", 5);
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Projectile_ChainHeal", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_Source_Infusion_RitualRequest(_Char, _Target, _Target, 13.0, "InfusionRitual_ChainHeal_3_ChainHeal", "", "WaterSpecialist", 1, "skill_cast_beam_air_01_cast", 0, 0);
+
+PROC PROC_AMER_Reaction_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, "InfusionRitual_ChainHeal_3_ChainHeal", (STRING)_RequestID, (INTEGER)_RitualBool)
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Water_Cast_Hand_02", "Dummy_CastFX");
+PROC_AMER_GEN_ShootProjectileAt(_Char, _Target, "Projectile_ChainHeal");
+
+PROC PROC_AMER_GEN_ScriptHit((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, "AMER_ChainHeal_Infusion3")
+THEN
+DB_AMER_IterateCharsAroundObject_Exclusion(_Char);
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 2.0, _Source, 8, "AMER_SourceInfusion_ChainHeal");	//Not dead.
+
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "AMER_SourceInfusion_ChainHeal", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+ApplyStatus(_Char, "CHAIN_HEAL_SECONDARY", 0.0, 0, _SourceChar);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Hydrosophist"

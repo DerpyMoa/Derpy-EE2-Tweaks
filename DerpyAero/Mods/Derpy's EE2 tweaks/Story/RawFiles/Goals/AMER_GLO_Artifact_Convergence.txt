@@ -1,0 +1,88 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_GEN_BasicAttackObjectStarted((CHARACTERGUID)_Defender, (REAL)_X, (REAL)_Y, (REAL)_Z, (CHARACTERGUID)_Owner, (CHARACTERGUID)_Attacker, (STRING)_AttackID)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Attacker, "Artifact_Convergence", _)
+THEN
+PROC_Derpy_Artifacts_Convergence(_Attacker, _Defender);
+
+
+PROC PROC_Derpy_Artifacts_Convergence((CHARACTERGUID)_Attacker, (CHARACTERGUID)_Defender)
+AND
+ObjectExists(_Defender, 1)
+AND
+ObjectIsCharacter(_Defender, 1)
+AND
+HasActiveStatus(_Defender, "AMER_CHARGED", 1)
+THEN
+PROC_AMER_TempStat_FlexStat_Add(_Attacker, "Stat", "ACCURACYBOOST", 100.0, 2000, "");
+
+
+PROC PROC_Derpy_Artifacts_Convergence((CHARACTERGUID)_Attacker, (CHARACTERGUID)_Defender)
+THEN
+DB_AMER_Artifacts_Convergence_Count(_Attacker, 0);
+PROC_Derpy_Artifacts_Convergence_Count(_Attacker, _Defender);
+PROC_AMER_TempStat_HitStatus_ThrowProc(_Attacker, "Artifact_Convergence", 2000, "");
+
+
+PROC PROC_Derpy_Artifacts_Convergence_Count((CHARACTERGUID)_Attacker, (CHARACTERGUID)_Defender)
+AND
+CombatGetIDForCharacter(_Attacker, _Combat)
+AND
+DB_CombatCharacters(_Char, _Combat)
+AND
+CharacterIsEnemy(_Attacker, _Char, 1)
+AND
+HasActiveStatus(_Char, "AMER_CHARGED", 1)
+AND
+DB_AMER_Artifacts_Convergence_Count(_Attacker, _OldChance)
+AND
+IntegerSum(_OldChance, 30, _NewChance)
+THEN
+NOT DB_AMER_Artifacts_Convergence_Count(_Attacker, _OldChance);
+DB_AMER_Artifacts_Convergence_Count(_Attacker, _NewChance);
+
+
+PROC PROC_AMER_HitStatus_Event((CHARACTERGUID)_Defender, (CHARACTERGUID)_Attacker, "Artifact_Convergence")
+AND
+DB_AMER_Artifacts_Convergence_Count(_Attacker, _Chance)
+AND
+ObjectExists(_Defender, 1)
+AND
+ObjectIsCharacter(_Defender, 1)
+AND
+HasActiveStatus(_Defender, "AMER_CHARGED", 1)
+AND
+QRY_AMER_GEN_RandomSuccess(_Chance)
+AND
+QRY_AMER_GEN_CharacterGetDisplayName(_Defender)
+AND
+DB_AMER_GEN_OUTPUT_String(_Name)
+AND
+QRY_AMER_GEN_TSK_Get("AMER_Artifact_Convergence_LogText")
+AND
+DB_AMER_GEN_OUTPUT_String(_LogText)
+THEN
+NOT DB_AMER_Artifacts_Convergence_Count(_Attacker, _Chance);
+CharacterStatusText(_Attacker, "Artifact_Convergence");
+PROC_AMER_TempStat_HitStatus_ThrowProc_Clear(_Attacker, "Artifact_Convergence");
+PROC_AMER_GEN_CharacterCombatLogText_Param_Str(_Attacker, _LogText, _Name);
+PROC_AMER_GEN_ShootProjectileAt(_Attacker, _Defender, "Projectile_LightningBolt");
+
+
+PROC PROC_AMER_TempStat_HitStatus_Cleanup((CHARACTERGUID)_Attacker, "Artifact_Convergence")
+AND
+DB_AMER_Artifacts_Convergence_Count(_Attacker, _Chance)
+THEN
+NOT DB_AMER_Artifacts_Convergence_Count(_Attacker, _Chance);
+
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"

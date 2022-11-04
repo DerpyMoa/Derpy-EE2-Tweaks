@@ -1,0 +1,22 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//If you have 3 stacks of Feedback or more when you perform an Elementalist reaction, activate Prosperity for 1 turn.
+
+PROC PROC_AMER_KeywordStat_Elementalist_Feedback_ApplyStackBonuses((CHARACTERGUID)_Char, (INTEGER)_OldStacks, (INTEGER)_NewStacks, (STRING)_NewStatus)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Prosperity_ACT_ElemStacks", _)
+AND
+QRY_AMER_GEN_OncePerRound(_Char, "Ascension_Prosperity_ACT_ElemStacks")
+AND
+_OldStacks >= 3
+THEN
+DB_AMER_GEN_OncePerRound(_Char, "Ascension_Prosperity_ACT_ElemStacks");
+PROC_AMER_KeywordStat_Prosperity_Activate(_Char, 6.0);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

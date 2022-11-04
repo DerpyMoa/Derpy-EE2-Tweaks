@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<save>
+    <header version="2" time="1387205254" />
+    <version major="1" minor="3" revision="0" build="0" />
+    <region id="CharacterCreationClass">
+        <node id="root">
+            <attribute id="ClassDescription" value="A scholar of magic specialised in starting and ending battles with a flick of the wrist, exacting swift victory from a safe distance" handle="hdcdd9c36gb527g4e7fg911cg27ad30056c2c" type="28" />
+			<attribute id="ClassLongDescription" value="The wizard's eyes snapped up from the heavy tome. Outside the small hut, the unmistakable sound of a struggle erupted, and an orcish roar sent shivers down the wizard's spine. But now was not the time for fear.  By the light of the moons, the orc's hulking silhouette was a boil upon the outline of the peaceful woods. He had pinned someone beneath one great knee, and the victim cried out in futile anguish. The wizard whistled. Turning its great head, the orc had only just noticed the distant figure before its great green mass erupted into a shower of ash.   The would-be victim rose, dusting the orc from his hair, and held out a hand. The signet ring of the Order of the Source Hunters glinted upon his finger.  &quot;Friend,&quot; he said, &quot;I was sent to find the great wizard of these woods. But it seems you found me first.&quot;" handle="heee2c64eg9825g4f22gbbbdgbbacd8d16d6d" type="28" />
+            <attribute id="ClassName" value="Wizard" handle="h9ead48cfg6af8g40b7gac12g0beabc01c20e" type="28" />
+            <attribute id="ClassType" value="Wizard" type="22" />
+            <attribute id="SkillSet" value="Class_Wizard" type="22" />
+            <attribute id="Voice" value="1" type="5" />
+			<attribute id="Icon" value="11" type="5" />
+
+            <attribute id="NumStartingCombatAbilityPoints" value="2" type="4" />
+            <attribute id="NumStartingCivilAbilityPoints" value="1" type="4" />
+            <attribute id="NumStartingAttributePoints" value="3" type="4" />
+            <attribute id="NumStartingTalentPoints" value="1" type="4" />
+            
+			<attribute id="AreStatsWeighted" value="1" type="19" />
+            <children>
+            <node id="EquipmentProperties">
+                    <children>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Human" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Wizard_Humans" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Wizard_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Dwarf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Wizard_Dwarves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Wizard_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Elf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Wizard_Elves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Wizard_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Lizard" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Wizard_Lizards" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Wizard_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Human" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Wizard_Humans" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Wizard_Start_Undead" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Dwarf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Wizard_Dwarves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Wizard_Start_Undead" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Elf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Wizard_Elves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Wizard_Start_Undead" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Lizard" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Wizard_Lizards" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Wizard_Start_Undead" type="22" />
+                        </node>
+                    </children>
+                </node>
+                <node id="AbilityChanges">
+                    <children>
+                        <node id="AbilityChange">
+                            <attribute id="Ability" value="EarthSpecialist" type="23" />
+                            <attribute id="AmountIncreased" value="1" type="4" />
+                        </node>
+                        <node id="AbilityChange">
+                            <attribute id="Ability" value="FireSpecialist" type="23" />
+                            <attribute id="AmountIncreased" value="1" type="4" />
+                        </node>
+                        <node id="AbilityChange">
+                            <attribute id="Ability" value="Loremaster" type="23" />
+                            <attribute id="AmountIncreased" value="1" type="4" />
+                        </node>
+                    </children>
+                </node>
+                <node id="AttributeChanges">
+                    <children>
+                        <node id="AttributeChange">
+                            <attribute id="AmountIncreased" value="3" type="4" />
+                            <attribute id="Attribute" value="CON" type="23" />
+                        </node>
+                    </children>
+                </node>
+                <node id="TalentsAdded">
+                    <children>
+                        <node id="TalentAdded">
+                            <attribute id="Talent" value="Torturer" type="23" />
+                        </node>
+                    </children>
+                </node>
+            </children>
+        </node>
+    </region>
+</save>

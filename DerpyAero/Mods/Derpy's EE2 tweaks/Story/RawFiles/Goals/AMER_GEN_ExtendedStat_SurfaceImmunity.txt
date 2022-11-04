@@ -1,0 +1,27 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+NRD_OnHit((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, _Damage, _Handle)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Target, "SurfaceImmunity", _, _, _, _)
+AND
+NRD_StatusGetInt(_Target, _Handle, "Surface", 1)
+AND
+DB_AMER_GEN_DamageTypeEnum(_TypeIndex, _DamageType)
+AND
+NRD_HitStatusGetDamage(_Target, _Handle, _DamageType, _Amount)
+AND
+_Amount != 0
+THEN
+NRD_StatusSetInt(_Target, _Handle, "Hit", 0);
+NRD_HitStatusClearAllDamage(_Target, _Handle);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GEN_Stats_ExtendedStats"

@@ -1,0 +1,68 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+//REGION Base Logic.
+//Base battered/harried removal scripted into ARCANE_STITCH status.
+
+IF
+NRD_OnStatusAttempt(_Char, "SquelchedCD", _Handle, _Source)
+THEN
+NRD_StatusPreventApply(_Char, _Handle, 1);
+
+
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, "Target_ArcaneStitch", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "AMER_ARCANE_STITCH", "InstantEffect", "ApplyBatteredAndHarried", "", "", -3.0, "ArcaneStitch_Base", 0, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddHealing(_Char, "AMER_ARCANE_STITCH", 35.0, "All", 0.0, "", "", 0, 0);
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "AMER_ARCANE_STITCH", "AMER_ARCANE_STITCH", "RemoveStatus", "AMER_SCORCHED", "", 1.0, "ArcaneStitch_Base", 0);
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "AMER_ARCANE_STITCH", "InstantEffect", "RemoveStatus", "AMER_CHARGED", "", 1.0, "ArcaneStitch_Base", 0);
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "AMER_ARCANE_STITCH", "InstantEffect", "RemoveStatus", "POISONED", "", 1.0, "ArcaneStitch_Base", 0);
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "AMER_ARCANE_STITCH", "InstantEffect", "RemoveStatus", "MADNESS", "", 1.0, "ArcaneStitch_Base", 0);
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "AMER_ARCANE_STITCH", "InstantEffect", "RemoveStatus", "SUFFOCATING", "", 1.0, "ArcaneStitch_Base", 0);
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "AMER_ARCANE_STITCH", "InstantEffect", "RemoveStatus", "PLAGUE", "", 1.0, "ArcaneStitch_Base", 0);
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "AMER_ARCANE_STITCH", "InstantEffect", "RemoveStatusFamily", "Ataxia", "", 1.0, "ArcaneStitch_Base", 0);
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "AMER_ARCANE_STITCH", "InstantEffect", "RemoveStatusFamily", "Squelched", "", 1.0, "ArcaneStitch_Base", 0);
+
+//PROC PROC_AMER_Spells_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_ArcaneStitch", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+//THEN
+//ApplyStatus(_Target, "AMER_ARCANE_STITCH", 0.0, 0, _Char);
+
+//END_REGION
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_ArcaneStitch", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+AND
+_InfusCount < 3
+THEN
+PROC_AMER_TempStat_StatusMod_AddHealing(_Char, "AMER_ARCANE_STITCH", 20.0, "All", 3.0, "Ability", "WaterSpecialist", 1, 0);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_ArcaneStitch", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+DB_AMER_IterateCharsAroundObject_Exclusion(_Target);	//Don't apply to target twice.
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 13.0, _Char, 12, "AMER_SourceInfusion_ArcaneStitch_2");	//Allies, not dead.
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "AMER_SourceInfusion_ArcaneStitch_2", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Water_Divine_Impact_01", "Dummy_BodyFX");
+ApplyStatus(_Char, "AMER_ARCANE_STITCH", 0.0, 0, _SourceChar);
+PROC_AMER_BatteredHarried_DirectManip(_Char, 2, -3, _SourceChar);	//Need to do battered/harried manip per-target rather than as a statusmod so it doesn't apply twice to the primary target (since we have it applied in the skill's stats).
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_ArcaneStitch", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_TempStat_StatusMod_AddHealing(_Char, "AMER_ARCANE_STITCH", 20.0, "All", 4.0, "Ability", "WaterSpecialist", 1, 0);
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Hydrosophist"

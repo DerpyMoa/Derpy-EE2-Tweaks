@@ -1,0 +1,160 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Talents_Toggle((CHARACTERGUID)_Char, "ElementalRanger", (REAL)_Toggle)
+AND
+RealProduct(_Toggle, 2.0, _ToggleAdjusted)
+THEN
+PROC_AMER_ExtendedStat_CharacterAddStat(_Char, "ArrowRecovery", "", "", "", _ToggleAdjusted);
+
+
+//=====================================================================================================================
+
+
+PROC PROC_AMER_Spells_SkillPreCast_PerTarget((CHARACTERGUID)_Char, (STRING)_Skill, (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+AND
+CharacterHasTalent(_Char, "ElementalRanger", 1)
+AND
+DB_AMER_GEN_SpecialArrow(_Skill, _Cost)
+THEN
+PROC_AMER_GEN_BasicAttackObjectStarted(NULL_00000000-0000-0000-0000-000000000000, _X, _Y, _Z, _Char, _Char, "Attack");
+PROC_AMER_ActionPoints_BasicAttackCost_Wrapper(_Char, _Cost);
+
+
+//=====================================================================================================================
+
+
+IF
+NRD_OnHit((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, _Damage, _Handle)
+AND
+CharacterHasTalent(_Char, "ElementalRanger", 1)
+AND
+NRD_StatusGetString(_Target, _Handle, "SkillId", _Skill)
+AND
+DB_Derpy_SpecialArrows(_Skill)
+AND
+NRD_StatusGetInt(_Target, _Handle, "Missed", 0)
+AND
+GetSurfaceGroundAt(_Target, _Surface)
+AND
+QRY_AMER_GEN_GetSurfaceKeyword(_Surface, "", "Physical", "Fire", "Water", "Earth", "Poison", "Air", "Water", "", "", "Fire") 
+AND
+DB_AMER_GEN_OUTPUT_String(_DamageTypeBonus)
+AND
+_DamageTypeBonus != ""
+AND
+DB_AMER_GEN_DamageTypeEnum(_TypeIndex, _DamageType)
+AND
+NRD_HitStatusGetDamage(_Target, _Handle, _DamageType, _Amount)
+AND
+_Amount != 0
+AND
+Real(_Amount, _AmountReal)
+AND
+RealProduct(_AmountReal, 0.20, _SurfaceDamage)
+AND
+Integer(_SurfaceDamage, _SurfaceDamageInt)
+THEN
+NRD_HitStatusAddDamage(_Target, _Handle, _DamageTypeBonus, _SurfaceDamageInt);
+
+
+//=====================================================================================================================
+
+
+PROC PROC_AMER_GEN_BasicAttackObjectStarted((CHARACTERGUID)_Defender, (REAL)_X, (REAL)_Y, (REAL)_Z, (CHARACTERGUID)_Owner, (CHARACTERGUID)_Attacker, (STRING)_AttackID)
+AND
+CharacterHasTalent(_Attacker, "ElementalRanger", 1)
+AND
+DB_AMER_GEN_PlayerWeaponData(_Attacker, _, _, _WeaponType1, _WeaponType2)
+AND
+QRY_Derpy_ElementalRanger_Valid(_Attacker, _WeaponType1, _WeaponType2)
+THEN
+PROC_Derpy_ElementalRanger_Refund(_Defender, _X, _Y, _Z, _Attacker);
+PROC_AMER_TempStat_HitStatus_ThrowProc(_Attacker, "Talents_ElementalRanger", 2000, "");
+
+
+//=====================================================================================================================
+
+
+PROC PROC_AMER_HitStatus_Event((CHARACTERGUID)_Defender, (CHARACTERGUID)_Attacker, "Talents_ElementalRanger")
+AND
+NOT DB_AMER_Talents_ElementalRanger_OncePerTarget(_Defender, _Attacker)
+AND
+GetSurfaceGroundAt(_Defender, _Surface)  //Zoom zoom
+AND
+QRY_AMER_GEN_GetSurfaceKeyword(_Surface, "", "BLEEDING", "AMER_SCORCHED_APPLY", "AMER_BRITTLE_APPLY", "AMER_CALCIFYING_APPLY", "POISONED", "AMER_CHARGED_APPLY", "AMER_BRITTLE_APPLY", "", "", "AMER_SCORCHED_APPLY")  //Nice drawing btw
+AND
+DB_AMER_GEN_OUTPUT_String(_Status)
+AND
+_Status != ""
+THEN
+DB_Derpy_ElementalRanger(_Defender, _Status, _Attacker);
+DB_AMER_Talents_ElementalRanger_OncePerTarget(_Defender, _Attacker);
+ProcObjectTimer(_Attacker, "Derpy_Talents_ElementalRanger", 100);
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Attacker, "Derpy_Talents_ElementalRanger")
+AND
+DB_Derpy_ElementalRanger(_Defender, _Status, _Attacker)
+THEN
+NOT DB_Derpy_ElementalRanger(_Defender, _Status, _Attacker);
+ApplyStatus(_Defender, _Status, 12.0, 0, _Attacker);
+
+
+PROC PROC_Derpy_ElementalRanger_Refund((CHARACTERGUID)_Defender, (REAL)_X, (REAL)_Y, (REAL)_Z, (CHARACTERGUID)_Attacker)
+AND
+QRY_AMER_GEN_GetSurfaceAtPos(_X, _Y, _Z)
+AND
+DB_AMER_GEN_OUTPUT_String(_Surface)
+AND
+QRY_AMER_GEN_GetSurfaceKeyword(_Surface, "", "ARROWHEAD_BLOOD", "ARROWHEAD_FIRE", "ARROWHEAD_WATER", "ARROWHEAD_OIL", "ARROWHEAD_POISON", "ARROWHEAD_ELECTRIC", "ARROWHEAD_WATER", "", "", "ARROWHEAD_FIRE")
+AND
+DB_AMER_GEN_OUTPUT_String(_Status)
+AND
+_Status != ""
+AND
+HasActiveStatus(_Attacker, _Status, 1)
+THEN
+PROC_AMER_ExtendedStat_CharacterAddStat(_Attacker, "BasicAttackRecoverAP_Oneshot", "", "", "", 1.0);
+
+
+//=====================================================================================================================
+
+
+QRY QRY_Derpy_ElementalRanger_Valid((CHARACTERGUID)_Attacker, "Bow", (STRING)_WeaponType2)
+THEN
+DB_NOOP(1);
+
+
+QRY QRY_Derpy_ElementalRanger_Valid((CHARACTERGUID)_Attacker, "Crossbow", (STRING)_WeaponType2)
+THEN
+DB_NOOP(1);
+
+
+QRY QRY_Derpy_ElementalRanger_Valid((CHARACTERGUID)_Attacker, "Wand", (STRING)_WeaponType2)
+THEN
+DB_NOOP(1);
+
+
+QRY QRY_Derpy_ElementalRanger_Valid((CHARACTERGUID)_Attacker, (STRING)_WeaponType1, "Wand")
+THEN
+DB_NOOP(1);
+
+
+//=====================================================================================================================
+
+
+PROC PROC_AMER_TempStat_HitStatus_Cleanup((CHARACTERGUID)_Attacker, "Talents_ElementalRanger")
+AND
+DB_AMER_Talents_ElementalRanger_OncePerTarget(_Defender, _Attacker)
+THEN
+NOT DB_AMER_Talents_ElementalRanger_OncePerTarget(_Defender, _Attacker);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Talents"

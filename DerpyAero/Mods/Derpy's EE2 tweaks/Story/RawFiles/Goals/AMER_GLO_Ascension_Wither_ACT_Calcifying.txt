@@ -1,0 +1,22 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Apply Wither for 1 turn when applying Calcifying to an enemy.
+
+PROC PROC_AMER_GEN_FilteredStatus_Applied(_Char, _Source, "AMER_CALCIFYING", _)
+AND
+DB_AMER_Ascension_SpecialLogic(_Source, "Ascension_Wither_ACT_Calcifying", _)
+AND
+QRY_AMER_GEN_OncePerRound_PerChar(_Source, "Ascension_Wither_ACT_Calcifying", _Char)
+AND
+CharacterIsEnemy(_Char, _Source, 1)
+THEN
+DB_AMER_GEN_OncePerRound_PerChar(_Source, "Ascension_Wither_ACT_Calcifying", _Char);
+ApplyStatus(_Char, "AMER_WITHER", 6.0, 0, _Source);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

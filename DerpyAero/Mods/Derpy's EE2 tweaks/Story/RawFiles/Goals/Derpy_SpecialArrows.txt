@@ -1,0 +1,29 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_Derpy_SpecialArrows("Projectile_FireArrow_-1");
+DB_Derpy_SpecialArrows("Projectile_ExplosionArrow_-1");
+DB_Derpy_SpecialArrows("Projectile_FreezingArrow_-1");
+DB_Derpy_SpecialArrows("Projectile_WaterArrow_-1");
+DB_Derpy_SpecialArrows("Projectile_CursedFireArrow_-1");
+DB_Derpy_SpecialArrows("Projectile_BlessedWaterArrow_-1");
+DB_Derpy_SpecialArrows("Projectile_SlowDownArrow_-1");
+DB_Derpy_SpecialArrows("Projectile_StunningArrow_-1");
+DB_Derpy_SpecialArrows("Projectile_SteamCloudArrow_-1");
+DB_Derpy_SpecialArrows("Projectile_SmokescreenArrow_-1");
+DB_Derpy_SpecialArrows("Projectile_StaticCloudArrow_-1");
+DB_Derpy_SpecialArrows("Projectile_SilverArrow_-1");
+DB_Derpy_SpecialArrows("Projectile_BleedingArrow_-1");
+DB_Derpy_SpecialArrows("Projectile_KnockedOutArrow_-1");
+DB_Derpy_SpecialArrows("Projectile_PoisonedCloudArrow_-1");
+DB_Derpy_SpecialArrows("Projectile_CharmingArrow_-1");
+DB_Derpy_SpecialArrows("Projectile_PoisonArrow_-1");
+DB_Derpy_SpecialArrows("Projectile_DebuffAllArrow_-1");
+
+KBSECTION
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

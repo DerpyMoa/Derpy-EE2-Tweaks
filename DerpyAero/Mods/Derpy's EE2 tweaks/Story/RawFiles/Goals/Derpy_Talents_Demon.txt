@@ -1,0 +1,121 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Talents_Toggle((CHARACTERGUID)_Char, "Demon", (REAL)_Toggle)
+THEN
+PROC_AMER_ExtendedStat_CharacterAddStat(_Char, "Shoot_OnStatus_WithICD", "AMER_SCORCHED_APPLY", "Projectile_Derpy_StatusDamage_Scorched", "RemoteImpact", _Toggle);
+
+
+PROC PROC_AMER_Talents_Toggle((CHARACTERGUID)_Char, "Demon", 1.0)
+THEN
+PROC_AMER_ExtendedStat_CharacterAddStat(_Char, "MaxRes", "FIRERESISTANCE", "", "", -10.0);
+PROC_AMER_FlexStat_CharacterAddStat(_Char, "Stat", "WATERRESISTANCE", 15.0);
+PROC_AMER_FlexStat_CharacterAddStat(_Char, "Stat", "FIRERESISTANCE", -15.0);
+PROC_AMER_StatusMod_Add_ExtendedStat(_Char, "AMER_SCORCHED", "CustomDoTTick", "RemoteImpact", "Projectile_AMER_SCRIPT_StatusDamage_Burning", "CustomDoTTick_Scorched_Tort", 1.0, "CustomDoTTick_Scorched_Tort", 0);
+
+
+PROC PROC_AMER_Talents_Toggle((CHARACTERGUID)_Char, "Demon", -1.0)
+THEN
+PROC_AMER_ExtendedStat_CharacterAddStat(_Char, "MaxRes", "FIRERESISTANCE", "", "", 10.0);
+PROC_AMER_FlexStat_CharacterAddStat(_Char, "Stat", "WATERRESISTANCE", -15.0);
+PROC_AMER_FlexStat_CharacterAddStat(_Char, "Stat", "FIRERESISTANCE", 15.0);
+PROC_AMER_StatusMod_Add_ExtendedStat(_Char, "AMER_SCORCHED", "CustomDoTTick", "RemoteImpact", "Projectile_AMER_SCRIPT_StatusDamage_Burning", "CustomDoTTick_Scorched_Tort", -1.0, "CustomDoTTick_Scorched_Tort", 0);
+
+
+//===========================================================================================================================
+
+
+PROC PROC_AMER_Spells_SkillPreCast(_Char, _Skill, _, _, _)
+AND
+CharacterHasTalent(_Char, "Demon", 1)
+AND
+QRY_AMER_GEN_OncePerRound(_Char, "Derpy_Talent_Demon_Skill")
+AND
+HasActiveStatus(_Char, "AMER_SCORCHED", 1)
+AND
+NRD_StatGetString(_Skill, "UseWeaponDamage", "Yes")
+THEN
+DB_AMER_GEN_OncePerRound(_Char, "Derpy_Talent_Demon_Skill");
+RemoveStatus(_Char, "AMER_SCORCHED");
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "TalentDemon_Internal", "", "", "Derpy_TalentDemon", 1.0, 2000, "SkillCast");
+
+
+
+PROC PROC_AMER_GEN_BasicAttackObjectStarted((CHARACTERGUID)_Defender, (REAL)_X, (REAL)_Y, (REAL)_Z, (CHARACTERGUID)_Owner, (CHARACTERGUID)_Attacker, (STRING)_AttackID)
+AND
+CharacterHasTalent(_Attacker, "Demon", 1)
+AND
+HasActiveStatus(_Attacker, "AMER_SCORCHED", 1)
+THEN
+PROC_AMER_TempStat_HitStatus_ThrowProc(_Attacker, "Derpy_TalentDemon_BasicHit", 2000, "");
+
+
+PROC PROC_AMER_HitStatus_Event((CHARACTERGUID)_Defender, (CHARACTERGUID)_Attacker, "Derpy_TalentDemon_BasicHit")
+AND
+ObjectExists(_Defender, 1)
+AND
+ObjectIsCharacter(_Defender, 1)
+AND
+CharacterIsEnemy(_Defender, _Attacker, 1)
+AND
+QRY_AMER_GEN_OncePerRound(_Attacker, "Derpy_Talent_Demon_BasicAttack")
+THEN
+DB_AMER_GEN_OncePerRound(_Attacker, "Derpy_Talent_Demon_BasicAttack");
+RemoveStatus(_Attacker, "AMER_SCORCHED");
+PROC_AMER_TempStat_HitStatus_ThrowProc_Clear(_Attacker, "Derpy_TalentDemon_BasicHit");
+PROC_AMER_GEN_CharacterCauseExplosion(_Attacker, _Defender, "Projectile_Derpy_SCRIPT_DemonScorch");
+PlayEffect(_Attacker, "RS3_FX_Skills_Fire_Cast_Hand_01", "Dummy_L_HandFX");
+PlayEffect(_Attacker, "RS3_FX_Skills_Fire_Cast_Hand_01", "Dummy_R_HandFX");
+PlayEffect(_Attacker, "RS3_FX_Skills_Fire_Throw_Cast_Hand_01", "Dummy_L_HandFX");
+PlayEffect(_Attacker, "RS3_FX_Skills_Fire_Throw_Cast_Hand_01", "Dummy_R_HandFX");
+
+
+
+//===========================================================================================================================
+
+
+IF
+NRD_OnPrepareHit((CHARACTERGUID)_Defender, (CHARACTERGUID)_Attacker, _Damage, _HitHandle)
+AND
+CharacterHasTalent(_Attacker, "Demon", 1)
+AND
+CharacterIsEnemy(_Defender, _Attacker, 1)
+AND
+GetVarFloat(_Defender, "AMER_GEN_FireResistance", _FireRes)
+AND
+_FireRes >= 100
+AND
+DB_AMER_GEN_DamageTypeEnum(_TypeIndex, "Fire")
+AND
+NRD_HitGetDamage(_HitHandle, "Fire", _Amount)
+AND
+_Amount != 0
+THEN
+NRD_HitClearDamage(_HitHandle, "Fire");
+NRD_HitAddDamage(_HitHandle, "Physical", _Amount);
+
+
+//===========================================================================================================================
+
+
+IF
+NRD_OnPrepareHit((CHARACTERGUID)_Defender, (CHARACTERGUID)_Attacker, _Damage, _HitHandle)
+AND
+CharacterHasTalent(_Defender, "Demon", 1)
+AND
+NRD_HitGetInt(_HitHandle, "HitType", 4)
+AND
+NRD_HitGetDamage(_HitHandle, "Fire", _Amount)
+AND
+_Amount != 0
+THEN
+NRD_HitClearDamage(_HitHandle, "Fire");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Talents"

@@ -1,0 +1,103 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+//This goal is ordered last so that it can interact with PROC PROC_AMER_Spells_SkillPreCast() blocks last.
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, (STRING)_Skill, (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_MageFin", _)
+AND
+QRY_AMER_Ascension_MageFin_IsMageElement(_Element)
+AND
+NOT DB_AMER_GEN_SkillIsMetaSkill(_Skill)
+AND
+NRD_StatGetString(_Skill, "UseWeaponDamage", "No")
+AND
+DB_AMER_Spells_CastBuffer_APCost(_APCost)
+AND
+_APCost > 2
+AND
+CharacterIsInCombat(_Char, 1)
+AND
+CharacterGetAttribute(_Char, "Finesse", _Fin)
+AND
+IntegerSubtract(_Fin, 10, _FinOverTen)
+AND
+Real(_FinOverTen, _FinOverTenReal)
+AND
+RealProduct(_FinOverTenReal, 10.0, _Chance)
+AND
+RealProduct(_Chance, 0.01, _GuaranteedAP)	//Chance over 100 grants 1 AP always, chance of 200 grants 2 AP always, chance of 300 grants 3 AP always, etc.
+AND
+Integer(_GuaranteedAP, _GuaranteedAPInt)	//_GuaranteedAPInt is 0, 1, 2, 3, etc
+AND
+IntegerProduct(_GuaranteedAPInt, 100, _ChanceAdjust)	//_ChanceAdjust will become 0, 100, 200, 300, etc
+AND
+Real(_ChanceAdjust, _ChanceAdjustReal)
+AND
+RealSubtract(_Chance, _ChanceAdjustReal, _ChanceSurplus)	//_ChanceSurplus is the _Chance over 100, or just _Chance if _Chance was originally less than 100. If _Chance was 200 (or 300, 400, etc), then _ChanceSurplus is 0.
+AND
+Integer(_ChanceSurplus, _ChanceSurplusInt)
+THEN
+PROC_Ascension_MageFin_RecoverAP(_Char, _ChanceSurplusInt, _GuaranteedAPInt);
+
+
+PROC PROC_Ascension_MageFin_RecoverAP((CHARACTERGUID)_Char, (INTEGER)_Chance, (INTEGER)_GuaranteedAP)
+AND
+NOT QRY_Ascension_MageFin_RecoverAP(_Char, _Chance, _GuaranteedAP)	//If chance fails, only award guaranteed AP.
+AND
+Real(_GuaranteedAP, _GuaranteedAPReal)
+THEN
+PROC_AMER_ExtendedStat_CharacterAddStat(_Char, "SpellRecoverAP_Oneshot", "", "", "", _GuaranteedAPReal);
+
+
+QRY QRY_Ascension_MageFin_RecoverAP((CHARACTERGUID)_Char, (INTEGER)_Chance, (INTEGER)_GuaranteedAP)
+AND
+_Chance != 0
+AND
+QRY_AMER_GEN_RandomSuccess(_Chance)
+AND
+IntegerSum(_GuaranteedAP, 1, _TotalBonus)
+AND
+Real(_TotalBonus, _TotalBonusReal)
+THEN
+PROC_AMER_ExtendedStat_CharacterAddStat(_Char, "SpellRecoverAP_Oneshot", "", "", "", _TotalBonusReal);
+
+
+
+
+QRY QRY_AMER_Ascension_MageFin_IsMageElement("Fire")
+THEN
+DB_NOOP(1);
+
+QRY QRY_AMER_Ascension_MageFin_IsMageElement("Water")
+THEN
+DB_NOOP(1);
+
+QRY QRY_AMER_Ascension_MageFin_IsMageElement("Air")
+THEN
+DB_NOOP(1);
+
+QRY QRY_AMER_Ascension_MageFin_IsMageElement("Earth")
+THEN
+DB_NOOP(1);
+
+QRY QRY_AMER_Ascension_MageFin_IsMageElement("Necromancy")
+THEN
+DB_NOOP(1);
+
+QRY QRY_AMER_Ascension_MageFin_IsMageElement("Summoning")
+THEN
+DB_NOOP(1);
+
+QRY QRY_AMER_Ascension_MageFin_IsMageElement("Polymorph")
+THEN
+DB_NOOP(1);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Ascension_MageFin"

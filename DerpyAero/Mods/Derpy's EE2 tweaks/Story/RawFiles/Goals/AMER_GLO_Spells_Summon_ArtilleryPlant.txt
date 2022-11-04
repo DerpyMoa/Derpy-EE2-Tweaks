@@ -1,0 +1,34 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Summon_ArtilleryPlant", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_Summoning_AddKeywordStatToNext(_Char, "Summons_Plant_e63a712f-fc87-4469-8848-fd8941043afd", "SourceGeneration", 1);
+PROC_AMER_Summoning_AddExtendedStatToNext(_Char, "Summons_Plant_e63a712f-fc87-4469-8848-fd8941043afd", "SourceGen_AddTurns", "", "", "", 2.0, 1);
+PROC_AMER_Summoning_AddFlexStatToNext(_Char, "Summons_Plant_e63a712f-fc87-4469-8848-fd8941043afd", "Spell", "Shout_SourceInfusion", 1.0, 1);
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Summon_ArtilleryPlant", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_Summoning_AddFlexStatToNext(_Char, "Summons_Plant_e63a712f-fc87-4469-8848-fd8941043afd", "Spell", "Shout_PlantVenomCoating", 1.0, 1);
+PROC_AMER_Summoning_AddExtendedStatToNext(_Char, "Summons_Plant_e63a712f-fc87-4469-8848-fd8941043afd", "InstantEffect", "AddSP", "", "", 2.0, 1);
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Summon_ArtilleryPlant", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+PROC_AMER_Summoning_AddFlexStatToNext(_Char, "Summons_Plant_e63a712f-fc87-4469-8848-fd8941043afd", "Spell", "Target_PlantWormTremor", 1.0, 1);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Summoning"

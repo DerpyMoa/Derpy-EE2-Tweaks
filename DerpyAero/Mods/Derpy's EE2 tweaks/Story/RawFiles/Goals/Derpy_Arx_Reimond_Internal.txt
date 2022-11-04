@@ -1,0 +1,34 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Combat_TurnStarted(CHARACTERGUID_S_RC_DW_WhiteMagister_b1bdd004-a286-4ad5-9826-a763d672b2a7, _)
+AND
+CombatGetIDForCharacter(CHARACTERGUID_S_RC_DW_WhiteMagister_b1bdd004-a286-4ad5-9826-a763d672b2a7, _Combat)
+AND
+DB_AMER_Combat_Round(_Combat, 1)
+THEN
+CharacterUseSkill(CHARACTERGUID_S_RC_DW_WhiteMagister_b1bdd004-a286-4ad5-9826-a763d672b2a7, "Shout_EnemySparkingSwings", CHARACTERGUID_S_RC_DW_WhiteMagister_b1bdd004-a286-4ad5-9826-a763d672b2a7, 0, 0);
+
+
+PROC PROC_AMER_Combat_TurnStarted(CHARACTERGUID_S_ARX_Barracks_WhiteMagisterVault_Gheist2_99366040-3f84-4fbb-ac32-b26fe0378ae8, _)
+AND
+CombatGetIDForCharacter(CHARACTERGUID_S_ARX_Barracks_WhiteMagisterVault_Gheist2_99366040-3f84-4fbb-ac32-b26fe0378ae8, _Combat)
+AND
+DB_AMER_Combat_Round(_Combat, 1)
+THEN
+CharacterUseSkill(CHARACTERGUID_S_ARX_Barracks_WhiteMagisterVault_Gheist2_99366040-3f84-4fbb-ac32-b26fe0378ae8, "Shout_EnemyFavourableWind", CHARACTERGUID_S_ARX_Barracks_WhiteMagisterVault_Gheist2_99366040-3f84-4fbb-ac32-b26fe0378ae8, 0, 0);
+
+
+IF
+ObjectLeftCombat(CHARACTERGUID_S_RC_DW_WhiteMagister_b1bdd004-a286-4ad5-9826-a763d672b2a7, _)
+THEN
+GoalCompleted;
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Derpy_Arx_ReimondFight"

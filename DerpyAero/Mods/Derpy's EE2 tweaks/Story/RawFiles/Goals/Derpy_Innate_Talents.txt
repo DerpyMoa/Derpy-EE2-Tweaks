@@ -1,0 +1,16 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_Talents_InnateTalent("ViolentMagic");
+
+KBSECTION
+
+PROC PROC_AMER_Talents_InitInnateTalents(_)
+THEN
+DB_AMER_Talents_InnateTalent("ViolentMagic");
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

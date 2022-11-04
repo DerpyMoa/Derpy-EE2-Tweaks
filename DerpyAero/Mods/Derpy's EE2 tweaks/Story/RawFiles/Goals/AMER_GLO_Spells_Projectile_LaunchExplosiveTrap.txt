@@ -1,0 +1,50 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+//Register each thrown trap to the caster.
+PROC PROC_AMER_Spells_SkillCast_PerTarget((CHARACTERGUID)_Char, "Projectile_LaunchExplosiveTrap", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_Spells_OwnerQueue_Add(_Char);
+
+PROC PROC_AMER_Spells_SkillCast_PerTarget((CHARACTERGUID)_Char, "Projectile_LaunchExplosiveTrap", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+AND
+DB_AMER_Spells_IDOverride_Current(_Char, "Projectile_LaunchExplosiveTrap_Empowered_2", _)	//Empowered variant has 3 traps thrown.
+THEN
+PROC_AMER_Spells_OwnerQueue_Add(_Char);
+PROC_AMER_Spells_OwnerQueue_Add(_Char);
+PROC_AMER_Spells_OwnerQueue_Add(_Char);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Projectile_LaunchExplosiveTrap", 1)
+THEN
+PROC_AMER_GEN_ApplyStatusUntilEndOfTurn(_Char, "AMER_EXPLOSIVETRAP_INFUS_1");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Projectile_LaunchExplosiveTrap", 2)
+THEN
+PROC_AMER_GEN_ApplyStatusUntilEndOfTurn(_Char, "AMER_EXPLOSIVETRAP_INFUS_2");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Projectile_LaunchExplosiveTrap", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+ApplyStatus(_Char, "AMER_EXPLOSIVETRAP_INFUS_2", 12.0, 0, _Char);
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+
+
+//Legacy deploy mass traps support.
+PROC PROC_AMER_Spells_SkillCast_PerTarget((CHARACTERGUID)_Char, "Projectile_DeployMassTraps", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_Spells_OwnerQueue_Add(_Char);
+PROC_AMER_Spells_OwnerQueue_Add(_Char);
+PROC_AMER_Spells_OwnerQueue_Add(_Char);
+PROC_AMER_Spells_OwnerQueue_Add(_Char);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Pyrokinetic"

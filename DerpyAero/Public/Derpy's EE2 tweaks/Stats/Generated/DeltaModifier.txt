@@ -1,0 +1,597 @@
+new deltamod "Boost_Armor_Derpy_AlwaysSI1_DeflectiveBarrier_1"
+param "BoostType" "Script"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+new boost "Boost_Armor_Derpy_AlwaysSI1_DeflectiveBarrier_1",1
+
+new deltamod "Boost_Armor_Derpy_AlwaysSI1_Provoke_1"
+param "BoostType" "Script"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+new boost "Boost_Armor_Derpy_AlwaysSI1_Provoke_1",1
+
+new deltamod "Boost_Armor_Derpy_AlwaysSI1_Sabotage_1"
+param "BoostType" "Script"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+new boost "Boost_Armor_Derpy_AlwaysSI1_Sabotage_1",1
+
+new deltamod "Boost_Armor_Derpy_AlwaysSI1_SoothingCold_1"
+param "BoostType" "Script"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+new boost "Boost_Armor_Derpy_AlwaysSI1_SoothingCold_1",1
+
+new deltamod "Boost_Armor_Derpy_AlwaysSI1_MendMetal_1"
+param "BoostType" "Script"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+new boost "Boost_Armor_Derpy_AlwaysSI1_MendMetal_1",1
+
+new deltamod "Boost_Armor_Derpy_AlwaysSI1_HorridWilting_1"
+param "BoostType" "Script"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+new boost "Boost_Armor_Derpy_AlwaysSI1_HorridWilting_1",1
+
+new deltamod "Boost_Armor_Derpy_AlwaysSI1_CloakAndDagger_1"
+param "BoostType" "Script"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+new boost "Boost_Armor_Derpy_AlwaysSI1_CloakAndDagger_1",1
+
+new deltamod "Boost_Armor_Derpy_AlwaysSI1_ReactiveArmor_1"
+param "BoostType" "Script"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+new boost "Boost_Armor_Derpy_AlwaysSI1_ReactiveArmor_1",1
+
+new deltamod "Boost_Armor_Derpy_AlwaysSI1_CostlyEvolution_1"
+param "BoostType" "Script"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+new boost "Boost_Armor_Derpy_AlwaysSI1_CostlyEvolution_1",1
+
+new deltamod "Boost_Armor_Derpy_AlwaysSI1_LaunchBomber_1"
+param "BoostType" "Script"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+new boost "Boost_Armor_Derpy_AlwaysSI1_LaunchBomber_1",1
+
+new deltamod "Boost_Armor_Derpy_AlwaysSI1_RainWater_1"
+param "BoostType" "Script"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+new boost "Boost_Armor_Derpy_AlwaysSI1_RainWater_1",1
+
+
+
+
+
+
+
+new deltamod "Boost_Armor_Base_Leather_Common_Phys10_Magic6"
+param "BoostType" "BaseCommon"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Leather"
+new boost "_Boost_Armor_Phys10",1
+
+new boost "_Boost_Armor_Magic10",1
+
+new deltamod "Boost_Armor_Base_Leather_Uncommon_Phys10_Magic6"
+param "BoostType" "BaseUncommon"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Leather"
+new boost "_Boost_Armor_Phys10",1
+
+new boost "_Boost_Armor_Magic10",1
+
+new deltamod "Boost_Armor_Base_Leather_Uncommon_Phys20_Magic12"
+param "BoostType" "BaseUncommon"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Leather"
+new boost "_Boost_Armor_Phys20",1
+
+new boost "_Boost_Armor_Magic20",1
+
+new deltamod "Boost_Armor_Base_Leather_Uncommon_Phys30_Magic20"
+param "BoostType" "BaseUncommon"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Leather"
+new boost "_Boost_Armor_Phys30",1
+
+new boost "_Boost_Armor_Magic30",1
+
+new deltamod "Boost_Armor_Base_Leather_Uncommon_Phys40_Magic26"
+param "BoostType" "BaseUncommon"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Leather"
+new boost "_Boost_Armor_Phys40",1
+
+new boost "_Boost_Armor_Magic40",1
+
+new deltamod "Boost_Armor_Base_Leather_Uncommon_Phys50_Magic32"
+param "BoostType" "BaseUncommon"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Leather"
+new boost "_Boost_Armor_Phys50",1
+
+new boost "_Boost_Armor_Magic50",1
+
+new deltamod "Boost_Armor_Base_Leather_Rare_Phys20_Magic12"
+param "BoostType" "BaseRare"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Leather"
+new boost "_Boost_Armor_Phys20",1
+
+new boost "_Boost_Armor_Magic20",1
+
+new deltamod "Boost_Armor_Base_Leather_Rare_Phys30_Magic20"
+param "BoostType" "BaseRare"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Leather"
+new boost "_Boost_Armor_Phys30",1
+
+new boost "_Boost_Armor_Magic30",1
+
+new deltamod "Boost_Armor_Base_Leather_Rare_Phys40_Magic26"
+param "BoostType" "BaseRare"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Leather"
+new boost "_Boost_Armor_Phys40",1
+
+new boost "_Boost_Armor_Magic40",1
+
+new deltamod "Boost_Armor_Base_Leather_Rare_Phys50_Magic32"
+param "BoostType" "BaseRare"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Leather"
+new boost "_Boost_Armor_Phys50",1
+
+new boost "_Boost_Armor_Magic50",1
+
+new deltamod "Boost_Armor_Base_Leather_Rare_Phys60_Magic40"
+param "BoostType" "BaseRare"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Leather"
+new boost "_Boost_Armor_Phys60",1
+
+new boost "_Boost_Armor_Magic60",1
+
+new deltamod "Boost_Armor_Base_Leather_Epic_Phys30_Magic20"
+param "BoostType" "BaseEpic"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Leather"
+new boost "_Boost_Armor_Phys30",1
+
+new boost "_Boost_Armor_Magic30",1
+
+new deltamod "Boost_Armor_Base_Leather_Epic_Phys40_Magic26"
+param "BoostType" "BaseEpic"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Leather"
+new boost "_Boost_Armor_Phys40",1
+
+new boost "_Boost_Armor_Magic40",1
+
+new deltamod "Boost_Armor_Base_Leather_Epic_Phys50_Magic32"
+param "BoostType" "BaseEpic"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Leather"
+new boost "_Boost_Armor_Phys50",1
+
+new boost "_Boost_Armor_Magic50",1
+
+new deltamod "Boost_Armor_Base_Leather_Epic_Phys60_Magic40"
+param "BoostType" "BaseEpic"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Leather"
+new boost "_Boost_Armor_Phys60",1
+
+new boost "_Boost_Armor_Magic60",1
+
+new deltamod "Boost_Armor_Base_Leather_Epic_Phys70_Magic46"
+param "BoostType" "BaseEpic"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Leather"
+new boost "_Boost_Armor_Phys70",1
+
+new boost "_Boost_Armor_Magic70",1
+
+new deltamod "Boost_Armor_Base_Leather_Legendary_Phys50_Magic32"
+param "BoostType" "BaseLegendary"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Leather"
+new boost "_Boost_Armor_Phys50",1
+
+new boost "_Boost_Armor_Magic50",1
+
+new deltamod "Boost_Armor_Base_Leather_Legendary_Phys60_Magic40"
+param "BoostType" "BaseLegendary"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Leather"
+new boost "_Boost_Armor_Phys60",1
+
+new boost "_Boost_Armor_Magic60",1
+
+new deltamod "Boost_Armor_Base_Leather_Legendary_Phys70_Magic46"
+param "BoostType" "BaseLegendary"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Leather"
+new boost "_Boost_Armor_Phys70",1
+
+new boost "_Boost_Armor_Magic70",1
+
+new deltamod "Boost_Armor_Base_Leather_Legendary_Phys80_Magic52"
+param "BoostType" "BaseLegendary"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Leather"
+new boost "_Boost_Armor_Phys80",1
+
+new boost "_Boost_Armor_Magic80",1
+
+new deltamod "Boost_Armor_Base_Leather_Legendary_Phys90_Magic60"
+param "BoostType" "BaseLegendary"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Leather"
+new boost "_Boost_Armor_Phys90",1
+
+new boost "_Boost_Armor_Magic90",1
+
+new deltamod "Boost_Armor_Base_Leather_Divine_Phys80_Magic52"
+param "BoostType" "BaseDivine"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Leather"
+new boost "_Boost_Armor_Phys80",1
+
+new boost "_Boost_Armor_Magic80",1
+
+new deltamod "Boost_Armor_Base_Leather_Divine_Phys90_Magic60"
+param "BoostType" "BaseDivine"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Leather"
+new boost "_Boost_Armor_Phys90",1
+
+new boost "_Boost_Armor_Magic90",1
+
+new deltamod "Boost_Armor_Base_Leather_Divine_Phys100_Magic66"
+param "BoostType" "BaseDivine"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Leather"
+new boost "_Boost_Armor_Phys100",1
+
+new boost "_Boost_Armor_Magic100",1
+
+new deltamod "Boost_Armor_Base_Leather_Divine_Phys110_Magic72"
+param "BoostType" "BaseDivine"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Leather"
+new boost "_Boost_Armor_Phys110",1
+
+new boost "_Boost_Armor_Magic110",1
+
+new deltamod "Boost_Armor_Base_Leather_Divine_Phys120_Magic80"
+param "BoostType" "BaseDivine"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Leather"
+new boost "_Boost_Armor_Phys120",1
+
+new boost "_Boost_Armor_Magic120",1
+
+
+
+
+
+
+
+new deltamod "Boost_Armor_Base_Mage_Common_Magic10_Phys2"
+param "BoostType" "BaseCommon"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Robe"
+new boost "_Boost_Armor_Magic10",1
+
+new boost "_Boost_Armor_Phys5",1
+
+new deltamod "Boost_Armor_Base_Mage_Uncommon_Magic10_Phys2"
+param "BoostType" "BaseUncommon"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Robe"
+new boost "_Boost_Armor_Magic10",1
+
+new boost "_Boost_Armor_Phys5",1
+
+new deltamod "Boost_Armor_Base_Mage_Uncommon_Magic20_Phys6"
+param "BoostType" "BaseUncommon"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Robe"
+new boost "_Boost_Armor_Magic20",1
+
+new boost "_Boost_Armor_Phys10",1
+
+new deltamod "Boost_Armor_Base_Mage_Uncommon_Magic30_Phys10"
+param "BoostType" "BaseUncommon"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Robe"
+new boost "_Boost_Armor_Magic30",1
+
+new boost "_Boost_Armor_Phys15",1
+
+new deltamod "Boost_Armor_Base_Mage_Uncommon_Magic40_Phys12"
+param "BoostType" "BaseUncommon"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Robe"
+new boost "_Boost_Armor_Magic40",1
+
+new boost "_Boost_Armor_Phys20",1
+
+new deltamod "Boost_Armor_Base_Mage_Uncommon_Magic50_Phys16"
+param "BoostType" "BaseUncommon"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Robe"
+new boost "_Boost_Armor_Magic50",1
+
+new boost "_Boost_Armor_Phys25",1
+
+new deltamod "Boost_Armor_Base_Mage_Rare_Magic20_Phys6"
+param "BoostType" "BaseRare"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Robe"
+new boost "_Boost_Armor_Magic20",1
+
+new boost "_Boost_Armor_Phys10",1
+
+new deltamod "Boost_Armor_Base_Mage_Rare_Magic30_Phys10"
+param "BoostType" "BaseRare"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Robe"
+new boost "_Boost_Armor_Magic30",1
+
+new boost "_Boost_Armor_Phys15",1
+
+new deltamod "Boost_Armor_Base_Mage_Rare_Magic40_Phys12"
+param "BoostType" "BaseRare"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Robe"
+new boost "_Boost_Armor_Magic40",1
+
+new boost "_Boost_Armor_Phys20",1
+
+new deltamod "Boost_Armor_Base_Mage_Rare_Magic50_Phys16"
+param "BoostType" "BaseRare"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Robe"
+new boost "_Boost_Armor_Magic50",1
+
+new boost "_Boost_Armor_Phys25",1
+
+new deltamod "Boost_Armor_Base_Mage_Rare_Magic60_Phys20"
+param "BoostType" "BaseRare"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Robe"
+new boost "_Boost_Armor_Magic60",1
+
+new boost "_Boost_Armor_Phys30",1
+
+new deltamod "Boost_Armor_Base_Mage_Epic_Magic30_Phys10"
+param "BoostType" "BaseEpic"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Robe"
+new boost "_Boost_Armor_Magic30",1
+
+new boost "_Boost_Armor_Phys15",1
+
+new deltamod "Boost_Armor_Base_Mage_Epic_Magic40_Phys12"
+param "BoostType" "BaseEpic"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Robe"
+new boost "_Boost_Armor_Magic40",1
+
+new boost "_Boost_Armor_Phys20",1
+
+new deltamod "Boost_Armor_Base_Mage_Epic_Magic50_Phys16"
+param "BoostType" "BaseEpic"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Robe"
+new boost "_Boost_Armor_Magic50",1
+
+new boost "_Boost_Armor_Phys25",1
+
+new deltamod "Boost_Armor_Base_Mage_Epic_Magic60_Phys20"
+param "BoostType" "BaseEpic"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Robe"
+new boost "_Boost_Armor_Magic60",1
+
+new boost "_Boost_Armor_Phys30",1
+
+new deltamod "Boost_Armor_Base_Mage_Epic_Magic70_Phys22"
+param "BoostType" "BaseEpic"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Robe"
+new boost "_Boost_Armor_Magic70",1
+
+new boost "_Boost_Armor_Phys35",1
+
+new deltamod "Boost_Armor_Base_Mage_Legendary_Magic50_Phys16"
+param "BoostType" "BaseLegendary"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Robe"
+new boost "_Boost_Armor_Magic50",1
+
+new boost "_Boost_Armor_Phys25",1
+
+new deltamod "Boost_Armor_Base_Mage_Legendary_Magic60_Phys20"
+param "BoostType" "BaseLegendary"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Robe"
+new boost "_Boost_Armor_Magic60",1
+
+new boost "_Boost_Armor_Phys30",1
+
+new deltamod "Boost_Armor_Base_Mage_Legendary_Magic70_Phys22"
+param "BoostType" "BaseLegendary"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Robe"
+new boost "_Boost_Armor_Magic70",1
+
+new boost "_Boost_Armor_Phys35",1
+
+new deltamod "Boost_Armor_Base_Mage_Legendary_Magic80_Phys26"
+param "BoostType" "BaseLegendary"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Robe"
+new boost "_Boost_Armor_Magic80",1
+
+new boost "_Boost_Armor_Phys40",1
+
+new deltamod "Boost_Armor_Base_Mage_Legendary_Magic90_Phys30"
+param "BoostType" "BaseLegendary"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Robe"
+new boost "_Boost_Armor_Magic90",1
+
+new boost "_Boost_Armor_Phys45",1
+
+new deltamod "Boost_Armor_Base_Mage_Divine_Magic80_Phys26"
+param "BoostType" "BaseDivine"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Robe"
+new boost "_Boost_Armor_Magic80",1
+
+new boost "_Boost_Armor_Phys40",1
+
+new deltamod "Boost_Armor_Base_Mage_Divine_Magic90_Phys30"
+param "BoostType" "BaseDivine"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Robe"
+new boost "_Boost_Armor_Magic90",1
+
+new boost "_Boost_Armor_Phys45",1
+
+new deltamod "Boost_Armor_Base_Mage_Divine_Magic100_Phys32"
+param "BoostType" "BaseDivine"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Robe"
+new boost "_Boost_Armor_Magic100",1
+
+new boost "_Boost_Armor_Phys50",1
+
+new deltamod "Boost_Armor_Base_Mage_Divine_Magic110_Phys36"
+param "BoostType" "BaseDivine"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Robe"
+new boost "_Boost_Armor_Magic110",1
+
+new boost "_Boost_Armor_Phys55",1
+
+new deltamod "Boost_Armor_Base_Mage_Divine_Magic120_Phys40"
+param "BoostType" "BaseDivine"
+param "MinLevel" "1"
+param "Frequency" "1"
+param "ModifierType" "Armor"
+param "ArmorType" "Robe"
+new boost "_Boost_Armor_Magic120",1
+
+new boost "_Boost_Armor_Phys60",1

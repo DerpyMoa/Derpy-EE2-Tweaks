@@ -1,0 +1,9 @@
+{
+    "RequiredExtensionVersion": 47,
+    "ModTable": "DerpyAeroTweaks",
+    "FeatureFlags": [
+        "OsirisExtensions",
+        "Preprocessor",
+        "Lua"
+    ]
+}

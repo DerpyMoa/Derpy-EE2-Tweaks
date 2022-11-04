@@ -1,0 +1,40 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+
+KBSECTION
+
+
+PROC PROC_Derpy_SkillBeingPrepared((CHARACTERGUID)_Char, "Target_CorpseExplosion_-1")
+THEN
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 30.0, _Char, 16, "Derpy_CorpseExplosion_UnexplodedCorpses");
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestIndex, "Derpy_CorpseExplosion_UnexplodedCorpses", (CHARACTERGUID)_Char, (CHARACTERGUID)_Corpses)
+AND
+NOT DB_AMER_IsExploded(_Corpses)
+AND
+GetPosition(_Corpses, _X, _Y, _Z)
+THEN
+PlayEffectAtPosition("RS3_FX_SubEffects_MapPing_01", _X, _Y, _Z);
+
+
+
+
+PROC PROC_Derpy_SkillBeingPrepared((CHARACTERGUID)_Char, "Target_IncarnateCorpseExplosion_-1")
+THEN
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 30.0, _Char, 16, "Derpy_Incarnate_CorpseExplosion_UnexplodedCorpses");
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestIndex, "Derpy_Incarnate_CorpseExplosion_UnexplodedCorpses", (CHARACTERGUID)_Char, (CHARACTERGUID)_Corpses)
+AND
+NOT DB_AMER_IsExploded(_Corpses)
+AND
+GetPosition(_Corpses, _X, _Y, _Z)
+THEN
+PlayEffectAtPosition("RS3_FX_SubEffects_MapPing_01", _X, _Y, _Z);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

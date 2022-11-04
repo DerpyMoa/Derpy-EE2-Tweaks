@@ -1,0 +1,58 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//All-In, Flurry and Sucker Punch grants AttackOfOpportunity talent for 1 turn, if not already had.
+
+PROC PROC_AMER_Spells_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_HeavyAttack", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_WeaponSkillTalent_Inconspicuous", _)
+AND
+CharacterIsInCombat(_Char, 1)
+THEN
+PROC_AMER_AscensionReward_TheSerpent_BasicAttackStench(_Char);
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 5.0, _Char, 42, "Derpy_Ascension_Opportunist");
+
+
+PROC PROC_AMER_Spells_SkillCast((CHARACTERGUID)_Char, "Target_DualWieldingAttack", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_WeaponSkillTalent_Inconspicuous", _)
+AND
+CharacterIsInCombat(_Char, 1)
+THEN
+PROC_AMER_AscensionReward_TheSerpent_BasicAttackStench(_Char);
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 5.0, _Char, 42, "Derpy_Ascension_Opportunist");
+
+
+PROC PROC_AMER_Spells_SkillCast((CHARACTERGUID)_Char, "Target_SingleHandedAttack", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_WeaponSkillTalent_Inconspicuous", _)
+AND
+CharacterIsInCombat(_Char, 1)
+THEN
+PROC_AMER_AscensionReward_TheSerpent_BasicAttackStench(_Char);
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 5.0, _Char, 42, "Derpy_Ascension_Opportunist");
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Derpy_Ascension_Opportunist", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+ApplyStatus(_Char, "AMER_ENTHRALLED_2", 12.0, 0, _SourceChar);
+PlayEffect(_SourceChar, "RS3_FX_Skills_Voodoo_DominateMind_Impact_StatusFx_01");
+PlayEffect(_SourceChar, "RS3_FX_Skills_Voodoo_DominateMind_Impact_Root_01");
+
+
+PROC PROC_AMER_AscensionReward_TheSerpent_BasicAttackStench((CHARACTERGUID)_Char)
+THEN
+PROC_AMER_GEN_RemoveAndApplyStatus(_Char, "AMER_ASCBOOST_MELEE_STENCH", 12.0, _Char);
+
+PROC PROC_AMER_AscensionReward_TheSerpent_BasicAttackStench((CHARACTERGUID)_Char)
+AND
+CharacterHasTalent(_Char, "AttackOfOpportunity", 0)
+THEN
+PROC_AMER_StatusMod_FlexStat_TryApplyModForStatus(_Char, _Char, "AMER_ASCBOOST_MELEE_STENCH", "PlayerTempTalent", "AttackOfOpportunity", 1.0, "ASCBOOST_Stench");
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

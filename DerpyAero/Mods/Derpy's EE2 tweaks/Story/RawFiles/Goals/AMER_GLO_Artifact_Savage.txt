@@ -1,0 +1,36 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_HitStatus_Event((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, "Artifact_Savage")
+AND
+NOT DB_AMER_Artifacts_Savage_OncePerAttack(_Source)
+THEN
+PROC_AMER_GEN_CountCharsAroundObject(_Source, 5.0, _Source, 10, "Artifact_Savage_EnemyCount");	//Living enemies within 4m of _Attacker.
+
+PROC PROC_AMER_GEN_CountCharsAroundObject_Returned((INTEGER)_RequestIndex, "Artifact_Savage_EnemyCount", (CHARACTERGUID)_SourceChar, (INTEGER)_Count)
+AND
+NOT DB_AMER_Artifacts_Savage_OncePerAttack(_SourceChar)	//Check onceperattack db here as well because multiple CountChar requests can occur before one returns to execute this block.
+AND
+_Count >= 2
+THEN
+DB_AMER_Artifacts_Savage_OncePerAttack(_SourceChar);
+CharacterStatusText(_SourceChar, "Artifact_Savage");
+PROC_AMER_GEN_CharacterCombatLogText(_SourceChar, "AMER_Artifact_Savage_Activated");
+PROC_AMER_GEN_CharacterCauseExplosion(_SourceChar, _SourceChar, "Projectile_AMER_SCRIPT_Whirlwind");
+PlayEffect(_SourceChar, "RS3_FX_Skills_Fire_Cast_Attack_Round_Hand_01", "Dummy_L_Hand");
+PlayEffect(_SourceChar, "RS3_FX_Skills_Fire_Cast_Attack_Round_Hand_01", "Dummy_R_Hand");
+PlayEffect(_SourceChar, "RS3_FX_Skills_Fire_Cast_Attack_Round_Root_01", "Dummy_Root");
+
+PROC PROC_AMER_TempStat_HitStatus_Cleanup((CHARACTERGUID)_Attacker, "Artifact_Savage")
+AND
+DB_AMER_Artifacts_Savage_OncePerAttack(_Attacker)
+THEN
+NOT DB_AMER_Artifacts_Savage_OncePerAttack(_Attacker);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"

@@ -1,0 +1,14 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_Derpy_Dialogue_BlacklistedStatus("AMER_SABOTAGE");
+DB_Derpy_Dialogue_BlacklistedStatus("AMER_FLAMING_CRESCENDO");
+DB_Derpy_Dialogue_BlacklistedStatus("MARKED");
+
+KBSECTION
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

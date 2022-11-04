@@ -1,0 +1,35 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+CanUseItem(_Char, _Item, _)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Char, "GrenadeRecovery", _, _, _, _Charges)
+AND
+DB_IsPlayer(_Char)
+AND
+IsTagged(_Item, "GRENADES", 1)
+AND
+GetTemplate(_Item, _Template)
+AND
+NOT DB_AMER_ExtendedStat_GrenadeRecovery_BlacklistGrenadeRecovery(_Template)
+AND
+DB_AMER_GEN_NPerRound(_Char, "ExtendedStat_GrenadeRecovery", _Used)
+AND
+Integer(_Charges, _ChargesInt)
+AND
+IntegerSubtract(_ChargesInt, _Used, _Remain)
+AND
+_Remain <= 0
+THEN
+CharacterStatusText(_Char, "Grenade Recovery Depleted");
+
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

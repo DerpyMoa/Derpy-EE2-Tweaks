@@ -1,0 +1,66 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, "Target_FrostyShell", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "BatteredHarried_DirectManipStatuses_Activate", "1", "-3", "", 1.0, 2000, "SkillCast");   //Stats use B/H direct manip status, so need to enable it first.
+
+
+//======================================================================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_FrostyShell", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+AND
+_InfusCount < 3
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, 10.0, 1.0, 0.0, "Ability", "WaterSpecialist")
+AND
+DB_AMER_GEN_OUTPUT_Real(_Scaling)
+THEN
+PROC_AMER_TempStat_StatusMod_AddFlexStat(_Char, "MAGIC_SHELL", "Stat", "MAGICARMORBOOST", _Scaling, "FrostyShell_Infus", 0, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddHealing(_Char, "MAGIC_SHELL", _Scaling, "MagicArmor", 0.0, "", "", 0, 0);
+
+
+//======================================================================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_FrostyShell", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+DB_AMER_IterateCharsAroundObject_Exclusion(_Target);	//Don't double-cast on target.
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 13.0, _Char, 12, "AMER_SourceInfusion_FrostyShell");	//Allies, not dead.
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "AMER_SourceInfusion_FrostyShell", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+ApplyStatus(_Char, "MAGIC_SHELL", 18.0, 0, _SourceChar);
+PROC_AMER_BatteredHarried_DirectManip(_Char, 1, -3, _SourceChar);
+
+
+//======================================================================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_FrostyShell", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, 10.0, 3.0, 0.0, "Ability", "WaterSpecialist")
+AND
+DB_AMER_GEN_OUTPUT_Real(_Scaling)
+THEN
+PROC_AMER_TempStat_StatusMod_AddFlexStat(_Char, "MAGIC_SHELL", "Stat", "MAGICARMORBOOST", _Scaling, "FrostyShell_Infus", 0, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddHealing(_Char, "MAGIC_SHELL", _Scaling, "MagicArmor", 0.0, "", "", 0, 0);
+PROC_AMER_TempStat_StatusMod_AddFlexStat_Scaling(_Char, "MAGIC_SHELL", "Stat_SpecialCase", "EleResistance", "FrostyShell_Infus", 0, "Ability", "WaterSpecialist", 10.0, 1.5);
+PROC_AMER_TempStat_StatusMod_AddExtendedStat_Scaling(_Char, "MAGIC_SHELL", "InstantEffect", "ApplyHarried", "", "", "FrostyShell_Infus", 0, "Ability", "WaterSpecialist", -1.0, -0.3);
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Hydrosophist"

@@ -1,0 +1,31 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+PROC_BossResistancePatch();
+
+KBSECTION
+
+PROC PROC_BossResistancePatch()
+AND
+DB_AMER_ExtendedStat_AddedStat(_Char, "BlockT3Status", "AMER_SQUELCHED_3", "RequisiteStatus", "AMER_ATAXIA_3", _)
+AND
+NOT DB_AMER_ExtendedStat_AddedStat(_Char, "AMER_BOSSRESISTANCE", "Status_SetDuration_Self", "AMER_ATAXIA_3", "", _)
+THEN
+PROC_AMER_StatusMod_ExtendedStat_TryApplyModForStatus(_Char, _Char, "AMER_BOSSRESISTANCE", "Status_SetDuration_Self", "AMER_ATAXIA_3", "", "", 1.0, "BossRes_Ataxia_SetTurns");
+PROC_AMER_StatusMod_ExtendedStat_TryApplyModForStatus(_Char, _Char, "AMER_BOSSRESISTANCE", "Status_SetDuration_Self", "AMER_SQUELCHED_3", "", "", 1.0, "BossRes_Squelched_SetTurns");
+
+QRY QRY_AMER_GEN_InitializeBossResistance_Override((CHARACTERGUID)_Char, (INTEGER)_Level)
+AND
+HasActiveStatus(_Char, "AMER_BOSSRESISTANCE", 0)
+THEN
+PROC_AMER_StatusMod_ExtendedStat_TryApplyModForStatus(_Char, _Char, "AMER_BOSSRESISTANCE", "BlockT3Status", "AMER_SQUELCHED_3", "RequisiteStatus", "AMER_ATAXIA_3", -1.0, "BossResT3_Squelched");
+PROC_AMER_StatusMod_ExtendedStat_TryApplyModForStatus(_Char, _Char, "AMER_BOSSRESISTANCE", "BlockT3Status", "AMER_ATAXIA_3", "RequisiteStatus", "AMER_SQUELCHED_3", -1.0, "BossResT3_Ataxia");
+PROC_AMER_StatusMod_ExtendedStat_TryApplyModForStatus(_Char, _Char, "AMER_BOSSRESISTANCE", "Status_SetDuration_Self", "AMER_ATAXIA_3", "", "", 1.0, "BossRes_Ataxia_SetTurns");
+PROC_AMER_StatusMod_ExtendedStat_TryApplyModForStatus(_Char, _Char, "AMER_BOSSRESISTANCE", "Status_SetDuration_Self", "AMER_SQUELCHED_3", "", "", 1.0, "BossRes_Squelched_SetTurns");
+ApplyStatus(_Char, "AMER_BOSSRESISTANCE", -1.0, 1, _Char);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

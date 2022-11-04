@@ -1,0 +1,12 @@
+new entry "VULTURE_WINGS"
+type "StatusData"
+data "StatusType" "FLOATING"
+data "ForGameMaster" "No"
+data "InitiateCombat" "No"
+data "Icon" "Skill_Rogue_WingedFeet"
+data "DisplayName" "Shout_EtherealSoles_DisplayName"
+data "DisplayNameRef" "Levitate"
+data "Description" "Shout_EtherealSoles_Description"
+data "DescriptionRef" "Makes yourself immune to surfaces, as if you were floating."
+
+

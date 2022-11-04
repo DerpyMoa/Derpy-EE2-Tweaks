@@ -1,0 +1,71 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_TerrifyingCruelty", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "RogueLore", 25.0, 4.0, 2000, "SkillCast");
+//PROC_AMER_TempStat_ExtendedStat_Add_StatScaling(_Char, "AttributeIntelligenceEffect_Multiplier", "", "", "", "Ability", "RogueLore", 0.18, 0.03, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_TerrifyingCruelty", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, 1.0, 0.2, 0.0, "Ability", "RogueLore")
+AND
+DB_AMER_GEN_OUTPUT_Real(_Scaling)
+AND
+Integer(_Scaling, _ScalingInt)
+AND
+QRY_AMER_GEN_IterateCharsAroundObject_GetRequestIndex()
+AND
+DB_AMER_GEN_OUTPUT_Integer(_RequestID)
+THEN
+DB_AMER_Source_Infusion_TerrifyingCruelty_Data(_RequestID, _ScalingInt);
+PROC_AMER_GEN_IterateCharsAroundPoint(_X, _Y, _Z, 3.0, _Char, 10, "AMER_SourceInfusion_TerrifyingCruelty_2");	//Only living enemies.
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "AMER_SourceInfusion_TerrifyingCruelty_2", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+AND
+DB_AMER_Source_Infusion_TerrifyingCruelty_Data(_RequestID, _ScalingInt)
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Voodoo_KneeBreaker_TargetEffect_01", "Dummy_BodyFX");
+ApplyStatus(_Char, "DAMAGE_ON_MOVE", 6.0, 0, _SourceChar);
+PROC_AMER_BatteredHarried_DirectManip(_Char, 0, _ScalingInt, _SourceChar);
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Finished((INTEGER)_RequestID, "AMER_SourceInfusion_TerrifyingCruelty_2", (CHARACTERGUID)_SourceChar)
+AND
+DB_AMER_Source_Infusion_TerrifyingCruelty_Data(_RequestID, _ScalingInt)
+THEN
+NOT DB_AMER_Source_Infusion_TerrifyingCruelty_Data(_RequestID, _ScalingInt);
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_TerrifyingCruelty", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+AND
+DB_AMER_Spells_CastWhileSneaking(_Char, "Target_TerrifyingCruelty", 1)
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 1, 0);
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "RogueLore", 40.0, 8.0);
+//PROC_AMER_TempStat_ExtendedStat_Add_StatScaling(_Char, "AttributeIntelligenceEffect_Multiplier", "", "", "", "Ability", "RogueLore", 0.18, 0.03);
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Target_TerrifyingCruelty", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 5.0, _Char, 10, "AMER_SourceInfusion_TerrifyingCruelty_3");	//Only living enemies.
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "AMER_SourceInfusion_TerrifyingCruelty_3", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Voodoo_TerrifyingCruelty_TargetEffect_01", "Dummy_OverheadFX");
+PROC_AMER_GEN_CharacterCauseExplosion(_SourceChar, _Char, "Projectile_AMER_SCRIPT_TerrifyingCruelty");
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Scoundrel"

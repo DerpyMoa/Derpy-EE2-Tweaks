@@ -1,0 +1,50 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+PROC_AMER_Deltamods_ReinitModifierData();
+
+KBSECTION
+
+PROC PROC_AMER_Deltamods_InitDeclarations()
+THEN
+PROC_AMER_Deltamods_Gen_AddMod_Group("Normal", "Legendary", "", 0.0, "Ring", "", -1, "Derpy_AlwaysSI1_Parent", 1, 1, 0, 0.0, -1.0, 0.0);
+DB_AMER_Deltamods_Prefix_ChildrenExclusive("Derpy_AlwaysSI1_Parent");
+
+PROC_AMER_Deltamods_Prefix_AddChild("Derpy_AlwaysSI1_Parent", "Derpy_AlwaysSI1_DeflectiveBarrier");
+PROC_AMER_Deltamods_ExtendedStat_Add_FromValue("Derpy_AlwaysSI1_DeflectiveBarrier", "AlwaysSI1", "Shout_DeflectiveBarrier", "", "");
+
+PROC_AMER_Deltamods_Prefix_AddChild("Derpy_AlwaysSI1_Parent", "Derpy_AlwaysSI1_Provoke");
+PROC_AMER_Deltamods_ExtendedStat_Add_FromValue("Derpy_AlwaysSI1_Provoke", "AlwaysSI1", "Target_AMER_Taunt", "", "");
+
+PROC_AMER_Deltamods_Prefix_AddChild("Derpy_AlwaysSI1_Parent", "Derpy_AlwaysSI1_Sabotage");
+PROC_AMER_Deltamods_ExtendedStat_Add_FromValue("Derpy_AlwaysSI1_Sabotage", "AlwaysSI1", "Target_Sabotage", "", "");
+
+PROC_AMER_Deltamods_Prefix_AddChild("Derpy_AlwaysSI1_Parent", "Derpy_AlwaysSI1_SoothingCold");
+PROC_AMER_Deltamods_ExtendedStat_Add_FromValue("Derpy_AlwaysSI1_SoothingCold", "AlwaysSI1", "Shout_FrostAura", "", "");
+
+PROC_AMER_Deltamods_Prefix_AddChild("Derpy_AlwaysSI1_Parent", "Derpy_AlwaysSI1_MendMetal");
+PROC_AMER_Deltamods_ExtendedStat_Add_FromValue("Derpy_AlwaysSI1_MendMetal", "AlwaysSI1", "Shout_MendMetal", "", "");
+
+PROC_AMER_Deltamods_Prefix_AddChild("Derpy_AlwaysSI1_Parent", "Derpy_AlwaysSI1_HorridWilting");
+PROC_AMER_Deltamods_ExtendedStat_Add_FromValue("Derpy_AlwaysSI1_HorridWilting", "AlwaysSI1", "Target_AMER_HorridWilting", "", "");
+
+PROC_AMER_Deltamods_Prefix_AddChild("Derpy_AlwaysSI1_Parent", "Derpy_AlwaysSI1_CloakAndDagger");
+PROC_AMER_Deltamods_ExtendedStat_Add_FromValue("Derpy_AlwaysSI1_CloakAndDagger", "AlwaysSI1", "Jump_CloakAndDagger", "", "");
+
+PROC_AMER_Deltamods_Prefix_AddChild("Derpy_AlwaysSI1_Parent", "Derpy_AlwaysSI1_ReactiveArmor");
+PROC_AMER_Deltamods_ExtendedStat_Add_FromValue("Derpy_AlwaysSI1_ReactiveArmor", "AlwaysSI1", "Shout_ReactiveArmor", "", "");
+
+PROC_AMER_Deltamods_Prefix_AddChild("Derpy_AlwaysSI1_Parent", "Derpy_AlwaysSI1_CostlyEvolution");
+PROC_AMER_Deltamods_ExtendedStat_Add_FromValue("Derpy_AlwaysSI1_CostlyEvolution", "AlwaysSI1", "Target_Supercharge", "", "");
+
+PROC_AMER_Deltamods_Prefix_AddChild("Derpy_AlwaysSI1_Parent", "Derpy_AlwaysSI1_LaunchBomber");
+PROC_AMER_Deltamods_ExtendedStat_Add_FromValue("Derpy_AlwaysSI1_LaunchBomber", "AlwaysSI1", "Projectile_LaunchBomber", "", "");
+
+PROC_AMER_Deltamods_Prefix_AddChild("Derpy_AlwaysSI1_Parent", "Derpy_AlwaysSI1_RainWater");
+PROC_AMER_Deltamods_ExtendedStat_Add_FromValue("Derpy_AlwaysSI1_RainWater", "AlwaysSI1", "Rain_Water", "", "");
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

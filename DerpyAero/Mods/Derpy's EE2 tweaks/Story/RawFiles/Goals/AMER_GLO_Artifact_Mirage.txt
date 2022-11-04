@@ -1,0 +1,74 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Once per round while dual wielding or while using a ranged weapon, when either of your armors reaches zero, gain Mirage for 1 turn. Mirage evades the next spell projectile (2s window) and then is removed while also reseting your dodge fatigue.
+
+PROC PROC_AMER_CharacterReceivedDamage((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, (REAL)_DamageTotal, (REAL)_DamageVit, (REAL)_DamagePhys, (REAL)_DamageMagic)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Char, "Artifact_Mirage", _)
+AND
+CharacterIsInCombat(_Char, 1)
+AND
+QRY_Derpy_Mirage_WeaponCheck(_Char)
+AND
+QRY_AMER_GEN_OncePerRound(_Char, "Artifact_Mirage")
+AND
+NOT QRY_AMER_GEN_IsDeadOrDying(_Char)
+AND
+DB_AMER_CharVitals_Max(_Char, _, _PArmorMax, _MArmorMax)
+AND
+NOT QRY_Derpy_Mirage_DamageCheck_Phys(_Char, _DamagePhys, _PArmorMax)
+THEN
+PROC_Derpy_Mirage_DamageCheck_Magic(_Char, _DamageMagic, _MArmorMax);
+
+
+PROC PROC_Derpy_Mirage_DamageCheck_Magic((CHARACTERGUID)_Char, (REAL)_DamageMagic, (REAL)_MArmorMax)
+AND
+_DamageMagic > 0
+AND
+_MArmorMax > 0
+AND
+CharacterGetMagicArmorPercentage(_Char, 0.0)
+THEN
+DB_AMER_GEN_OncePerRound(_Char, "Artifact_Mirage");
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "Derpy_Mirage", "Mirage_Internal", "", "", "", 1.0, "Derpy_Mirage_Internal", 0, 1000, "");
+ApplyStatus(_Char, "Derpy_Mirage", 6.0, 0, _Char);
+
+
+QRY QRY_Derpy_Mirage_DamageCheck_Phys((CHARACTERGUID)_Char, (REAL)_DamagePhys, (REAL)_PArmorMax)
+AND
+_DamagePhys > 0
+AND
+_PArmorMax > 0
+AND
+CharacterGetArmorPercentage(_Char, 0.0)
+THEN
+DB_AMER_GEN_OncePerRound(_Char, "Artifact_Mirage");
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "Derpy_Mirage", "Mirage_Internal", "", "", "", 1.0, "Derpy_Mirage_Internal", 0, 1000, "");
+ApplyStatus(_Char, "Derpy_Mirage", 6.0, 0, _Char);
+
+
+QRY QRY_Derpy_Mirage_WeaponCheck((CHARACTERGUID)_Char)
+AND
+QRY_AMER_GEN_PlayerGetWeaponStyle(_Char)
+AND
+DB_AMER_GEN_OUTPUT_String("DualWielding")
+THEN
+DB_NOOP();
+
+
+QRY QRY_Derpy_Mirage_WeaponCheck((CHARACTERGUID)_Char)
+AND
+QRY_AMER_GEN_PlayerGetWeaponStyle(_Char)
+AND
+DB_AMER_GEN_OUTPUT_String("Ranged")
+THEN
+DB_NOOP();
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"

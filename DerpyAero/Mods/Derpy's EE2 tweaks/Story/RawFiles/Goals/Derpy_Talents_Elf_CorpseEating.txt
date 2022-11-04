@@ -1,0 +1,19 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Talents_Toggle((CHARACTERGUID)_Char, "Elf_CorpseEating", (REAL)_Toggle)
+AND
+CharacterIsPlayer(_Char, 1)
+AND
+RealProduct(_Toggle, 10.0, _ElfRacialVoracity)
+THEN
+PROC_AMER_ExtendedStat_CharacterAddStat(_Char, "Voracity_Life", "", "", "", _ElfRacialVoracity);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Talents"

@@ -1,0 +1,67 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+NRD_OnHit((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, _Damage, _Handle)
+AND
+NRD_StatusGetString(_Target, _Handle, "SkillId", "Projectile_EnemySnipe_-1")
+AND
+NRD_StatusGetInt(_Target, _Handle, "Missed", 0)
+AND
+DB_AMER_Source_Infusion_Pending(_Char, _InfusCount)
+THEN
+PROC_Derpy_Snipe_SI_Effects(_Target, _Char, _InfusCount);
+
+
+//====================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Projectile_EnemySnipe", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "RangerLore", 25.0, 4.0, 2000, "SkillCast");
+
+
+//====================================================================================================================================================
+
+
+PROC PROC_Derpy_Snipe_SI_Effects((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_GEN_Shoot_Delayed("RemoteImpact", _Char, _Target, "Projectile_Derpy_SCRIPT_Snipe_Piercing_SI2", 100);
+
+
+//====================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Projectile_EnemySnipe", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat_Scaling(_Char, "AMER_DISINTEGRATING_PIERCING", "Disintegrating", "Piercing", "", "", "Assassinate_Infus", 0, "Ability", "RangerLore", 0.25, 0.025, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Projectile_EnemySnipe", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "RangerLore", 50.0, 5.0, 2000, "SkillCast");
+
+
+PROC PROC_Derpy_Snipe_SI_Effects((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+ApplyStatus(_Target, "AMER_DISINTEGRATING_PIERCING", 6.0, 0, _Char);
+
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Huntsman"

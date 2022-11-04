@@ -1,0 +1,20 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_RC_DW_SourceLichTeleport(11)
+THEN
+CharacterRemoveSkill(CHARACTERGUID_S_RC_DW_SourceLich_adf5b715-1e96-4e48-88a7-d68a5b6d0351, "Shout_MendMetal");
+CharacterRemoveSkill(CHARACTERGUID_S_RC_DW_SourceLich_adf5b715-1e96-4e48-88a7-d68a5b6d0351, "Shout_ReactiveArmor");
+CharacterRemoveSkill(CHARACTERGUID_S_RC_DW_SourceLich_adf5b715-1e96-4e48-88a7-d68a5b6d0351, "Shout_BoneCage");
+CharacterRemoveSkill(CHARACTERGUID_S_RC_DW_SourceLich_adf5b715-1e96-4e48-88a7-d68a5b6d0351, "Target_WormTremor");
+GoalCompleted;
+
+
+EXITSECTION
+
+
+ENDEXITSECTION
+ParentTargetEdge "ReapersCoast"

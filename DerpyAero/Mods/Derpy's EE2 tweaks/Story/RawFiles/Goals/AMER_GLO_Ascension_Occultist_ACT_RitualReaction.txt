@@ -1,0 +1,38 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//When an ally performs a ritual reaction, apply your Occultist effects to every enemy within 13m
+//Once per round, when an allied totem is commanded to attack by The Ritual Ascension, apply your Occultist effects to every enemy within 13m
+
+PROC PROC_AMER_Reaction_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (STRING)_Reaction, (STRING)_RequestID, 1)
+AND
+DB_AMER_Ascension_SpecialLogic(_Occultist, "Ascension_Occultist_ACT_RitualReaction", _)
+AND
+CharacterIsAlly(_Occultist, _Char, 1)
+THEN
+PROC_AMER_GEN_IterateCharsAroundObject(_Occultist, 13.0, _Occultist, 42, "Derpy_Ascension_OccultistRitual");
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Derpy_Ascension_OccultistRitual", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+AND
+GetPosition(_Char, _X, _Y, _Z)
+THEN
+PROC_AMER_Reaction_Fire(_SourceChar, _Char, _X, _Y, _Z, "AMER_Occultist", "Ascension_Occultist_ACT_RitualReaction", 0);    //Not a reaction request, instantly fire it.
+
+
+PROC PROC_Derpy_TotemShootGoPewPew((CHARACTERGUID)_Totem, (CHARACTERGUID)_Target)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Occultist_MUTA_TotemsAttack", _)
+AND
+QRY_AMER_GEN_OncePerRound(_Char, "Ascension_Occultist_MUTA_TotemsAttack")
+THEN
+DB_AMER_GEN_OncePerRound(_Char, "Ascension_Occultist_MUTA_TotemsAttack");
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 13.0, _Char, 42, "Derpy_Ascension_OccultistRitual");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

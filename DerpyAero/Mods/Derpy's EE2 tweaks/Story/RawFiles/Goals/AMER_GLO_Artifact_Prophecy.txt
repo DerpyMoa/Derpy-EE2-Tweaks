@@ -1,0 +1,47 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+//Hook into this proc to manipulate DB_AMER_Initiative_OUTPUT_Integer()
+//--the amount of AP and Max AP granted by Prepared.
+PROC PROC_AMER_Initiative_Prepared_ManipulateAPReward((CHARACTERGUID)_Char)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Char, "Artifact_Prophecy", _)
+AND
+DB_AMER_Initiative_OUTPUT_Integer(_OldOutput)
+AND
+IntegerSum(_OldOutput, 1, _NewOutput)
+THEN
+NOT DB_AMER_Initiative_OUTPUT_Integer(_OldOutput);
+DB_AMER_Initiative_OUTPUT_Integer(_NewOutput);
+
+
+PROC PROC_AMER_Initiative_Prepared((CHARACTERGUID)_Char, (INTEGER)_Amount)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Char, "Artifact_Prophecy", _)
+THEN
+PROC_AMER_GEN_CharacterGetStat(_Char, "INITIATIVE", "AMER_Artifact_Prophecy_GetStat");
+
+
+
+PROC PROC_AMER_GEN_CharacterGetStat_Returned((INTEGER)_RequestID, (CHARACTERGUID)_Char, "AMER_Artifact_Prophecy_GetStat", "INITIATIVE", (REAL)_Amount)
+AND
+CharacterGetAbility(_Char, "Loremaster", _Tele)
+AND
+Real(_Tele, _TeleReal)
+AND
+RealProduct(_TeleReal, 3.0, _TeleBonus)
+AND
+RealProduct(_Amount, 0.25, _InitBonus)
+AND
+RealSum(_TeleBonus, _InitBonus, _BonusTotal)
+THEN
+PROC_AMER_GEN_RemoveAndApplyStatus(_Char, "AMER_PROPHECY", 6.0, _Char);
+PROC_AMER_StatusMod_FlexStat_TryApplyModForStatus(_Char, _Char, "AMER_PROPHECY", "Stat", "DODGEBOOST", _BonusTotal, "Artifact_Prophecy");
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"

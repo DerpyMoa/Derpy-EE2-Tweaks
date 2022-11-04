@@ -1,0 +1,78 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_EnemyDaggersDrawn", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "ACCURACYBOOST", "Ability", "RogueLore", 5.0, 1.0, 2000, "SkillCast");
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "RogueLore", 25.0, 4.0);
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_EnemyDaggersDrawn", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "RogueLore", 40.0, 8.0);
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_EnemyDaggersDrawn", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "Battered_StackInfluence_Enemy", "", "", "", 2.0);
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "Harried_StackInfluence_Enemy", "", "", "", 2.0);
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Target_EnemyDaggersDrawn", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_Source_Infusion_RitualRequest(_Char, _Target, _Target, 13.0, "InfusionRitual_DaggersDrawn_3_IceFan", "", "WaterSpecialist", 1, "skill_cast_ground_earth_01_cast", 0, 1);
+PROC_AMER_Source_Infusion_RitualRequest(_Char, _Target, _Target, 13.0, "InfusionRitual_DaggersDrawn_3_ThrowingKnife", "", "RogueLore", 1, "skill_attack_projectile_02_cast", 0, 1);
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Target_EnemyDaggersDrawn", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+AND
+QRY_AMER_Reaction_CountHeldReactions("InfusionRitual_DaggersDrawn_3_IceFan")
+AND
+DB_AMER_GEN_OUTPUT_Integer(_RitualSize1)
+AND
+QRY_AMER_Reaction_CountHeldReactions("InfusionRitual_DaggersDrawn_3_ThrowingKnife")
+AND
+DB_AMER_GEN_OUTPUT_Integer(_RitualSize2)
+AND
+IntegerSum(_RitualSize1, _RitualSize2, _RitualSizeTotal)
+AND
+Real(_RitualSizeTotal, _RitualSizeReal)
+AND
+RealProduct(_RitualSizeReal, 3.0, _Bonus)
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "RogueLore", 0.0, _Bonus);
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_EnemyDaggersDrawn", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_Reaction_ApproveHeldReactions("InfusionRitual_DaggersDrawn_3_IceFan");
+PROC_AMER_Reaction_ApproveHeldReactions("InfusionRitual_DaggersDrawn_3_ThrowingKnife");
+
+
+
+PROC PROC_AMER_Reaction_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, "InfusionRitual_DaggersDrawn_3_IceFan", (STRING)_RequestID, (INTEGER)_RitualBool)
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Water_Cast_Ground_Earth_Root_01", "");
+PROC_AMER_GEN_Shoot_Delayed("Projectile", _Char, _Target, "Projectile_AMER_SCRIPT_IceFan_NoFF", 2, 200);	//3 total projectiles.
+
+PROC PROC_AMER_Reaction_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, "InfusionRitual_DaggersDrawn_3_ThrowingKnife", (STRING)_RequestID, (INTEGER)_RitualBool)
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Void_Cast_Weapon_Hand_01", "Dummy_CastFX");
+PROC_AMER_GEN_ShootProjectileAt(_Char, _Target, "Projectile_ThrowingKnife");
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Scoundrel"

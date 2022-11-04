@@ -1,0 +1,80 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_Derpy_Arx_Reimond_Combatants(CHARACTERGUID_S_RC_DW_WhiteMagister_b1bdd004-a286-4ad5-9826-a763d672b2a7);
+DB_Derpy_Arx_Reimond_Combatants(CHARACTERGUID_S_ARX_Barracks_WhiteMagisterVault_Gheist1_bf45ee01-e395-4169-9013-4dd96e422e07);
+DB_Derpy_Arx_Reimond_Combatants(CHARACTERGUID_S_ARX_Barracks_WhiteMagisterVault_Gheist3_1a3dd9ea-1c4c-440e-82bf-0e9ca9ac6e30);
+DB_Derpy_Arx_Reimond_Combatants(CHARACTERGUID_S_ARX_Barracks_WhiteMagisterVault_Gheist2_99366040-3f84-4fbb-ac32-b26fe0378ae8);
+DB_Derpy_Arx_Reimond_Combatants(CHARACTERGUID_Derpy_Arx_Reimond_Adds_002_f5894629-6153-481a-8ae3-ccc719594910);
+DB_Derpy_Arx_Reimond_Combatants(CHARACTERGUID_Derpy_Arx_Reimond_Adds_003_5827889d-80df-40b4-8ccf-fbd7a6bd89a7);
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_RC_DW_WhiteMagister_b1bdd004-a286-4ad5-9826-a763d672b2a7);
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_ARX_Barracks_WhiteMagisterVault_Gheist1_bf45ee01-e395-4169-9013-4dd96e422e07);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_ARX_Barracks_WhiteMagisterVault_Gheist3_1a3dd9ea-1c4c-440e-82bf-0e9ca9ac6e30);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_ARX_Barracks_WhiteMagisterVault_Gheist2_99366040-3f84-4fbb-ac32-b26fe0378ae8);
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_Derpy_Arx_Reimond_Adds_002_f5894629-6153-481a-8ae3-ccc719594910);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_Derpy_Arx_Reimond_Adds_003_5827889d-80df-40b4-8ccf-fbd7a6bd89a7);
+
+DB_ARX_Barracks_WhiteMagisterVault_Gheists(CHARACTERGUID_Derpy_Arx_Reimond_Adds_002_f5894629-6153-481a-8ae3-ccc719594910);
+DB_ARX_Barracks_WhiteMagisterVault_Gheists(CHARACTERGUID_Derpy_Arx_Reimond_Adds_003_5827889d-80df-40b4-8ccf-fbd7a6bd89a7);
+
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_RC_DW_WhiteMagister_b1bdd004-a286-4ad5-9826-a763d672b2a7, "Target_EnemyFlurry");
+
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_Derpy_Arx_Reimond_Adds_002_f5894629-6153-481a-8ae3-ccc719594910, "Target_EnemyDaggersDrawn");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_Derpy_Arx_Reimond_Adds_003_5827889d-80df-40b4-8ccf-fbd7a6bd89a7, "Target_EnemyDaggersDrawn");
+
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_ARX_Barracks_WhiteMagisterVault_Gheist1_bf45ee01-e395-4169-9013-4dd96e422e07, "Cone_EnemyCorrosiveSpray");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_ARX_Barracks_WhiteMagisterVault_Gheist1_bf45ee01-e395-4169-9013-4dd96e422e07, "Quake_EnemyEarthquake");
+
+KBSECTION
+
+IF
+RegionStarted(_)
+AND
+QueryOnlyOnce("Derpy_Arx_ReimondSetup_V2")
+THEN
+CharacterAddSkill(CHARACTERGUID_S_RC_DW_WhiteMagister_b1bdd004-a286-4ad5-9826-a763d672b2a7, "Shout_EnemySparkingSwings", 0);
+
+TeleportTo(CHARACTERGUID_S_ARX_Barracks_WhiteMagisterVault_Gheist3_1a3dd9ea-1c4c-440e-82bf-0e9ca9ac6e30, TRIGGERGUID_Derpy_Arx_Reimond_NW_aa64974d-f524-4212-9eee-37d6fc12f1fb);
+TeleportTo(CHARACTERGUID_S_ARX_Barracks_WhiteMagisterVault_Gheist2_99366040-3f84-4fbb-ac32-b26fe0378ae8, TRIGGERGUID_Derpy_Arx_Reimond_NE_628abb99-d71f-43d2-8343-b80ec99b9c50);
+TeleportTo(CHARACTERGUID_S_ARX_Barracks_WhiteMagisterVault_Gheist1_bf45ee01-e395-4169-9013-4dd96e422e07, TRIGGERGUID_Derpy_Arx_Reimond_Mid_3c71a3c5-83b7-47c5-9240-315db4008afe);
+
+CharacterLookAt(CHARACTERGUID_S_ARX_Barracks_WhiteMagisterVault_Gheist3_1a3dd9ea-1c4c-440e-82bf-0e9ca9ac6e30, TRIGGERGUID_Derpy_Arx_Gheist_NW_1114cd22-05c0-4380-b9e1-7482a8ffa106);
+CharacterLookAt(CHARACTERGUID_S_ARX_Barracks_WhiteMagisterVault_Gheist2_99366040-3f84-4fbb-ac32-b26fe0378ae8, TRIGGERGUID_Derpy_Arx_Gheist_NE_860e4dbf-9df7-4569-bbf2-7a16d7cca918);
+CharacterLookAt(CHARACTERGUID_S_ARX_Barracks_WhiteMagisterVault_Gheist1_bf45ee01-e395-4169-9013-4dd96e422e07, TRIGGERGUID_Derpy_Arx_Gheist_Mid_59d00439-f19c-47e8-b318-38387cb16b81);
+
+
+//====================================================================================================================
+
+
+IF
+ObjectEnteredCombat(CHARACTERGUID_S_RC_DW_WhiteMagister_b1bdd004-a286-4ad5-9826-a763d672b2a7, _)
+THEN
+PROC_AMER_GEN_Goal_Activate("Derpy_Arx_Reimond_Internal");
+
+
+//====================================================================================================================
+
+
+IF
+ObjectEnteredCombat((CHARACTERGUID)_Char, _)
+AND
+DB_Derpy_Arx_Reimond_Combatants(_Char)
+THEN
+PROC_Derpy_ReimondCombatPull(_Char);
+
+
+PROC PROC_Derpy_ReimondCombatPull((CHARACTERGUID)_Char)
+AND
+DB_Derpy_Arx_Reimond_Combatants(_OtherChar)
+THEN
+EnterCombat(_OtherChar,_Char);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "ARX"

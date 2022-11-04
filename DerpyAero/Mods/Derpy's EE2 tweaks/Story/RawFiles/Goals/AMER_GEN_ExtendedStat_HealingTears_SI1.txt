@@ -1,0 +1,25 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+NRD_OnHeal((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, _Amount, _StatusHandle)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Char, "HealingTears_SI1", _, _, _, _)
+AND
+NOT QRY_AMER_GEN_NotDamagedByHeal(_Target)
+AND
+NRD_StatusGetString(_Target, _StatusHandle, "HealType", "Vitality")
+AND
+IntegerDivide(_Amount, 2, _Damage)
+THEN
+ApplyStatus(_Target, "AMER_BRITTLE_APPLY", 12.0, 0, _Char);
+PROC_AMER_GEN_ApplyDamage(_Target, _Damage, "Water", _Char, 0);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GEN_Stats_ExtendedStats"

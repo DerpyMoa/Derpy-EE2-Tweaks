@@ -1,0 +1,20 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_RC_DW_MeistrGuard_8a8a83dd-de7b-42aa-8ab9-d4fc1e878126, "Shout_EnemyIgnition");
+DB_AMER_AIHelpers_MutateAttack_ToSkill_ForChar(CHARACTERGUID_S_RC_DW_MeistrGuard_8a8a83dd-de7b-42aa-8ab9-d4fc1e878126, "Shout_Ignition_Empowered");
+
+KBSECTION
+
+IF
+RegionStarted(_)
+THEN
+SetIsBoss(CHARACTERGUID_S_RC_DW_MeistrGuard_8a8a83dd-de7b-42aa-8ab9-d4fc1e878126, 1);
+GoalCompleted;
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "ReapersCoast"

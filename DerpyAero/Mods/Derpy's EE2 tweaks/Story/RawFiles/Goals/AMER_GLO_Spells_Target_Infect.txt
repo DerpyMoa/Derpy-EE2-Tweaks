@@ -1,0 +1,79 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Target_Infect", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+DB_AMER_Source_Infusion_RefundPoints(_Char, 1, 0);
+PROC_AMER_GEN_CountCharsAroundObject(_Char, 13.0, _Char, 16, "AMER_SourceInfusion_Infect_CorpseCount");	//Count only dead characters within target radius.
+
+PROC PROC_AMER_GEN_CountCharsAroundObject_Returned((INTEGER)_RequestIndex, "AMER_SourceInfusion_Infect_CorpseCount", (CHARACTERGUID)_Caster, (INTEGER)_Corpses)
+AND
+Real(_Corpses, _CorpsesReal)
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Caster, 10.0, 2.5, 0.0, "Ability", "Necromancy")
+AND
+DB_AMER_GEN_OUTPUT_Real(_Scaling)
+AND
+Real(_Corpses, _CorpsesReal)
+AND
+RealProduct(_Scaling, _CorpsesReal, _Bonus)
+THEN
+PROC_AMER_TempStat_FlexStat_Add(_Caster, "Stat", "DAMAGEBOOST", _Bonus, 2000, "SkillCast");
+//PROC_AMER_TempStat_ExtendedStat_Add(_Caster, "AttributeIntelligenceEffect_Multiplier", "", "", "", _Bonus, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_Infect", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, 3.0, 0.4, 0.0, "Ability", "Necromancy")
+AND
+DB_AMER_GEN_OUTPUT_Real(_Scaling)
+AND
+Integer(_Scaling, _ScalingInt)
+THEN
+PROC_AMER_BatteredHarried_DirectManip(_Target, 0, _ScalingInt, _Char);
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Target_Infect", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+DB_AMER_Source_Infusion_RefundPoints(_Char, 1, 0);
+PROC_AMER_GEN_CountCharsAroundObject(_Char, 13.0, _Char, 16, "AMER_SourceInfusion_Infect_CorpseCount");	//Count only dead characters within target radius.
+
+PROC PROC_AMER_GEN_CountCharsAroundObject_Returned((INTEGER)_RequestIndex, "AMER_SourceInfusion_Infect_CorpseCount", (CHARACTERGUID)_Caster, (INTEGER)_Corpses)
+AND
+Real(_Corpses, _CorpsesReal)
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Caster, 25.0, 4.0, 0.0, "Ability", "Necromancy")
+AND
+DB_AMER_GEN_OUTPUT_Real(_Scaling)
+AND
+Real(_Corpses, _CorpsesReal)
+AND
+RealProduct(_Scaling, _CorpsesReal, _Bonus)
+THEN
+PROC_AMER_TempStat_FlexStat_Add(_Caster, "Stat", "DAMAGEBOOST", _Bonus, 2000, "SkillCast");
+//PROC_AMER_TempStat_ExtendedStat_Add(_Caster, "AttributeIntelligenceEffect_Multiplier", "", "", "", _Bonus, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Target_Infect", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 13.0, _Char, 16, "AMER_SourceInfusion_Infect_Infus3");	//Only dead characters.
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "AMER_SourceInfusion_Infect_Infus3", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+PROC_AMER_GEN_CharacterCauseExplosion(_SourceChar, _Char, "Projectile_AMER_SCRIPT_Infect_Infusion_3");
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Necromancer"

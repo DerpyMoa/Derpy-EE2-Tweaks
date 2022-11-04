@@ -1,0 +1,60 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+//Poison damage is converted into Physical at a 1.10x ratio. Applying Poisoned instead applies Acid for 2 turns.
+
+IF
+NRD_OnPrepareHit((CHARACTERGUID)_Defender, (CHARACTERGUID)_Attacker, _Damage, _HitHandle)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Attacker, "AcidicToxins_SI0", _, _, _, _)
+AND
+_Attacker != _Defender
+AND
+NOT QRY_Derpy_AcidicToxins_IsUndeadAlly(_Defender, _Attacker)
+AND
+DB_AMER_GEN_DamageTypeEnum(_TypeIndex, "Poison")
+AND
+NRD_HitGetDamage(_HitHandle, "Poison", _Amount)
+AND
+_Amount != 0
+AND
+Real(_Amount, _AmountReal)
+AND
+RealProduct(_AmountReal, 1.10, _PhysicalDamage)
+AND
+Integer(_PhysicalDamage, _PhysicalDamageInt)
+THEN
+NRD_HitClearDamage(_HitHandle, "Poison");
+NRD_HitAddDamage(_HitHandle, "Physical", _PhysicalDamageInt);
+
+
+IF
+NRD_OnStatusAttempt((CHARACTERGUID)_Defender, "POISONED", _StatusHandle, (CHARACTERGUID)_Attacker)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Attacker, "AcidicToxins_SI0", _, _, _, _)
+AND
+_Attacker != _Defender
+AND
+NOT QRY_Derpy_AcidicToxins_IsUndeadAlly(_Defender, _Attacker)
+THEN
+NRD_StatusPreventApply(_Defender, _StatusHandle, 1);
+ApplyStatus(_Defender, "ACID", 12.0, 0, _Attacker);
+
+
+QRY QRY_Derpy_AcidicToxins_IsUndeadAlly((CHARACTERGUID)_Defender, (CHARACTERGUID)_Attacker)
+AND
+CharacterHasTalent(_Defender, "Zombie", 1)
+AND
+CharacterIsAlly(_Defender, _Attacker, 1)
+THEN
+DB_NOOP(1);
+
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GEN_Stats_ExtendedStats"

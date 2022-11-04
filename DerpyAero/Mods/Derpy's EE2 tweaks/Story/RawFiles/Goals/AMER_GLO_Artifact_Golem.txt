@@ -1,0 +1,56 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Combat_TurnEnded((INTEGER)_Combat, (CHARACTERGUID)_Char, 0)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Char, "Artifact_Golem", _)
+AND
+HasActiveStatus(_Char, "AMER_PROSPERITY", 1)
+AND
+QRY_AMER_GEN_OncePerRound(_Char, "Artifact_Golem")
+AND
+GetPosition(_Char, _X, _Y, _Z)
+AND
+GetVarFloat(_Char, "AMER_GEN_MaximumVitality", _MaxVit)
+AND
+RealProduct(_MaxVit, 0.15, _DamageSelf)
+AND
+RealProduct(_MaxVit, 0.25, _DamageOther)
+AND
+Integer(_DamageSelf, _DamageSelfInt)
+AND
+Integer(_DamageOther, _DamageOtherInt)
+AND
+QRY_AMER_GEN_IterateCharsAroundObject_GetRequestIndex()
+AND
+DB_AMER_GEN_OUTPUT_Integer(_RequestID)
+THEN
+DB_AMER_GEN_OncePerRound(_Char, "Artifact_Golem");
+DB_AMER_Artifacts_Golem_Data(_RequestID, _DamageOtherInt);
+PlayEffectAtPosition("AMER_RS3_FX_Artifact_Golem_Impact", _X, _Y, _Z);
+CharacterStatusText(_Char, "Artifact_Golem");
+PROC_AMER_GEN_CharacterCombatLogText(_Char, "AMER_Artifact_Golem_Activated");
+PROC_AMER_GEN_ApplyDamage(_Char, _DamageSelfInt, "Physical", _Char, 0);
+PROC_AMER_GEN_ApplyDamage(_Char, _DamageSelfInt, "Earth", _Char, 0);
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 3.0, _Char, 9, "Artifact_Golem_DamageIterator");	//Living non-self characters within 3.0m.
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Artifact_Golem_DamageIterator", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+AND
+DB_AMER_Artifacts_Golem_Data(_RequestID, _Damage)
+THEN
+PROC_AMER_GEN_ApplyDamage(_Char, _Damage, "Physical", _SourceChar, 0);
+PROC_AMER_GEN_ApplyDamage(_Char, _Damage, "Earth", _SourceChar, 0);
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Finished((INTEGER)_RequestID, "Artifact_Golem_DamageIterator", (CHARACTERGUID)_SourceChar)
+AND
+DB_AMER_Artifacts_Golem_Data(_RequestID, _Damage)
+THEN
+NOT DB_AMER_Artifacts_Golem_Data(_RequestID, _Damage);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"

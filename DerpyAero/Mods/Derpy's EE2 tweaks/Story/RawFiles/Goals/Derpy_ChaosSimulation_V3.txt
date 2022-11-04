@@ -1,0 +1,37 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_Derpy_FakeChaosProjBarrage(0, "Projectile_Derpy_SCRIPT_MultiShot_Fire");
+DB_Derpy_FakeChaosProjBarrage(1, "Projectile_Derpy_SCRIPT_MultiShot_Water");
+DB_Derpy_FakeChaosProjBarrage(2, "Projectile_Derpy_SCRIPT_MultiShot_Air");
+DB_Derpy_FakeChaosProjBarrage(3, "Projectile_Derpy_SCRIPT_MultiShot_Earth");
+
+DB_Derpy_FakeChaosProjBarrage_SI1(0, "Projectile_Derpy_SCRIPT_MultiShot_Fire_SI1");
+DB_Derpy_FakeChaosProjBarrage_SI1(1, "Projectile_Derpy_SCRIPT_MultiShot_Water_SI1");
+DB_Derpy_FakeChaosProjBarrage_SI1(2, "Projectile_Derpy_SCRIPT_MultiShot_Air_SI1");
+DB_Derpy_FakeChaosProjBarrage_SI1(3, "Projectile_Derpy_SCRIPT_MultiShot_Earth_SI1");
+
+
+//===========================================================================================
+
+
+DB_Derpy_FakeChaosProjDimensionalBolt(0, "Projectile_Derpy_SCRIPT_DimensionalBolt_Fire");
+DB_Derpy_FakeChaosProjDimensionalBolt(1, "Projectile_Derpy_SCRIPT_DimensionalBolt_Water");
+DB_Derpy_FakeChaosProjDimensionalBolt(2, "Projectile_Derpy_SCRIPT_DimensionalBolt_Air");
+DB_Derpy_FakeChaosProjDimensionalBolt(3, "Projectile_Derpy_SCRIPT_DimensionalBolt_Earth");
+
+
+DB_Derpy_FakeChaosProjDimensionalBolt_SI1(0, "Projectile_Derpy_SCRIPT_DimensionalBolt_Fire_SI1");
+DB_Derpy_FakeChaosProjDimensionalBolt_SI1(1, "Projectile_Derpy_SCRIPT_DimensionalBolt_Water_SI1");
+DB_Derpy_FakeChaosProjDimensionalBolt_SI1(2, "Projectile_Derpy_SCRIPT_DimensionalBolt_Air_SI1");
+DB_Derpy_FakeChaosProjDimensionalBolt_SI1(3, "Projectile_Derpy_SCRIPT_DimensionalBolt_Earth_SI1");
+
+
+
+KBSECTION
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

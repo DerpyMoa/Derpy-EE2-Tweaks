@@ -1,0 +1,70 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_Derpy_ProjectileLanded("40599056-4a23-45c3-b67c-36bc709de63f", (CHARACTERGUID)_Char, (REAL)_X, (REAL)_Y, (REAL)_Z)
+AND
+Random(4, _Rand)
+AND
+DB_Derpy_FakeChaosProjBarrage(_Rand, _Proj)
+THEN
+PROC_AMER_GEN_CharacterCauseExplosionAtPos(_Char, _X, _Y, _Z, _Proj);
+
+
+//=============================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Projectile_Multishot", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, _InfusCount)
+AND
+_InfusCount > 0
+AND
+Random(4, _Rand1)
+AND
+Random(4, _Rand2)
+AND
+Random(4, _Rand3)
+AND
+DB_Derpy_FakeChaosProjBarrage_SI1(_Rand1, _Proj1)
+AND
+DB_Derpy_FakeChaosProjBarrage_SI1(_Rand2, _Proj2)
+AND
+DB_Derpy_FakeChaosProjBarrage_SI1(_Rand3, _Proj3)
+THEN
+PROC_AMER_GEN_Shoot_Delayed("Explosion", _Char, _X, _Y, _Z, _Proj1, 300);
+PROC_AMER_GEN_Shoot_Delayed("Explosion", _Char, _X, _Y, _Z, _Proj2, 400);
+PROC_AMER_GEN_Shoot_Delayed("Explosion", _Char, _X, _Y, _Z, _Proj3, 500);
+
+
+//=============================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Projectile_Multishot", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, _InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_GEN_Shoot_Delayed("ProjectileStrike", _Char, NULL_00000000-0000-0000-0000-000000000000, _X, _Y, _Z, "Projectile_Fireball", 0.0, 2, 300);	//3 total strikes within 0m, 300ms interval.
+
+
+//=============================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Projectile_Multishot", _InfusCount)
+AND
+_InfusCount > 2
+THEN
+ApplyStatus(_Char, "INNER_DEMON", 18.0, 0, _Char);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Projectile_Multishot", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, _InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_GEN_Shoot_Delayed("Explosion", _Char, NULL_00000000-0000-0000-0000-000000000000, _X, _Y, _Z, "Projectile_AMER_SCRIPT_RockSpikes_Infusion_2", 0.0, 2, 400);	//3 total strikes within 0m, 400ms interval.
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Huntsman"

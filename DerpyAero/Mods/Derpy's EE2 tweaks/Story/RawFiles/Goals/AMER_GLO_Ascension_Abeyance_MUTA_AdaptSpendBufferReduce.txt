@@ -1,0 +1,60 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//When you activate Abeyance, if your abeyed damage exceeds 40% of your maximum Vitality, lose all stacks of Adaptation to reduce your abeyed damage by 10% per stack lost.
+
+
+QRY QRY_AMER_KeywordStat_Adaptation_AddStack_Blocked((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, (INTEGER)_StacksAdded)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Abeyance_MUTA_AdaptSpendBufferReduce", _)
+AND
+_Char != _Source
+THEN
+DB_NOOP();
+
+
+PROC PROC_AMER_KeywordStat_Abeyance_Buffer_Update_GetDamageTotal_Manip((CHARACTERGUID)_Char, (REAL)_DamageTotal)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Abeyance_MUTA_AdaptSpendBufferReduce", _)
+AND
+DB_AMER_KeywordStat_Adaptation_CurrentStack(_Char, _StackCount)
+AND
+_StackCount > 0
+AND
+DB_AMER_GEN_OUTPUT_Real(_DamageTotalStored) //Probably equal to _DamageTotal, but not if multiple logic sets are trying to manipulate it.
+AND
+DB_AMER_CharVitals_Max(_Char, _VitMax, _, _)
+AND
+RealDivide(_DamageTotalStored, _VitMax, _StoredPercOfMax)
+AND
+_StoredPercOfMax > 0.4
+AND
+IntegerProduct(_StackCount, 10, _LogTextReduc)
+AND
+IntegerProduct(_StackCount, -1, _StacksNeg)
+AND
+Real(_StackCount, _StackCountReal)
+AND
+RealProduct(_StackCountReal, 0.1, _Reduc)
+AND
+RealSubtract(1.0, _Reduc, _Mult)
+AND
+RealMax(_Mult, 0.0, _MultBounded)   //Don't allow negative mult.
+AND
+RealProduct(_DamageTotal, _MultBounded, _DamageAdjusted)
+AND
+QRY_AMER_GEN_TSK_Get("AMER_Ascension_Abeyance_MUTA_AdaptSpendBufferReduce")
+AND
+DB_AMER_GEN_OUTPUT_String(_LogText)
+THEN
+PROC_AMER_KeywordStat_Adaptation_AddStack(_Char, _Char, _StacksNeg);
+NOT DB_AMER_GEN_OUTPUT_Real(_DamageTotalStored);
+DB_AMER_GEN_OUTPUT_Real(_DamageAdjusted);
+PROC_AMER_GEN_CharacterCombatLogText_Param_IntInt(_Char, _LogText, _StackCount, _LogTextReduc);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

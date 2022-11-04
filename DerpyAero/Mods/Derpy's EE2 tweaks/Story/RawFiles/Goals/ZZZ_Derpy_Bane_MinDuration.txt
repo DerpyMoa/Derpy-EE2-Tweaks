@@ -1,0 +1,19 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+
+PROC PROC_AMER_Status_StatusApplying_Override_Final((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, "AMER_BANE", (INTEGER)_Turns)
+AND
+DB_AMER_Status_OUTPUT_Duration(0)
+THEN
+NOT DB_AMER_Status_OUTPUT_Duration(0);
+DB_AMER_Status_OUTPUT_Duration(1);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

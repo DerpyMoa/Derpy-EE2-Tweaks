@@ -1,0 +1,37 @@
+INIT
+
+EVENTS
+    
+EVENT CharacterSetSlowed_2
+VARS
+    CHARACTER:_Char
+    LIST<STATUS>:_RemoveList
+    FLOAT:_Stat
+    STATUS:_Result
+ON 
+    FetchCharacterApplyStatusData(_Char, AMER_SLOWED_2)
+ACTIONS    
+    ListClear(_RemoveList)
+    IF "(c1&!c2)|c3"
+        CharacterGetStat(_Stat, _Char, MagicArmorPoints)
+        IsGreaterThen(_Stat, 0.0)
+        CharacterHasTalent(_Char, Raistlin)
+    THEN
+        Set(_Result, AMER_SLOWED_2)
+    ELSE
+        Set(_Result, AMER_SLOWED_1)
+    ENDIF
+    RETURN(_RemoveList,_Result,null)
+
+
+
+//Redirect old statuses
+EVENT CharacterSetSlowed
+VARS
+    CHARACTER:_Character
+    LIST<STATUS>:_RemoveList
+ON 
+    FetchCharacterApplyStatusData(_Character, SLOWED)
+ACTIONS    
+    ListClear(_RemoveList)
+    RETURN(_RemoveList, AMER_SLOWED_2 ,null)

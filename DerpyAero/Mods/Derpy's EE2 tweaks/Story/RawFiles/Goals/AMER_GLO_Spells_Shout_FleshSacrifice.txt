@@ -1,0 +1,23 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+
+PROC PROC_AMER_Spells_SkillCast((CHARACTERGUID)_Char, "Shout_FleshSacrifice", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+AND
+GetVarFloat(_Char, "AMER_GEN_MaximumVitality", _MaxVit)
+AND
+RealProduct(_MaxVit, 0.10, _Damage)
+AND
+Integer(_Damage, _DamageInt)
+THEN
+PROC_AMER_GEN_ApplyDamage(_Char, _DamageInt, "Piercing", _Char, 0);
+PROC_AMER_ActionPoints_Add(_Char, 1);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Special"

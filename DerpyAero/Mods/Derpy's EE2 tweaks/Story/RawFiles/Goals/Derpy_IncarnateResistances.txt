@@ -1,0 +1,47 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Summoning_PreInitSummon((CHARACTERGUID)_Summon, (CHARACTERGUID)_Owner, (STRING)_Root, (INTEGER)_IsBoss)
+AND
+IsTagged(_Summon, "INCARNATE_S", _SmallBool)
+AND
+IsTagged(_Summon, "INCARNATE_G", _GiantBool)
+AND
+IntegerSum(_SmallBool, _GiantBool, _Bools)
+AND
+_Bools > 0
+THEN
+DB_AMER_GEN_InnateDamageImmunity(_Summon, "FIRERESISTANCE");
+DB_AMER_GEN_InnateDamageImmunity(_Summon, "WATERRESISTANCE");
+DB_AMER_GEN_InnateDamageImmunity(_Summon, "EARTHRESISTANCE");
+DB_AMER_GEN_InnateDamageImmunity(_Summon, "AIRRESISTANCE");
+DB_AMER_GEN_InnateDamageImmunity(_Summon, "POISONRESISTANCE");
+DB_AMER_GEN_InnateDamageImmunity(_Summon, "PHYSICALRESISTANCE");
+DB_AMER_GEN_InnateDamageImmunity(_Summon, "PIERCINGRESISTANCE");
+
+
+PROC PROC_AMER_GEN_SummonDied((CHARACTERGUID)_Summon, (CHARACTERGUID)_Owner)
+AND
+IsTagged(_Summon, "INCARNATE_S", _SmallBool)
+AND
+IsTagged(_Summon, "INCARNATE_G", _GiantBool)
+AND
+IntegerSum(_SmallBool, _GiantBool, _Bools)
+AND
+_Bools > 0
+THEN
+NOT DB_AMER_GEN_InnateDamageImmunity(_Summon, "FIRERESISTANCE");
+NOT DB_AMER_GEN_InnateDamageImmunity(_Summon, "WATERRESISTANCE");
+NOT DB_AMER_GEN_InnateDamageImmunity(_Summon, "EARTHRESISTANCE");
+NOT DB_AMER_GEN_InnateDamageImmunity(_Summon, "AIRRESISTANCE");
+NOT DB_AMER_GEN_InnateDamageImmunity(_Summon, "POISONRESISTANCE");
+NOT DB_AMER_GEN_InnateDamageImmunity(_Summon, "PHYSICALRESISTANCE");
+NOT DB_AMER_GEN_InnateDamageImmunity(_Summon, "PIERCINGRESISTANCE");
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

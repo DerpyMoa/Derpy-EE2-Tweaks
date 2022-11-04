@@ -1,0 +1,25 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+
+KBSECTION
+
+
+PROC PROC_Derpy_SkillBeingPrepared((CHARACTERGUID)_Char, "Target_BloatedCorpse_-1")
+AND
+GetPosition(_Char, _X, _Y, _Z)
+THEN
+PROC_AMER_GEN_IterateCharsAroundPoint_2D(_X, _Y, _Z, 30.0, _Char, 16, "Derpy_BloatedCorpse_PingCorpses");
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Derpy_BloatedCorpse_PingCorpses", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+AND
+GetPosition(_Char, _X, _Y, _Z)
+THEN
+PlayEffectAtPosition("RS3_FX_SubEffects_MapPing_01", _X, _Y, _Z);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

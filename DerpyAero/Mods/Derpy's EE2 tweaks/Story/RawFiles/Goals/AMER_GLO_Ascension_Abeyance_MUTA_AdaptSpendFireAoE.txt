@@ -1,0 +1,35 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//If you have 5 or more stacks of Adaptation when you activate Abeyance, pay 2 stacks of Adaptation for each enemy you can see within 8m to deal fire damage to it.
+
+PROC PROC_AMER_KeywordStat_Abeyance_Activate((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, (REAL)_DamageTotal, (REAL)_DamageVit, (REAL)_DamagePhys, (REAL)_DamageMagic)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Abeyance_MUTA_AdaptSpendFireAoE", _)
+AND
+DB_AMER_KeywordStat_Adaptation_CurrentStack(_Char, _StackCount)
+AND
+_StackCount >= 3
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Fire_Flamebreath_Fire_01", "Dummy_OverheadFX");
+PlayEffect(_Char, "RS3_FX_Skills_Fire_Flamebreath_CastHands_01", "Dummy_L_HandFX");
+PlayEffect(_Char, "RS3_FX_Skills_Fire_Flamebreath_CastHands_01", "Dummy_R_HandFX");
+PROC_AMER_GEN_CharacterCombatLogText(_Char, "AMER_Ascension_Abeyance_MUTA_AdaptSpendFireAoE");
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 8.0, _Char, 10, "Ascension_Abeyance_MUTA_AdaptSpendFireAoE");	//Living enemies within 8.0m.
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Ascension_Abeyance_MUTA_AdaptSpendFireAoE", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+AND
+DB_AMER_KeywordStat_Adaptation_CurrentStack(_SourceChar, _StackCount)
+AND
+_StackCount >= 1
+THEN
+PROC_AMER_KeywordStat_Adaptation_AddStack(_SourceChar, _SourceChar, -1);
+PROC_AMER_GEN_CharacterCauseRemoteProjectileDamage(_SourceChar, _Char, "Projectile_DragonFlare");
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

@@ -1,0 +1,80 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_SourceVampirism", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_Spells_SourceVamp(_Char, _Target);
+
+
+PROC PROC_AMER_Spells_SourceVamp((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+AND
+QRY_AMER_Spells_SourceVamp_Conditions(_Target)
+THEN
+SetStoryEvent(_Target, "ARX_DivineTomb_DeathRoom_KillPuppet");
+CharacterStatusText(_Char, "+1 Source Point");
+PROC_AMER_CharacterAddSourcePoints(_Target, -1);
+PROC_AMER_CharacterAddSourcePoints(_Char, 1);
+
+
+PROC PROC_AMER_Spells_SourceVamp((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+AND
+CharacterIsDead(_Target, 1)
+AND
+IsTagged(_Target, "Derpy_Vamp", 0)
+THEN
+CharacterStatusText(_Char, "+1 Source Point");
+PROC_AMER_CharacterAddSourcePoints(_Char, 1);
+ApplyStatus(_Target, "EXPLODE", 0.0, 0, _Char);
+
+
+PROC PROC_AMER_Spells_SourceVamp((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+AND
+CharacterIsDead(_Target, 1)
+AND
+IsTagged(_Target, "Derpy_Vamp", 1)
+THEN
+ClearTag(_Target, "Derpy_Vamp");
+CharacterStatusText(_Char, "+1 Source Point");
+PROC_AMER_CharacterAddSourcePoints(_Char, 1);
+ApplyStatus(_Target, "EXPLODE", 0.0, 0, _Char);
+
+
+PROC PROC_AMER_Spells_SourceVamp((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+AND
+IsTagged(_Target, "GHOST", 1)
+THEN
+ApplyStatus(_Target, "DRAIN", 0.0, 0, _Char);
+
+
+QRY QRY_AMER_Spells_SourceVamp_Conditions((CHARACTERGUID)_Target)
+AND
+CharacterIsDead(_Target, 0) //Not a corpse
+AND
+CharacterGetSourcePoints(_Target, _SP)
+AND
+_SP > 0
+AND
+GetVarFloat(_Target, "AMER_GEN_CurrentPhysicalArmor", _Parmor)
+AND
+GetVarFloat(_Target, "AMER_GEN_CurrentMagicArmor", _Marmor)
+AND
+QRY_AMER_Spells_SourceVamp_ArmorCheck(_Target, _Parmor, _Marmor)
+THEN
+DB_NOOP(1);
+
+
+QRY QRY_AMER_Spells_SourceVamp_ArmorCheck((CHARACTERGUID)_Target, 0.0, (REAL)_Marmor)
+THEN
+DB_NOOP(1);
+
+QRY QRY_AMER_Spells_SourceVamp_ArmorCheck((CHARACTERGUID)_Target, (REAL)_Parmor, 0.0)
+THEN
+DB_NOOP(1);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Special"

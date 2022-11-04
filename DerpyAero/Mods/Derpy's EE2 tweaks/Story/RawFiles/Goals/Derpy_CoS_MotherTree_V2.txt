@@ -1,0 +1,51 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_CoS_Temples_Dryad_01_b53ed2b5-e7f9-4bcb-8795-700cd69648b5);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_CoS_Temples_Dryad_02_93c7ceb1-db06-4c41-8c43-02c1eca4ae65);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_CoS_Temples_Dryad_03_31a04d96-375b-459f-9c97-87d5b3bf8eed);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_CoS_Temples_Scion_f3afdcda-ea9b-40cd-b72c-2008528dec80);
+
+DB_Derpy_EnemiesInCombat(CHARACTERGUID_S_CoS_Temples_Dryad_01_b53ed2b5-e7f9-4bcb-8795-700cd69648b5);
+DB_Derpy_EnemiesInCombat(CHARACTERGUID_S_CoS_Temples_Dryad_02_93c7ceb1-db06-4c41-8c43-02c1eca4ae65);
+DB_Derpy_EnemiesInCombat(CHARACTERGUID_S_CoS_Temples_Dryad_03_31a04d96-375b-459f-9c97-87d5b3bf8eed);
+DB_Derpy_EnemiesInCombat(CHARACTERGUID_S_CoS_Temples_Scion_f3afdcda-ea9b-40cd-b72c-2008528dec80);
+
+KBSECTION
+
+PROC ProcBlockUseOfItem((CHARACTERGUID)_Char, ITEMGUID_S_CoS_Temples_Elf_ToTheTemple_d89ea2e1-2fe8-4271-8f01-c2e396f696b5)
+AND
+DB_Derpy_EnemiesInCombat(_Dryads)
+AND
+CharacterIsInCombat((CHARACTERGUID)_Dryads, 1)
+THEN
+DB_CustomUseItemResponse(_Char,ITEMGUID_S_CoS_Temples_Elf_ToTheTemple_d89ea2e1-2fe8-4271-8f01-c2e396f696b5, 0);
+OpenMessageBox(_Char, "Blocked until the Scion and her Dryads are out of combat.");
+
+
+IF
+AttackedByObject(CHARACTERGUID_S_CoS_Temples_Scion_f3afdcda-ea9b-40cd-b72c-2008528dec80,_,_,_,_)
+AND
+NOT DB_Derpy_ScionPhase3Started(1)
+AND
+DB_CoS_Temples_MotherTree_Minions(_Minion,_Phase)
+AND
+CharacterGetHitpointsPercentage(CHARACTERGUID_S_CoS_Temples_Scion_f3afdcda-ea9b-40cd-b72c-2008528dec80,_Per)
+AND
+_Per < 90.0
+THEN
+CharacterAppear(_Minion,3,"");
+DB_Derpy_ScionPhase3Started(1);
+
+
+PROC
+ProcRegionEnded("CoS_Main")
+THEN
+NOT DB_Derpy_ScionPhase3Started(1);
+GoalCompleted;
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "CouncilOfSeven"

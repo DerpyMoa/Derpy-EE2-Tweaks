@@ -1,0 +1,1060 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+//Casanova
+DB_ArmourSets("ARM_SETS_CasanovaBoots_a0920371-9f1f-4285-a1d0-e7dead1b7398", "Boots", "Casanova");
+DB_ArmourSets("ARM_SETS_CasanovaHelmet_79aee656-f5e5-4db8-9c7c-ffc7bcd8b59e", "Helmet", "Casanova");
+DB_ArmourSets("ARM_SETS_CasanovaShirt_820dab86-4afe-4b17-9ccc-79e381bf59cd", "Breast", "Casanova");
+//Vulture
+DB_ArmourSets("ARM_SETS_VultureBoots_4476e95e-dc38-4fad-aa83-05053d7a908a", "Boots", "Vulture");
+DB_ArmourSets("ARM_SETS_VultureGloves_8b1bf641-28d3-4ec3-a1ab-d697c4ebfa85", "Gloves", "Vulture");
+DB_ArmourSets("ARM_SETS_VultureHelmet_dff85e5f-c72a-40ed-9036-5b08f8ae2b2f", "Helmet", "Vulture");
+DB_ArmourSets("ARM_SETS_VultureLegs_9db3d6b2-86c2-490c-8fbf-2a14b9ba774a", "Leggings", "Vulture");
+DB_ArmourSets("ARM_SETS_VultureArmor_8a1b807d-9865-4fbd-9d98-b0904445761e", "Breast", "Vulture");
+//Contamination
+DB_ArmourSets("ARM_SETS_ContaminationBoots_b894ae2c-a2d5-46da-9050-1e50a7edec63", "Boots", "Contamination");
+DB_ArmourSets("ARM_SETS_ContaminationBoots_Mid_419de8e7-c7d5-4bce-93b1-3da03565ab70", "Boots", "Contamination");
+DB_ArmourSets("ARM_SETS_ContaminationGloves_ac2a6202-246c-4e90-9d11-7c55bcb6193b", "Gloves", "Contamination");
+DB_ArmourSets("ARM_SETS_ContaminationHelmet_791205be-2432-4acb-bcdb-01a5b6bd391b", "Helmet", "Contamination");
+DB_ArmourSets("ARM_SETS_ContaminationLegs_fc06302c-dad9-4691-953a-5f5a19ba9881", "Leggings", "Contamination");
+DB_ArmourSets("ARM_SETS_ContaminationLegs_Mid_0abd081e-3cc0-4f1d-863e-e3b34e56dfe8", "Leggings", "Contamination");
+DB_ArmourSets("ARM_SETS_ContaminationArmor_12956e00-7efe-47d9-a659-60f9fabbaaf9", "Breast", "Contamination");
+//Devourer
+DB_ArmourSets("ARM_SETS_DevourerBoots_a18a346d-30eb-45b7-852b-37cbe7d20f68", "Boots", "Devourer");
+DB_ArmourSets("ARM_SETS_DevourerGloves_62190ebb-943e-4640-bb35-f6688418060c", "Gloves", "Devourer");
+DB_ArmourSets("ARM_SETS_DevourerHelmet_e3141a3f-7e33-419a-bb11-ee47b3c86e8a", "Helmet", "Devourer");
+DB_ArmourSets("ARM_SETS_DevourerLegs_327918c7-804e-42fa-9ec4-c53d711876b8", "Leggings", "Devourer");
+DB_ArmourSets("ARM_SETS_DevourerChest_64799c69-9eca-41bc-854b-3178c4192bcf", "Breast", "Devourer");
+
+//LevelUpEq Effects
+//0 for PlayAtPosition, 1 for attached
+DB_ArmourSets_LevelUpFX("Casanova", "RS3_FX_ArmorEffect_Captains_Armor", 1, "Dummy_RootFX");
+DB_ArmourSets_LevelUpFX("Vulture", "RS3_FX_ArmorEffect_Vulture_Armor", 1, "Dummy_RootFX");
+DB_ArmourSets_LevelUpFX("Contamination", "RS3_FX_ContaminationSet_01", 0, "null");
+DB_ArmourSets_LevelUpFX("Contamination", "RS3_FX_ContaminationSet_02", 1, "Dummy_StatusFX");
+DB_ArmourSets_LevelUpFX("Devourer", "RS3_FX_DevourerSet_01", 1, "Dummy_RootFX");
+
+//Helpers
+DB_ArmourSets_Devourer_CombatCounter(0);
+
+//Transform Templates
+DB_ArmourSets_TransformTemplates("Contamination", "ARM_SETS_ContaminationBoots_b894ae2c-a2d5-46da-9050-1e50a7edec63", "ARM_SETS_ContaminationBoots_MaxOut_7a3fe2b8-5881-45ba-be33-d34e8e48c852", "Boots");
+DB_ArmourSets_TransformTemplates("Contamination", "ARM_SETS_ContaminationLegs_fc06302c-dad9-4691-953a-5f5a19ba9881", "ARM_SETS_ContaminationLegs_MaxOut_88d9f9ac-96fb-4ca7-a241-c61a3f662050", "Leggings");
+DB_ArmourSets_TransformTemplates("Contamination", "ARM_SETS_ContaminationBoots_Mid_419de8e7-c7d5-4bce-93b1-3da03565ab70", "ARM_SETS_ContaminationBoots_MaxOut_7a3fe2b8-5881-45ba-be33-d34e8e48c852", "Boots");
+DB_ArmourSets_TransformTemplates("Contamination", "ARM_SETS_ContaminationLegs_Mid_0abd081e-3cc0-4f1d-863e-e3b34e56dfe8", "ARM_SETS_ContaminationLegs_MaxOut_88d9f9ac-96fb-4ca7-a241-c61a3f662050", "Leggings");
+
+DB_ArmourSets_TransformTemplates("Devourer", "ARM_SETS_DevourerBoots_a18a346d-30eb-45b7-852b-37cbe7d20f68", "ARM_SETS_DevourerBoots_a18a346d-30eb-45b7-852b-37cbe7d20f68", "Boots");
+DB_ArmourSets_TransformTemplates("Devourer", "ARM_SETS_DevourerChest_64799c69-9eca-41bc-854b-3178c4192bcf", "ARM_SETS_DevourerChest_64799c69-9eca-41bc-854b-3178c4192bcf", "Breast");
+DB_ArmourSets_TransformTemplates("Devourer", "ARM_SETS_DevourerGloves_62190ebb-943e-4640-bb35-f6688418060c", "ARM_SETS_DevourerGloves_62190ebb-943e-4640-bb35-f6688418060c", "Gloves");
+DB_ArmourSets_TransformTemplates("Devourer", "ARM_SETS_DevourerHelmet_e3141a3f-7e33-419a-bb11-ee47b3c86e8a", "ARM_SETS_DevourerHelmet_e3141a3f-7e33-419a-bb11-ee47b3c86e8a", "Helmet");
+DB_ArmourSets_TransformTemplates("Devourer", "ARM_SETS_DevourerLegs_327918c7-804e-42fa-9ec4-c53d711876b8", "ARM_SETS_DevourerLegs_327918c7-804e-42fa-9ec4-c53d711876b8", "Leggings");
+
+DB_ArmourSets_Devourer_QuestFinishedFlag("QuestUpdate_DevourerArmour_DEV06_DragonDead_LeftDream");
+DB_ArmourSets_Devourer_QuestFinishedFlag("QuestUpdate_DevourerArmour_DEV06_ConsumedSpirits");
+/*
+DB_ArmourSets_Devourer_NotPickedUpPieces( ITEMGUID_S_ARM_SETS_DevourerGloves_000_139d75bd-8673-49dc-a2fa-6e156460abd3, "Gloves", "FJ_FortJoy_Main");
+DB_ArmourSets_Devourer_NotPickedUpPieces( ITEMGUID_ARM_SETS_DevourerBoots_000_4b6c6667-9d57-445b-a362-b918b8e3514d, "Boots", "RC_Main");
+DB_ArmourSets_Devourer_NotPickedUpPieces( ITEMGUID_ARM_SETS_DevourerLegs_000_b8906f37-3e1d-4b1b-81e2-8a5b96f761d8, "Leggings", "CoS_Main");
+DB_ArmourSets_Devourer_NotPickedUpPieces( ITEMGUID_DEV04_DevourerHelmet_908e49d0-5246-46b5-b6eb-522e60bce3cd, "Helmet", "ARX_Main");
+DB_ArmourSets_Devourer_NotPickedUpPieces( ITEMGUID_DEV05_DevourerChestplate_17a2c256-fc88-4633-9923-0dc17d255fcb, "Chestplate", "ARX_Main");
+*/
+DB_ArmourSets_Devourer_NotPickedUpPieces( ITEMGUID_S_ARM_SETS_DevourerGloves_000_139d75bd-8673-49dc-a2fa-6e156460abd3, "Gloves");
+DB_ArmourSets_Devourer_NotPickedUpPieces( ITEMGUID_ARM_SETS_DevourerBoots_000_4b6c6667-9d57-445b-a362-b918b8e3514d, "Boots");
+DB_ArmourSets_Devourer_NotPickedUpPieces( ITEMGUID_ARM_SETS_DevourerLegs_000_b8906f37-3e1d-4b1b-81e2-8a5b96f761d8, "Leggings");
+DB_ArmourSets_Devourer_NotPickedUpPieces( ITEMGUID_DEV04_DevourerHelmet_908e49d0-5246-46b5-b6eb-522e60bce3cd, "Helmet");
+DB_ArmourSets_Devourer_NotPickedUpPieces( ITEMGUID_DEV05_DevourerChestplate_17a2c256-fc88-4633-9923-0dc17d255fcb, "Chestplate");
+KBSECTION
+//REGION Devourer Armor Transformations
+IF
+	RegionStarted(_Region)
+AND
+	DB_IsPlayer(_Player)
+AND
+	DB_ArmourSets_Devourer_QuestFinishedFlag(_Flag)
+AND
+	PartyGetFlag(_Player, _Flag, 1)
+AND
+	StringConcatenate("DevourerQuestUpdateTest_Region_", _Region, _Qry)
+AND
+	QueryOnlyOnce(_Qry)
+THEN
+	PROC_ArmourSets_TransformDevourerSet((CHARACTERGUID)_Player);
+
+IF
+	ObjectFlagSet(_Flag, _Character, _)
+AND
+	DB_ArmourSets_Devourer_QuestFinishedFlag(_Flag)
+THEN
+	PROC_ArmourSets_TransformDevourerSet((CHARACTERGUID)_Character);
+
+IF
+TextEventSet("DevourerUpgrade")
+AND
+DB_IsPlayer(_Char)
+THEN
+ObjectSetFlag(_Char, "QuestUpdate_DevourerArmour_DEV06_ConsumedSpirits");
+
+PROC
+	PROC_ArmourSets_TransformDevourerSet((CHARACTERGUID)_Character)
+AND
+	DB_ArmourSets_TransformTemplates("Devourer", _Template, _Upgrade, _Slot)
+AND
+	ItemTemplateIsInCharacterInventory(_Character, _Template, 1)
+AND
+	GetItemForItemTemplateInInventory(_Character, _Template, _Item)
+AND
+	NOT DB_ArmourSets_UpgradedPieces(_Item)
+AND
+	NOT CharacterGetEquippedItem(_Character, _Slot, _Item)
+AND
+	DB_ArmourSets_TransformTemplates("Devourer", _Template, _Transform, _Slot)
+AND
+	String(_Character, _Str)
+AND
+	StringConcatenate(_Str, "_ArmourSets_EquipTransformedPieces_Devourer_", _Str2)
+AND
+	StringConcatenate(_Str2, _Slot, _Timer)
+AND
+	ItemGetLevel(_Item, _EquippedLevel)
+THEN
+	DB_ArmourSets_Helper_CachedTransformedLevel(_Item, _EquippedLevel);
+	Transform(_Item, _Transform, 1, 1, 1);
+	DB_ArmourSets_UpgradedPieces(_Item);
+	//ItemLevelUpTo(_Item, 20);
+	DebugBreak("Item transformed");
+	DB_ArmourSets_Helper_TimerLevelup(_Timer, _Item, 20);
+	TimerLaunch(_Timer, 75);
+
+IF
+	TimerFinished(_Timer)
+AND
+	DB_ArmourSets_Helper_TimerLevelup(_Timer, _Item, _Level)
+THEN
+	PROC_ArmourSets_TryLevelingUpItem(_Item, _Level);
+NOT DB_ArmourSets_Helper_TimerLevelup(_Timer, _Item, _Level);
+
+
+PROC
+	PROC_ArmourSets_TransformDevourerSet((CHARACTERGUID)_Character)
+AND
+	DB_ArmourSets_TransformTemplates("Devourer", _Template, _Upgrade, _Slot)
+AND
+	ItemTemplateIsInCharacterInventory(_Character, _Template, 1)
+AND
+	GetItemForItemTemplateInInventory(_Character, _Template, _Item)
+AND
+	NOT DB_ArmourSets_UpgradedPieces(_Item)
+AND
+	CharacterGetEquippedItem(_Character, _Slot, _Item)
+AND
+	DB_ArmourSets_TransformTemplates("Devourer", _Template, _Transform, _Slot)
+AND
+	String(_Character, _Str)
+AND
+	StringConcatenate(_Str, "_ArmourSets_EquipTransformedPieces_Devourer_", _Str2)
+AND
+	StringConcatenate(_Str2, _Slot, _Timer)
+AND
+	ItemGetLevel(_Item, _EquippedLevel)
+THEN
+	DB_ArmourSets_Helper_CachedTransformedLevel(_Item, _EquippedLevel);
+	CharacterUnequipItem(_Character, _Item);
+	Transform(_Item, _Transform, 1, 1, 1);
+	//ItemLevelUpTo(_Item, 20);
+	DB_ArmourSets_UpgradedPieces(_Item);
+	DebugBreak("Item unequipped & transformed");
+	TimerLaunch(_Timer, 75);
+	DB_ArmourSets_Helper_TimerEquip(_Timer, _Character, _Item, 20);
+	TimerLaunch("DEV06_WholeArmourEquipped", 100);
+	DB_ArmourSets_Helper_TimerWholeDevArmour("DEV06_WholeArmourEquipped", _Character);
+
+	
+IF
+	TimerFinished("DEV06_WholeArmourEquipped")
+AND
+	DB_ArmourSets_Helper_TimerWholeDevArmour("DEV06_WholeArmourEquipped", _Character)
+THEN
+	PROC_ArmourSets_TryLevelUpPieces(20, _Character, "Devourer");
+
+PROC
+	PROC_ArmourSets_TransformDevourerSet((CHARACTERGUID)_Character)
+AND
+	DB_ArmourSets_TransformTemplates("Devourer", _Template, _Upgrade, _Slot)
+AND
+	NOT ItemTemplateIsInCharacterInventory(_Character, _Template, 1)
+AND
+	NOT ItemTemplateIsInPartyInventory(_Character, _Template, 0, 1)
+AND
+	String(_Character, _Str)
+AND
+	StringConcatenate(_Str, "_ArmourSets_EquipTransformedPieces_Devourer_", _Str2)
+AND
+	StringConcatenate(_Str2, _Slot, _Timer)
+AND
+	DB_ArmourSets_TransformTemplates("Devourer", _Template, _Transform, _Slot)
+AND
+	DB_ArmourSets_Devourer_NotPickedUpPieces( _Item, _Slot)
+//AND
+	//DB_CurrentLevel(_Level)
+//AND
+	//QueryOnlyOnce(_Timer)
+AND
+	ItemGetLevel((ITEMGUID)_Item, _EquippedLevel)
+THEN
+	DB_ArmourSets_Helper_CachedTransformedLevel(_Item, _EquippedLevel);
+	Transform(_Item, _Transform, 1, 1, 1);
+	//NOT DB_ArmourSets_Devourer_NotPickedUpPieces( _Item, _Slot);
+	DB_ArmourSets_UpgradedPieces((ITEMGUID)_Item);
+	//ItemLevelUpTo(_Item, 20);
+	DebugBreak("Not Picked Up Item transformed");
+	DB_ArmourSets_Helper_TimerLevelup(_Timer, (ITEMGUID)_Item, 20);
+	TimerLaunch(_Timer, 75);
+
+//END_REGION
+
+//REGION Devourer Armour VFX after consuming spirits or killing the dragon
+IF
+ObjectFlagSet("DEV06_TryPlayingDevourerSetFX", _Char, _)
+AND
+DB_ArmourSets(_Template, _, "Devourer")
+AND
+ItemTemplateIsInCharacterInventory((CHARACTERGUID)_Char, _Template, _)
+AND
+QRY_ArmourSets_HasMissingPieces(_Char, "Devourer")
+AND
+GlobalGetFlag("DEV00_DevourerDead", 0)
+AND
+DB_ArmourSets_LevelUpFX("Devourer", _Effect, _, _Bone)
+AND
+QueryOnlyOnce("DevourerPowerUnlockHintFX")
+THEN
+PlayEffect(_Char, _Effect, _Bone);
+
+IF
+CharacterDying(CHARACTERGUID_DEV06_Devourer_63a6687e-d47d-4fed-b168-ac6eabe6bd05)
+AND
+DB_IsPlayer(_Char)
+AND
+DB_ArmourSets(_Template, _, "Devourer")
+AND
+ItemTemplateIsInCharacterInventory(_Char, _Template, _)
+AND
+QRY_ArmourSets_HasMissingPieces(_Char, "Devourer")
+AND
+DB_ArmourSets_LevelUpFX("Devourer", _Effect, _, _Bone)
+AND
+QueryOnlyOnce("DevourerPowerUnlockHintFX")
+THEN
+PlayEffect(_Char, _Effect, _Bone);
+//END_REGION
+
+//REGION Base Events, Procs and Queries
+IF
+ItemEquipped(_Item, _Character)
+AND
+GetTemplate(_Item, _ItemTemplate)
+AND
+DB_ArmourSets(_ItemTemplate, _, _SetName)
+AND
+_SetName != "Devourer"
+AND
+NOT QRY_ArmourSets_HasMissingPieces(_Character, _SetName)
+THEN
+PROC_ArmourSets_ApplyBuff(_SetName, _Character);
+
+QRY
+QRY_ArmourSets_Devourer_QuestFinished((CHARACTERGUID)_Character)
+AND
+DB_ArmourSets_Devourer_QuestFinishedFlag(_Flag)
+AND
+PartyGetFlag(_Character, _Flag, 1)
+THEN
+DB_NOOP(1);
+
+IF
+ItemEquipped(_Item, _Character)
+AND
+GetTemplate(_Item, _ItemTemplate)
+AND
+DB_ArmourSets(_ItemTemplate, _, _SetName)
+AND
+_SetName == "Devourer"
+AND
+NOT QRY_ArmourSets_HasMissingPieces(_Character, _SetName)
+AND
+QRY_ArmourSets_Devourer_QuestFinished(_Character)
+THEN
+PROC_ArmourSets_ApplyBuff(_SetName, _Character);
+
+IF
+CharacterDied(_Character)
+AND
+DB_ArmourSets(_, _, _SetName)
+AND
+NOT QRY_ArmourSets_HasMissingPieces(_Character, _SetName)
+THEN
+PROC_ArmourSets_RemoveBuff(_SetName, _Character);
+
+IF
+CharacterResurrected(_Character)
+AND
+DB_ArmourSets(_, _, _SetName)
+AND
+_SetName != "Vulture"
+AND
+_SetName != "Devourer"
+AND
+NOT QRY_ArmourSets_HasMissingPieces(_Character, _SetName)
+THEN
+PROC_ArmourSets_ApplyBuff(_SetName, _Character);
+
+IF
+CharacterResurrected(_Character)
+AND
+DB_ArmourSets(_, _, _SetName)
+AND
+_SetName == "Devourer"
+AND
+NOT QRY_ArmourSets_HasMissingPieces(_Character, _SetName)
+AND
+QRY_ArmourSets_Devourer_QuestFinished(_Character)
+THEN
+PROC_ArmourSets_ApplyBuff(_SetName, _Character);
+
+IF
+CharacterResurrected(_Character) // dont like this but kinda can't cancel the animation after ressirecting
+AND
+NOT QRY_ArmourSets_HasMissingPieces(_Character, "Vulture")
+THEN
+PROC_ArmourSets_ApplyVultureBuff(_Character);
+
+IF
+ItemUnEquipped(_Item, _Character)
+AND
+GetTemplate(_Item, _ItemTemplate)
+AND
+DB_ArmourSets(_ItemTemplate, _, _SetName)
+THEN
+DebugBreak(_ItemTemplate);
+PROC_ArmourSets_RemoveBuff(_SetName, _Character);
+
+QRY
+QRY_ArmourSets_HasMissingPieces((CHARACTERGUID)_Character, (STRING)_SetName)
+AND
+DB_ArmourSets(_Template, _Slot, _SetName)
+AND
+CharacterGetEquippedItem(_Character, _Slot, _Item)
+AND
+GetTemplate(_Item, _ItemTemp)
+AND
+_ItemTemp != _Template
+AND
+NOT DB_ArmourSets_CasanovaPantsTransformed(_Character, _Template)
+AND
+NOT QRY_ArmourSets_HasAnyOtherPieceFromTheSlot(_Slot, _SetName, _Template, _Character)
+AND
+StringConcatenate("Has Missing Piece: ", _Template, _Print)
+THEN
+DebugBreak(_Print);
+PROC_ArmourSets_RemoveBuff(_SetName, _Character);
+
+QRY
+QRY_ArmourSets_HasMissingPieces((CHARACTERGUID)_Character, (STRING)_SetName)
+AND
+DB_ArmourSets(_, _Slot, _SetName)
+AND
+NOT CharacterGetEquippedItem(_Character, _Slot, _)
+THEN
+DB_NOOP(1);
+
+QRY
+QRY_ArmourSets_HasAnyOtherPieceFromTheSlot((STRING)_Slot, (STRING)_SetName, (STRING)_Template, (CHARACTERGUID)_Character)
+AND
+DB_ArmourSets(_SecondTemplate, _Slot, _SetName)
+AND
+_SecondTemplate != _Template
+AND
+CharacterGetEquippedItem(_Character, _Slot, _Item)
+AND
+GetTemplate(_Item, _WornTemplate)
+AND
+_WornTemplate == _SecondTemplate
+THEN
+DB_NOOP(1);
+
+// if armor is already leveled up
+PROC
+PROC_ArmourSets_TryLevelUpPieces((INTEGER)_Lvl, (CHARACTERGUID)_Char, (STRING)_Set)
+AND
+DB_ArmourSets(_, _Slot, _)
+AND
+CharacterGetEquippedItem(_Char, _Slot, _Item)
+AND
+DB_ArmourSets_UpgradedPieces((ITEMGUID)_Item)
+AND
+GetTemplate(_Item, _Template)
+THEN
+PROC_ArmourSets_PlayArmourEffect(_Char, _Set);
+
+PROC
+PROC_ArmourSets_TryLevelUpPieces((INTEGER)_Lvl, (CHARACTERGUID)_Char, (STRING)_Set)
+AND
+DB_ArmourSets(_, _Slot, _)
+AND
+CharacterGetEquippedItem(_Char, _Slot, _Item)
+AND
+NOT DB_ArmourSets_UpgradedPieces((ITEMGUID)_Item)
+AND
+GetTemplate(_Item, _Template)
+AND
+NOT QRY_ArmourSets_LevelUpPieces_Transformable(_Item, _Template, _Set, _Char, _Lvl)
+AND
+ItemGetLevel(_Item, _EquippedLevel)
+THEN
+DB_ArmourSets_Helper_CachedTransformedLevel(_Item, _EquippedLevel);
+PROC_ArmourSets_PlayArmourEffect(_Char, _Set);
+PROC_ArmourSets_TryLevelingUpItem((ITEMGUID)_Item, _Lvl);
+DB_ArmourSets_UpgradedPieces((ITEMGUID)_Item);
+DB_ArmourSets_UpgradedSet(_Set);
+
+PROC
+PROC_ArmourSets_TryLevelingUpItem((ITEMGUID)_Item, (INTEGER)_Level)
+AND
+DB_ArmourSets_Helper_CachedTransformedLevel(_Item, _EquippedLevel)
+AND
+_EquippedLevel > _Level
+THEN
+ItemLevelUpTo(_Item, _EquippedLevel);
+NOT DB_ArmourSets_Helper_CachedTransformedLevel(_Item, _EquippedLevel);
+
+PROC
+PROC_ArmourSets_TryLevelingUpItem((ITEMGUID)_Item, (INTEGER)_Level)
+AND
+DB_ArmourSets_Helper_CachedTransformedLevel(_Item, _EquippedLevel)
+AND
+_EquippedLevel < _Level
+THEN
+ItemLevelUpTo(_Item, _Level);
+NOT DB_ArmourSets_Helper_CachedTransformedLevel(_Item, _EquippedLevel);
+
+PROC
+PROC_ArmourSets_PlayArmourEffect((CHARACTERGUID)_Char, (STRING)_Set)
+AND
+DB_ArmourSets_LevelUpFX(_Set, _Effect, _IsAttached, _Bone)
+AND
+_IsAttached == 1
+AND
+NOT DB_ArmourSets_ArmourEffectPlayed(_Char, _Effect)
+THEN
+PlayEffect(_Char, _Effect, _Bone);
+DB_ArmourSets_ArmourEffectPlayed(_Char, _Effect);
+DebugBreak(_Effect);
+TimerLaunch("ArmourSets_ClearArmourEffectPlayed", 1000);
+
+PROC
+PROC_ArmourSets_PlayArmourEffect((CHARACTERGUID)_Char, (STRING)_Set)
+AND
+DB_ArmourSets_LevelUpFX(_Set, _Effect, _IsAttached, _)
+AND
+_IsAttached == 0
+AND
+GetPosition(_Char, _X, _Y, _Z)
+AND
+NOT DB_ArmourSets_ArmourEffectPlayed(_Char, _Effect)
+THEN
+PlayEffectAtPosition(_Effect, _X, _Y, _Z);
+DB_ArmourSets_ArmourEffectPlayed(_Char, _Effect);
+DebugBreak(_Effect);
+TimerLaunch("ArmourSets_ClearArmourEffectPlayed", 1000);
+
+IF
+TimerFinished("ArmourSets_ClearArmourEffectPlayed")
+AND
+DB_ArmourSets_ArmourEffectPlayed(_Char, _Effect)
+THEN
+NOT DB_ArmourSets_ArmourEffectPlayed(_Char, _Effect);
+
+IF
+TextEventSet(_Event)
+AND
+DB_ArmourSets_LevelUpFX(_Event, _Effect, _IsAttached, _Bone)
+AND
+DB_IsPlayer(_Player)
+THEN
+PROC_ArmourSets_PlayArmourEffect((CHARACTERGUID)_Player, _Event);
+
+QRY
+QRY_ArmourSets_LevelUpPieces_Transformable((ITEMGUID)_Item, (STRING)_Template, (STRING)_Set, (CHARACTERGUID)_Char, (INTEGER)_Lvl)
+AND
+DB_ArmourSets_TransformTemplates(_Set, _Template, _Transform, _Slot)
+AND
+String(_Char, _Str)
+AND
+StringConcatenate(_Str, "_ArmourSets_EquipTransformedPieces", _Timer)
+AND
+DB_ArmourSets(_ItemToRemove, _Slot, _Set)
+AND
+ItemGetLevel(_Item, _EquippedLevel)
+THEN
+DB_ArmourSets_Helper_CachedTransformedLevel(_Item, _EquippedLevel);
+DB_ArmourSets_UpgradedPieces(_Item);
+CharacterUnequipItem(_Char, _Item);
+Transform(_Item, _Transform, 1, 1, 1);
+TimerLaunch(_Timer, 75);
+//ItemLevelUpTo((ITEMGUID)_Item, _Lvl);
+DB_ArmourSets_Helper_TimerEquip(_Timer, _Char, _Item, _Lvl);
+NOT DB_ArmourSets(_ItemToRemove, _Slot, _Set);
+DB_ArmourSets(_Transform, _Slot, _Set);
+
+IF
+TimerFinished(_Timer)
+AND
+DB_ArmourSets_Helper_TimerEquip(_Timer, _Char, _Item, _Lvl)
+THEN 	
+PROC_ArmourSets_TryLevelingUpItem(_Item, _Lvl);
+CharacterEquipItem(_Char, _Item);
+DebugBreak("Item lvlup & equipped");
+
+PROC
+PROC_ArmourSets_TryApplyingStatus((CHARACTERGUID)_Char, (STRING)_Status, (STRING)_Set)
+AND
+DB_ArmourSets_UpgradedSet(_Set)
+THEN
+ApplyStatus(_Char, _Status, -1.0, 1, _Char);
+
+PROC
+PROC_ArmourSets_TryApplyingStatus((CHARACTERGUID)_Char, (STRING)_Status, (STRING)_Set)
+AND
+NOT DB_ArmourSets_UpgradedSet(_Set)
+THEN
+TimerLaunch(_Set, 2750);
+DB_ArmourSets_Helper_TimerStatus(_Char, _Status, _Set);
+
+IF
+TimerFinished(_Timer)
+AND
+DB_ArmourSets_Helper_TimerStatus(_Char, _Status, _Set)
+AND
+NOT QRY_ArmourSets_HasMissingPieces(_Char, _Set)
+THEN
+ApplyStatus(_Char, _Status, -1.0, 1, _Char);
+
+IF
+TimerFinished(_Timer)
+AND
+DB_ArmourSets_Helper_TimerStatus(_Char, _Status, _Set)
+THEN
+NOT DB_ArmourSets_Helper_TimerStatus(_Char, _Status, _Set);
+//END_REGION
+
+//REGION Set Specific Functions
+//Casanova
+PROC
+PROC_ArmourSets_ApplyBuff("Casanova", (CHARACTERGUID)_Char)
+THEN
+PROC_ArmourSets_TryApplyingStatus(_Char, "CASANOVA_STATUS", "Casanova");
+PROC_ArmourSets_TryLevelUpPieces(8, _Char, "Casanova");
+
+PROC
+PROC_ArmourSets_RemoveBuff("Casanova", (CHARACTERGUID)_Char)
+THEN
+RemoveStatus(_Char, "CASANOVA_STATUS");
+
+//Set legs visual when chest is equipped
+//ARM_SETS_CasanovaPants_6c2c34b8-c0c8-47b1-adfc-be6dc5718429
+IF
+//SavegameLoaded(_,_,_,_)
+GameStarted(_,_)
+AND
+DB_ArmourSets_CasanovaPantsTransformed(_Character, _SavedTemplate)
+THEN
+TimerLaunch("CAS00_ReTransformPants_1", 300);
+
+IF
+TimerFinished("CAS00_ReTransformPants_1")
+AND
+DB_ArmourSets_CasanovaPantsTransformed(_Character, _SavedTemplate)
+AND
+CharacterGetEquippedItem(_Character, "Leggings", _Item)
+THEN
+Transform((ITEMGUID) _Item, _SavedTemplate);
+TimerLaunch("CAS00_ReTransformPants_2", 300);
+
+IF
+TimerFinished("CAS00_ReTransformPants_2")
+AND
+DB_ArmourSets_CasanovaPantsTransformed(_Character, _SavedTemplate)
+AND
+CharacterGetEquippedItem(_Character, "Leggings", _Item)
+THEN
+TransformKeepIcon((ITEMGUID)_Item, "ARM_SETS_CasanovaPants_6c2c34b8-c0c8-47b1-adfc-be6dc5718429", 0, 0, 0);
+
+IF
+ItemEquipped(_Item, _Character)
+AND
+ItemGetEquipmentSlot(_Item, _SlotName)
+AND
+_SlotName == "Leggings"
+AND
+CharacterGetEquippedItem(_Character, "Breast", _Chest)
+AND
+GetTemplate(_Chest, _Template)
+AND
+_Template == "ARM_SETS_CasanovaShirt_820dab86-4afe-4b17-9ccc-79e381bf59cd"
+AND
+GetTemplate(_Item, _SavedTemplate)
+THEN
+//Transform(_Item, "ARM_SETS_CasanovaPants_6c2c34b8-c0c8-47b1-adfc-be6dc5718429");
+TransformKeepIcon(_Item, "ARM_SETS_CasanovaPants_6c2c34b8-c0c8-47b1-adfc-be6dc5718429", 0, 0, 0);
+DB_ArmourSets_CasanovaPantsTransformed(_Character, _SavedTemplate);
+
+IF
+ItemEquipped(_Chest, _Character)
+AND
+ItemGetEquipmentSlot(_Chest, _SlotName)
+AND
+_SlotName == "Breast"
+AND
+CharacterGetEquippedItem(_Character, "Leggings", _Item)
+AND
+GetTemplate(_Chest, _Template)
+AND
+_Template == "ARM_SETS_CasanovaShirt_820dab86-4afe-4b17-9ccc-79e381bf59cd"
+AND
+GetTemplate(_Item, _SavedTemplate)
+THEN
+//Transform((ITEMGUID)_Item, "ARM_SETS_CasanovaPants_6c2c34b8-c0c8-47b1-adfc-be6dc5718429");
+TransformKeepIcon(_Item, "ARM_SETS_CasanovaPants_6c2c34b8-c0c8-47b1-adfc-be6dc5718429", 0, 0, 0);
+DB_ArmourSets_CasanovaPantsTransformed(_Character, _SavedTemplate);
+
+IF
+ItemUnEquipped(_Chest, _Character)
+AND
+ItemGetEquipmentSlot(_Chest, _SlotName)
+AND
+_SlotName == "Breast"
+AND
+GetTemplate(_Chest, _Template)
+AND
+_Template == "ARM_SETS_CasanovaShirt_820dab86-4afe-4b17-9ccc-79e381bf59cd"
+AND
+DB_ArmourSets_CasanovaPantsTransformed(_Character, _ItemTemplate)
+AND
+CharacterGetEquippedItem(_Character, "Leggings", _Item)
+THEN
+Transform((ITEMGUID)_Item, _ItemTemplate);
+TimerLaunch("RemoveCasanovaTransformPantsDB", 100);
+
+IF
+TimerFinished("RemoveCasanovaTransformPantsDB")
+AND
+DB_ArmourSets_CasanovaPantsTransformed(_Character, _ItemTemplate)
+THEN
+NOT DB_ArmourSets_CasanovaPantsTransformed(_Character, _ItemTemplate);
+
+IF
+ItemUnEquipped(_Legs, _Character)
+AND
+ItemGetEquipmentSlot(_Legs, _SlotName)
+AND
+_SlotName == "Leggings"
+AND
+DB_ArmourSets_CasanovaPantsTransformed(_Character, _ItemTemplate)
+THEN
+Transform(_Legs, _ItemTemplate);
+NOT DB_ArmourSets_CasanovaPantsTransformed(_Character, _ItemTemplate);
+
+//Vulture
+PROC
+PROC_ArmourSets_ApplyBuff("Vulture", (CHARACTERGUID)_Char)
+AND
+QueryOnlyOnce("ArmourSets_VultureWings")
+THEN
+ProcObjectTimer(_Char,"ArmorSets_LevelUp",1100);
+ProcObjectTimer(_Char,"ArmorSets_WingsAnim",200);
+DB_ArmourSets_Helper_VultureSetOn(1);
+
+PROC
+PROC_ArmourSets_ApplyVultureBuff((CHARACTERGUID)_Char)
+AND
+QueryOnlyOnce("ArmourSets_VultureWings")
+THEN
+ProcObjectTimer(_Char,"ArmorSets_WingsAnim",200);
+DB_ArmourSets_Helper_VultureSetOn(1);
+
+PROC
+ProcObjectTimerFinished((CHARACTERGUID)_Char,"ArmorSets_WingsAnim")
+THEN
+ApplyStatus(_Char, "ARM_VULTURE_PIERCINGSTRIKES", -1.0, 1, _Char);
+CharacterAddSkill(_Char, "Target_Vulture_ConsumeCorpse", 1);
+CharacterAddSkill(_Char, "Shout_VultureEtherealSoles", 1);
+NOT DB_OnlyOnce("ArmourSets_VultureWings");
+
+PROC
+ProcObjectTimerFinished((CHARACTERGUID)_Char,"ArmorSets_LevelUp")
+THEN
+PROC_ArmourSets_TryLevelUpPieces(14, _Char, "Vulture");
+
+PROC
+PROC_ArmourSets_RemoveBuff("Vulture", (CHARACTERGUID)_Char)
+THEN
+RemoveStatus(_Char, "ARM_VULTURE_PIERCINGSTRIKES");
+CharacterRemoveSkill(_Char, "Target_Vulture_ConsumeCorpse");
+CharacterRemoveSkill(_Char, "Shout_VultureEtherealSoles");
+ProcObjectTimerCancel(_Char,"ArmorSets_LevelUp");
+ProcObjectTimerCancel(_Char,"ArmorSets_WingsAnim");
+DB_ArmourSets_Helper_VultureSetOn(0);
+NOT DB_OnlyOnce("ArmourSets_VultureWings");
+
+//Contamination Armor
+PROC
+PROC_ArmourSets_ApplyBuff("Contamination", (CHARACTERGUID)_Char)
+THEN
+ApplyStatus(_Char, "CONTAMINATION_POISON_SKIN", -1.0, 1, _Char);
+PROC_ArmourSets_TryLevelUpPieces(20, _Char, "Contamination");
+
+PROC
+PROC_ArmourSets_RemoveBuff("Contamination", (CHARACTERGUID)_Char)
+THEN
+RemoveStatus(_Char, "CONTAMINATION_POISON_SKIN");
+
+
+//Devourer
+PROC
+PROC_ArmourSets_ApplyBuff("Devourer", (CHARACTERGUID)_Char)
+AND
+HasActiveStatus(_Char, "DEVOURER_OUTOFCOMBAT", 0)
+AND
+HasAppliedStatus(_Char, "DEVOURER_OUTOFCOMBAT", 0)
+THEN
+DebugBreak("DEVOURER SET COLLECTED AND EQUIPPED");
+DB_ArmourSets_DevourerWearer(_Char);
+ApplyStatus(_Char, "DEVOURER_OUTOFCOMBAT", -1.0, 1, _Char);
+PROC_ArmourSets_TryLevelUpPieces(20, _Char, "Devourer");
+
+PROC
+PROC_ArmourSets_RemoveBuff("Devourer", (CHARACTERGUID)_Char)
+THEN
+NOT DB_ArmourSets_DevourerWearer(_Char);
+RemoveStatus(_Char, "DEVOURER_OUTOFCOMBAT");
+
+//Play FX
+IF
+ItemEquipped(_Item, _Character)
+AND
+GetTemplate(_Item, _Template)
+AND
+StringContains(_Template, "64799c69-9eca-41bc-854b-3178c4192bcf", 1)
+THEN
+PROC_LoopEffect("RS3_FX_DevourerArmorSmoke_01", _Character, "DevourerChestEffect", "__ANY__", "Dummy_BodyFX");
+
+IF
+ItemUnEquipped(_Item, _Character)
+AND
+GetTemplate(_Item, _Template)
+AND
+StringContains(_Template, "64799c69-9eca-41bc-854b-3178c4192bcf", 1)
+THEN
+PROC_StopLoopEffect(_Character, "DevourerChestEffect");
+
+IF
+ObjectReadyInCombat(_Char, _ID)
+AND
+DB_ArmourSets_DevourerWearer((CHARACTERGUID)_Char)
+THEN
+PROC_ArmourSets_DevourerLockArmor(_Char, 1);
+RemoveStatus(_Char, "DEVOURER_OUTOFCOMBAT");
+ApplyStatus(_Char, "DEVOURER_HUNGER", 23.0, 1, _Char);
+DebugBreak("PROCCING DEVOURER RANDOMIZATION");
+PROC_ArmourSets_Devourer_GatherCombatData(_ID);
+PROC_ArmourSets_Devourer_MarkRandomEnemy(_ID);
+
+IF
+ObjectLeftCombat(_Char, _ID)
+AND
+DB_ArmourSets_DevourerWearer((CHARACTERGUID)_Char)
+THEN
+PROC_ArmourSets_DevourerLockArmor(_Char, 0);
+RemoveStatus(_Char, "DEVOURER_HUNGER");
+RemoveStatus(_Char, "DEVOURER_CONSUME");
+ApplyStatus(_Char, "DEVOURER_OUTOFCOMBAT", -1.0, 1, _Char);
+PROC_ArmourSets_Devourer_ClearData(_ID);
+
+IF
+CharacterStatusRemoved(_Char, "DEVOURER_HUNGER", _)
+AND
+HasActiveStatus(_Char, "DEVOURER_HUNGER", 0)
+AND
+CharacterIsInCombat(_Char, 1)
+THEN
+ApplyStatus(_Char, "DEVOURER_CONSUME", -1.0, 1, _Char);
+
+IF
+CharacterStatusRemoved(_Char, "DEVOURER_MARKED", _)
+AND
+CharacterIsDead(_Char, 1)
+AND
+DB_ArmourSets_Devourer_MarkData(_Char, _Source)
+AND
+CharacterIsInCombat(_Source, 1)
+AND
+DB_CombatCharacters((CHARACTERGUID)_Source, _ID)
+THEN
+ApplyStatus(_Source, "DEVOURER_HUNGER", 23.0, 1, _Source);
+ApplyStatus(_Source, "DEVOURER_HEAL", 0.0, 1, _Source);
+RemoveStatus(_Source, "DEVOURER_CONSUME");
+PROC_ArmourSets_Devourer_ClearData(_ID);
+NOT DB_ArmourSets_Devourer_MarkData(_Char, _Source);
+PROC_ArmourSets_Devourer_GatherCombatData(_ID);
+PROC_ArmourSets_Devourer_MarkRandomEnemy(_ID);
+
+IF
+CharacterStatusRemoved(_Char, "DEVOURER_MARKED", _)
+AND
+CharacterIsDead(_Char, 1)
+AND
+DB_ArmourSets_Devourer_MarkData(_Char, _Source)
+AND
+CharacterIsInCombat(_Source, 0)
+THEN
+ApplyStatus(_Source, "DEVOURER_HEAL", 0.0, 1, _Source);
+RemoveStatus(_Source, "DEVOURER_CONSUME");
+NOT DB_ArmourSets_Devourer_MarkData(_Char, _Source);
+
+IF
+CharacterKilledBy(_Char, _Owner, _Attacker)
+AND
+QRY_CMP_ArmourSets_DevourerVitalityGain(_Attacker)
+THEN
+DB_NOOP(1);
+
+IF
+CharacterStatusRemoved(_Char, "DEVOURER_VITALITY_GAIN", _)
+AND
+HasActiveStatus(_Char, "DEVOURER_VITALITY_GAIN", 0)
+THEN
+ApplyStatus(_Char, "DEVOURER_VITALITY_NOGAIN", -1.0, 1, _Char);
+
+QRY
+QRY_CMP_ArmourSets_DevourerVitalityGain((CHARACTERGUID)_Attacker)
+AND
+HasActiveStatus(_Attacker, "DEVOURER_VITALITY_NOGAIN", 1)
+THEN
+ApplyStatus(_Attacker, "DEVOURER_VITALITY_GAIN", 18.0, 1, _Attacker);
+
+QRY
+QRY_CMP_ArmourSets_DevourerVitalityGain((CHARACTERGUID)_Attacker)
+AND
+HasActiveStatus(_Attacker, "DEVOURER_VITALITY_GAIN", 1)
+THEN
+ApplyStatus(_Attacker, "DEVOURER_VITALITY_GAIN", 18.0, 1, _Attacker);
+
+PROC
+PROC_ArmourSets_DevourerLockArmor((CHARACTERGUID)_Char, (INTEGER)_Lock)
+AND
+DB_ArmourSets(_, _Slot, _)
+AND
+CharacterGetEquippedItem(_Char, _Slot, _Item)
+THEN
+ItemLockUnEquip((ITEMGUID)_Item, _Lock);
+
+PROC
+PROC_ArmourSets_Devourer_GatherCombatData((INTEGER)_ID)
+AND
+DB_CombatCharacters(_Char, _ID)
+AND
+CharacterGetHitpointsPercentage(_Char, _Percentage)
+AND
+_Percentage > 0.0
+AND
+QRY_ArmourSets_Devourer_SetCombatCounter(_ID)
+AND
+DB_ArmourSets_Devourer_CombatCounter(_Count)
+AND
+DB_ArmourSets_Devourer_CombatDataMaxChars(_ID, _Max)
+AND
+//QRY_ArmourSets_Devourer_IsHostileToAnyPlayer(_Char)
+QRY_ArmourSets_Devourer_IsHostileToSetWearer(_Char)
+AND
+IntegerSum(_Count, 1, _Sum)
+AND
+IntegertoString(_Count, _CountSTR)
+AND
+String(_Char, _CharSTR)
+AND
+StringConcatenate(_CharSTR, "  -  ", _CharSTR1)
+AND
+StringConcatenate(_CharSTR1, _CountSTR, _Print)
+THEN
+DebugBreak(_Print);
+DB_ArmourSets_Devourer_CombatData(_ID, _Char, _Count);
+NOT DB_ArmourSets_Devourer_CombatCounter(_Count);
+DB_ArmourSets_Devourer_CombatCounter(_Sum);
+NOT DB_ArmourSets_Devourer_CombatDataMaxChars(_ID, _Max);
+DB_ArmourSets_Devourer_CombatDataMaxChars(_ID, _Count);
+
+PROC
+PROC_ArmourSets_Devourer_MarkRandomEnemy((INTEGER)_ID)
+AND
+DB_ArmourSets_Devourer_CombatDataMaxChars(_ID, _Sum)
+AND
+IntegerSum(_Sum, 1, _SumPlusOne)
+AND
+Random(_SumPlusOne, _Rand)
+AND
+DB_ArmourSets_Devourer_CombatData(_ID, _Char, _Rand)
+AND
+DB_ArmourSets_DevourerWearer(_Source)
+THEN
+ApplyStatus(_Char, "DEVOURER_MARKED", -1.0, 1, _Source);
+DB_ArmourSets_Devourer_MarkData(_Char, _Source);
+
+PROC
+PROC_ArmourSets_Devourer_ClearData((INTEGER)_ID)
+AND
+DB_ArmourSets_Devourer_CombatCounter(_Count)
+AND
+DB_ArmourSets_Devourer_MarkData(_Char, _Source)
+AND
+DB_ArmourSets_Devourer_CombatDataMaxChars(_ID, _Sum)
+THEN
+NOT DB_ArmourSets_Devourer_MarkData(_Char, _Source);
+NOT DB_ArmourSets_Devourer_CombatDataMaxChars(_ID, _Sum);
+NOT DB_ArmourSets_Devourer_CombatCounter(_Count);
+DB_ArmourSets_Devourer_CombatCounter(0);
+RemoveStatus(_Source, "DEVOURER_CONSUME");
+RemoveStatus(_Char, "DEVOURER_MARKED");
+PROC_ArmourSets_Devourer_ClearCombatChars(_ID);
+
+PROC
+PROC_ArmourSets_Devourer_ClearCombatChars((INTEGER)_ID)
+AND
+DB_ArmourSets_Devourer_CombatData(_ID, _Char, _Count)
+THEN
+NOT DB_ArmourSets_Devourer_CombatData(_ID, _Char, _Count);
+
+QRY
+QRY_ArmourSets_Devourer_SetCombatCounter((INTEGER)_ID)
+AND
+NOT DB_ArmourSets_Devourer_CombatDataMaxChars(_ID, _)
+THEN
+DB_ArmourSets_Devourer_CombatDataMaxChars(_ID, 0);
+
+QRY
+QRY_ArmourSets_Devourer_SetCombatCounter((INTEGER)_ID)
+THEN
+DB_NOOP(1);
+
+QRY
+QRY_ArmourSets_Devourer_IsHostileToSetWearer((CHARACTERGUID)_Char)
+AND
+//DB_IsPlayer(_Player)
+DB_ArmourSets_DevourerWearer(_Wearer)
+AND
+DB_CombatCharacters(_Wearer, _Combat2)
+AND
+DB_CombatCharacters(_Char, _Combat)
+AND
+_Combat == _Combat2
+AND
+CharacterIsEnemy(_Char, _Wearer, 1)
+AND
+CharacterIsSummon(_Char, 0)
+THEN
+DB_NOOP(1);
+
+/*
+QRY
+QRY_ArmourSets_Devourer_IsHostileToAnyPlayer((CHARACTERGUID)_Char)
+AND
+DB_IsPlayer(_Player)
+AND
+DB_CombatCharacters(_Player, _Combat2)
+AND
+DB_CombatCharacters(_Char, _Combat)
+AND
+_Combat == _Combat2
+AND
+CharacterIsEnemy(_Char, _Player, 1)
+AND
+CharacterIsSummon(_Char, 0)
+THEN
+DB_NOOP(1);
+//END_REGION
+*/
+
+//REGION contamination set bleeding
+IF
+ItemUnEquipped(_Item, _Char)
+AND
+DB_IsPlayer(_Char)
+AND
+NOT DB_ArmourSets_Helper_TimerEquip(_, _, _Item, _)
+AND
+GetTemplate(_Item, _Template)
+AND
+DB_ArmourSets(_Template, _, "Contamination")
+THEN
+ApplyStatus(_Char, "BLEEDING", 18.0, 1);
+//END_REGION
+
+//REGION DEBUG
+IF
+GlobalFlagSet("QuestUpdateTest")
+AND
+DB_IsPlayer(_Player)
+AND
+QueryOnlyOnce("QuestUpdateTest")
+THEN
+PartySetFlag(_Player, "QuestUpdate_DevourerArmour_DEV06_ConsumedSpirits");
+
+IF
+TextEventSet("ArmorSetCheck")
+AND
+DB_ArmourSets_Devourer_CombatData(_ID, _Char, _Count)
+AND
+String(_Char, _CharSTR)
+AND
+IntegertoString(_Count, _CountSTR)
+AND
+StringConcatenate(_CharSTR, "  -  ", _Str1)
+AND
+StringConcatenate(_Str1, _CountSTR, _Print)
+THEN
+DebugBreak(_Print);
+//END_REGION
+
+IF
+DB_ArmourSets_Helper_VultureSetOn(_NewValue)
+AND
+DB_ArmourSets_Helper_VultureSetOn(_OldValue)
+AND
+_NewValue != _OldValue
+THEN
+NOT DB_ArmourSets_Helper_VultureSetOn(_OldValue);
+/*
+IF
+ItemSetEquipped(_String, _Char)
+AND
+StringContains(_String, "ContaminationArmour", 1)
+THEN
+DebugText(_Char, _String);
+
+IF
+ItemSetUnEquipped(_String, _Char)
+AND
+StringContains(_String, "ContaminationArmour", 1)
+THEN
+DebugText(_Char, "UnEquippped");
+*/
+
+IF
+TextEventSet("ApplyWings")
+AND
+DB_IsPlayer(_Player)
+THEN
+ApplyStatus(_Player, "VULTURE_WINGS", -1.0);
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start"

@@ -1,0 +1,44 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_DeflectiveBarrier", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Voodoo_Cast_Curse_Shout_Root_01", "");
+PlayEffect(_Char, "RS3_FX_Skills_Voodoo_Cast_Taunt_Icon_01", "Dummy_OverheadFX");
+PROC_AMER_GEN_CharacterCauseExplosion(_Char, _Char, "Projectile_Derpy_SCRIPT_DeflectiveTaunt");
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_DeflectiveBarrier", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_Source_Infusion_RitualRequest(_Char, _Char, _Char, 13.0, "InfusionRitual_DeflectiveBarrier_2_ChainHeal", "", "WaterSpecialist", 1, "skill_cast_beam_air_01_cast", 0, 0);	//Note that this ritual reaction isn't held, so we don't need to approve it later.
+
+PROC PROC_AMER_Reaction_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, "InfusionRitual_DeflectiveBarrier_2_ChainHeal", (STRING)_RequestID, (INTEGER)_RitualBool)
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Water_Cast_Hand_02", "Dummy_CastFX");
+PROC_AMER_GEN_ShootProjectileAt(_Char, _Target, "Projectile_ChainHeal");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_DeflectiveBarrier", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 13.0, _Char, 12, "AMER_SourceInfusion_DeflectiveBarrier_3");	//Living allies.
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "AMER_SourceInfusion_DeflectiveBarrier_3", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+PlayEffect(_Char, "RS3_FX_Skills_Void_Cast_Attack_Stance_Root_01", "Dummy_Root");
+PlayEffect(_Char, "RS3_FX_Skills_Void_Cast_Attack_Stance_Hand_01", "Dummy_L_HandFX");
+PlayEffect(_Char, "RS3_FX_Skills_Void_Cast_Attack_Stance_Dummy_01", "Dummy_ShieldSkillFX");
+ApplyStatus(_Char, "DEFLECTING", 18.0, 0, _SourceChar);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Warfare"

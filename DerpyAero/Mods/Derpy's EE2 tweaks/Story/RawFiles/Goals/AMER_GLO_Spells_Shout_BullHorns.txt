@@ -1,0 +1,29 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_BullHorns", 1)
+THEN
+RemoveStatus(_Char, "HORNS");
+ApplyStatus(_Char, "HORNS_INFUS_1", 24.0, 0, _Char);
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_BullHorns", 2)
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+RemoveStatus(_Char, "HORNS");
+ApplyStatus(_Char, "HORNS_INFUS_2", 24.0, 0, _Char);
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_BullHorns", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+RemoveStatus(_Char, "HORNS");
+ApplyStatus(_Char, "HORNS_INFUS_3", 24.0, 0, _Char);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Polymorph"

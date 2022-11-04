@@ -1,0 +1,116 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+NRD_OnHit((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, _Damage, _Handle)
+AND
+NRD_StatusGetString(_Target, _Handle, "SkillId", "Projectile_PiercingShot_-1")
+AND
+NRD_StatusGetInt(_Target, _Handle, "Missed", 0)
+AND
+DB_AMER_Source_Infusion_Pending(_Char, _InfusCount)
+AND
+GetPosition(_Target, _X, _Y, _Z)
+AND
+RealSum(_Y, 1.4, _Y2)
+THEN
+DB_Derpy_PiercingShot_Target(_Char, _Target, _X, _Y2, _Z);
+PROC_Derpy_PiercingShot_SI_Effects(_Target, _Char, _InfusCount, _X, _Y2, _Z);
+ProcObjectTimer(_Char, "Derpy_PiercingShot_Cleanup", 2000);
+
+
+IF
+NRD_OnHit((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, _Damage, _Handle)
+AND
+DB_Derpy_PiercingShot_Target(_Char, _Target, _X, _Y2, _Z)
+AND
+NRD_StatusGetString(_Target, _Handle, "SkillId", "Projectile_PiercingShot")
+THEN
+NRD_HitStatusClearAllDamage(_Target, _Handle);
+
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Projectile_PiercingShot", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "RangerLore", 25.0, 4.0);	
+
+
+//===================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Projectile_PiercingShot", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "RangerLore", 20.0, 4.0);
+
+
+PROC PROC_Derpy_PiercingShot_SI_Effects((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, (INTEGER)_InfusCount, (REAL)_X, (REAL)_Y2, (REAL)_Z)
+AND
+_InfusCount > 1
+THEN
+PROC_Derpy_PiercingShot_SI2(_Char, _Target, _X, _Y2, _Z);	//Execute two GetNearest queries in succession, the second excludes the target of the first.
+
+
+PROC PROC_Derpy_PiercingShot_SI2((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y2, (REAL)_Z)
+AND
+QRY_AMER_GEN_GetNearestInCombat(_Char, _Target, _Target, 8.0, 42)	//Visible living enemies within 13m of _Target.
+AND
+DB_AMER_GEN_OUTPUT_NearestInCombat(_Nearest, _)
+THEN
+DB_AMER_GEN_NearestInCombat_Exclusion(_Nearest);
+PROC_AMER_GEN_ShootProjectileAt_Remote(_Char, _X, _Y2, _Z, _Nearest, "Projectile_PiercingShot");
+
+
+PROC PROC_Derpy_PiercingShot_SI2((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y2, (REAL)_Z)
+AND
+QRY_AMER_GEN_GetNearestInCombat(_Char, _Target, _Target, 8.0, 42)	//Visible living enemies within 13m of _Target, excluding previous target.
+AND
+DB_AMER_GEN_OUTPUT_NearestInCombat(_Nearest, _)
+THEN
+PROC_AMER_GEN_ShootProjectileAt_Remote(_Char, _X, _Y2, _Z, _Nearest, "Projectile_PiercingShot");
+
+
+//===================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Projectile_PiercingShot", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_TempStat_FlexStat_Add_StatScaling(_Char, "Stat", "DAMAGEBOOST", "Ability", "RangerLore", 20.0, 4.0);
+
+
+PROC PROC_Derpy_PiercingShot_SI_Effects((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, (INTEGER)_InfusCount, (REAL)_X, (REAL)_Y, (REAL)_Z)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_GEN_IterateCharsAroundObject(_Target, 13.0, _Char, 42, "Derpy_PiercingShot_SI3_Iterator");	//Living enemies _Char can see within 13m of _Target.
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Derpy_PiercingShot_SI3_Iterator", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_ForkTargets)
+AND
+DB_Derpy_PiercingShot_Target(_Char, _Target, _X, _Y2, _Z)
+THEN
+PROC_AMER_GEN_ShootProjectileAt_Remote(_Char, _X, _Y2, _Z, _ForkTargets, "Projectile_PiercingShot");
+
+
+//===================================================================================
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "Derpy_PiercingShot_Cleanup")
+AND
+DB_Derpy_PiercingShot_Target(_Char, _Target, _X, _Y2, _Z)
+THEN
+NOT DB_Derpy_PiercingShot_Target(_Char, _Target, _X, _Y2, _Z);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Huntsman"

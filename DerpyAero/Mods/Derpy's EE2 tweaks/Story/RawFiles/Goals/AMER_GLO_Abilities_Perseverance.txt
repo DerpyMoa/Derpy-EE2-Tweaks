@@ -1,0 +1,22 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Abilities_Initialize((CHARACTERGUID)_Char, "Perseverance", (REAL)_Toggle)
+AND
+RealProduct(3.0, _Toggle, _ResBonus)
+AND
+RealProduct(0.2, _Toggle, _ThresholdBonus)
+AND
+NOT DB_AMER_ScalingStat_ExtendedStat_Volatile(_Char, "Ability", "Perseverance", "BattHarr_Threshold_Mult_Self", "Both", "Perseverance", "", _)  //Protect against adding again.
+THEN
+PROC_AMER_ScalingStat_FlexStat_Add_Volatile(_Char, "Ability", "Perseverance", "Stat_SpecialCase", "AllResistance", _ResBonus);
+PROC_AMER_ScalingStat_ExtendedStat_Add_Volatile(_Char, "Ability", "Perseverance", "BattHarr_Threshold_Mult_Self", "Both", "Perseverance", "", _ThresholdBonus);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Abilities"

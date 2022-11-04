@@ -1,0 +1,38 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+
+PROC PROC_AMER_UI_Ascension_CoreCompleted((CHARACTERGUID)_Char)
+THEN
+DB_AMER_UI_Ascension_CoreCompleted_Override(_Char);
+PROC_AMER_ExtendedStat_CharacterAddStat(_Char, "SourceGen_AddDuration", "", "", "", 1.0);
+PROC_AMER_ExtendedStat_CharacterAddStat(_Char, "AscensionCore", "", "", "", 1.0);
+PROC_AMER_FlexStat_CharacterAddStat(_Char, "Attribute", "STRENGTH", 1.0);
+PROC_AMER_FlexStat_CharacterAddStat(_Char, "Attribute", "FINESSE", 1.0);
+PROC_AMER_FlexStat_CharacterAddStat(_Char, "Attribute", "INTELLIGENCE", 1.0);
+PROC_AMER_FlexStat_CharacterAddStat(_Char, "Attribute", "CONSTITUTION", 1.0);
+PROC_AMER_FlexStat_CharacterAddStat(_Char, "Attribute", "MEMORY", 1.0);
+PROC_AMER_FlexStat_CharacterAddStat(_Char, "Attribute", "WITS", 1.0);
+
+
+
+PROC PROC_AMER_UI_Ascension_CoreBroken((CHARACTERGUID)_Char)
+THEN
+DB_AMER_UI_Ascension_CoreBroken_Override(_Char);
+PROC_AMER_ExtendedStat_CharacterAddStat(_Char, "SourceGen_AddDuration", "", "", "", -1.0);
+PROC_AMER_ExtendedStat_CharacterAddStat(_Char, "AscensionCore", "", "", "", -1.0);
+PROC_AMER_FlexStat_CharacterAddStat(_Char, "Attribute", "STRENGTH", -1.0);
+PROC_AMER_FlexStat_CharacterAddStat(_Char, "Attribute", "FINESSE", -1.0);
+PROC_AMER_FlexStat_CharacterAddStat(_Char, "Attribute", "INTELLIGENCE", -1.0);
+PROC_AMER_FlexStat_CharacterAddStat(_Char, "Attribute", "CONSTITUTION", -1.0);
+PROC_AMER_FlexStat_CharacterAddStat(_Char, "Attribute", "MEMORY", -1.0);
+PROC_AMER_FlexStat_CharacterAddStat(_Char, "Attribute", "WITS", -1.0);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

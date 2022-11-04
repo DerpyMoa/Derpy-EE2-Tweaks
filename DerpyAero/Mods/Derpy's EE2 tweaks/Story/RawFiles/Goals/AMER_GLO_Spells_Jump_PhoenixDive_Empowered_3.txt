@@ -1,0 +1,63 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillCast_PerTarget((CHARACTERGUID)_Char, "Jump_PhoenixDive_Empowered_3", _Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_GEN_SimulatedExplosion_Delayed(_X, _Y, _Z, 13.0, _Char, 266, "Projectile_Derpy_SCRIPT_Earthquake_Physical_SingleHit", "RS3_FX_Skills_Earth_Cast_Shout_Earthquake_Root_01", "", "PhoenixDive_Quake", 0, 700); //Living enemies LoS.
+
+
+//===========================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Jump_PhoenixDive_Empowered_3", 1)
+THEN
+PROC_AMER_GEN_ApplyStatusUntilEndOfTurn(_Char, "AMER_PHOENIXDIVE_INFUS_2", _Char);
+
+
+//===========================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Jump_PhoenixDive_Empowered_3", 2)
+THEN
+ApplyStatus(_Char, "AMER_PHOENIXDIVE_INFUS_2", 12.0, 0, _Char);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Jump_PhoenixDive_Empowered_3", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 2, 1);
+
+
+//===========================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Jump_PhoenixDive_Empowered_3", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_Source_Infusion_RitualRequest(_Char, _X, _Y, _Z, _X, _Y, _Z, 13.0, "InfusionRitual_PhoenixDive_3_Fireball", "", "FireSpecialist", 1, "skill_cast_target_air_01_cast", 0, 0);	//Note that this ritual reaction isn't held, so we don't need to approve it later.
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Jump_PhoenixDive_Empowered_3", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+ApplyStatus(_Char, "Derpy_PhoenixDive_SI3", 18.0, 0, _Char);
+PROC_AMER_GEN_SimulatedExplosion_Delayed(_X, _Y, _Z, 13.0, _Char, 266, "Projectile_Derpy_SCRIPT_Earthquake_Physical_SingleHit", "RS3_FX_Skills_Earth_Cast_Shout_Earthquake_Root_01", "", "PhoenixDive_Quake_SI", 0, 700); //Living enemies LoS.
+
+
+PROC PROC_AMER_Reaction_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, "InfusionRitual_PhoenixDive_3_Fireball", (STRING)_RequestID, (INTEGER)_RitualBool)
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Fire_Cast_Hand_01", "Dummy_R_HandFX");
+PlayEffect(_Char, "RS3_FX_Skills_Fire_Throw_Cast_Hand_01", "Dummy_R_HandFX");
+PROC_AMER_GEN_ShootProjectileAtPos(_Char, _X, _Y, _Z, "Projectile_Fireball");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Warfare"

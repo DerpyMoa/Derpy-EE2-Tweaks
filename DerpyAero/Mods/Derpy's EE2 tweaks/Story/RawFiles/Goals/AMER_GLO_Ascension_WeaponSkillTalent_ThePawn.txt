@@ -1,0 +1,49 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//All-In, Flurry, Sucker Punch and Staff of Magus grants the Escapist talent for 1 turn, if not already had.
+
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, "Target_HeavyAttack", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_WeaponSkillTalent_ThePawn", _)
+AND
+CharacterIsInCombat(_Char, 1)
+THEN
+PROC_AMER_AscensionReward_TheHornet_BasicAttackPawn(_Char);
+
+
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, "Target_DualWieldingAttack", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_WeaponSkillTalent_ThePawn", _)
+AND
+CharacterIsInCombat(_Char, 1)
+THEN
+PROC_AMER_AscensionReward_TheHornet_BasicAttackPawn(_Char);
+
+
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, "Target_SingleHandedAttack", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_WeaponSkillTalent_ThePawn", _)
+AND
+CharacterIsInCombat(_Char, 1)
+THEN
+PROC_AMER_AscensionReward_TheHornet_BasicAttackPawn(_Char);
+
+
+PROC PROC_AMER_AscensionReward_TheHornet_BasicAttackPawn((CHARACTERGUID)_Char)
+THEN
+PROC_AMER_GEN_RemoveAndApplyStatus(_Char, "AMER_ASCBOOST_MELEE_PAWN", 12.0, _Char);
+
+
+PROC PROC_AMER_AscensionReward_TheHornet_BasicAttackPawn((CHARACTERGUID)_Char)
+AND
+CharacterHasTalent(_Char, "Escapist", 0)
+THEN
+PROC_AMER_StatusMod_FlexStat_TryApplyModForStatus(_Char, _Char, "AMER_ASCBOOST_MELEE_PAWN", "PlayerTempTalent", "Escapist", 1.0, "ASCBOOST_ThePawn");
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

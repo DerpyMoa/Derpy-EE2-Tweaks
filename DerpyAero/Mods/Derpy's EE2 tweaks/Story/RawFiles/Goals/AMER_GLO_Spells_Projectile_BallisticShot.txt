@@ -1,0 +1,86 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+NRD_OnHit((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, _Damage, _Handle)
+AND
+NRD_StatusGetString(_Target, _Handle, "SkillId", "Projectile_BallisticShot_-1")
+AND
+NRD_StatusGetInt(_Target, _Handle, "Missed", 0)
+AND
+DB_AMER_Source_Infusion_Pending(_Char, _InfusCount)
+THEN
+PROC_Derpy_BallisticShot_SI_Effects(_Target, _Char, _InfusCount);
+
+
+//====================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Projectile_BallisticShot", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+AND
+GetDistanceToPosition(_Char, _X, _Y, _Z, _Distance)
+AND
+RealProduct(_Distance, 5.0, _DamageBonus)
+THEN
+PROC_AMER_TempStat_FlexStat_Add(_Char, "Stat", "DAMAGEBOOST", _DamageBonus, 2000, "SkillCast");
+
+
+PROC PROC_Derpy_BallisticShot_SI_Effects((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+ApplyStatus(_Target, "AMER_ATAXIA_APPLY", 12.0, 0, _Char);
+
+
+//====================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Projectile_BallisticShot", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+AND
+GetDistanceToPosition(_Char, _X, _Y, _Z, _Distance)
+AND
+RealProduct(_Distance, 15.0, _DamageBonus)
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+PROC_AMER_TempStat_FlexStat_Add(_Char, "Stat", "DAMAGEBOOST", _DamageBonus, 2000, "SkillCast");
+
+
+PROC PROC_Derpy_BallisticShot_SI_Effects((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, 1.0, 0.2, 0.0, "Ability", "RangerLore")
+AND
+DB_AMER_GEN_OUTPUT_Real(_Scaling)
+AND
+Integer(_Scaling, _ScalingInt)
+THEN
+PROC_AMER_BatteredHarried_DirectManip(_Target, 0, _ScalingInt, _Char);
+
+
+//====================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Projectile_BallisticShot", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+AND
+GetDistanceToPosition(_Char, _X, _Y, _Z, _Distance)
+AND
+RealProduct(_Distance, 10.0, _CritBonus)
+THEN
+PROC_AMER_TempStat_FlexStat_Add(_Char, "Stat", "CRITICALCHANCE", _CritBonus, 2000, "SkillCast");
+PROC_AMER_GEN_Shoot_Delayed("Projectile", _Char, _X, _Y, _Z, "Projectile_BallisticShot", 100);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Huntsman"

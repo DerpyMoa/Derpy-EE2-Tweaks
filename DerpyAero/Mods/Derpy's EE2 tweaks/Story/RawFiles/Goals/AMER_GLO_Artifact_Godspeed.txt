@@ -1,0 +1,64 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_GEN_FilteredStatus_Applied((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, "BLESSED", (INTEGER)_Turns)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Source, "Artifact_Godspeed", _)
+THEN
+PROC_Derpy_GodspeedActivate(_Source, _Char);
+
+
+PROC PROC_AMER_GEN_FilteredStatus_Applied((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, "Derpy_BLESSED_SI1", (INTEGER)_Turns)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Source, "Artifact_Godspeed", _)
+THEN
+PROC_Derpy_GodspeedActivate(_Source, _Char);
+
+
+PROC PROC_Derpy_GodspeedActivate((CHARACTERGUID)_Source, (CHARACTERGUID)_Char)
+THEN
+DB_AMER_Artifacts_Godspeed_Data(_Source, _Char);
+PROC_AMER_GEN_CharacterGetStat(_Source, "Movement", "AMER_Artifact_Godspeed_GetSpeed");
+
+
+PROC PROC_AMER_GEN_CharacterGetStat_Returned((INTEGER)_RequestIndex, (CHARACTERGUID)_Char, "AMER_Artifact_Godspeed_GetSpeed", "Movement", (REAL)_Movement)
+AND
+DB_AMER_Artifacts_Godspeed_Data(_Char, _Target)
+THEN
+NOT DB_AMER_Artifacts_Godspeed_Data(_Char, _Target);
+PROC_AMER_Artifacts_Godspeed_Effects(_Char, _Target, _Movement);
+
+PROC PROC_AMER_Artifacts_Godspeed_Effects((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_Movement)
+AND
+RealSubtract(_Movement, 2.5, _Remaining)
+AND
+RealMax(_Remaining, 0.0, _RemainingBounded) //Don't subtract if movement is < 2.5.
+AND
+RealDivide(_RemainingBounded, 0.5, _Instances)	//Aliens.
+AND
+NRD_Floor(_Instances, _InstancesFloored)
+AND
+RealProduct(_InstancesFloored, 3.0, _Bonus)	//No, it's not far more readable, ty Amer from Ranth
+AND
+RealMin(_Bonus, 30.0, _BonusLimit)
+AND
+RealSum(10.0, _BonusLimit, _Heal)
+AND
+QRY_AMER_GEN_CharacterGetDisplayName(_Target)
+AND
+DB_AMER_GEN_OUTPUT_String(_TargetName)
+AND
+QRY_AMER_GEN_TSK_Get("AMER_Artifact_Godspeed_LogText")
+AND
+DB_AMER_GEN_OUTPUT_String(_LogText)
+THEN
+PROC_AMER_GEN_Heal_Percentage(_Target, _Heal, "BothArmors", _Char, 1, 0, 1);
+PROC_AMER_GEN_CharacterCombatLogText_Param_Str(_Char, _LogText, _TargetName);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"

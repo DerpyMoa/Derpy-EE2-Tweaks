@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<save>
+    <header version="2" time="1387205254" />
+    <version major="1" minor="3" revision="0" build="0" />
+    <region id="CharacterCreationClass">
+        <node id="root">
+            <attribute id="ClassDescription" value="Amplifies brute strength with powerful magic" handle="hea715ed9gaa51g4168ga1b4ge5c909cd7a62" type="28" />
+			<attribute id="ClassLongDescription" value="The Warrior was lost, and night approached. To be alone in the darkness of these haunted woods meant certain death, but there was nowhere to turn for shelter. Nearly resigned to fate, the Warrior's eye caught something... a distant light through the trees.  The Warrior approached, and bit by bit the gentle glow became a campfire. A wizard sat nearby, holding his thin hands to the small flame. Approaching cautiously, the Warrior asked for shelter, and the wizard was happy to oblige.  The two became both friends and tutors, and after many months side by side, the Warrior had learned several of the wizard's finest spells.  As they travelled, they happened upon a cave from which a terrible groaning echoed. The Warrior went in first, inching along the cold cave wall as the groaning grew louder. Deep within, a figure, half-woman and half-demon, writhed upon the floor. A Sourcerer possessed.  The Warrior turned to escape, but it was too late- the Sourcerer screeched and cast a deadly spell.  Before it could find its target, though, the wizard threw himself in its path. The Warrior turned toward the retching Sourcerer and quickly stunned her. Subdued by the magic, she lay still as a corpse. The Warrior raised his sword and finished the job." handle="heae657c8gcf87g4eceg93c7gb70eb5e0cb2a" type="28" />
+            <attribute id="ClassName" value="Battlemage" handle="h808788d0g08bag4a50gaa25g91ecb0250914" type="28" />
+            <attribute id="ClassType" value="Battlemage" type="22" />
+            <attribute id="SkillSet" value="Class_Battlemage" type="22" />
+            <attribute id="Voice" value="2" type="5" />
+			<attribute id="Icon" value="1" type="5" />
+
+            <attribute id="NumStartingCombatAbilityPoints" value="2" type="4" />
+            <attribute id="NumStartingCivilAbilityPoints" value="1" type="4" />
+            <attribute id="NumStartingAttributePoints" value="3" type="4" />
+            <attribute id="NumStartingTalentPoints" value="1" type="4" />
+
+			<attribute id="AreStatsWeighted" value="1" type="19" />
+            <children>
+                <node id="EquipmentProperties">
+                    <children>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Human" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Battlemage_Humans" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Battlemage_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Dwarf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Battlemage_Dwarves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Battlemage_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Elf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Battlemage_Elves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Battlemage_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Lizard" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Battlemage_Lizards" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Battlemage_Start" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Human" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Battlemage_Humans" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Battlemage_Start_Undead" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Dwarf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Battlemage_Dwarves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Battlemage_Start_Undead" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Elf" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Battlemage_Elves" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Battlemage_Start_Undead" type="22" />
+                        </node>
+                        <node id="EquipmentProperty">
+                            <attribute id="RaceName" value="Undead_Lizard" type="22" />
+                            <attribute id="PreviewEquipmentSet" value="Class_Battlemage_Lizards" type="22" />
+                            <attribute id="StartingEquipmentSet" value="Class_Battlemage_Start_Undead" type="22" />
+                        </node>
+                    </children>
+                </node>
+                <node id="AbilityChanges">
+                    <children>
+                        <node id="AbilityChange">
+                            <attribute id="Ability" value="WarriorLore" type="23" />
+                            <attribute id="AmountIncreased" value="1" type="4" />
+                        </node>
+                        <node id="AbilityChange">
+                            <attribute id="Ability" value="FireSpecialist" type="23" />
+                            <attribute id="AmountIncreased" value="1" type="4" />
+                        </node>
+                        <node id="AbilityChange">
+                            <attribute id="Ability" value="Barter" type="23" />
+                            <attribute id="AmountIncreased" value="1" type="4" />
+                        </node>
+                    </children>
+                </node>
+                <node id="AttributeChanges">
+                    <children>
+                        <node id="AttributeChange">
+                            <attribute id="AmountIncreased" value="3" type="4" />
+                            <attribute id="Attribute" value="CON" type="23" />
+                        </node>
+                    </children>
+                </node>
+                <node id="TalentsAdded">
+                    <children>
+                        <node id="TalentAdded">
+                            <attribute id="Talent" value="Demon" type="23" />
+                        </node>
+                    </children>
+                </node>
+            </children>
+        </node>
+    </region>
+</save>

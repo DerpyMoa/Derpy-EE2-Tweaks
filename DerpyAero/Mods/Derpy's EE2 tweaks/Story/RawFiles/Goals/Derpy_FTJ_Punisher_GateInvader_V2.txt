@@ -1,0 +1,67 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_Derpy_Punisher_002_91c9d059-def4-419a-88c7-5a30999c5bfd);
+PROC_AMER_ModSetting_AlwaysInfuse_Specific(CHARACTERGUID_Derpy_Punisher_002_91c9d059-def4-419a-88c7-5a30999c5bfd, 3);
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_FTJ_GhettoGuard_003_7db795c9-9e63-40ab-a2f9-21b46fdb0c74);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_FTJ_GhettoGuard_002_098c299c-a7a1-4857-9ab5-fb01849a68ae);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_FTJ_GhettoGuard_001_ee5789f4-9320-493f-8fa1-a4ec1b8177f2);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_FTJ_GhettoGuard_004_d11296d9-833f-4070-9fa7-44ac606aedb8);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_FTJ_DallisGheist_001_fa573f6f-7af3-40da-bc9a-e7d984711b09);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_FTJ_DallisGheist_002_5aff71df-ec52-41cc-9b28-fb6b491a15c4);
+
+KBSECTION
+
+IF
+RegionStarted(_)
+AND
+QueryOnlyOnce("Derpy_PunisherFTJ_GateInvader_Setup")
+THEN
+SetOnStage(CHARACTERGUID_Derpy_Punisher_002_91c9d059-def4-419a-88c7-5a30999c5bfd, 0);
+
+
+IF
+ObjectEnteredCombat(CHARACTERGUID_S_GLO_Dallis_69b951dc-55a4-44b8-a2d5-5efedbd7d572, _)
+AND
+QueryOnlyOnce("Derpy_PunisherFTJ_GateInvader_Attack")
+THEN
+CharacterAppearCustom(CHARACTERGUID_Derpy_Punisher_002_91c9d059-def4-419a-88c7-5a30999c5bfd,"Teleport_In_01","");
+ProcObjectTimer(CHARACTERGUID_Derpy_Punisher_002_91c9d059-def4-419a-88c7-5a30999c5bfd, "Punisher_FTJGate_Invader_Combat", 500);
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "Punisher_FTJGate_Invader_Combat")
+AND
+DB_IsPlayer(_Player)
+THEN
+EnterCombat(CHARACTERGUID_Derpy_Punisher_002_91c9d059-def4-419a-88c7-5a30999c5bfd, _Player);
+
+
+PROC PROC_AMER_Combat_TurnStarted(CHARACTERGUID_Derpy_Punisher_002_91c9d059-def4-419a-88c7-5a30999c5bfd, 0)
+AND
+GetPosition(CHARACTERGUID_S_GLO_Alexandar_03e6345f-1bd3-403c-80e2-a443a74f6349, _X, _Y, _Z)
+THEN
+CharacterStatusText(CHARACTERGUID_Derpy_Punisher_002_91c9d059-def4-419a-88c7-5a30999c5bfd, "Back off Dallis! I’m saving them for later!");
+CharacterUseSkillAtPosition(CHARACTERGUID_Derpy_Punisher_002_91c9d059-def4-419a-88c7-5a30999c5bfd, "Target_PunisherScorch", _X, _Y, _Z, 1, 1);
+CharacterUseSkillAtPosition(CHARACTERGUID_Derpy_Punisher_002_91c9d059-def4-419a-88c7-5a30999c5bfd, "Rain_Blood", _X, _Y, _Z, 1, 1);
+CharacterUseSkillAtPosition(CHARACTERGUID_Derpy_Punisher_002_91c9d059-def4-419a-88c7-5a30999c5bfd, "Target_PunisherGraspOfTheStarved", _X, _Y, _Z, 1, 1);
+
+
+PROC PROC_AMER_Spells_SkillCast_Finished(CHARACTERGUID_Derpy_Punisher_002_91c9d059-def4-419a-88c7-5a30999c5bfd, "Target_PunisherGraspOfTheStarved", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+PlayAnimation(CHARACTERGUID_Derpy_Punisher_002_91c9d059-def4-419a-88c7-5a30999c5bfd,"Teleport_Out_01","GEN_GoOffStage");
+CharacterStatusText(CHARACTERGUID_Derpy_Punisher_002_91c9d059-def4-419a-88c7-5a30999c5bfd, "Till we meet again, mortals!");
+GoalCompleted;
+
+
+PROC
+ProcRegionEnded("FJ_FortJoy_Main")
+THEN
+GoalCompleted;
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "FortJoy"

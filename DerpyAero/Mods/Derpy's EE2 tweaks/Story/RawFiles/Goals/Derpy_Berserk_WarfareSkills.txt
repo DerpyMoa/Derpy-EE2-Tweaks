@@ -1,0 +1,30 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_Derpy_Berserk_Warfare("Rush_BatteringRam_-1");
+DB_Derpy_Berserk_Warfare("Rush_EnemyBatteringRam_Empowered_-1");
+DB_Derpy_Berserk_Warfare("Projectile_BouncingShield_-1");
+DB_Derpy_Berserk_Warfare("Projectile_BouncingShield_TheArena_-1");
+DB_Derpy_Berserk_Warfare("Target_Challenge_-1");
+DB_Derpy_Berserk_Warfare("Target_CripplingBlow_-1");
+DB_Derpy_Berserk_Warfare("Shout_Whirlwind_-1");
+DB_Derpy_Berserk_Warfare("Shout_Whirlwind_Empowered_-1");
+DB_Derpy_Berserk_Warfare("Cone_GroundSmash_-1");
+DB_Derpy_Berserk_Warfare("MultiStrike_BlinkStrike_-1");
+DB_Derpy_Berserk_Warfare("MultiStrike_BlinkStrike_Empowered_2_-1");
+DB_Derpy_Berserk_Warfare("Shout_ThickOfTheFight_-1");
+DB_Derpy_Berserk_Warfare("Target_Flurry_-1");
+DB_Derpy_Berserk_Warfare("Target_Flurry_Empowered_-1");
+DB_Derpy_Berserk_Warfare("Jump_PhoenixDive_-1");
+DB_Derpy_Berserk_Warfare("Jump_PhoenixDive_Empowered_1_-1");
+DB_Derpy_Berserk_Warfare("Jump_PhoenixDive_Empowered_2_-1");
+DB_Derpy_Berserk_Warfare("Jump_PhoenixDive_Empowered_3_-1");
+DB_Derpy_Berserk_Warfare("Target_Overpower_-1");
+
+KBSECTION
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

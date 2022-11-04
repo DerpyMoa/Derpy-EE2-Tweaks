@@ -1,0 +1,61 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Instantly summon a Boneshaped Crusher as you enter combat; Boneshaped Crushers do not count against your summon limit.
+
+PROC PROC_AMER_UI_Ascension_SpecialLogic_Init((CHARACTERGUID)_Char, "Ascension_Skill_BoneshapedCrusher", (REAL)_Add)
+THEN
+PROC_AMER_FlexStat_CharacterAddStat(_Char, "Spell", "Summon_AMER_BoneshapedCrusher", 1.0);
+
+PROC PROC_AMER_UI_Ascension_SpecialLogic_Removed((CHARACTERGUID)_Char, "Ascension_Skill_BoneshapedCrusher")
+THEN
+PROC_AMER_FlexStat_CharacterAddStat(_Char, "Spell", "Summon_AMER_BoneshapedCrusher", -1.0);
+
+
+
+//Destry an existing owned Boneshaped Crusher.
+PROC PROC_AMER_Spells_SkillPreCast(_Owner, "Summon_AMER_BoneshapedCrusher", _, _, _)
+AND
+QRY_AMER_GEN_Mutex_Clear()
+AND
+DB_AMER_Summoning_ActiveSummon(_Owner, _Summon)
+AND
+GetTemplate(_Summon, "AMER_Extinction_BoneTroll_02a84627-6b66-46ad-85f0-769a0c210539")
+AND
+QRY_AMER_GEN_Mutex()    //Only replace one such summon. This is probably never relevant, but if a player has more than one Crusher in some future case, we only want one replaced, not both.
+THEN
+PROC_AMER_GEN_CharacterDie(_Summon, 0, "DoT", NULL_00000000-0000-0000-0000-000000000000);
+
+
+
+PROC PROC_AMER_CharAddedToCombat((CHARACTERGUID)_Owner, (INTEGER)_Combat)
+AND
+DB_AMER_Ascension_SpecialLogic(_Owner, "Ascension_Skill_BoneshapedCrusher", _)
+AND
+NOT QRY_AMER_Ascension_Skill_BoneshapedCrusher_AlreadyHave(_Owner)  //Don't create a Crusher if we already have one. This can be relevant if the owner is reentering combat spammed by some engine issue.
+AND
+GetPosition(_Owner, _X, _Y, _Z)
+THEN
+PROC_AMER_Summoning_AddKeywordStatToNext(_Owner, "AMER_Extinction_BoneTroll_02a84627-6b66-46ad-85f0-769a0c210539", "SourceGeneration", 1);
+PROC_AMER_Summoning_AddExtendedStatToNext(_Owner, "AMER_Extinction_BoneTroll_02a84627-6b66-46ad-85f0-769a0c210539", "SourceGen_AddTurns", "", "", "", 2.0, 1);
+PROC_AMER_Summoning_AddFlexStatToNext(_Owner, "AMER_Extinction_BoneTroll_02a84627-6b66-46ad-85f0-769a0c210539", "Spell", "Shout_SourceInfusion", 1.0, 1);
+PROC_AMER_Summoning_AddExtendedStatToNext(_Owner, "AMER_Extinction_BoneTroll_02a84627-6b66-46ad-85f0-769a0c210539", "InstantEffect", "AddSP", "", "", 1.0, 1);
+PROC_AMER_Summoning_SnapNextToValidPos(_Owner, "AMER_Extinction_BoneTroll_02a84627-6b66-46ad-85f0-769a0c210539", 1);
+PROC_AMER_GEN_CharacterCauseExplosionAtPos(_Owner, _X, _Y, _Z, "Projectile_AMER_SCRIPT_Summon_Cerberus_BoneshapedCrusher");
+
+
+
+QRY QRY_AMER_Ascension_Skill_BoneshapedCrusher_AlreadyHave((CHARACTERGUID)_Owner)
+AND
+DB_AMER_Summoning_ActiveSummon(_Owner, _Summon)
+AND
+GetTemplate(_Summon, "AMER_Extinction_BoneTroll_02a84627-6b66-46ad-85f0-769a0c210539")
+THEN
+DB_NOOP(1);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

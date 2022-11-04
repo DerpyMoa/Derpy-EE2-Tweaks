@@ -1,0 +1,37 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Once per turn, activate Benevolence on allies who activate Purity or Paucity.
+
+PROC PROC_AMER_KeywordStat_Purity_Activate((CHARACTERGUID)_Char, (CHARACTERGUID)_DataSource, (GUIDSTRING)_Source)
+AND
+DB_AMER_Ascension_SpecialLogic(_Reactor, "Ascension_Benevolence_ACT_MK2_FreeOH_PaucityPurity", _)
+THEN
+PROC_Ascension_Benevolence_ACT_MK2_FreeOHPaucityPurity(_Char, _Reactor);
+
+
+PROC PROC_AMER_KeywordStat_Paucity_Activate((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, (GUIDSTRING)_Attacker, (REAL)_Duration)
+AND
+DB_AMER_Ascension_SpecialLogic(_Reactor, "Ascension_Benevolence_ACT_MK2_FreeOH_PaucityPurity", _)
+THEN
+PROC_Ascension_Benevolence_ACT_MK2_FreeOHPaucityPurity(_Char, _Reactor);
+
+
+PROC PROC_Ascension_Benevolence_ACT_MK2_FreeOHPaucityPurity((CHARACTERGUID)_Char, (CHARACTERGUID)_Reactor)
+AND
+QRY_AMER_GEN_OncePerTurn(_Reactor, "Ascension_Benevolence_ACT_MK2_FreeOH_PaucityPurity")
+AND
+CharacterIsAlly(_Char, _Reactor, 1)
+AND
+NOT QRY_AMER_GEN_IsDeadOrDying(_Reactor)
+THEN
+PROC_AMER_GEN_OncePerTurn_Store(_Reactor, "Ascension_Benevolence_ACT_MK2_FreeOH_PaucityPurity");
+PROC_AMER_KeywordStat_Benevolence_Activate(_Reactor, _Char, 1);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

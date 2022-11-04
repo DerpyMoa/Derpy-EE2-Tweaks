@@ -1,0 +1,112 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//This spell's base effects were moved entirely to script, so that we can manipulate how many totems are created,
+//as well as what kind of totem is created.
+
+PROC PROC_AMER_Spells_SkillCast_PerTarget((CHARACTERGUID)_Char, "Shout_NecromancerTotems", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 0, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_Spells_NecroTotems_SpawnTotems(_Char, _X, _Y, _Z, 1, 2, "Projectile_AMER_SCRIPT_NecroTotems_SummonTotem");
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Shout_NecromancerTotems", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 1)
+THEN
+PROC_AMER_Spells_NecroTotems_SpawnTotems(_Char, _X, _Y, _Z, 1, 3, "Projectile_AMER_SCRIPT_NecroTotems_SummonTotem");
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Shout_NecromancerTotems", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 2)
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+PROC_AMER_Spells_NecroTotems_SpawnTotems(_Char, _X, _Y, _Z, 1, 5, "Projectile_AMER_SCRIPT_NecroTotems_SummonTotem");
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Shout_NecromancerTotems", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+PROC_AMER_Spells_NecroTotems_SpawnTotems(_Char, _X, _Y, _Z, 2, 5, "Projectile_AMER_SCRIPT_NecroTotems_SummonTotem");
+
+
+//REGION Base Logic.
+
+PROC PROC_AMER_Spells_NecroTotems_SpawnTotems((CHARACTERGUID)_Char, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_TotemsPerCorpse, (INTEGER)_CorpseLimit, (STRING)_DummyProj)
+AND
+QRY_AMER_GEN_IterateCharsAroundObject_GetRequestIndex()
+AND
+DB_AMER_GEN_OUTPUT_Integer(_RequestID)
+THEN
+DB_AMER_Spells_NecroTotems_Data(_RequestID, _TotemsPerCorpse, _CorpseLimit, _DummyProj);
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 13.0, _Char, 16, "AMER_Spells_NecroTotems_SpawnTotems");	//Only dead characters within 13m of _Char.
+
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "AMER_Spells_NecroTotems_SpawnTotems", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+AND
+DB_AMER_Spells_NecroTotems_Data(_RequestID, _TotemsPerCorpse, _CorpseLimit, _DummyProj)
+AND
+_CorpseLimit > 0
+AND
+IntegerSubtract(_CorpseLimit, 1, _NewCorpseLimit)
+THEN
+NOT DB_AMER_Spells_NecroTotems_Data(_RequestID, _TotemsPerCorpse, _CorpseLimit, _DummyProj);
+DB_AMER_Spells_NecroTotems_Data(_RequestID, _TotemsPerCorpse, _NewCorpseLimit, _DummyProj);
+PROC_AMER_Spells_NecroTotems_SpawnAtPosition(_SourceChar, _Char, _TotemsPerCorpse, _DummyProj);
+
+
+PROC PROC_AMER_Spells_NecroTotems_SpawnAtPosition((CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Corpse, (INTEGER)_TotemsPerCorpse, (STRING)_DummyProj)
+AND
+GetPosition(_Corpse, _X, _Y, _Z)
+THEN
+PROC_AMER_Summoning_CreateTotemAtPos(_SourceChar, _X, _Y, _Z, "Bones");
+
+PROC PROC_AMER_Spells_NecroTotems_SpawnAtPosition((CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Corpse, (INTEGER)_TotemsPerCorpse, (STRING)_DummyProj)
+AND
+_TotemsPerCorpse > 1
+AND
+IntegerSubtract(_TotemsPerCorpse, 1, _NewTotemsPerCorpse)
+THEN
+PROC_AMER_Spells_NecroTotems_SpawnAtPosition(_SourceChar, _Corpse, _NewTotemsPerCorpse, _DummyProj);
+
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Finished((INTEGER)_RequestID, "AMER_Spells_NecroTotems_SpawnTotems", (CHARACTERGUID)_SourceChar)
+AND
+DB_AMER_Spells_NecroTotems_Data(_RequestID, _TotemsPerCorpse, _CorpseLimitUnused, _DummyProj)
+THEN
+NOT DB_AMER_Spells_NecroTotems_Data(_RequestID, _TotemsPerCorpse, _CorpseLimitUnused, _DummyProj);
+PROC_AMER_Spells_NecroTotems_TrySacrificeSummon(_SourceChar, _TotemsPerCorpse, _CorpseLimitUnused, _DummyProj);
+
+PROC PROC_AMER_Spells_NecroTotems_TrySacrificeSummon((CHARACTERGUID)_SourceChar, (INTEGER)_TotemsPerCorpse, (INTEGER)_CorpsesToSimulate, (STRING)_DummyProj)
+AND
+_CorpsesToSimulate > 0
+AND
+QRY_AMER_GEN_Mutex_Clear()
+AND
+DB_AMER_Summoning_ActiveSummon_Autonomous(_SourceChar, _Summon)
+AND
+QRY_AMER_GEN_Mutex_CheckLocked()
+AND
+GetPosition(_Summon, _X, _Y, _Z)
+AND
+QRY_AMER_GEN_GetDistanceToPosition_2D(_SourceChar, _X, _Z)
+AND
+DB_AMER_GEN_OUTPUT_Real(_Distance)
+AND
+_Distance <= 13.0
+AND
+QRY_AMER_GEN_Mutex()
+AND
+RealSum(_Y, 0.7, _Yb)
+AND
+IntegerProduct(_TotemsPerCorpse, _CorpsesToSimulate, _TotemsPerSacrifice)
+THEN
+PROC_AMER_Spells_NecroTotems_SpawnAtPosition(_SourceChar, _Summon, _TotemsPerSacrifice, _DummyProj);
+PlayEffectAtPosition("RS3_FX_Skills_Voodoo_CorruptedBlade_TargetEffect_01", _X, _Yb, _Z);
+PROC_AMER_GEN_CharacterDie(_Summon, 0, "DoT", _SourceChar);
+
+//END_REGION
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Necromancer"

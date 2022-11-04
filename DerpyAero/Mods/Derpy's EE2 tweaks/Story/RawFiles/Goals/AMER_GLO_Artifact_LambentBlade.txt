@@ -1,0 +1,60 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_GEN_BasicAttackObjectStarted((GUIDSTRING)_Defender, (REAL)_X, (REAL)_Y, (REAL)_Z, (CHARACTERGUID)_Owner, (CHARACTERGUID)_Attacker, (STRING)_AttackID)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Attacker, "Artifact_LambentBlade", _)
+THEN
+PROC_AMER_TempStat_HitStatus_ThrowProc(_Attacker, "Artifact_LambentBlade", 2000, "");
+
+
+PROC PROC_AMER_HitStatus_Event((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, "Artifact_LambentBlade")
+AND
+NOT DB_AMER_Artifacts_LambentBlade_Choke(_Char, _Source)
+AND
+CharacterIsEnemy(_Char, _Source, 1)
+THEN
+DB_AMER_Artifacts_LambentBlade_Choke(_Char, _Source);
+PROC_AMER_Artifacts_LambentBladeEffects(_Char, _Source);
+
+PROC PROC_AMER_Artifacts_LambentBladeEffects((CHARACTERGUID)_Char, (CHARACTERGUID)_Source)
+AND
+HasActiveStatus(_Char, "BLEEDING", 1)
+THEN
+ApplyStatus(_Char, "AMER_BRITTLE_APPLY", 12.0, 0, _Source);
+
+
+PROC PROC_AMER_Artifacts_LambentBladeEffects((CHARACTERGUID)_Char, (CHARACTERGUID)_Source)
+AND
+HasActiveStatus(_Char, "AMER_CHARGED", 1)
+THEN
+ApplyStatus(_Char, "AMER_SCORCHED_APPLY", 12.0, 0, _Source);
+
+
+PROC PROC_AMER_Artifacts_LambentBladeEffects((CHARACTERGUID)_Char, (CHARACTERGUID)_Source)
+AND
+HasActiveStatus(_Char, "POISONED", 1)
+THEN
+ApplyStatus(_Char, "AMER_CALCIFYING_APPLY", 12.0, 0, _Source);
+
+
+
+PROC PROC_AMER_TempStat_Cleanup((CHARACTERGUID)_Source)
+AND
+DB_AMER_Artifacts_LambentBlade_Choke(_Char, _Source)
+THEN
+NOT DB_AMER_Artifacts_LambentBlade_Choke(_Char, _Source);
+
+PROC PROC_AMER_Artifacts_UnequipEffects((CHARACTERGUID)_Source, "Artifact_LambentBlade", _)
+AND
+DB_AMER_Artifacts_LambentBlade_Choke(_Char, _Source)
+THEN
+NOT DB_AMER_Artifacts_LambentBlade_Choke(_Char, _Source);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"

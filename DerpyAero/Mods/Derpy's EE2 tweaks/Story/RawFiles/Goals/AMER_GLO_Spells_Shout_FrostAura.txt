@@ -1,0 +1,66 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, "Shout_FrostAura", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+THEN
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "BatteredHarried_DirectManipStatuses_Activate", "1", "-1", "", 1.0, 2000, "SkillCast");
+
+
+//==============================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_FrostAura", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_StatusMod_AddHealing(_Char, "FROST_AURA", 25.0, "MagicArmor", 2.5, "Ability", "WaterSpecialist", 0, 0, 2000, "SkillCast");
+
+
+//==============================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_FrostAura", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat_Scaling(_Char, "FROST_AURA", "Regen_MagicArmor", "", "", "", "FostAura_Infus", 0, "Ability", "WaterSpecialist", 30.0, 2.0, 2000, "SkillCast");
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "FROST_AURA", "HarriedGrowth", "", "", "", -1.0, "FostAura_Infus", 0, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_FrostAura", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+DB_AMER_IterateCharsAroundObject_Exclusion(_Char);	//Don't double-cast on target.
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 10.0, _Char, 12, "Derpy_SoothingCold_SI3");	//Allies, not dead.
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Derpy_SoothingCold_SI3", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+ApplyStatus(_Char, "FROST_AURA", 18.0, 0, _SourceChar);
+
+
+//==============================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_FrostAura", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "Status_AddDuration", "FROST_AURA", "", "", 1.0);
+PROC_AMER_TempStat_StatusMod_AddExtendedStat_Scaling(_Char, "FROST_AURA", "HarriedGrowth", "", "", "", "FostAura_Infus", 0, "Ability", "WaterSpecialist", -1.0, -0.2, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_FrostAura", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 2, 1);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Hydrosophist"

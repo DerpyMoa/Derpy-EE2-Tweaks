@@ -1,0 +1,56 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, "Shout_Derpy_AssassinInstinct", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+AND
+_InfusCount < 2
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "Derpy_AssassinInstinct", "AssassinInstinct_SI0", "", "", "", 1.0, "Derpy_AssassinInstinct_SI", 0, 2000, "SkillCast");
+
+
+//===================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_Derpy_AssassinInstinct", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 5.0, _Char, 42, "Derpy_AssassinInstinct_SI1");	//Visible living enemies.
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Derpy_AssassinInstinct_SI1", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+PROC_AMER_GEN_ShootProjectileAt(_SourceChar, _Char, "Derpy_SCRIPT_AssassinInstinct_Knife");
+
+
+//===================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_Derpy_AssassinInstinct", 2)
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "Derpy_AssassinInstinct", "AssassinInstinct_SI2", "", "", "", 1.0, "Derpy_AssassinInstinct_SI", 0, 2000, "SkillCast");
+
+
+//===================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_Derpy_AssassinInstinct", 3)
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "Derpy_AssassinInstinct", "AssassinInstinct_SI3", "", "", "", 1.0, "Derpy_AssassinInstinct_SI", 0, 2000, "SkillCast");
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "Status_AddDuration", "Derpy_AssassinInstinct", "", "", 1.0, 2000, "SkillCast");
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_Derpy_AssassinInstinct", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 2, 1);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Scoundrel"

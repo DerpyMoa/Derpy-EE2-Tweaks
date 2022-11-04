@@ -1,0 +1,58 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Once per round/char, activate Vitality Void when you deal damage to a non-summon enemy exceeding 30% of their total Vitality over a turn.
+
+PROC PROC_AMER_CharacterReceivedDamage((CHARACTERGUID)_CharHurt, (CHARACTERGUID)_Source, (REAL)_DamageTotal, (REAL)_DamageVit, (REAL)_DamagePhys, (REAL)_DamageMagic)
+AND
+DB_AMER_Ascension_SpecialLogic(_Source, "Ascension_VitalityVoid_ACT_DamageAtOnce", _)
+AND
+QRY_AMER_GEN_OncePerRound_PerChar(_Source, "Ascension_VitalityVoid_ACT_DamageAtOnce", _CharHurt)
+AND
+CharacterIsEnemy(_CharHurt, _Source, 1)
+AND
+DB_AMER_CharVitals_DamageRelativeToVit(_DamageRelative)
+AND
+CombatGetIDForCharacter(_Source, _Combat)
+THEN
+PROC_AMER_Ascension_VitalityVoid_ACT_DamageAtOnce(_Source, _CharHurt, _Combat, _DamageRelative);
+
+PROC PROC_AMER_Ascension_VitalityVoid_ACT_DamageAtOnce((CHARACTERGUID)_Source, (CHARACTERGUID)_CharHurt, (INTEGER)_Combat, (REAL)_DamageRelative)
+AND
+DB_AMER_Ascension_VitalityVoid_ACT_DamageAtOnce_Buffer(_Source, _CharHurt, _Combat, _OldDamage)
+AND
+RealSum(_OldDamage, _DamageRelative, _NewDamage)
+THEN
+NOT DB_AMER_Ascension_VitalityVoid_ACT_DamageAtOnce_Buffer(_Source, _CharHurt, _Combat, _OldDamage);
+DB_AMER_Ascension_VitalityVoid_ACT_DamageAtOnce_Buffer(_Source, _CharHurt, _Combat, _NewDamage);
+
+PROC PROC_AMER_Ascension_VitalityVoid_ACT_DamageAtOnce((CHARACTERGUID)_Source, (CHARACTERGUID)_CharHurt, (INTEGER)_Combat, (REAL)_DamageRelative)
+AND
+NOT DB_AMER_Ascension_VitalityVoid_ACT_DamageAtOnce_Buffer(_Source, _CharHurt, _Combat, _)
+THEN
+DB_AMER_Ascension_VitalityVoid_ACT_DamageAtOnce_Buffer(_Source, _CharHurt, _Combat, _DamageRelative);
+
+PROC PROC_AMER_Ascension_VitalityVoid_ACT_DamageAtOnce((CHARACTERGUID)_Source, (CHARACTERGUID)_CharHurt, (INTEGER)_Combat, (REAL)_DamageRelative)
+AND
+DB_AMER_Ascension_VitalityVoid_ACT_DamageAtOnce_Buffer(_Source, _CharHurt, _Combat, _StoredDamage)
+AND
+_StoredDamage > 0.1
+THEN
+NOT DB_AMER_Ascension_VitalityVoid_ACT_DamageAtOnce_Buffer(_Source, _CharHurt, _Combat, _StoredDamage);
+DB_AMER_GEN_OncePerRound_PerChar(_Source, "Ascension_VitalityVoid_ACT_DamageAtOnce", _CharHurt);
+PROC_AMER_KeywordStat_VitalityVoid_Fire(_Source, 1);
+
+
+
+PROC PROC_AMER_Combat_TurnEnded(_Combat, _, _)
+AND
+DB_AMER_Ascension_VitalityVoid_ACT_DamageAtOnce_Buffer(_Source, _CharHurt, _Combat, _StoredDamage)
+THEN
+NOT DB_AMER_Ascension_VitalityVoid_ACT_DamageAtOnce_Buffer(_Source, _CharHurt, _Combat, _StoredDamage);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

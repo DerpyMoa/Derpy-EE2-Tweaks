@@ -1,0 +1,73 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_WormTremor", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 1)
+THEN
+PROC_AMER_GEN_IterateCharsAroundPoint(_X, _Y, _Z, 4.0, _Char, 8, "AMER_SourceInfusion_WormTremor_1");	//Not dead.
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "AMER_SourceInfusion_WormTremor_1", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+ApplyStatus(_Char, "ACID", 18.0, 0, _SourceChar);
+ApplyStatus(_Char, "BLEEDING", 18.0, 0, _SourceChar);
+
+
+//================================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Target_WormTremor", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 2)
+THEN
+PROC_AMER_GEN_IterateCharsAroundPoint(_X, _Y, _Z, 4.0, _Char, 8, "Derpy_WormTremor_SI2");	//Not dead.
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Derpy_WormTremor_SI2", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+PROC_AMER_BatteredHarried_DirectManip(_Char, 2, 2, _SourceChar);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_WormTremor", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 2)
+THEN
+PROC_AMER_GEN_IterateCharsAroundPoint(_X, _Y, _Z, 4.0, _Char, 8, "AMER_SourceInfusion_WormTremor_2");	//Not dead.
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "AMER_SourceInfusion_WormTremor_2", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+ApplyStatus(_Char, "ACID", 18.0, 0, _SourceChar);
+ApplyStatus(_Char, "BLEEDING", 18.0, 0, _SourceChar);
+ApplyStatus(_Char, "AMER_HEMORRHAGE", 18.0, 0, _SourceChar);
+ApplyStatus(_Char, "AMER_SLOWED_APPLY", 12.0, 0, _SourceChar);
+ApplyStatus(_Char, "AMER_WEAKENED_APPLY", 12.0, 0, _SourceChar);
+
+
+//================================================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Target_WormTremor", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 3)
+THEN
+PROC_AMER_GEN_IterateCharsAroundPoint(_X, _Y, _Z, 4.0, _Char, 8, "Derpy_WormTremor_SI3");	//Not dead.
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Derpy_WormTremor_SI3", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+PROC_AMER_BatteredHarried_DirectManip(_Char, 2, 2, _SourceChar);
+ApplyStatus(_Char, "AMER_WITHER", 6.0, 0, _SourceChar);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_WormTremor", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 3)
+THEN
+PROC_AMER_GEN_CharacterCauseExplosionAtPos(_Char, _X, _Y, _Z, "Projectile_AMER_SCRIPT_Earthquake_Earth");
+PROC_AMER_GEN_IterateCharsAroundPoint(_X, _Y, _Z, 4.0, _Char, 8, "AMER_SourceInfusion_WormTremor_3");	//Not dead.
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "AMER_SourceInfusion_WormTremor_3", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+PROC_AMER_BatteredHarried_DirectManip(_Char, 2, 4, _SourceChar);
+ApplyStatus(_Char, "ACID", 18.0, 0, _SourceChar);
+ApplyStatus(_Char, "BLEEDING", 18.0, 0, _SourceChar);
+ApplyStatus(_Char, "AMER_HEMORRHAGE", 18.0, 0, _SourceChar);
+ApplyStatus(_Char, "AMER_SLOWED_APPLY", 12.0, 0, _SourceChar);
+ApplyStatus(_Char, "AMER_WEAKENED_APPLY", 12.0, 0, _SourceChar);
+ApplyStatus(_Char, "AMER_CORRODING", 6.0, 0, _SourceChar);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Geomancer"

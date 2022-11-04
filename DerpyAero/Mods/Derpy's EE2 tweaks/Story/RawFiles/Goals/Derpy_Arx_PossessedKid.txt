@@ -1,0 +1,18 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_ARX_Outskirts_PossessedKid_Demon_4e0ae8f0-e5c2-425c-989e-0f0a450b62e3);
+
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_ARX_Outskirts_PossessedKid_Demon_Fire_01_d82f6dbe-0c63-42dc-9d7e-44845d9159fe);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_ARX_Outskirts_PossessedKid_Demon_Necro_01_2696e8a6-f62f-4b10-93e6-32914ebbb735);
+DB_AMER_GEN_SkillScaling_Exclusion_Specific(CHARACTERGUID_S_ARX_Outskirts_PossessedKid_Demon_Poison_01_da2daf78-5c1c-445f-b79b-ab4d1df5b5aa);
+
+KBSECTION
+
+
+EXITSECTION
+
+
+ENDEXITSECTION
+ParentTargetEdge "ARX"

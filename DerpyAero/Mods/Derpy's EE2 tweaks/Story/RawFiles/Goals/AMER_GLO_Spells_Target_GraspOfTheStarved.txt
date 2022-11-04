@@ -1,0 +1,129 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Grasp of the Starved's base cast animation threw all cast events within the same frame.
+//We have modified its cast animation to be one that does not do this (cast textkey is within
+//the animation, rather than at its start).
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Target_GraspOfTheStarved", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+AND
+QRY_AMER_GEN_IterateCharsAroundObject_GetRequestIndex()
+AND
+DB_AMER_GEN_OUTPUT_Integer(_RequestIndex)
+THEN
+DB_AMER_Source_Infusion_GotS_Data(_RequestIndex, _Char, _InfusCount);
+PROC_AMER_GEN_CountCharsAroundPoint(_X, _Y, _Z, 6.0, _Char, 16, "AMER_SourceInfusion_GotS_CorpseCount");	//Count only dead characters within target radius.
+
+
+PROC PROC_AMER_GEN_CountCharsAroundObject_Returned((INTEGER)_RequestIndex, "AMER_SourceInfusion_GotS_CorpseCount", (CHARACTERGUID)_Caster, (INTEGER)_Corpses)
+AND
+Real(_Corpses, _CorpsesReal)
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Caster, 25.0, 4.0, 0.0, "Ability", "Necromancy")
+AND
+DB_AMER_GEN_OUTPUT_Real(_Scaling)
+AND
+Real(_Corpses, _CorpsesReal)
+AND
+RealProduct(_Scaling, _CorpsesReal, _Bonus)
+AND
+DB_AMER_Source_Infusion_GotS_Data(_RequestIndex, _Caster, _InfusCount)
+THEN
+NOT DB_AMER_Source_Infusion_GotS_Data(_RequestIndex, _Caster, _InfusCount);
+DB_AMER_Source_Infusion_GotS_Corpses(_Caster, _CorpsesReal);	//Corpses stored in DB for following SkillCast actions.
+PROC_AMER_TempStat_FlexStat_Add(_Caster, "Stat", "DAMAGEBOOST", _Bonus, 2000, "SkillCast");
+PROC_AMER_Source_Infusion_GoTS_CorpsesReturned(_Caster, _CorpsesReal, _InfusCount);	//CorpsesReturned proc thrown for dependent SkillPreCast actions.
+
+
+//=================================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast_PerTarget((CHARACTERGUID)_Char, "Target_GraspOfTheStarved", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+CreateSurfaceAtPosition(_X, _Y, _Z, "SurfaceNone", 6.0, 0.0);
+CreateSurfaceAtPosition(_X, _Y, _Z, "SurfaceBlood", 6.0, 12.0);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_GraspOfTheStarved", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, 2.0, 0.30, 0.0, "Ability", "Necromancy")
+AND
+DB_AMER_GEN_OUTPUT_Real(_Scaling)
+AND
+DB_AMER_Source_Infusion_GotS_Corpses(_Char, _CorpsesReal)
+AND
+RealProduct(_Scaling, _CorpsesReal, _Bonus)
+AND
+Integer(_Bonus, _BonusInt)
+THEN
+DB_AMER_Source_Infusion_GotS_Infus2(_Char, _BonusInt);
+PROC_AMER_GEN_IterateCharsAroundPoint(_X, _Y, _Z, 6.0, _Char, 10, "AMER_SourceInfusion_GotS_Infus_2");	//Only living enemies.
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "AMER_SourceInfusion_GotS_Infus_2", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+AND
+GetSurfaceGroundAt(_Char, _Surface)
+AND
+StringContains(_Surface, "Blood", 1)
+AND
+DB_AMER_Source_Infusion_GotS_Infus2(_SourceChar, _BonusInt)
+THEN
+PROC_AMER_BatteredHarried_DirectManip(_Char, 0, _BonusInt, _SourceChar);
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Finished((INTEGER)_RequestID, "AMER_SourceInfusion_GotS_Infus_2", (CHARACTERGUID)_SourceChar)
+AND
+DB_AMER_Source_Infusion_GotS_Infus2(_SourceChar, _BonusInt)
+THEN
+NOT DB_AMER_Source_Infusion_GotS_Infus2(_SourceChar, _BonusInt);
+
+
+//=================================================================================================================================
+
+
+PROC PROC_AMER_Source_Infusion_GoTS_CorpsesReturned((CHARACTERGUID)_Char, (REAL)_CorpsesReal, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, 25.0, 4.0, 0.0, "Ability", "Necromancy")
+AND
+DB_AMER_GEN_OUTPUT_Real(_Scaling)
+AND
+RealProduct(_Scaling, _CorpsesReal, _Bonus)
+THEN
+PROC_AMER_TempStat_FlexStat_Add(_Char, "Stat", "DAMAGEBOOST", _Bonus);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_GraspOfTheStarved", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+AND
+DB_AMER_Source_Infusion_GotS_Corpses(_Char, _CorpsesReal)
+AND
+Integer(_CorpsesReal, _CorpsesInt)
+AND
+IntegerMin(_CorpsesInt, 3, _CorpsesBounded)
+AND
+IntegerDivide(_CorpsesBounded, 3, _RepeatBool)	//Result of this arithmetic is always either 0, or 1 with 3 or more corpses.
+THEN
+PROC_AMER_GEN_Shoot_Delayed("Explosion", _Char, _X, _Y, _Z, "Projectile_AMER_SCRIPT_GraspOfTheStarved", _RepeatBool, 100);
+
+
+PROC PROC_AMER_Spells_CastCleanup((CHARACTERGUID)_Char, "Target_GraspOfTheStarved")
+AND
+DB_AMER_Source_Infusion_GotS_Corpses(_Char, _CorpsesReal)
+THEN
+NOT DB_AMER_Source_Infusion_GotS_Corpses(_Char, _CorpsesReal);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Necromancer"

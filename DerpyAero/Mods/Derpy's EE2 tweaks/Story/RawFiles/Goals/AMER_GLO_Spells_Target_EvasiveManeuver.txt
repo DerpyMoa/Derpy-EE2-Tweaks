@@ -1,0 +1,62 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+//Base effect imposes dodge fatigue penalty increase.
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, "Target_EvasiveManeuver", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+AND
+_InfusCount < 2
+THEN
+PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Char, "EVADING", "DodgeFatigue_AddAmount", "", "", "", -10.0, "UncannyEvasion_FatiguePenalty", 0);
+
+
+//================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Target_EvasiveManeuver", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "Status_AddDuration", "EVADING", "", "", 1.0);
+
+
+//================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Target_EvasiveManeuver", (INTEGER)_InfusCount)
+AND
+_InfusCount > 1
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_EvasiveManeuver", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 2)
+AND
+_Target != _Char	//Apply to self as well as target; don't bother doing this if target already is self.
+THEN
+ApplyStatus(_Char, "EVADING", 6.0, 0, _Char);
+
+
+//================================================================================================================
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Target_EvasiveManeuver", (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+DB_AMER_IterateCharsAroundObject_Exclusion(_Target);	//Don't double-cast on target.
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 13.0, _Char, 12, "AMER_SourceInfusion_EvasiveManeuver");	//Living allies.
+
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "AMER_SourceInfusion_EvasiveManeuver", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Air_Cast_Aoe_Divine_UncannyEvasion_Target_01", "root");
+ApplyStatus(_Char, "EVADING", 6.0, 0, _SourceChar);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Aerotheurge"

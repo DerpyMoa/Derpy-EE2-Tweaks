@@ -1,0 +1,26 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_KeywordStat_Predator_PreFire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Char, "ReactiveShot_SI2_Player", _, _, _, _)
+AND
+CharacterGetAbility(_Char, "RangerLore", _HuntsmanPoints)
+AND
+Real(_HuntsmanPoints, _HuntsmanPointsReal)
+AND
+RealProduct(_HuntsmanPointsReal, 4.0, _ExtraDamage)
+AND
+RealSum(_ExtraDamage, 14.0, _Damage)
+THEN
+PROC_AMER_TempStat_FlexStat_Add(_Char, "Stat", "ACCURACYBOOST", _Damage, 2000, "Attack");
+PROC_AMER_TempStat_FlexStat_Add(_Char, "Stat", "DAMAGEBOOST", _Damage, 2000, "Attack");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GEN_Stats_ExtendedStats"

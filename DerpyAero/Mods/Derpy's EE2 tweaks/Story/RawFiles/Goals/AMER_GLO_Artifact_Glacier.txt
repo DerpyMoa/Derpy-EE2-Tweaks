@@ -1,0 +1,62 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Status_Brittle_Detonate((CHARACTERGUID)_Char, (CHARACTERGUID)_Source)
+//PROC PROC_AMER_Combat_TurnStarted((CHARACTERGUID)_Char, 0)
+//AND
+//DB_AMER_ExtendedStat_AddedStat(_Char, "Artifact_Glacier_Damage", _, _, _, _Percent)
+//AND
+//QRY_AMER_ExtendedStat_GetModSources(_Char, "Artifact_Glacier_Damage", "", "", "", _Percent)
+//AND
+//DB_AMER_ExtendedStat_GetModSources_OUTPUT(_Source, _PercentOwned)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Source, "Artifact_Glacier", _)
+AND
+CharacterIsEnemy(_Char, _Source, 1)
+AND
+QRY_AMER_GEN_IterateCharsAroundObject_GetRequestIndex()
+AND
+DB_AMER_GEN_OUTPUT_Integer(_RequestIndex)
+AND
+GetVarFloat(_Char, "AMER_GEN_CurrentVitality", _Vit)
+AND
+RealProduct(_Vit, 0.07, _Damage)
+AND
+Integer(_Damage, _DamageInt)
+AND
+QRY_AMER_GEN_CharacterGetDisplayName(_Char)
+AND
+DB_AMER_GEN_OUTPUT_String(_Name)
+AND
+QRY_AMER_GEN_TSK_Get("AMER_Artifact_Glacier_LogText")
+AND
+DB_AMER_GEN_OUTPUT_String(_LogText)
+THEN
+//DB_AMER_IterateCharsAroundObject_Exclusion(_Char);	//Don't hit status carrier.
+DB_AMER_Artifact_Glacier_Data(_RequestIndex, _Char, _DamageInt);
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 5.0, _Source, 10, "Artifact_Glacier_DamageIterator");	//Living enemies within 5m.
+CharacterStatusText(_Source, "Artifact_Glacier");
+PROC_AMER_GEN_CharacterCombatLogText_Param_Str(_Source, _LogText, _Name);
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Iterated((INTEGER)_RequestID, "Artifact_Glacier_DamageIterator", (CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char)
+AND
+DB_AMER_Artifact_Glacier_Data(_RequestIndex, _StatusCarrier, _Damage)
+THEN
+PlayBeamEffect(_StatusCarrier, _Char, "RS3_FX_GP_Beams_IceBeam_01", "Dummy_BodyFX", "Dummy_BodyFX");
+PlayEffect(_Char, "RS3_FX_GP_Impacts_EnemyIceShard_01", "");
+PROC_AMER_GEN_ApplyDamage(_Char, _Damage, "Water", _SourceChar, 0);
+ApplyStatus(_Char, "AMER_SLOWED_2", 12.0, 0, _SourceChar);
+
+PROC PROC_AMER_GEN_IterateCharsAroundObject_Finished((INTEGER)_RequestID, "Artifact_Glacier_DamageIterator", (CHARACTERGUID)_SourceChar)
+AND
+DB_AMER_Artifact_Glacier_Data(_RequestIndex, _StatusCarrier, _Damage)
+THEN
+NOT DB_AMER_Artifact_Glacier_Data(_RequestIndex, _StatusCarrier, _Damage);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"
