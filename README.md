@@ -1,3 +1,6 @@
-Divinity Original Sin 2 Mod, designed to be used alongside the Epic Encounters 2 and Epip Encounters mods.
+Divinity Original Sin 2 Mod
 
-Full details @ https://docs.google.com/document/d/1B4yVuvYlT062HXP7-7gbgpb0MH2d-mWBqWOYGOtbceY
+Requires Epic Encounters 2 by Ameranth and Elric. https://docs.google.com/document/d/1du5jE2dyDE4B4-Za0wolfe50ReeKXqkqdgG5FvAwKTo/edit#
+Requires Epip Encounters by Pip. https://www.pinewood.team/epip/
+
+Full mod details @ https://docs.google.com/document/d/1B4yVuvYlT062HXP7-7gbgpb0MH2d-mWBqWOYGOtbceY
