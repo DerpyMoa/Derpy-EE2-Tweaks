@@ -13,3 +13,6 @@ MULTIPLIER_ENDPOS_HEIGHT_DIFFERENCE				0.00		//Derpy on 25/11/2021: 0.02 to 0.00
 
 // If != 0 the character will try to save/optimize action points for the next turn, if his chosen action is not executable this turn. 
 ENABLE_SAVING_ACTION_POINTS						0		//Derpy on 25/11/2021: from 1 to 0 since AI can often skip turns thinking it's beneficial, when it really isn't.
+
+// Used for healing
+MAX_HEAL_MULTIPLIER								1.00  // Must be between 0 and 1, the closer to 1, the more it demands healing when someone is close to dying	//From 0.5 to 0.6 on 10-9-2019. From 0.6 to 1.0 on 05-11-2022 since we now have scripted logic.

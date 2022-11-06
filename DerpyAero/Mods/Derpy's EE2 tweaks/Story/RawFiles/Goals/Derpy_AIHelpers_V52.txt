@@ -48,6 +48,22 @@ NOT DB_AMER_AIHelpers_SILogic_SkillPriority(-1, "Target_EnemyHarmony", "Target_H
 DB_AMER_AIHelpers_SkillLogic_Template("Target_EnemyDeathsDoor", "Target1", "Vitality_Current_Perc", "LessThan", 80.0);
 DB_AMER_AIHelpers_SkillLogic_Template("Projectile_EnemyAMER_FingerOfDeath", "Target1", "Vitality_Current_Perc", "LessThan", 50.0);
 DB_AMER_AIHelpers_SkillLogic_Template("Target_EnemyFatality", "Target1", "Vitality_Current_Perc", "LessThan", 70.0);
+
+DB_AMER_AIHelpers_SkillLogic_Template("Target_Restoration", "Target1", "Vitality_Current_Perc", "LessThan", 80.0);
+DB_AMER_AIHelpers_SkillLogic_Template("Target_CleanseWounds", "Target1", "Vitality_Current_Perc", "LessThan", 75.0);
+DB_AMER_AIHelpers_SkillLogic_Template("Target_Harmony", "Target1", "Vitality_Current_Perc", "LessThan", 75.0);
+DB_AMER_AIHelpers_SkillLogic_Template("Target_FirstAid", "Target1", "Vitality_Current_Perc", "LessThan", 80.0);
+DB_AMER_AIHelpers_SkillLogic_Template("Projectile_ChainHeal", "Target1", "Vitality_Current_Perc", "LessThan", 80.0);
+
+DB_AMER_AIHelpers_SkillLogic_Template("Target_EnemyRestoration", "Target1", "Vitality_Current_Perc", "LessThan", 80.0);
+DB_AMER_AIHelpers_SkillLogic_Template("Target_EnemyCleanseWounds", "Target1", "Vitality_Current_Perc", "LessThan", 75.0);
+DB_AMER_AIHelpers_SkillLogic_Template("Target_EnemyCleanseWounds_Troll", "Target1", "Vitality_Current_Perc", "LessThan", 75.0);
+DB_AMER_AIHelpers_SkillLogic_Template("Target_EnemyHarmony", "Target1", "Vitality_Current_Perc", "LessThan", 75.0);
+DB_AMER_AIHelpers_SkillLogic_Template("Target_FirstAidEnemy", "Target1", "Vitality_Current_Perc", "LessThan", 80.0);
+DB_AMER_AIHelpers_SkillLogic_Template("Projectile_EnemyChainHeal", "Target1", "Vitality_Current_Perc", "LessThan", 80.0);
+
+
+//Armor thresholds
 DB_AMER_AIHelpers_SkillLogic_Template("Target_EnemyFrostyShell", "Target1", "MArmor_Current_Perc", "LessThan", 50.0);
 DB_AMER_AIHelpers_SkillLogic_Template("Target_EnemyFortify", "Target1", "PArmor_Current_Perc", "LessThan", 50.0);
 

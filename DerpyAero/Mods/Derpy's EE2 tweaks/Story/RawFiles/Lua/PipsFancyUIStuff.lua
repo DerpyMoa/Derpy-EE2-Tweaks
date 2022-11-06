@@ -65,7 +65,7 @@ StatsTab.STATS["Life_Pegasus_Node_2.0"].Description = "Learn the Mercy skill, wh
 StatsTab.STATS["Life_Pegasus_Node_3.0"].Description = "Benevolence restores 15% of missing Vitality and grants +10% elemental resistances for 1 turn, to each target."
 
 StatsTab.STATS["Life_Splendor_Node_3.0"].Name = "Increased Radius & no friendly fire"
-StatsTab.STATS["Life_Splendor_Node_3.0"].Description = "Elementalist reactions gain +1m radius and no longer damage allies.<br>Also affects the Arcanist spell emulations."
+StatsTab.STATS["Life_Splendor_Node_3.0"].Description = "Elementalist reactions gain +1m radius."
 
 StatsTab.STATS["Entropy_Death_Node_3.0"].Name = "Crit & AP Recovery"
 StatsTab.STATS["Entropy_Death_Node_3.0"].Description = "Predator reactions gain +20% Critical Chance and, once per round, recover 2AP."
@@ -103,7 +103,7 @@ StatsTab.STATS["Inertia_TheCenturion_Node_4.0"].Name = "Applies Ruptured Tendons
 StatsTab.STATS["Inertia_TheCenturion_Node_4.0"].Description = "Once per round, when you perform a Centurion reaction, apply Ruptured Tendons for 1 turn to enemies you hit."
 
 StatsTab.STATS["Force_TheArcanist_Node_4.0"].Name = "Elemental Skill Emulation"
-StatsTab.STATS["Force_TheArcanist_Node_4.0"].Description = "If you have 5 stacks of Elementalist or more when you perform your next Elementalist reaction, lose 3 stacks and emulate the effects of Dazing Bolt, Fireball, Impalement, or Winter Blast with air, fire, water, and earth reactions, respectively."
+StatsTab.STATS["Force_TheArcanist_Node_4.0"].Description = "If you have 5 stacks of Elementalist or more when you perform your next Elementalist reaction, lose 3 stacks and emulate the effects of Dazing Bolt, Fireball, Impalement, or Winter Blast with air, fire, water, and earth reactions, respectively. These emulations only harm enemies."
 
 StatsTab.STATS["Life_TheNymph_Node_4.2"].Name = "Purity Fire Damage"
 StatsTab.STATS["Life_TheNymph_Node_4.2"].Description = "Your Purity activation deals 200% fire damage on enemies you can see within 8m. Also applies Scorched for 2 turns and creates fire surfaces under them."

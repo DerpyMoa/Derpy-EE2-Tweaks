@@ -227,7 +227,6 @@ new entry "ProjectileStrike_SCRIPT_ArcanistDazingBoltNoFF"
 type "SkillData"
 data "SkillType" "ProjectileStrike"
 using "ProjectileStrike_DazingBolt"
-data "ExplodeRadius" "4"
 data "TargetConditions" "Enemy"
 
 new entry "ProjectileStrike_Stormbolt_Lightning"

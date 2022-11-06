@@ -1,0 +1,23 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Elementalist reactions gain +1m radius.
+
+PROC PROC_AMER_KeywordStat_Elementalist_ManipulateRadius((CHARACTERGUID)_Char, (STRING)_Element)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Elementalist_MUTA_RadiusAndNoFF", _)
+AND
+DB_AMER_KeywordStat_OUTPUT_Real(_OldOutput)
+AND
+RealSum(_OldOutput, 1.0, _NewRadius)
+THEN
+NOT DB_AMER_KeywordStat_OUTPUT_Real(_OldOutput);
+DB_AMER_KeywordStat_OUTPUT_Real(_NewRadius);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

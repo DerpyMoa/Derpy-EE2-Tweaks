@@ -13,6 +13,16 @@ NOT DB_AMER_GEN_OUTPUT_Real(_Value);
 DB_AMER_GEN_OUTPUT_Real(0.0);
 
 
+PROC PROC_AMER_KeywordStat_Elementalist_ManipulateConditions((CHARACTERGUID)_Char, (STRING)_Element)
+AND
+DB_AMER_KeywordStat_OUTPUT_Integer(_OldOutput)
+AND
+IntegerSum(_OldOutput, 2, _NewConditions)	//Adding 2 makes default conditions specifically target enemies only. The logic for this needs to be improved if multiple effects want to manipulate these conditions.
+THEN
+NOT DB_AMER_KeywordStat_OUTPUT_Integer(_OldOutput);
+DB_AMER_KeywordStat_OUTPUT_Integer(_NewConditions);
+
+
 EXITSECTION
 
 ENDEXITSECTION
