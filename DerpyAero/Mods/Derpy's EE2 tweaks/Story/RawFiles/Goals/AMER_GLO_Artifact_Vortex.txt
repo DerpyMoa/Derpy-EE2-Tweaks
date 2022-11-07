@@ -3,26 +3,29 @@ SubGoalCombiner SGC_AND
 INITSECTION
 
 KBSECTION
+
 PROC PROC_AMER_KeywordStat_VitalityVoid_ExecDamage((INTEGER)_RequestIndex, (CHARACTERGUID)_SourceChar, (GUIDSTRING)_RadiusSource, (INTEGER)_DamageTotal, 0)
 AND
 DB_AMER_Artifacts_EquippedEffects(_SourceChar, "Artifact_Vortex", _)
 AND
 QRY_AMER_GEN_OncePerRound(_SourceChar, "Artifact_Vortex")
 AND
-QRY_AMER_GEN_GetNearestInCombat(_SourceChar, _SourceChar, (CHARACTERGUID)_RadiusSource, 8.5, 42)	//Living enemies _SourceChar can see.
+QRY_AMER_GEN_GetNearestInCombat(_SourceChar, _RadiusSource, (CHARACTERGUID)_RadiusSource, 8.5, 42)    //Living enemies _SourceChar can see.
 AND
 DB_AMER_GEN_OUTPUT_NearestInCombat(_Nearest, _)
+AND
+NOT DB_Derpy_Vortex_DidTeleport(_SourceChar, _Nearest)
 AND
 GetPosition(_Nearest, _X, _Y, _Z)
 AND
 HasActiveStatus(_SourceChar, "AMER_PAUCITY", _PaucityBool)
 THEN
-DB_AMER_GEN_OncePerRound(_SourceChar, "Artifact_Vortex");
+ProcObjectTimer(_SourceChar, "Derpy_Vortrex_Delay", 100);
 CharacterStatusText(_SourceChar, "Artifact_Vortex");
 PROC_AMER_Artifacts_Vortex_TryPayVit(_SourceChar, _PaucityBool);
 PlayEffectAtPosition("AMER_FX_GP_Keyword_VitalityVoid", _X, _Y, _Z);
 PROC_AMER_GEN_ApplyDamage(_Nearest, _DamageTotal, "Physical", _SourceChar, 0);
-PROC_AMER_Artifacts_Vortex_Teleport(_Nearest, _RadiusSource);
+PROC_AMER_Artifacts_Vortex_Teleport(_SourceChar, _Nearest, _RadiusSource);
 
 
 PROC PROC_AMER_Artifacts_Vortex_TryPayVit((CHARACTERGUID)_Char, 0)
@@ -30,26 +33,41 @@ THEN
 PROC_AMER_GEN_CharacterCombatLogText(_Char, "AMER_Artifact_Vortex_PaidVit");
 PROC_AMER_GEN_AddHitPointPercentage(_Char, -15.0);
 
+
 PROC PROC_AMER_Artifacts_Vortex_TryPayVit((CHARACTERGUID)_Char, 1)
 THEN
 PROC_AMER_GEN_CharacterCombatLogText(_Char, "AMER_Artifact_Vortex_Activated");
 
 
-PROC PROC_AMER_Artifacts_Vortex_Teleport((CHARACTERGUID)_Char, (GUIDSTRING)_RadiusSource)
+PROC PROC_AMER_Artifacts_Vortex_Teleport((CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Nearest, (GUIDSTRING)_RadiusSource)
 AND
-IsBoss(_Char, 0)
+IsBoss(_Nearest, 0)
 AND
 GetPosition(_RadiusSource, _X, _Y, _Z)
 AND
-QRY_AMER_GEN_FindValidPos(_X, _Y, _Z, 3.0, _Char)
+QRY_AMER_GEN_FindValidPos(_X, _Y, _Z, 3.0, _Nearest)
 AND
 DB_AMER_GEN_OUTPUT_Point(_XValid, _YValid, _ZValid)
 AND
-GetDistanceToPosition(_Char, _XValid, _YValid, _ZValid, _Distance)
+GetDistanceToPosition(_Nearest, _XValid, _YValid, _ZValid, _Distance)
 AND
 _Distance > 0.5	//Don't bother moving such a small distance.
 THEN
-PROC_AMER_GEN_TeleportWithFX_ToPos(_Char, _XValid, _YValid, _ZValid);
+DB_Derpy_Vortex_DidTeleport(_SourceChar, _Nearest);
+PROC_AMER_GEN_TeleportWithFX_ToPos(_Nearest, _XValid, _YValid, _ZValid);
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_SourceChar, "Derpy_Vortrex_Delay")
+THEN
+DB_AMER_GEN_OncePerRound(_SourceChar, "Artifact_Vortex");
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_SourceChar, "Derpy_Vortrex_Delay")
+AND
+DB_Derpy_Vortex_DidTeleport(_SourceChar, _Nearest)
+THEN
+NOT DB_Derpy_Vortex_DidTeleport(_SourceChar, _Nearest);
+
 
 EXITSECTION
 

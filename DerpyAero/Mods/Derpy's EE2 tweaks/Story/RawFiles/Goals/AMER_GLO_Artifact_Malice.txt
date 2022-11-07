@@ -6,13 +6,11 @@ KBSECTION
 
 //Once per round, when you Source Infuse a skill while Scorched, recover 4 AP and replace Scorched with 1 turn of Immolation.
  
-QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, (STRING)_Skill, (INTEGER)_InfusCount)
+PROC PROC_AMER_Source_Infusion_ExpendInfusion((CHARACTERGUID)_Char, (STRING)_Skill, (INTEGER)_InfusCount, (INTEGER)_InfusCountBounded, (INTEGER)_InfusCountEffective)
 AND
 DB_AMER_Artifacts_EquippedEffects(_Char, "Artifact_Malice", _)
 AND
-DB_AMER_Source_Infusion_Current(_Char, _InfusCurrent)
-AND
-_InfusCurrent > 0
+_InfusCount > 0
 AND
 QRY_AMER_GEN_OncePerRound(_Char, "Artifact_Malice")
 AND

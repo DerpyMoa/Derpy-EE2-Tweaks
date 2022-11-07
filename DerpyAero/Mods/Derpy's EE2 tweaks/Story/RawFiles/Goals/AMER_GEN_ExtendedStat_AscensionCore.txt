@@ -5,11 +5,13 @@ INITSECTION
 KBSECTION
 
 
-QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, (STRING)_Skill, (INTEGER)_InfusCount)
+PROC PROC_AMER_Source_Infusion_ExpendInfusion((CHARACTERGUID)_Char, (STRING)_Skill, (INTEGER)_InfusCount, (INTEGER)_InfusCountBounded, (INTEGER)_InfusCountEffective)
 AND
 DB_AMER_ExtendedStat_AddedStat(_Char, "AscensionCore", _, _, _, _)
+AND
+_InfusCount > 0
 THEN
-PROC_AMER_ActionPoints_Add(_Char, 1);
+PROC_AMER_ActionPoints_Add(_Char, 2);
 
 
 EXITSECTION

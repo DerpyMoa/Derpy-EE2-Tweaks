@@ -40,7 +40,7 @@ PROC_AMER_Deltamods_ExtendedStat_Add_FromValue("InfusEffect_Vaporize", "SourceIn
 
 PROC_AMER_Deltamods_ExtendedStat_Add_FromValue("InfusEffect_TurnToOil", "SourceInfus_Effect", "Projectile_SkyShot", "", "");
 
-PROC_AMER_Deltamods_ExtendedStat_Add_FromValue("InfusEffect_DominateMind", "SourceInfus_Effect", "Shout_Whirlwind", "", "");
+PROC_AMER_Deltamods_ExtendedStat_Add_FromValue("InfusEffect_DominateMind", "SourceInfus_Effect", "Cone_GroundSmash", "", "");
 
 PROC_AMER_Deltamods_ExtendedStat_Add_FromValue("InfusEffect_HailStrike", "SourceInfus_Effect", "Target_Cannibalize", "", "");
 
@@ -65,6 +65,7 @@ NOT DB_AMER_Deltamods_Mod_ExtendedStat("Boost_Armor_InfusEffect_TurnToOil_1", "S
 
 NOT DB_AMER_Deltamods_Mod_ExtendedStat("Boost_Armor_InfusEffect_DominateMind_1", "SourceInfus_Effect", "Target_Charm", "", "", 1.0);
 NOT DB_AMER_Deltamods_Mod_ExtendedStat("Boost_Armor_InfusEffect_DominateMind_1", "SourceInfus_Effect", "Shout_AMER_Enrage", "", "", 1.0);
+NOT DB_AMER_Deltamods_Mod_ExtendedStat("Boost_Armor_InfusEffect_DominateMind_1", "SourceInfus_Effect", "Shout_Whirlwind", "", "", 1.0);
 
 NOT DB_AMER_Deltamods_Mod_ExtendedStat("Boost_Armor_InfusEffect_HailStrike_1", "SourceInfus_Effect", "ProjectileStrike_HailStrike", "", "", 1.0);
 

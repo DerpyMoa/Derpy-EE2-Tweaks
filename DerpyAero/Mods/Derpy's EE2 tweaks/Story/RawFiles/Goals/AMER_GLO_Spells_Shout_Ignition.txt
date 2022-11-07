@@ -27,6 +27,7 @@ _InfusCount > 2
 THEN
 PROC_AMER_Source_Infusion_RitualRequest(_Char, _Char, _Char, 15.0, "InfusionRitual_Ignition_3_Ignition", "", "FireSpecialist", 1, "skill_cast_ground_fire_01_cast", 0, 1);
 
+
 QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_Ignition", (INTEGER)_InfusCount)
 AND
 _InfusCount > 2
@@ -37,16 +38,16 @@ DB_AMER_GEN_OUTPUT_Integer(_IgnitionCount)
 AND
 IntegerProduct(_IgnitionCount, 2, _Repeats)
 THEN
-//PROC_AMER_GEN_Shoot_Delayed("Explosion", _Char, _Char, "Projectile_AMER_SCRIPT_Ignition", _Repeats, 175);
 PROC_AMER_GEN_SimulatedExplosion_Delayed(_Char, 13.0, _Char, 266, "Projectile_DERPY_SCRIPT_Ignition_SingleHit_SI3", "RS3_FX_Skills_Fire_Cast_Ground_Fire_Root_01", "", "Ignition_SI", _Repeats, 175); //Living enemies LoS.
 PROC_AMER_Reaction_ApproveHeldReactions("InfusionRitual_Ignition_3_Ignition");
+
 
 PROC PROC_AMER_Reaction_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, "InfusionRitual_Ignition_3_Ignition", (STRING)_RequestID, (INTEGER)_RitualBool)
 THEN
 PlayEffect(_Char, "RS3_FX_Skills_Fire_Cast_Ground_Fire_Hand_01", "Dummy_R_HandFX");
 PlayEffect(_Char, "RS3_FX_Skills_Fire_Cast_FireOverlay_01", "Dummy_CastFX");
-//PROC_AMER_GEN_CharacterCauseExplosion(_Char, _Char, "Projectile_AMER_SCRIPT_Ignition");
 PROC_AMER_GEN_SimulatedExplosion(_Char, 13.0, _Char, 266, "Projectile_AMER_SCRIPT_Ignition_SingleHit", "RS3_FX_Skills_Fire_Cast_Ground_Fire_Root_01", ""); //Living enemies LoS.
+
 
 EXITSECTION
 
