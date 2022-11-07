@@ -11,7 +11,7 @@ DB_AMER_ExtendedStat_AddedStat(_Char, "AscensionCore", _, _, _, _)
 AND
 _InfusCount > 0
 THEN
-PROC_AMER_ActionPoints_Add(_Char, 2);
+PROC_AMER_ActionPoints_Add(_Char, 1);
 
 
 EXITSECTION

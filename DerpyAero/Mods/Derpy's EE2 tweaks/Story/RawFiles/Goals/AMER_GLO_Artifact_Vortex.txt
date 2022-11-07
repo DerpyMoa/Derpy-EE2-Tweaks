@@ -23,7 +23,6 @@ THEN
 ProcObjectTimer(_SourceChar, "Derpy_Vortrex_Delay", 100);
 CharacterStatusText(_SourceChar, "Artifact_Vortex");
 PROC_AMER_Artifacts_Vortex_TryPayVit(_SourceChar, _PaucityBool);
-PlayEffectAtPosition("AMER_FX_GP_Keyword_VitalityVoid", _X, _Y, _Z);
 PROC_AMER_GEN_ApplyDamage(_Nearest, _DamageTotal, "Physical", _SourceChar, 0);
 PROC_AMER_Artifacts_Vortex_Teleport(_SourceChar, _Nearest, _RadiusSource);
 
