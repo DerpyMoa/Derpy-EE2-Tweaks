@@ -1,0 +1,34 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_KeywordStat_ViolentStrikes_Fire((CHARACTERGUID)_Source, (CHARACTERGUID)_Target, (STRING)_Projectile)
+AND
+DB_AMER_Artifacts_EquippedEffects(_ArtifactWielder, "Artifact_Exaltation", _)
+AND
+CharacterIsAlly(_ArtifactWielder, _Source, 1)
+AND
+CharacterCanSee(_ArtifactWielder, _Source, 1)
+AND
+HasActiveStatus(_Source, "LEADERSHIP", 1)
+AND
+HasActiveStatus(_Source, "BLESSED", 0)
+AND
+HasActiveStatus(_Source, "Derpy_BLESSED_SI1", 0)
+THEN
+PROC_AMER_Reaction_Request(_ArtifactWielder, _Source, "Artifact_Exaltation", "", "skill_cast_aoe_divine_01_cast", 0);
+
+
+PROC PROC_AMER_Reaction_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, "Artifact_Exaltation", (STRING)_RequestID, (INTEGER)_RitualBool)
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Divine_Cast_Aoe_Divine_Root_01", "Dummy_L_HandFX");
+PlayEffect(_Target, "RS3_FX_Skills_Divine_Bless_Impact_01", "");
+ApplyStatus(_Target, "BLESSED", 12.0, 0, _Char);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"
