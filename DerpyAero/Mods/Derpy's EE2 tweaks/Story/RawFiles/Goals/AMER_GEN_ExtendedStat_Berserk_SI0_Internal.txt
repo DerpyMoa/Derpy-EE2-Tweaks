@@ -9,8 +9,6 @@ NRD_OnHit((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, _Damage, _Handle)
 AND
 DB_AMER_ExtendedStat_AddedStat(_Char, "Berserk_SI0_Internal", _, _, _, _)
 AND
-_Target != _Char
-AND
 QRY_Derpy_Berserk_CanUse(_Char)
 AND
 NRD_StatusGetInt(_Target, _Handle, "CriticalHit", 1)
@@ -23,7 +21,7 @@ _Amount != 0
 AND
 Real(_Amount, _AmountReal)
 AND
-RealProduct(_AmountReal, 0.50, _AmountAdjusted)
+RealProduct(_AmountReal, 0.30, _AmountAdjusted)
 AND
 Integer(_AmountAdjusted, _AmountAdjustedInt)
 THEN
@@ -34,9 +32,17 @@ PROC_Derpy_Berserk_SelfDamage(_Char);
 PROC PROC_Derpy_Berserk_SelfDamage((CHARACTERGUID)_Char)
 AND
 NOT DB_Derpy_Berserk_WarfareChoke(_Char)
+AND
+CharacterGetLevel(_Char, _Level)
+AND
+IntegerProduct(_Level, -1, _LevelNeg)
+AND
+IntegerSum(-20, _LevelNeg, _SelfDmg)
+AND
+Real(_SelfDmg, _SelfDmgReal)
 THEN
 DB_Derpy_Berserk_WarfareChoke(_Char);
-PROC_AMER_GEN_AddHitPointPercentage(_Char, -25.0);
+PROC_AMER_GEN_AddHitPointPercentage(_Char, _SelfDmgReal);
 ProcObjectTimer(_Char, "Derpy_Berserk_ChokePrevention", 2000);
 
 
@@ -45,6 +51,17 @@ AND
 DB_Derpy_Berserk_WarfareChoke(_Char)
 THEN
 NOT DB_Derpy_Berserk_WarfareChoke(_Char);
+
+
+//=======================================================================================================================
+
+
+IF
+NRD_OnStatusAttempt((CHARACTERGUID)_Defender, "LIFESTEAL", _StatusHandle, (CHARACTERGUID)_Attacker)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Char, "Berserk_SI0_Internal", _, _, _, _)
+THEN
+NRD_StatusPreventApply(_Defender, _StatusHandle, 1);
 
 
 EXITSECTION

@@ -111,6 +111,10 @@ NRD_OnPrepareHit((CHARACTERGUID)_Defender, (CHARACTERGUID)_Attacker, _Damage, _H
 AND
 CharacterHasTalent(_Defender, "Demon", 1)
 AND
+GetSurfaceGroundAt(_Defender, _Surface)
+AND
+_Surface != "SurfaceLava"
+AND
 NRD_HitGetInt(_HitHandle, "HitType", 4)
 AND
 NRD_HitGetDamage(_HitHandle, "Fire", _Amount)

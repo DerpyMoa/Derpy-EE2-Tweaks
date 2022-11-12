@@ -1,0 +1,17 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, (STRING)_Skill, (INTEGER)_InfusCount, (STRING)_Type, "Warrior")
+AND
+DB_AMER_ExtendedStat_AddedStat(_Char, "Berserk_SI1", _, _, _, _)
+THEN
+PROC_AMER_TempStat_ExtendedStat_Add(_Char, "Berserk_SI1_Internal", "", "", "Derpy_Berserk_SI1_Internal", 1.0, 2000, "SkillCast");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GEN_Stats_ExtendedStats"

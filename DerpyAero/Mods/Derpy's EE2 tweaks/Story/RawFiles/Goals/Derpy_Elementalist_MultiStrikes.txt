@@ -1,0 +1,32 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, (STRING)_Skill, (INTEGER)_InfusCount, "MultiStrike", (STRING)_Element)
+AND
+QRY_Derpy_Elementalist_WafareOrScoundrel()
+THEN
+PROC_AMER_GEN_Goal_Activate("Derpy_Elementalist_MultiStrikes_Internal");
+PROC_AMER_GEN_Goal_TimedCompletion("Derpy_Elementalist_MultiStrikes_Internal", 2000);
+
+
+QRY QRY_Derpy_Elementalist_WafareOrScoundrel()
+AND
+DB_AMER_GEN_Goal_Activated("AMER_GLO_Ascension_Elementalist_ACT_FireEarth_AllySkills_MK2_NecroRogue")
+THEN
+DB_NOOP();
+
+
+QRY QRY_Derpy_Elementalist_WafareOrScoundrel()
+AND
+DB_AMER_GEN_Goal_Activated("AMER_GLO_Ascension_Elementalist_ACT_AirWater_AllySkills_MK2_HuntsWar")
+THEN
+DB_NOOP();
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

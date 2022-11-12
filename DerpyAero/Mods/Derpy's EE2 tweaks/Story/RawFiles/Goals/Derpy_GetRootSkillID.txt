@@ -36,6 +36,15 @@ THEN
 DB_AMER_GEN_OUTPUT_String(_Skill);
 
 
+QRY QRY_Derpy_IsMultiStrikeArchetype((STRING)_Skill)
+AND
+StringConcatenate("MultiStrike", "_.*", _Regex)
+AND
+NRD_RegexMatch(_Skill, _Regex, 1, 1)
+THEN
+DB_NOOP();
+
+
 EXITSECTION
 
 ENDEXITSECTION

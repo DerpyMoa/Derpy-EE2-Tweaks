@@ -1,0 +1,54 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+NRD_OnHit((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, _Damage, _Handle)
+AND
+DB_AMER_Ascension_SpecialLogic(_Reactor, "Ascension_Elementalist_ACT_FireEarth_AllySkills_MK2_NecroRogue", _)
+AND
+CharacterIsAlly(_Reactor, _Char, 1)
+AND
+NRD_StatusGetString(_Target, _Handle, "SkillId", _Skill)
+AND
+QRY_AMER_GetRootSkillID(_Skill)
+AND
+DB_AMER_GEN_OUTPUT_String(_SkillReal)
+AND
+QRY_Derpy_IsMultiStrikeArchetype(_SkillReal)
+AND
+NRD_StatGetString(_SkillReal, "Ability", "Rogue")
+AND
+GetPosition(_Target, _X, _Y, _Z)
+THEN
+PROC_AMER_KeywordStat_Elementalist_ReactOnPosWithElement(_Reactor, _X, _Y, _Z, "Air");
+
+
+IF
+NRD_OnHit((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, _Damage, _Handle)
+AND
+DB_AMER_Ascension_SpecialLogic(_Reactor, "Ascension_Elementalist_ACT_AirWater_AllySkills_MK2_HuntsWar", _)
+AND
+CharacterIsAlly(_Reactor, _Char, 1)
+AND
+NRD_StatusGetString(_Target, _Handle, "SkillId", _Skill)
+AND
+QRY_AMER_GetRootSkillID(_Skill)
+AND
+DB_AMER_GEN_OUTPUT_String(_SkillReal)
+AND
+QRY_Derpy_IsMultiStrikeArchetype(_SkillReal)
+AND
+NRD_StatGetString(_SkillReal, "Ability", "Warrior")
+AND
+GetPosition(_Target, _X, _Y, _Z)
+THEN
+PROC_AMER_KeywordStat_Elementalist_ReactOnPosWithElement(_Reactor, _X, _Y, _Z, "Fire");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Derpy_Elementalist_MultiStrikes"

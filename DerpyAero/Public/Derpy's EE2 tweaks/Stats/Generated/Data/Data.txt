@@ -13,3 +13,5 @@ key "TalentExecutionerActionPointBonus","0"
 key "TalentWhatARushThreshold","0"
 
 key "TalentSneakingAPCost","2"
+
+key "WeaponAccuracyPenaltyPerLevel","-40"
