@@ -4,6 +4,32 @@ INITSECTION
 
 KBSECTION
 
+IF
+NRD_OnHit((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, _Damage, _Handle)
+AND
+NRD_StatusGetString(_Target, _Handle, "SkillId", _Skill)
+AND
+QRY_Derpy_IsDeepFreezeSkil(_Skill)
+AND
+HasActiveStatus(_Target, "Frostbite", 1)
+THEN
+RemoveStatus(_Target, "Frostbite");
+ApplyStatus(_Target, "AMER_TERRIFIED_APPLY", 12.0, 0, _Char);
+
+
+QRY QRY_Derpy_IsDeepFreezeSkil("Cone_Shatter_-1")
+THEN
+DB_NOOP();
+
+
+QRY QRY_Derpy_IsDeepFreezeSkil("Cone_AcclimateShatter_-1")
+THEN
+DB_NOOP();
+
+
+//================================================================================================================================================================
+
+
 QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Cone_Shatter", 1)
 THEN
 ProcObjectTimer(_Char, "DeepFreezeSI1", 2000);

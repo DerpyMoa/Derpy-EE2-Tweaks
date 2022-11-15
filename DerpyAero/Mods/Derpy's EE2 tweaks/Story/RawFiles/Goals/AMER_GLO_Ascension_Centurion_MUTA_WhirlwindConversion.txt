@@ -22,6 +22,7 @@ NOT QRY_AMER_GEN_PlayerHasRangedWeapon(_Char)
 AND
 QRY_Derpy_CheckIfRhino(_Char, _Target)
 THEN
+PROC_AMER_GEN_AttackWithoutMove_PauseTarget(_Target);
 PROC_AMER_TempStat_ThrowTimerEvent(_Char, "Attack");    //Manually throw the temptstat timer, because we aren't performing the basic attack that would normally do it in this case.
 PROC_AMER_GEN_BasicAttackObjectStarted(_Target, _Char, _Char, "Ascension_Centurion_MUTA_WhirlwindConversion");
 ProcObjectTimer(_Char, "Derpy_Ascension_ArenaWhirlwind", 800);

@@ -1,0 +1,20 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Summoning_InitSummon((CHARACTERGUID)_Summon, (CHARACTERGUID)_Owner, "Summons_OilBlob_e61da3a2-6dfd-4f2e-8f62-6bfbddb5a7f9", (INTEGER)_BossBool)
+THEN
+SetTag(_Summon, "AI_UNPREFERRED_TARGET");
+
+
+PROC PROC_AMER_Summoning_InitSummon((CHARACTERGUID)_Summon, (CHARACTERGUID)_Owner, "Summons_OilBlob_Mini_cdf12c69-25e5-4986-bd60-a9471558d6b4", (INTEGER)_BossBool)
+THEN
+SetTag(_Summon, "AI_UNPREFERRED_TARGET");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

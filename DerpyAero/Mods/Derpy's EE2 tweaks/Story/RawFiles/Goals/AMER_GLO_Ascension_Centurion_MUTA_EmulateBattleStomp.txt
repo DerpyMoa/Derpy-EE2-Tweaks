@@ -18,6 +18,7 @@ AND
 QRY_Derpy_CheckIfArena(_Char, _Target)
 THEN
 PROC_AMER_GEN_NPerRound_Add(_Char, "Ascension_Centurion_MUTA_EmulateBattleStomp", 1);
+PROC_AMER_GEN_AttackWithoutMove_PauseTarget(_Target);
 DB_Derpy_Ascension_CenturionStomp(_Char, _Target, _X, _Y, _Z);
 PlaySound(_Char, "Skill_Warrior_GroundSmash_Impact_01");
 ProcObjectTimer(_Char, "Derpy_CenturionStomp_Delay", 800);
