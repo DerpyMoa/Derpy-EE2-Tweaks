@@ -37,7 +37,7 @@ DB_AMER_GEN_OUTPUT_String(_LogText)
 THEN
 //DB_AMER_IterateCharsAroundObject_Exclusion(_Char);	//Don't hit status carrier.
 DB_AMER_Artifact_Glacier_Data(_RequestIndex, _Char, _DamageInt);
-PROC_AMER_GEN_IterateCharsAroundObject(_Char, 5.0, _Source, 10, "Artifact_Glacier_DamageIterator");	//Living enemies within 5m.
+PROC_AMER_GEN_IterateCharsAroundObject(_Char, 3.0, _Source, 10, "Artifact_Glacier_DamageIterator");	//Living enemies within 3m.
 CharacterStatusText(_Source, "Artifact_Glacier");
 PROC_AMER_GEN_CharacterCombatLogText_Param_Str(_Source, _LogText, _Name);
 

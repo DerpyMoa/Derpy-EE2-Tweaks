@@ -1,0 +1,57 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_KeywordStat_Predator_PreFire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Char, "Artifact_Wendigo", _)
+THEN
+PROC_AMER_Artifacts_Wendigo_BufferBrittle(_Char, _Target);
+PROC_AMER_TempStat_HitStatus_ThrowProc(_Char, "Artifact_Wendigo_Preditor", 2000, "Attack");
+
+
+PROC PROC_AMER_HitStatus_Event((CHARACTERGUID)_Defender, (CHARACTERGUID)_Attacker, "Artifact_Wendigo_Preditor")
+AND
+QRY_AMER_GEN_OncePerRound_PerChar(_Attacker, "Derpy_Artifact_Wendigo", _Defender)
+AND
+NOT QRY_AMER_Artifacts_Wendigo_Hit_Brittle(_Attacker, _Defender)    //If target didn't have Brittle data, check if we buffered brittle data before the shot was fired.
+AND
+DB_AMER_Artifacts_Wendigo_BufferedBrittle(_Char, _Target)
+THEN
+DB_AMER_GEN_OncePerRound_PerChar(_Attacker, "Derpy_Artifact_Wendigo", _Defender);
+NOT DB_AMER_Artifacts_Wendigo_BufferedBrittle(_Char, _Target);
+ApplyStatus(_Defender, "AMER_ATAXIA_APPLY", 12.0, 0, _Attacker);
+
+
+QRY QRY_AMER_Artifacts_Wendigo_Hit_Brittle((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+AND
+DB_AMER_Status_Brittle(_Target, _StatusSource, _Countdown, _Status)
+THEN
+DB_AMER_GEN_OncePerRound_PerChar(_Char, "Derpy_Artifact_Wendigo", _Target);
+PROC_AMER_Status_Brittle_Detonate((CHARACTERGUID)_Target, (CHARACTERGUID)_Char);
+ApplyStatus(_Target, "AMER_ATAXIA_APPLY", 12.0, 0, _Char);
+
+
+
+
+//If target has Brittle before the shot is fired, buffer this fact. We do this so that
+//we can check for either this buffer or the Brittle status on hitstatus, which handles
+//the case that Brittle was detonated from Battered application of our attack (and as such not existing when this logic handles the hit).
+PROC PROC_AMER_Artifacts_Wendigo_BufferBrittle((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+AND
+DB_AMER_Status_Brittle(_Target, _StatusSource, _Countdown, _Status)
+THEN
+DB_AMER_Artifacts_Wendigo_BufferedBrittle(_Char, _Target);
+
+PROC PROC_AMER_TempStat_HitStatus_Cleanup(_Char, "Artifact_Wendigo_Preditor")
+AND
+DB_AMER_Artifacts_Wendigo_BufferedBrittle(_Char, _Target)
+THEN
+NOT DB_AMER_Artifacts_Wendigo_BufferedBrittle(_Char, _Target);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"
