@@ -15,8 +15,6 @@ _Attacker != _Defender
 AND
 NOT QRY_Derpy_AcidicToxins_IsUndeadAlly(_Defender, _Attacker)
 AND
-DB_AMER_GEN_DamageTypeEnum(_TypeIndex, "Poison")
-AND
 NRD_HitGetDamage(_HitHandle, "Poison", _Amount)
 AND
 _Amount != 0

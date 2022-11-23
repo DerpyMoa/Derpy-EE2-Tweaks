@@ -93,8 +93,6 @@ GetVarFloat(_Defender, "AMER_GEN_FireResistance", _FireRes)
 AND
 _FireRes >= 100
 AND
-DB_AMER_GEN_DamageTypeEnum(_TypeIndex, "Fire")
-AND
 NRD_HitGetDamage(_HitHandle, "Fire", _Amount)
 AND
 _Amount != 0

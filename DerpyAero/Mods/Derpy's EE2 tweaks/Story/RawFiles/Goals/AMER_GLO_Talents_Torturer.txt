@@ -29,9 +29,7 @@ NRD_StatusGetString(_Target, _Handle, "SkillId", _Skill)
 AND
 QRY_Derpy_IsPoisonedStatus(_Skill)
 AND
-DB_AMER_GEN_DamageTypeEnum(_TypeIndex, _DamageType)
-AND
-NRD_HitStatusGetDamage(_Target, _Handle, _DamageType, _Amount)
+NRD_HitStatusGetDamage(_Target, _Handle, "Poison", _Amount)
 AND
 _Amount != 0
 AND
@@ -79,13 +77,13 @@ NRD_HitClearDamage(_HitHandle, "Poison");
 IF
 CharacterStatusApplied(_Char, _Status, (CHARACTERGUID)_Source)
 AND
+DB_AMER_Artifacts_SanguineHarvest_HealStatus(_Status)
+AND
 CharacterHasTalent(_Char, "Torturer", 1)
 AND
 CharacterHasTalent(_Char, "Zombie", 0)
 AND
 HasActiveStatus(_Char, "POISONED", 0)
-AND
-DB_AMER_Artifacts_SanguineHarvest_HealStatus(_Status)
 THEN
 ApplyStatus(_Char, "POISONED", 12.0, 1, _Char);
 

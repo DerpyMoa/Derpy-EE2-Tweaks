@@ -74,7 +74,6 @@ DB_AMER_CharVitals(_Char, _VitResultRoundedUp, _PA, _MA);    //Directly set the 
 CharacterSetHitpointsPercentage(_Char, 5.0);
 
 
-/* [OSITOOLS_ONLY]
 //Derpy: this prevents the zero armors visual bug and the combat log death bug.
 PROC PROC_AMER_Combat_TurnStarted((CHARACTERGUID)_Char, 0)
 AND
@@ -83,7 +82,6 @@ AND
 NRD_HitPrepare(_Char, _Char, _HitHandle)
 THEN
 NRD_HitExecute(_HitHandle);
-*/
 
 
 EXITSECTION

@@ -19,8 +19,6 @@ NRD_StatusGetString(_Target, _Handle, "SkillId", "Projectile_Derpy_SCRIPT_Malleu
 AND
 DB_Derpy_MalleusMaleficarum(_Char, _Necro)
 AND
-DB_AMER_GEN_DamageTypeEnum(_TypeIndex, "Air")
-AND
 NRD_HitStatusGetDamage(_Target, _Handle, "Air", _Amount)
 AND
 _Amount != 0

@@ -9,8 +9,6 @@ NRD_OnPrepareHit((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, _Damage, _HitHand
 AND
 DB_AMER_ExtendedStat_AddedStat(_Target, "BlightShield", _, _, _, _)
 AND
-DB_AMER_GEN_DamageTypeEnum(_TypeIndex, "Poison")
-AND
 NRD_HitGetDamage(_HitHandle, "Poison", _Amount)
 AND
 _Amount != 0
