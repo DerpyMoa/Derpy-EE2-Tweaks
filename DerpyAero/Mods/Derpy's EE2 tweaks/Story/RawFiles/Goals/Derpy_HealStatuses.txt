@@ -1,0 +1,38 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+DB_AMER_Artifacts_SanguineHarvest_HealStatus("HEAL");
+DB_AMER_Artifacts_SanguineHarvest_HealStatus("HEAL_LIGHT");
+DB_AMER_Artifacts_SanguineHarvest_HealStatus("PERMAFROST_HEAL");
+DB_AMER_Artifacts_SanguineHarvest_HealStatus("RESURRECT");
+DB_AMER_Artifacts_SanguineHarvest_HealStatus("CannibalizeHeal");
+DB_AMER_Artifacts_SanguineHarvest_HealStatus("CONSUME_CORPSE");
+DB_AMER_Artifacts_SanguineHarvest_HealStatus("VAMPIRIC_TOUCH");
+DB_AMER_Artifacts_SanguineHarvest_HealStatus("DemonicStareHeal");
+DB_AMER_Artifacts_SanguineHarvest_HealStatus("HolyGrenadeHeal");
+DB_AMER_Artifacts_SanguineHarvest_HealStatus("CHAIN_HEAL");
+DB_AMER_Artifacts_SanguineHarvest_HealStatus("CHAIN_HEAL_SECONDARY");
+DB_AMER_Artifacts_SanguineHarvest_HealStatus("FrostyShell");
+DB_AMER_Artifacts_SanguineHarvest_HealStatus("Fortified_Restore");
+DB_AMER_Artifacts_SanguineHarvest_HealStatus("HOLY_WATER");
+DB_AMER_Artifacts_SanguineHarvest_HealStatus("HOLY_FIRE_HEAL");
+DB_AMER_Artifacts_SanguineHarvest_HealStatus("BLOOD_BUBBLE");
+DB_AMER_Artifacts_SanguineHarvest_HealStatus("CRYOTHERAPY");
+DB_AMER_Artifacts_SanguineHarvest_HealStatus("OIL_CARAPACE");
+DB_AMER_Artifacts_SanguineHarvest_HealStatus("SHIELDED_MAGIC");
+DB_AMER_Artifacts_SanguineHarvest_HealStatus("SHIELDED_PHYSICAL");
+DB_AMER_Artifacts_SanguineHarvest_HealStatus("ARCANE_STITCH");
+DB_AMER_Artifacts_SanguineHarvest_HealStatus("HARMONY");
+DB_AMER_Artifacts_SanguineHarvest_HealStatus("CLEANSE_WOUNDS");
+DB_AMER_Artifacts_SanguineHarvest_HealStatus("FIRST_AID");
+DB_AMER_Artifacts_SanguineHarvest_HealStatus("LIFESTEAL");
+DB_AMER_Artifacts_SanguineHarvest_HealStatus("PROTECTION_CIRCLE_INITIAL");
+DB_AMER_Artifacts_SanguineHarvest_HealStatus("CHALLENGE_HEAL");
+
+KBSECTION
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"
