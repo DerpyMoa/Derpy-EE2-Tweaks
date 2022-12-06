@@ -91,6 +91,11 @@ PROC_AMER_Artifacts_Patch_Begin("Artifact_Misery");
 NOT DB_AMER_Artifacts_EquippedStatusMod_AddStatus("Artifact_Misery", "Both", "POISONED", "AMER_DECAYING_1", 6.0, 0, 1);
 PROC_AMER_Artifacts_Patch_End("Artifact_Misery");
 
+PROC_AMER_Artifacts_Patch_Begin("Artifact_Leviathan");
+NOT DB_AMER_Artifacts_EquippedStatusMod_FlexStat("Artifact_Leviathan", "Both", "WET", "Stat", "MOVEMENT", 50.0, 1);
+DB_AMER_Artifacts_EquippedFlexStat("Artifact_Leviathan", "Both", "Spell", "Cone_Leviathan_Pull", 1.0);
+PROC_AMER_Artifacts_Patch_End("Artifact_Leviathan");
+
 
 KBSECTION
 

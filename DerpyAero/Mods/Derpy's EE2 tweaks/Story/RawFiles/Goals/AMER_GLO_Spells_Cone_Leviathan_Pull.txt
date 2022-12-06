@@ -1,0 +1,35 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+NRD_OnHit((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, _Damage, _Handle)
+AND
+NRD_StatusGetString(_Target, _Handle, "SkillId", "Cone_Leviathan_Pull_-1")
+AND
+IsBoss(_Target, 0)
+AND
+GetPosition(_Char, _X, _Y, _Z)
+AND
+QRY_AMER_GEN_FindValidPos(_X, _Y, _Z, 3.0, _Char)
+AND
+DB_AMER_GEN_OUTPUT_Point(_XValid, _YValid, _ZValid)
+THEN
+PROC_AMER_GEN_TeleportWithFX_ToPos(_Target, _XValid, _YValid, _ZValid, 0, 1, "RS3_FX_GP_Impacts_Launch_Water_Slug_01", "RS3_FX_GP_Impacts_Grenade_WaterBalloon_01");
+ProcObjectTimer(_Char, "Leviathan_Explosion", 1000);
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "Leviathan_Explosion")
+AND
+GetPosition(_Char, _X, _Y, _Z)
+THEN
+PROC_AMER_GEN_CharacterCauseExplosion(_Char, _Char, "Projectile_Derpy_SCRIPT_LeviathanExplosion");
+PlayEffectAtPosition("RS3_FX_Char_Creatures_KrakenRay_Impact_Water_01", _X, _Y, _Z);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Hydrosophist"

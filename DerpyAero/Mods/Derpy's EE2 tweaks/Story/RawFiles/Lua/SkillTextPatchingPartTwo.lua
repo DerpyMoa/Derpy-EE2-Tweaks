@@ -407,6 +407,11 @@ SKILL_TEXT_PATCHING = {
         Description = "<font size='19'>Inflict [1] to yourself, cleanse Ataxia, and gain Blight Shield for 2 turns. Blight Shield allows incoming Poison damage to also restore your armors by 65% of its damage.</font>"
     },
 
+    Cone_Leviathan_Pull = {
+        DisplayName = "Leviathan",
+        Description = "<font size='19'>Deal [1] to enemies in a [3] degree, [2] long cone. Teleport each non-boss enemy hit to a position nearest you where they can stand. If at least one enemy gets teleported, after a short delay an explosion occurs at your position, dealing [4] to enemies within 5m and applying Wet for 2 turns. </font>"
+    }
+
 }
 
 function PatchSkillText()
