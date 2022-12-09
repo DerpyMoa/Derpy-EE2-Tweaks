@@ -454,7 +454,7 @@
 	<content contentuid="hd6725817g5221g4ec8gbdc0g991f99212005">Artifact Power:&lt;font size=&quot;17&quot;&gt;&lt;br&gt;- Once per round while dual wielding or while using a ranged weapon, when either of your armors reaches zero, gain Mirage for 1 turn. Mirage evades the next magic spell (2s window) and then the status is removed. Upon removal, Mirage restores missing armors and Vitality by 40% as well as resetting dodge Fatigue&lt;/font&gt;</content>
 	<content contentuid="he0c79ca8g370dg448cg8759gc0d91c53d0e5">Immunity to Calcifying.</content>
 	<content contentuid="h2ec337ecgd3a4g4f3egb38agd3bfa1fd0ccc">Artifact Power:&lt;font size=&quot;17&quot;&gt;&lt;br&gt;- Gain +1 free Predator reaction per round.&lt;br&gt;- Once per round, per target, whenever you hit a Brittle target during a Predator reaction, apply up to Ataxia III for 2 turns, then cause Brittle to detonate&lt;/font&gt;</content>
-	
+	<content contentuid="ha85f26feg9ab1g4959g93cfg56c9df3eef5a">Dodge is increased by 3% per Loremaster and 0.25% per Initiative.</content>
 	
 		
 </contentList>
