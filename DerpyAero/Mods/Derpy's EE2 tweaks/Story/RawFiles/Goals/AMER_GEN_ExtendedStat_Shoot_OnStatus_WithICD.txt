@@ -11,6 +11,8 @@ DB_AMER_ExtendedStat_AddedStat(_Source, "Shoot_OnStatus_WithICD", _Status, _Skil
 AND
 NOT DB_AMER_Shoot_OnStatus_WithICD_Pending(_Source, _Status, _Skill, _ShootType)
 AND
+CharacterIsEnemy(_Char, _Source, 1)
+AND
 Integer(_Amount, _AmountInt)
 AND
 IntegerSubtract(_AmountInt, 1, _Repeats)
@@ -20,6 +22,7 @@ THEN
 DB_AMER_Shoot_OnStatus_WithICD_Pending(_Source, _Status, _Skill, _ShootType);
 PROC_AMER_GEN_Shoot_Delayed(_ShootType, _Source, _Char, _X, _Y, _Z, _Skill, _Repeats, 200);
 ProcObjectTimer(_Source, "Shoot_OnStatus_WithICD_ICD", 2000);
+
 
 PROC ProcObjectTimerFinished((CHARACTERGUID)_Source, "Shoot_OnStatus_WithICD_ICD")
 AND

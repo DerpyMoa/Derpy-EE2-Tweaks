@@ -39,6 +39,7 @@ NRD_StatusGetString(_Target, _Handle, "SkillId", _Skill)
 AND
 QRY_Derpy_IsShatterDamage(_Skill)
 THEN
+NRD_StatusSetInt(_Target, _Handle, "Hit", 0);
 NRD_HitStatusClearAllDamage(_Target, _Handle);
 
 
