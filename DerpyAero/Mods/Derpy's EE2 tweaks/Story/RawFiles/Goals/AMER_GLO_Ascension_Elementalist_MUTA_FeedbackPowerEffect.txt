@@ -4,17 +4,27 @@ INITSECTION
 
 KBSECTION
 
-
 //Elementalist now has a 30% chance to duplicate its effects.
 
 PROC PROC_AMER_Reaction_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, "AMER_Elementalist", (STRING)_RequestID, (INTEGER)_RitualBool)
 AND
 DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Elementalist_MUTA_FeedbackPowerEffect", _)
 AND
+DB_AMER_KeywordStat_Elementalist_Current(_Char, _Element)
+AND
 QRY_AMER_GEN_RandomSuccess(30)
 THEN
-PROC_AMER_KeywordStat_Elementalist_Fire(_Char, _X, _Y, _Z);
-PlayEffect(_Char, "RS3_FX_Skills_Divine_Cast_SpiritForm_Overlay_01");
+DB_Derpy_Kraken_EleRepeatData(_Char, _X, _Y, _Z, _Element);
+ProcObjectTimer(_Char, "Derpy_Kraken_EleRepeat_Delay", 500);
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "Derpy_Kraken_EleRepeat_Delay")
+AND
+DB_Derpy_Kraken_EleRepeatData(_Char, _X, _Y, _Z, _Element)
+THEN
+NOT DB_Derpy_Kraken_EleRepeatData(_Char, _X, _Y, _Z, _Element);
+PROC_AMER_KeywordStat_Elementalist_Fire_Internal(_Char, _X, _Y, _Z, _Element);
+PROC_AMER_GEN_CharacterCombatLogText(_Char, "performed an Elementalist reaction twice.");
 
 
 EXITSECTION
