@@ -24,7 +24,7 @@ QRY QRY_AMER_Source_Infusion_SkillCast((CHARACTERGUID)_Char, "Shout_Adrenaline",
 AND
 _InfusCount > 1
 AND
-QRY_AMER_GEN_Scaling_GetScaledValue(_Char, 10.0, 1.0, 0.0, "Ability", "RogueLore")
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, 20.0, 2.0, 0.0, "Ability", "RogueLore")
 AND
 DB_AMER_GEN_OUTPUT_Real(_Scaling)
 THEN
