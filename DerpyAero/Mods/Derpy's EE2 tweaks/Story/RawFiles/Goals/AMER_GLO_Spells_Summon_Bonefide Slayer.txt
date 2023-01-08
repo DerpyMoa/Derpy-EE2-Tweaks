@@ -34,6 +34,17 @@ PROC_AMER_Summoning_AddFlexStatToNext(_Char, "Derpy_Humans_Male_Skeleton_Mage_A_
 PROC_AMER_Summoning_AddFlexStatToNext(_Char, "Derpy_Humans_Male_Skeleton_Mage_A_5e278431-9082-4dc8-ac24-a639d7a78231", "Spell", "Target_GraspOfTheStarved", 1.0, 1);
 
 
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Summon_Bonefide Slayer", (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_Source_Infusion_AddRefund(_Char, 0, 1);
+PROC_AMER_Summoning_AddSizeOverrideToNext(_Char, "Derpy_Humans_Male_Skeleton_Mage_A_5e278431-9082-4dc8-ac24-a639d7a78231", 0, 1);
+PROC_AMER_Summoning_AddFlexStatToNext(_Char, "Derpy_Humans_Male_Skeleton_Mage_A_5e278431-9082-4dc8-ac24-a639d7a78231", "Spell", "Shout_Ignition", 1.0, 1);
+PROC_AMER_Summoning_AddFlexStatToNext(_Char, "Derpy_Humans_Male_Skeleton_Mage_A_5e278431-9082-4dc8-ac24-a639d7a78231", "Spell", "Shout_GlobalCooling", 1.0, 1);
+PROC_AMER_Summoning_AddFlexStatToNext(_Char, "Derpy_Humans_Male_Skeleton_Mage_A_5e278431-9082-4dc8-ac24-a639d7a78231", "Spell", "Shout_Contamination", 1.0, 1);
+
+
 EXITSECTION
 
 ENDEXITSECTION

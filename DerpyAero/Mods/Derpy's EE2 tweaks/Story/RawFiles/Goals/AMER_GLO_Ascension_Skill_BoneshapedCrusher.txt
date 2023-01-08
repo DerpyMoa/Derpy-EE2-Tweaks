@@ -38,6 +38,8 @@ NOT QRY_AMER_Ascension_Skill_BoneshapedCrusher_AlreadyHave(_Owner)  //Don't crea
 AND
 GetPosition(_Owner, _X, _Y, _Z)
 THEN
+ProcObjectTimer(_Owner, "AMER_Ascension_CrusherOnCombatPending", 500);  //This is necessary to ensure the crusher doesn't get summoned while one is already being summoned. This might happen if combat is spammed.
+DB_AMER_Ascension_CrusherOnCombatPending(_Owner);
 PROC_AMER_Summoning_AddKeywordStatToNext(_Owner, "AMER_Extinction_BoneTroll_02a84627-6b66-46ad-85f0-769a0c210539", "SourceGeneration", 1);
 PROC_AMER_Summoning_AddExtendedStatToNext(_Owner, "AMER_Extinction_BoneTroll_02a84627-6b66-46ad-85f0-769a0c210539", "SourceGen_AddTurns", "", "", "", 2.0, 1);
 PROC_AMER_Summoning_AddFlexStatToNext(_Owner, "AMER_Extinction_BoneTroll_02a84627-6b66-46ad-85f0-769a0c210539", "Spell", "Shout_SourceInfusion", 1.0, 1);
@@ -54,6 +56,20 @@ AND
 GetTemplate(_Summon, "AMER_Extinction_BoneTroll_02a84627-6b66-46ad-85f0-769a0c210539")
 THEN
 DB_NOOP(1);
+
+QRY QRY_AMER_Ascension_Skill_BoneshapedCrusher_AlreadyHave((CHARACTERGUID)_Owner)
+AND
+DB_AMER_Ascension_CrusherOnCombatPending(_Owner)
+THEN
+DB_NOOP(1);
+
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Owner, "AMER_Ascension_CrusherOnCombatPending")
+AND
+DB_AMER_Ascension_CrusherOnCombatPending(_Owner)
+THEN
+NOT DB_AMER_Ascension_CrusherOnCombatPending(_Owner);
 
 EXITSECTION
 

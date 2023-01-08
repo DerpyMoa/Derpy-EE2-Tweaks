@@ -43,8 +43,11 @@ DB_PIP_Incons_Sneaking(_Char);
 
 // if the incons character was sneaking *from this talent* at turn start, remove it.
 PROC PROC_AMER_Combat_TurnStarted((CHARACTERGUID)_Char, (INTEGER)_)
+// now happens always, instead of only happening if the sneak was from this talent.
+// AND
+// DB_PIP_Incons_Sneaking(_Char)
 AND
-DB_PIP_Incons_Sneaking(_Char)
+CharacterHasTalent(_Char, "RangerLoreArrowRecover", 1)
 THEN
 // CharacterStatusText(_Char, "Unsneaking");
 ProcObjectTimer(_Char, "PIP_TricksterRepertoire_Unsneak", 100);

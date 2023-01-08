@@ -1,0 +1,95 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Cause _Char to flee/cower at the start of its turn until it spends _Amount worth of AP, or it exhausts all of its AP, whichever comes first.
+//The behavior for this is located in AMER_MAIN_FearFleeBehavior behavior script.
+
+//Apply hidden fear when this stat is added iff we are not the active combat actor. This hidden fear is necessary to allow the fear
+//behavior from behavior script to fire, as it removes control of the character from the player.
+PROC PROC_AMER_ExtendedStat_InitStat((CHARACTERGUID)_Char, "FearFlee", (STRING)_Attribute, (STRING)_Extraprop2, (STRING)_Extraprop3, (REAL)_Added, (REAL)_OldAmount, (REAL)_NewAmount)
+AND
+NOT DB_AMER_Combat_ActiveChar(_, _, _, _Char)
+AND
+_Added > 0.0
+THEN
+ApplyStatus(_Char, "AMER_FEAR_HIDDEN", 6.0, 1, NULL_00000000-0000-0000-0000-000000000000);
+CharacterSetReactionPriority(_Char, "AMER_Terrified_Flee", 99998);
+
+
+//Immediately set this var iff we are out of combat. This is done so that the char will cower even out of combat, but we cannot do this while
+//in combat, lest the character try to flee when it is not its turn.
+PROC PROC_AMER_ExtendedStat_InitStat((CHARACTERGUID)_Char, "FearFlee", (STRING)_Attribute, (STRING)_Extraprop2, (STRING)_Extraprop3, (REAL)_Added, (REAL)_OldAmount, (REAL)_NewAmount)
+AND
+CharacterIsInCombat(_Char, 0)
+AND
+_Added > 0.0
+THEN
+SetVarFloat(_Char, "AMER_GEN_Terrified_APToSpend", _NewAmount);
+
+
+//When this stat is removed, ensure that the hidden fear is removed too.
+PROC PROC_AMER_ExtendedStat_RemoveStat((CHARACTERGUID)_Char, "FearFlee", (STRING)_Extraprop1, (STRING)_Extraprop2, (STRING)_Extraprop3)
+THEN
+RemoveStatus(_Char, "AMER_FEAR_HIDDEN");
+SetVarFloat(_Char, "AMER_GEN_Terrified_APToSpend", 0.0);
+
+
+
+//Init fear behavior on turn start.
+PROC PROC_AMER_Combat_TurnStarted((CHARACTERGUID)_Char, _) 
+AND
+DB_AMER_ExtendedStat_AddedStat(_Char, "FearFlee", _, _, _, _Amount)
+AND
+HasActiveStatus(_Char, "INNER_DEMON", _HasInnerDemon)
+THEN
+PROC_Derpy_FearFlee(_Char, _Amount, _HasInnerDemon);
+
+
+PROC PROC_Derpy_FearFlee((CHARACTERGUID)_Char, (REAL)_Amount, 0)
+THEN
+SetVarFloat(_Char, "AMER_GEN_Terrified_APToSpend", _Amount);
+
+
+PROC PROC_Derpy_FearFlee((CHARACTERGUID)_Char, (REAL)_Amount, 1)
+THEN
+RemoveStatus(_Char, "AMER_FEAR_HIDDEN");
+SetVarFloat(_Char, "AMER_GEN_Terrified_APToSpend", 0.0);
+
+
+PROC PROC_AMER_Combat_TurnStarted((CHARACTERGUID)_Char, _) 
+AND
+DB_AMER_ExtendedStat_AddedStat(_Char, "FearFlee", _StatusText, _, _, _)
+AND
+HasActiveStatus(_Char, "INNER_DEMON", 0)
+AND
+_StatusText != ""
+THEN
+CharacterStatusText(_Char, _StatusText);
+
+
+//On turn ended, apply the hidden fear if we don't have it. This is necessary to ensure we have the hidden fear *before* our turn begins,
+//in the case that we did not have it applied when this stat was added (because we were the active combat actor when that happened).
+PROC PROC_AMER_Combat_TurnEnded((INTEGER)_Combat, (CHARACTERGUID)_Char, (INTEGER)_HasActedBool)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Char, "FearFlee", _, _, _, _)
+AND
+HasActiveStatus(_Char, "AMER_FEAR_HIDDEN", 0)
+THEN
+ApplyStatus(_Char, "AMER_FEAR_HIDDEN", 6.0, 1, NULL_00000000-0000-0000-0000-000000000000);
+CharacterSetReactionPriority(_Char, "AMER_Terrified_Flee", 99998);
+
+
+//Remove the hidden fear when exiting combat.
+PROC PROC_AMER_CharLeftCombat((CHARACTERGUID)_Char, (INTEGER)_Combat)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Char, "FearFlee", _, _, _, _)
+THEN
+RemoveStatus(_Char, "AMER_FEAR_HIDDEN");
+SetVarFloat(_Char, "AMER_GEN_Terrified_APToSpend", 0.0);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GEN_Stats_ExtendedStats"
