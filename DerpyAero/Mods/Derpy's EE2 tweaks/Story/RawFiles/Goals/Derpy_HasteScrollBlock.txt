@@ -1,0 +1,22 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC ProcBlockUseOfItem((CHARACTERGUID)_Char,(ITEMGUID)_Item)
+AND
+GetTemplate(_Item, _Template)
+AND
+_Template == "Scroll_Skill_Fire_Haste_73324666-37cf-494d-8524-0302434a9bf7"
+AND
+CharacterIsInCombat(_Char, 0)
+THEN
+DB_CustomUseItemResponse(_Char, _Item, 0);
+CharacterStatusText(_Char, "Can only be cast in combat.");
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"

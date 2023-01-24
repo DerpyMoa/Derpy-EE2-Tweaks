@@ -1,0 +1,89 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Spells_SkillPreCast((CHARACTERGUID)_Char, "Jump_TacticalRetreat", (INTEGER)_InfusCount, (STRING)_Type, (STRING)_Element)
+AND
+CharacterIsInCombat(_Char, 1)
+THEN
+ApplyStatus(_Char, "HASTED", 6.0, 0, _Char);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Jump_TacticalRetreat", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 1)
+THEN
+PROC_AMER_Source_Infusion_TacticalRetreatTryTele(_Char, _X, _Y, _Z, 2.0, 1, 6.0);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Jump_TacticalRetreat", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, 2)
+THEN
+PROC_AMER_Source_Infusion_TacticalRetreatTryTele(_Char, _X, _Y, _Z, 3.0, 2, 6.0);
+
+
+QRY QRY_AMER_Source_Infusion_SkillCast_PerTarget((CHARACTERGUID)_Char, "Jump_TacticalRetreat", (GUIDSTRING)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, (INTEGER)_InfusCount)
+AND
+_InfusCount > 2
+THEN
+PROC_AMER_Source_Infusion_TacticalRetreatTryTele(_Char, _X, _Y, _Z, 13.0, 10, 18.0);
+ApplyStatus(_Char, "HASTED", 18.0, 0, _Char);
+
+
+
+PROC PROC_AMER_Source_Infusion_TacticalRetreatTryTele((CHARACTERGUID)_Char, (REAL)_X, (REAL)_Y, (REAL)_Z, (REAL)_Range, (INTEGER)_Limit, (REAL)_Duration)
+THEN
+DB_AMER_Source_Infusion_TacticalRetreatCount(_Limit);
+
+PROC PROC_AMER_Source_Infusion_TacticalRetreatTryTele((CHARACTERGUID)_Char, (REAL)_X, (REAL)_Y, (REAL)_Z, (REAL)_Range, (INTEGER)_Limit, (REAL)_Duration)
+AND
+QRY_AMER_GEN_GetAIBounds(_Char)
+AND
+DB_AMER_GEN_OUTPUT_Real(_CharBounds)
+AND
+DB_IsPlayer(_Ally)
+AND
+_Char != _Ally
+AND
+CharacterIsAlly(_Char, _Ally, 1)
+AND
+DB_AMER_Source_Infusion_TacticalRetreatCount(_Count)
+AND
+_Count > 0
+AND
+CharacterIsAlly(_Char, _Ally, 1)
+//AND
+//GetDistanceTo(_Char, _Ally, _Distance)
+AND
+QRY_AMER_GEN_GetAIBounds(_Ally)
+AND
+DB_AMER_GEN_OUTPUT_Real(_AllyBounds)
+AND
+RealSum(_CharBounds, _AllyBounds, _BoundsSize)
+AND
+GetPosition(_Ally, _AllyX, _, _AllyZ)
+AND
+QRY_AMER_GEN_GetDistanceToPosition_2D(_Char, _AllyX, _AllyZ)
+AND
+DB_AMER_GEN_OUTPUT_Real(_Distance)
+AND
+RealSubtract(_Distance, _BoundsSize, _DistanceAdjusted)
+AND
+_DistanceAdjusted <= _Range
+AND
+IntegerSubtract(_Count, 1, _NewCount)
+THEN
+NOT DB_AMER_Source_Infusion_TacticalRetreatCount(_Count);
+DB_AMER_Source_Infusion_TacticalRetreatCount(_NewCount);
+ApplyStatus(_Ally, "HASTED", _Duration, 0, _Char);
+PROC_AMER_GEN_TeleportWithFX_ToPos(_Ally, _X, _Y, _Z);
+
+PROC PROC_AMER_Source_Infusion_TacticalRetreatTryTele((CHARACTERGUID)_Char, (REAL)_X, (REAL)_Y, (REAL)_Z, (REAL)_Range, (INTEGER)_Limit, (REAL)_Duration)
+AND
+DB_AMER_Source_Infusion_TacticalRetreatCount(_Count)
+THEN
+NOT DB_AMER_Source_Infusion_TacticalRetreatCount(_Count);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Spells_Huntsman"

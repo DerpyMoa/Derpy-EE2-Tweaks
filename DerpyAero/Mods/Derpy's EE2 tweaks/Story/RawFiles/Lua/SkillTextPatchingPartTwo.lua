@@ -410,6 +410,10 @@ SKILL_TEXT_PATCHING = {
     Cone_Leviathan_Pull = {
         DisplayName = "Leviathan",
         Description = "<font size='19'>Deal [1] to enemies in a [3] degree, [2] long cone. Teleport each non-boss enemy hit to a position nearest you where they can stand. If at least one enemy gets teleported, after a short delay an explosion occurs at your position, dealing [4] to enemies within 5m and applying Wet for 2 turns. </font>"
+    },
+
+    Jump_TacticalRetreat = {
+        Description = "<font size='19'>Teleport to target point. If cast during combat, also apply Hasted to yourself for 1 turn.</font><br><br><font color='46b195'>Source Infusions:</font><font size='17'><br><font color='46b195'>1: </font>Teleport the closest allied hero within 2m with you, and Haste them for 1 turn.<br><font color='46b195'>2 (requires 5 Huntsman): </font>Teleport the 2 closest allied heroes within 3m with you, and Haste them for 1 turn.<br><font color='46b195'>3 (requires 9 Huntsman): </font>Teleport all allied heroes within 13m with you, and Haste them for 3 turns. Haste yourself for 3 turns.<br> </font>"
     }
 
 }
