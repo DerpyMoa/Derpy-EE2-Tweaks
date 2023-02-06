@@ -17,6 +17,16 @@ PROC_Derpy_Contamination_SI_Effects(_Target, _Char, _InfusCount);
 //=====================================================================================================================================================
 
 
+QRY QRY_AMER_Source_Infusion_SkillPreCast((CHARACTERGUID)_Char, "Shout_Contamination", (INTEGER)_InfusCount)
+AND
+_InfusCount > 0
+THEN
+DB_NOOP();
+
+
+//=====================================================================================================================================================
+
+
 PROC PROC_Derpy_Contamination_SI_Effects((CHARACTERGUID)_Target, (CHARACTERGUID)_Char, 1)
 THEN
 PROC_AMER_GEN_Shoot_Delayed("RemoteImpact", _Char, _Target, "Projectile_AMER_SCRIPT_Contamination_SingleHit", 0, 200);
