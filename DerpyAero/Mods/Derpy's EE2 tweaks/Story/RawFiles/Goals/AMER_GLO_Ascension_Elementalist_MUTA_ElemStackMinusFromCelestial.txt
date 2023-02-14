@@ -17,7 +17,7 @@ PROC_Derpy_Ascension_Pegasus_Elementalist(_Char, _HasPurity);
 PROC PROC_Derpy_Ascension_Pegasus_Elementalist((CHARACTERGUID)_Char, 0)
 THEN
 PROC_AMER_GEN_CharacterCombatLogText(_Char, "spent 5 Elementalist stacks to activate Purity.");
-ProcObjectTimer(_Char, "Derpy_Pegasus_Elementalist", 50);
+ProcObjectTimer(_Char, "Derpy_Pegasus_Elementalist", 100);
 PROC_AMER_KeywordStat_Purity_Activate(_Char, _Char, _Char);
 
 
@@ -27,7 +27,7 @@ GetStatusTurns(_Char, "AMER_PURITY_COOLDOWN", _Turns)
 AND
 IntegerSubtract(_Turns, 1, _NewTurns)
 THEN
-ProcObjectTimer(_Char, "Derpy_Pegasus_Elementalist", 50);
+ProcObjectTimer(_Char, "Derpy_Pegasus_Elementalist", 100);
 PROC_Derpy_Ascension_Pegasus_Elementalist_CDReduc(_Char, _NewTurns);
 
 

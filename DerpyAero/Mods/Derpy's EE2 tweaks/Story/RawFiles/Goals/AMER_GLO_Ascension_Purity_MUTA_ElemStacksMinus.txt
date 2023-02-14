@@ -10,7 +10,7 @@ AND
 DB_AMER_Ascension_SpecialLogic(_DataSource, "Ascension_Purity_MUTA_ElemStacksMinus", _)
 THEN
 PROC_AMER_GEN_CharacterCombatLogText(_Char, "gained 5 Elementalist stacks from activating Purity.");
-ProcObjectTimer(_DataSource, "Ascension_Purity_MUTA_ElemStacksMinus", 100);
+ProcObjectTimer(_DataSource, "Ascension_Purity_MUTA_ElemStacksMinus", 150);
 
 
 PROC ProcObjectTimerFinished((CHARACTERGUID)_DataSource, "Ascension_Purity_MUTA_ElemStacksMinus")
