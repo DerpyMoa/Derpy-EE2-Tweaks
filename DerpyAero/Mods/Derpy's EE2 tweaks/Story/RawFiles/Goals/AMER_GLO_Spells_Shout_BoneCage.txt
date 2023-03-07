@@ -12,7 +12,7 @@ PROC_AMER_GEN_CountCharsAroundObject(_Char, 13.0, _Char, 16, "AMER_SourceInfusio
 
 PROC PROC_AMER_GEN_CountCharsAroundObject_Returned((INTEGER)_RequestIndex, "AMER_SourceInfusion_BoneCage_CorpseCount", (CHARACTERGUID)_Caster, (INTEGER)_Corpses)
 AND
-DB_AMER_Source_Infusion_Current(_Caster, _InfusCount)
+DB_AMER_Source_Infusion_InfusionSuccess(_Caster, _, _, _InfusCount)
 AND
 Real(_Corpses, _CorpsesReal)
 THEN
