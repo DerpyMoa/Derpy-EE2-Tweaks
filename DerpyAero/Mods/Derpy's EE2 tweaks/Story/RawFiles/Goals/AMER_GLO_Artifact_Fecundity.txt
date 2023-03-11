@@ -22,6 +22,13 @@ THEN
 PlayEffect(_Char, "RS3_FX_Skills_Totem_Cast_Summon_Totem_Root_01", "Dummy_Root");
 PROC_AMER_Summoning_CreateTotemAtPos_FromSurface(_Char, _X, _Y, _Z);
 
+
+
+//Need to allow this reaction to target dead.
+QRY QRY_AMER_Reaction_AllowOnDead((CHARACTERGUID)_Char, "Artifact_Fecundity", (STRING)_RequestID, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z)
+THEN
+DB_NOOP(1);
+
 EXITSECTION
 
 ENDEXITSECTION
