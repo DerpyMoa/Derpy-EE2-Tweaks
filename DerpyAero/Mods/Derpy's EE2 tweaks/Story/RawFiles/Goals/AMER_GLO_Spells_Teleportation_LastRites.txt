@@ -13,6 +13,7 @@ NRD_HitGetDamage(_HitHandle, "Piercing", _Amount)
 AND
 _Amount != 0
 THEN
+NRD_HitSetInt(_HitHandle, "CriticalRoll", 2);
 NRD_HitClearDamage(_HitHandle, "Piercing");
 PROC_AMER_GEN_ApplyDamage(_Defender, _Amount, "Piercing", _Defender, 0);
 
