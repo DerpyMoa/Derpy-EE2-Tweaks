@@ -11,6 +11,12 @@ new skillset "Summon_OilBlob"
 add skill "Projectile_PyroclasticRock"
 add skill "Target_OilBlobRockSpikes"
 
+new skillset "Summon_SoulWolf"
+add skill "Shout_WolfTaunt"
+add skill "Target_WolfBite"
+add skill "Projectile_EnemyFlight_9m"
+
+
 
 new skillset "Class_Metamorph"
 add skill "Shout_MedusaHead"

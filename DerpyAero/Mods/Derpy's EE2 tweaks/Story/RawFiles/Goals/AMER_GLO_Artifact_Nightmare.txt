@@ -111,6 +111,13 @@ DB_AMER_Artifacts_Nightmare_Power(_Char, _Power)
 THEN
 NOT DB_AMER_Artifacts_Nightmare_Power(_Char, _Power);
 
+
+//Need to allow this reaction to target dead.
+QRY QRY_AMER_Reaction_AllowOnDead((CHARACTERGUID)_Char, "Artifact_Nightmare", (STRING)_RequestID, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z)
+THEN
+DB_NOOP(1);
+
+
 EXITSECTION
 
 ENDEXITSECTION

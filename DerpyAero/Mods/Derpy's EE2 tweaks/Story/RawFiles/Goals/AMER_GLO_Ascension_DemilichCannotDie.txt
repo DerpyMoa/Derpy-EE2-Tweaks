@@ -36,10 +36,21 @@ AND
 NOT DB_Illusionist(_CharHurt, _)	//Don't force die if the player is in the respec mirror.
 AND
 NOT DB_AMER_UI_UsersInUI(_, _, _CharHurt)	//Don't force die if the player is in a UI.
+AND
+NOT QRY_AMER_Ascension_Demilich_DeathBlocked(_CharHurt, _Source)
 THEN
 DB_AMER_AscensionReward_Demilich_AllowDie(_CharHurt);
 PROC_AMER_GEN_CharacterDie(_CharHurt, 1, "DoT", _Source);
 NOT DB_AMER_AscensionReward_Demilich_AllowDie(_CharHurt);
+
+
+QRY QRY_AMER_Ascension_Demilich_DeathBlocked((CHARACTERGUID)_Char, (GUIDSTRING)_Source)
+AND
+DB_AMER_Talents(_Char, "ResistDead")
+AND
+NOT DB_AMER_Talents_ResistDead_Used(_Char)
+THEN
+PROC_AMER_Talents_ResistDead_Activated(_Char);
 
 
 QRY QRY_AMER_AscensionReward_Demilich_CanDie((CHARACTERGUID)_Char, 0.0, (REAL)_Magic)
