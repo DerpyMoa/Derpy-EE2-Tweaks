@@ -240,5 +240,5 @@ StatsTab.STATS["Form_Sphinx_Node_3.0"].Description = "When you activate Abeyance
 
 StatsTab.STATS["Inertia_TheGladiator_Node_4.2"].Description = "If you have Ward, Centurion reactions restore 20% (+1% per Inertia) of your missing Physical and Magical Armor, and gain +0.5% damage per percent of your current Physical and Magical Armor."
 
-StatsTab.STATS["Force_TheConqueror_Node_2.1"].Name = "On Skill Cast"
-StatsTab.STATS["Force_TheConqueror_Node_2.1"].Description = "While in combat, casting a skill that costs at least 1 AP will activate Violent Strike."
+StatsTab.STATS["Force_TheConqueror_Node_2.1"].Name = "After Skill Cast"
+StatsTab.STATS["Force_TheConqueror_Node_2.1"].Description = "While in combat, activate Violent Strike after casting a skill that costs at least 1 AP."
