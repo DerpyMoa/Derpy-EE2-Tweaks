@@ -16,12 +16,19 @@ AND
 DB_AMER_Combat_ActiveChar(_, _, _, _Char)
 THEN
 DB_Derpy_Talen_Demon_Choke(_Char);
+DB_AMER_GEN_OncePerRound(_Char, "Derpy_Talent_Demon_Skill");
 ProcObjectTimer(_Char, "Derpy_Talen_Demon_ChokePrevention", 2000);
+ProcObjectTimer(_Char, "Derpy_Demon_ScorchedRemoval", 100);
 PROC_AMER_GEN_CharacterCauseExplosion(_Char, _Target, "Projectile_Derpy_SCRIPT_DemonScorch");
 PlayEffect(_Char, "RS3_FX_Skills_Fire_Cast_Hand_01", "Dummy_L_HandFX");
 PlayEffect(_Char, "RS3_FX_Skills_Fire_Cast_Hand_01", "Dummy_R_HandFX");
 PlayEffect(_Char, "RS3_FX_Skills_Fire_Throw_Cast_Hand_01", "Dummy_L_HandFX");
 PlayEffect(_Char, "RS3_FX_Skills_Fire_Throw_Cast_Hand_01", "Dummy_R_HandFX");
+
+
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "Derpy_Demon_ScorchedRemoval")
+THEN
+RemoveStatus(_Char, "AMER_SCORCHED");
 
 
 PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "Derpy_Talen_Demon_ChokePrevention")

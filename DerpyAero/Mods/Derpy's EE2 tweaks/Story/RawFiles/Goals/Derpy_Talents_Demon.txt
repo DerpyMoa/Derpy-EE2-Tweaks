@@ -38,8 +38,6 @@ HasActiveStatus(_Char, "AMER_SCORCHED", 1)
 AND
 NRD_StatGetString(_Skill, "UseWeaponDamage", "Yes")
 THEN
-DB_AMER_GEN_OncePerRound(_Char, "Derpy_Talent_Demon_Skill");
-ProcObjectTimer(_Char, "Derpy_Demon_ScorchedRemoval", 100);
 PROC_AMER_TempStat_ExtendedStat_Add(_Char, "TalentDemon_Internal", "", "", "Derpy_TalentDemon", 1.0, 2000, "SkillCast");
 
 
@@ -71,12 +69,6 @@ PlayEffect(_Attacker, "RS3_FX_Skills_Fire_Cast_Hand_01", "Dummy_L_HandFX");
 PlayEffect(_Attacker, "RS3_FX_Skills_Fire_Cast_Hand_01", "Dummy_R_HandFX");
 PlayEffect(_Attacker, "RS3_FX_Skills_Fire_Throw_Cast_Hand_01", "Dummy_L_HandFX");
 PlayEffect(_Attacker, "RS3_FX_Skills_Fire_Throw_Cast_Hand_01", "Dummy_R_HandFX");
-
-
-PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "Derpy_Demon_ScorchedRemoval")
-THEN
-RemoveStatus(_Char, "AMER_SCORCHED");
-
 
 
 //===========================================================================================================================
