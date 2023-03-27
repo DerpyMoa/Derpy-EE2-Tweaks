@@ -1,0 +1,25 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+IF
+CharacterEnteredTrigger((CHARACTERGUID)_Char, TRIGGERGUID_Derpy_DallisInfo_bc9fd33c-6e56-48b4-a173-d305abd21265)
+AND
+DB_IsPlayer(_Char)
+THEN
+PROC_AMER_GEN_OpenMessageBoxForPlayers_Queued("Derpy_DallisInfoText");
+GoalCompleted;
+
+
+PROC
+ProcRegionEnded("FJ_FortJoy_Main")
+THEN
+GoalCompleted;
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "FortJoy"
