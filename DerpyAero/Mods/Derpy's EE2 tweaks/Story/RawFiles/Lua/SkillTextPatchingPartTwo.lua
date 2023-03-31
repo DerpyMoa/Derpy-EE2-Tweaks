@@ -69,7 +69,7 @@ SKILL_TEXT_PATCHING = {
 
     Target_MaddeningSong = {
         DisplayName = "Insanity's Crescendo",
-        Description = "<font size='19'>For each enemy within target radius, gain +3 Finesse, Power, Memory, and Wits for 2 turns while enemies suffer a -3 penalty to Finesse, Power, and Wits.</font>"
+        Description = "<font size='19'>Apply Insanity's Crescendo for 2 turns to yourself and each enemy within target radius, which grants you +3 Finesse, Memory, Power, and Wits per enemy in the radius, and a corresponding penalty to those Attributes (except Memory) to each enemy.</font>"
     },
 
     Shout_IncarnateVacuumAura_SI2 = {
