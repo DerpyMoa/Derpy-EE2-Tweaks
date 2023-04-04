@@ -60,11 +60,19 @@ AND
 CharacterIsEnemy(_Defender, _Attacker, 1)
 AND
 QRY_AMER_GEN_OncePerRound(_Attacker, "Derpy_Talent_Demon_BasicAttack")
+AND
+CharacterGetLevel(_Attacker, _Level)
+AND
+IntegerMin(_Level, 21, _LevelCapped)
+AND
+IntegertoString(_LevelCapped, _LevelCappedStr)
+AND
+StringConcatenate("Projectile_Derpy_SCRIPT_DemonScorch_", _LevelCappedStr, _Projectile)
 THEN
 DB_AMER_GEN_OncePerRound(_Attacker, "Derpy_Talent_Demon_BasicAttack");
 RemoveStatus(_Attacker, "AMER_SCORCHED");
 PROC_AMER_TempStat_HitStatus_ThrowProc_Clear(_Attacker, "Derpy_TalentDemon_BasicHit");
-PROC_AMER_GEN_CharacterCauseExplosion(_Attacker, _Defender, "Projectile_Derpy_SCRIPT_DemonScorch");
+PROC_AMER_GEN_CharacterCauseExplosion(_Attacker, _Defender, _Projectile);
 PlayEffect(_Attacker, "RS3_FX_Skills_Fire_Cast_Hand_01", "Dummy_L_HandFX");
 PlayEffect(_Attacker, "RS3_FX_Skills_Fire_Cast_Hand_01", "Dummy_R_HandFX");
 PlayEffect(_Attacker, "RS3_FX_Skills_Fire_Throw_Cast_Hand_01", "Dummy_L_HandFX");
