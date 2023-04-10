@@ -1,0 +1,45 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_GEN_BasicAttackObjectStarted((CHARACTERGUID)_Defender, (REAL)_X, (REAL)_Y, (REAL)_Z, (CHARACTERGUID)_Owner, (CHARACTERGUID)_Attacker, (STRING)_AttackID)
+AND
+DB_AMER_Artifacts_EquippedEffects(_Attacker, "Artifact_Zenith", _)
+THEN
+PROC_AMER_TempStat_HitStatus_ThrowProc(_Attacker, "Artifact_Zenith", 2000, "");
+
+
+PROC PROC_AMER_HitStatus_Event((CHARACTERGUID)_Defender, (CHARACTERGUID)_Attacker, "Artifact_Zenith")
+AND
+CharacterIsEnemy(_Defender, _Attacker, 1)
+THEN
+PROC_AMER_Artifacts_Zenith_EnemyStruck(_Defender, _Attacker);
+
+
+//Chance to activate clears on the first strike, don't continue allowing chances for each additional strike.
+PROC PROC_AMER_Artifacts_Zenith_EnemyStruck((CHARACTERGUID)_Defender, (CHARACTERGUID)_Attacker)
+THEN
+PROC_AMER_TempStat_HitStatus_ThrowProc_Clear(_Attacker, "Artifact_Zenith");
+
+PROC PROC_AMER_Artifacts_Zenith_EnemyStruck((CHARACTERGUID)_Defender, (CHARACTERGUID)_Attacker)
+AND
+QRY_AMER_GEN_RandomSuccess(30)	//Zenith has a 30% success rate.
+AND
+QRY_AMER_GEN_CharacterGetDisplayName(_Defender)
+AND
+DB_AMER_GEN_OUTPUT_String(_Name)
+AND
+QRY_AMER_GEN_TSK_Get("AMER_Artifact_Zenith_LogText")
+AND
+DB_AMER_GEN_OUTPUT_String(_LogText)
+THEN
+CharacterStatusText(_Attacker, "Artifact_Zenith");
+PROC_AMER_GEN_CharacterCombatLogText_Param_Str(_Attacker, _LogText, _Name);
+PROC_AMER_GEN_ShootProjectileStrikeAt(_Attacker, _Defender, "Projectile_Fireball");
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Artifacts"
