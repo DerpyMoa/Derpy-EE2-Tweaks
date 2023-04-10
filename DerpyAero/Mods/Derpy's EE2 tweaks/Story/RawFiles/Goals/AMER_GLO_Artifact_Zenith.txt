@@ -34,10 +34,15 @@ AND
 QRY_AMER_GEN_TSK_Get("AMER_Artifact_Zenith_LogText")
 AND
 DB_AMER_GEN_OUTPUT_String(_LogText)
+AND
+GetPosition(_Attacker, _X, _Y, _Z)
+AND
+RealSum(_Y, 1.25, _YAdjusted)
 THEN
-CharacterStatusText(_Attacker, "Artifact_Zenith");
+PlayEffect(_Attacker, "RS3_FX_Skills_Fire_Prepare_LaserRay_Overhead_Texkey", "Dummy_OverheadFX");
 PROC_AMER_GEN_CharacterCombatLogText_Param_Str(_Attacker, _LogText, _Name);
-PROC_AMER_GEN_ShootProjectileStrikeAt(_Attacker, _Defender, "Projectile_Fireball");
+PROC_AMER_GEN_ShootProjectileAt_Remote(_Attacker, _X, _YAdjusted, _Z, _Defender, "Projectile_Fireball");
+
 
 EXITSECTION
 
