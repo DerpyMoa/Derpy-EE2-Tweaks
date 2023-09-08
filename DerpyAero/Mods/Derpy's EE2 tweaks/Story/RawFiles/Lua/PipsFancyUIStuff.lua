@@ -1,15 +1,16 @@
-local StatsTab = Mods["EpipEncounters"].Epip.Features.StatsTab
+
+local StatsTab = Epip.GetFeature("Feature_CustomStats")
 
 StatsTab.AddNodeStat("Inertia_TheRhinoceros", 3, 2, "Centurion", "Mutator", {
     Name = "Range Increase",
     Description = "While wielding a two-handed weapon, your Centurion range becomes 10m. If The Arena Whirlwind Mutator is present, range is adjusted to between 5m and 10m.",
-  })
+})
 
 StatsTab.AddNodeStat("Entropy_Extinction", 2, 2, "Predator", "Mutator", {
     Name = "On Skitterer Death",
     Description = "When one of your Skitterers dies, perform a Predator reaction on the nearest enemy within 3m of it.",
-  })
-  
+})
+
 
 StatsTab.STATS["Form_Wealth_Node_3.1"].Name = "On Weapon Skills"
 StatsTab.STATS["Form_Wealth_Node_3.1"].Description = "Learn the Adaptation skill.<br><br>Adaptation activates, granting 3 stacks, when you perform Flurry, All In, Staff of Magus, or Sucker Punch."
