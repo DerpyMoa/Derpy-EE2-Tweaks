@@ -1,6 +1,4 @@
 
-_ENV = Mods.EpipEncounters
-
 ---@class RestrictedTargettingEntry
 ---@field CombatTargettingConditions string
 ---@field FieldTargettingConditions string

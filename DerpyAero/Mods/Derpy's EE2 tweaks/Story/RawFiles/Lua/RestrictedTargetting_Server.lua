@@ -1,6 +1,4 @@
 
-_ENV = Mods.EpipEncounters
-
 local Targetting = {
 
 }
