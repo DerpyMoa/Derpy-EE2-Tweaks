@@ -42,8 +42,11 @@ StatsTab.STATS["Form_TheDragon_Node_2.3"].Description = "Unlock basic activation
 
 StatsTab.STATS["Form_TheDragon_Node_4.0"].Description = "If you have 3 or more stacks of Adaptation when you activate Abeyance, pay 1 stack of Adaptation for each enemy you can see within 8m to deal 200% fire damage to it. Also applies Scorched for 2 turns and creates fire surfaces under them."
 
-StatsTab.STATS["Force_TheScorpion_Node_2.1"].Name = "On &gt;20% Vitality dealt"
+StatsTab.STATS["Force_TheScorpion_Node_2.1"].Name = "On &gt;10% Vitality dealt"
 StatsTab.STATS["Force_TheScorpion_Node_2.1"].Description = "Once per round, per target, activate Vitality Void after dealing total damage, to a non-summon enemy, exceeding 10% of their total Vitality over a turn."
+
+StatsTab.STATS["Force_TheArcher_Node_3.1"].Name = "On 10%+ Vitality Hit"
+StatsTab.STATS["Force_TheArcher_Node_3.1"].Description = "Once per round, per target, Violent Strike activates when you deal damage to an enemy exceeding 10% of their total Vitality over a turn."
 
 StatsTab.STATS["Force_Wrath_Node_4.0"].Description = "If you have Paucity, your Arrow Spray, Incandescent Ray, Impalement, Onslaught, and Throwing Knife skills are performed at +1 effective Source Infusion, even if uninfused."
 

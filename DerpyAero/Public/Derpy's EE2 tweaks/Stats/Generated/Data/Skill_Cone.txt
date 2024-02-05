@@ -246,7 +246,7 @@ data "SkillType" "Cone"
 using "Cone_CorrosiveSpray"
 data "ForGameMaster" "No"
 data "DamageType" "Physical"
-data "SkillProperties" "BATTERED_MANIP_1,100,0;ACID,100,2;AMER_DECAYING_APPLY,100,2;AMER_CORRODING,100,2;SUFFOCATING,100,2"
+data "SkillProperties" "BATTERED_MANIP_1,100,0;ACID,100,2;AMER_DECAYING_APPLY,100,2;SUFFOCATING,100,2"
 
 new entry "Cone_SteamLance"
 type "SkillData"
