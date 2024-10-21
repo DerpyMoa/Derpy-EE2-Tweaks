@@ -1,0 +1,26 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//If you have Paucity Active, apply Withered for 1 turn to enemies hit while performing a basic attack.
+
+PROC PROC_AMER_GEN_BasicAttackObjectStarted(_Defender, (REAL)_X, (REAL)_Y, (REAL)_Z, _Owner, _Attacker, _)
+AND
+DB_AMER_Ascension_SpecialLogic(_Attacker, "Ascension_Paucity_MUTA_WitherACT_BasicAttack", _)
+AND
+HasActiveStatus(_Attacker, "AMER_PAUCITY", 1)
+THEN
+PROC_AMER_TempStat_HitStatus_ThrowProc(_Attacker, "Ascension_Paucity_MUTA_WitherACT_BasicAttack", 2000, "");
+
+
+PROC PROC_AMER_HitStatus_Event((CHARACTERGUID)_Defender, (CHARACTERGUID)_Attacker, "Ascension_Paucity_MUTA_WitherACT_BasicAttack")
+AND
+CharacterIsEnemy(_Defender, _Attacker, 1)
+THEN
+ApplyStatus(_Defender, "AMER_WITHER", 6.0, 0, _Attacker);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"
